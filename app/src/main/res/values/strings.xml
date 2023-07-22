@@ -6,4 +6,9 @@
     <string name="email">email</string>
     <string name="password">password</string>
     <string name="remember">Remember</string>
+    <string name="enter">Enter</string>
+    <string name="or">OR</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="google_logo">Google Logo</string>
+    <string name="facebook_logo">Facebook Logo</string>
 </resources>
