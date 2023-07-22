@@ -2,4 +2,8 @@
     <string name="app_name">LoryBlu</string>
     <string name="login">Login</string>
     <string name="loryblu_logo">loryblu logo</string>
+    <string name="mail_icon">mail icon</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="remember">Remember</string>
 </resources>

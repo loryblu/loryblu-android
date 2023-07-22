@@ -3,6 +3,6 @@ package com.example.loryblu.login
 enum class PasswordProblem {
     NONE,
     WRONG,
-    SHORT,
+    INVALID,
     EMPTY
 }

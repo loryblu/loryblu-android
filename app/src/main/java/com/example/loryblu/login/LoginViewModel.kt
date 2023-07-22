@@ -12,14 +12,13 @@ data class LoginUiState(
     val passwordProblem: PasswordProblem = PasswordProblem.NONE,
     // serve para salvar o estado para a proxima visita
     val isLoginSaved: Boolean = false,
-
 )
 
 class LoginViewModel constructor(
 
 ): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState = _uiState.asStateFlow().value
+    val uiState = _uiState.asStateFlow()
 
 
     fun updateEmail(newEmail: String) {
@@ -38,5 +37,14 @@ class LoginViewModel constructor(
         _uiState.update {
             it.copy(isLoginSaved = newState)
         }
+    }
+    fun printEmailProblem(): String {
+        val problem =  when (_uiState.value.emailProblem) {
+            EmailProblem.INVALID -> "*Invalid E-mail"
+            EmailProblem.EMPTY -> "*Required field"
+            EmailProblem.ABSENT -> "*Absent E-mail"
+            EmailProblem.NONE -> ""
+        }
+        return problem
     }
 }
