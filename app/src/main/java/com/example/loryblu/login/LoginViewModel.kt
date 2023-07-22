@@ -12,6 +12,7 @@ data class LoginUiState(
     val passwordProblem: PasswordProblem = PasswordProblem.NONE,
     // serve para salvar o estado para a proxima visita
     val isLoginSaved: Boolean = false,
+    val enterTrigger: Boolean = false
 )
 
 class LoginViewModel constructor(
