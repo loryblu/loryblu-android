@@ -20,10 +20,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,10 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
 import com.example.loryblu.ui.theme.Blue
+import com.example.loryblu.ui.theme.DarkBlue
 import com.example.loryblu.ui.theme.White
-import com.example.loryblu.ui.theme.fontH6
 import com.example.loryblu.util.P_LARGE
 import com.example.loryblu.util.P_MEDIUM
+import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,16 +48,19 @@ fun LoginScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.padding(P_SMALL)
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = stringResource(R.string.loryblu_logo),
-            modifier = Modifier.width(187.dp).height(47.dp)
+            modifier = Modifier
+                .width(187.dp)
+                .height(47.dp)
         )
         Text(
             text = stringResource(R.string.login),
-            style = fontH6()
+            style = MaterialTheme.typography.titleLarge
         )
         // isso esta bugado por que esta faltando um parametro
         OutlinedTextField(
@@ -70,16 +72,19 @@ fun LoginScreen(
                     contentDescription = stringResource(R.string.mail_icon)
                 )
             },
-            label = { Text(text = stringResource(R.string.email)) } ,
+            label = { Text(text = stringResource(R.string.email)) },
             textStyle = MaterialTheme.typography.bodyLarge,
             singleLine = true,
             modifier = Modifier,
 
+            )
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(P_MEDIUM)
         )
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(P_MEDIUM))
         // tem o problema que caso eu coloque os modifier que estava no figma ele mostra o texto enquando estou digitando
+        val uiState by viewModel.uiState.collectAsState()
         OutlinedTextField(
             value = uiState.password,
             onValueChange = viewModel::updatePassword,
@@ -94,29 +99,39 @@ fun LoginScreen(
             singleLine = true,
             modifier = Modifier,
             trailingIcon = {
-                var showPassword by  remember { mutableStateOf(uiState.showPassword) }
-                    IconButton(
-                        onClick = { showPassword = !uiState.showPassword }
-                    ) {
-                        if (uiState.showPassword) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_eye_close),
-                                contentDescription = "close eye"
-                            )
-                        } else {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_eye_open),
-                                contentDescription = "Open eye"
-                            )
-                        }
+
+                val painterIcon =
+                    if (uiState.showPassword)
+                        painterResource(id = R.drawable.ic_eye_close)
+                    else
+                        painterResource(id = R.drawable.ic_eye_open)
+
+                val contentDescription =
+                    if (uiState.showPassword)
+                        stringResource(R.string.close_eye)
+                    else
+                        stringResource(R.string.open_eye)
+
+                IconButton(
+                    onClick = {
+                        viewModel.toggleVisibility()
+                    }
+                ) {
+                    Icon(
+                        painter = painterIcon,
+                        contentDescription = contentDescription
+                    )
+
                 }
 
 
             }
         )
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(P_MEDIUM))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(P_MEDIUM)
+        )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
@@ -177,11 +192,11 @@ fun LoginScreen(
                 thickness = 2.dp
             )
         }
-        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.padding(4.dp)) {
+        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.padding(top = 4.dp)) {
             Spacer(modifier = Modifier.weight(6f))
             Text(
                 text = stringResource(R.string.forgot_password),
-                fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.weight(4f)
             )
@@ -189,15 +204,36 @@ fun LoginScreen(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(4.dp)
+            modifier = Modifier
+                .padding(54.dp)
+                .fillMaxWidth()
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_google),
-                contentDescription = stringResource(R.string.google_logo)
+                contentDescription = stringResource(R.string.google_logo),
+                modifier = Modifier.weight(1f)
             )
+//            Spacer(modifier = Modifier.weight(1f))
             Image(
                 painter = painterResource(id = R.drawable.ic_facebook),
-                contentDescription = stringResource(R.string.facebook_logo)
+                contentDescription = stringResource(R.string.facebook_logo),
+                modifier = Modifier.weight(1f)
+            )
+        }
+        
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Don't have an account?",
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            Text(
+                text = "Register now",
+                style = MaterialTheme.typography.bodyLarge,
+                color = DarkBlue
             )
         }
 

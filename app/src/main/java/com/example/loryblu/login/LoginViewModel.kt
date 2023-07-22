@@ -1,9 +1,10 @@
 package com.example.loryblu.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class LoginUiState(
     val email: String = "",
@@ -20,8 +21,7 @@ class LoginViewModel constructor(
 
 ): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState = _uiState.asStateFlow()
-
+    val uiState = _uiState
 
     fun updateEmail(newEmail: String) {
         _uiState.update {
@@ -48,5 +48,13 @@ class LoginViewModel constructor(
             EmailProblem.NONE -> ""
         }
         return problem
+    }
+
+    fun toggleVisibility() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(showPassword = _uiState.value.showPassword.not())
+            }
+        }
     }
 }

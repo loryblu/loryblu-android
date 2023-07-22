@@ -11,4 +11,6 @@
     <string name="forgot_password">Forgot Password ?</string>
     <string name="google_logo">Google Logo</string>
     <string name="facebook_logo">Facebook Logo</string>
+    <string name="close_eye">close eye</string>
+    <string name="open_eye">Open eye</string>
 </resources>
