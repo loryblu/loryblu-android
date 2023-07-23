@@ -13,6 +13,7 @@ data class RegisterUiState(
     val password: String = "",
     val confirmationPassword: String = "",
     val showPassword: Boolean = true,
+    val showConfirmationPassword: Boolean = true,
     val passwordHas: Map<Int, Boolean> = mapOf(
         R.string.MoreThanEight to false,
         R.string.Uppercase to false,
@@ -34,6 +35,14 @@ class RegisterViewModel constructor(): ViewModel() {
         }
     }
 
+    fun toggleConfirmationPassword() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(showConfirmationPassword = it.showConfirmationPassword.not())
+            }
+        }
+    }
+
     fun updateName(newName: String) {
         _uiState.update {
             it.copy(name = newName)
@@ -42,7 +51,7 @@ class RegisterViewModel constructor(): ViewModel() {
 
     fun updateEmail(newEmail: String) {
         _uiState.update {
-            it.copy(name = newEmail)
+            it.copy(email = newEmail)
         }
     }
 

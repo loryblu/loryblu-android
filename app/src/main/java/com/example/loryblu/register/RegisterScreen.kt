@@ -4,10 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +42,7 @@ fun RegisterScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
+        modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
 //        Spacer(modifier = Modifier.height(100.dp))
         Image(
@@ -58,8 +61,7 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(P_SMALL)
-                .height(300.dp)
+                .padding(P_SMALL).fillMaxWidth()
         ) {
             OutlinedTextField(
                 value = uiState.name,
@@ -128,31 +130,33 @@ fun RegisterScreen(
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier.padding(
-                    P_SMALL
-                )
+                modifier = Modifier
+                    .padding(
+                        P_SMALL
+                    ).fillMaxWidth()
             ) {
                 Text(
                     stringResource(R.string.the_password_must_be),
                     style = MaterialTheme.typography.labelMedium
                 )
-                Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
-                    uiState.passwordHas.forEach{
-                        if (!it.value) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_close),
-                                    contentDescription = null
-                                )
-                                Text(
-                                    text = stringResource(id = it.key),
-                                    color = Error,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            }
+                uiState.passwordHas.forEach {
+                    if (!it.value) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.padding(5.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_close),
+                                contentDescription = null,
+                                tint = Error
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = stringResource(id = it.key),
+                                color = Error,
+                                style = MaterialTheme.typography.labelMedium
+                            )
                         }
                     }
                 }
@@ -173,18 +177,18 @@ fun RegisterScreen(
                 },
                 trailingIcon = {
                     val painterIcon =
-                        if (uiState.showPassword)
+                        if (uiState.showConfirmationPassword)
                             painterResource(id = R.drawable.ic_eye_close)
                         else
                             painterResource(id = R.drawable.ic_eye_open)
 
                     val contentDescription =
-                        if (uiState.showPassword)
+                        if (uiState.showConfirmationPassword)
                             stringResource(R.string.close_eye)
                         else
                             stringResource(R.string.open_eye)
 
-                    IconButton(onClick = { viewModel.togglePassword() }) {
+                    IconButton(onClick = { viewModel.toggleConfirmationPassword() }) {
                         Icon(
                             painter = painterIcon,
                             contentDescription = contentDescription
@@ -206,8 +210,6 @@ fun RegisterScreen(
         }
     }
 }
-
-
 @Composable
 @Preview
 fun PreviewRegisterScreen() {
