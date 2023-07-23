@@ -139,6 +139,8 @@ fun RegisterScreen(
                     stringResource(R.string.the_password_must_be),
                     style = MaterialTheme.typography.labelMedium
                 )
+                // possivelmente pode ter um problema de recomposição de ui mesmo mudando os valores do
+                // passwordHas talvez não der um trigger para essa função de recomposição em que mude a UI
                 uiState.passwordHas.forEach {
                     if (!it.value) {
                         Row(

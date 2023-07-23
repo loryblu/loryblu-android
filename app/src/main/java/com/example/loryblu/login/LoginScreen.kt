@@ -75,7 +75,6 @@ fun LoginScreen(
             textStyle = MaterialTheme.typography.bodyLarge,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
-
             )
         Spacer(
             modifier = Modifier

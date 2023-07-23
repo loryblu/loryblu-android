@@ -24,6 +24,10 @@ class LoginViewModel constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState
 
+    fun validateEmail(email: String): Boolean {
+        val regex = Regex("(\\w)+[\\.|-]?(\\w)+@(\\w|-)+\\.((\\w){2,})(\\.([a-zA-z0-9])+)*$")
+        return regex.containsMatchIn(email)
+    }
     fun updateEmail(newEmail: String) {
         _uiState.update {
             it.copy(email = newEmail)
