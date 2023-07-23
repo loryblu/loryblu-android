@@ -13,4 +13,18 @@
     <string name="facebook_logo">Facebook Logo</string>
     <string name="close_eye">close eye</string>
     <string name="open_eye">Open eye</string>
+    <string name="invalid_e_mail">*Invalid E-mail</string>
+    <string name="required_field">*Required field</string>
+    <string name="absent_e_mail">*Absent E-mail</string>
+    <string name="empty_string"></string>
+    <string name="guardian_registration">Guardian Registration</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register_now">Register now</string>
+    <string name="name">Name</string>
+    <string name="person_icon">Person Icon</string>
+    <string name="email_icon">Email Icon</string>
+    <string name="lock_icon">lock icon</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="next">NEXT</string>
+    <string name="the_password_must_be">The password must be:</string>
 </resources>

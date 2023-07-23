@@ -20,7 +20,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,14 +67,14 @@ fun LoginScreen(
             onValueChange = { it: String -> viewModel.updateEmail(it) },
             leadingIcon = {
                 Icon(
-                    painterResource(id = R.drawable.ic_mail),
+                    painterResource(id = R.drawable.ic_email),
                     contentDescription = stringResource(R.string.mail_icon)
                 )
             },
             label = { Text(text = stringResource(R.string.email)) },
             textStyle = MaterialTheme.typography.bodyLarge,
             singleLine = true,
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth(),
 
             )
         Spacer(
@@ -84,20 +83,20 @@ fun LoginScreen(
                 .height(P_MEDIUM)
         )
         // tem o problema que caso eu coloque os modifier que estava no figma ele mostra o texto enquando estou digitando
-        val uiState by viewModel.uiState.collectAsState()
+
         OutlinedTextField(
             value = uiState.password,
             onValueChange = viewModel::updatePassword,
             leadingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_lock),
-                    contentDescription = stringResource(R.string.password)
+                    contentDescription = stringResource(R.string.lock_icon)
                 )
             },
             label = { Text(text = stringResource(id = R.string.password)) },
             textStyle = MaterialTheme.typography.bodyLarge,
             singleLine = true,
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
 
                 val painterIcon =
@@ -123,8 +122,6 @@ fun LoginScreen(
                     )
 
                 }
-
-
             }
         )
         Spacer(
@@ -152,7 +149,7 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = viewModel.printEmailProblem(),
+                text = stringResource(viewModel.IdEmailProblem()),
                 modifier = Modifier.weight(2f),
                 maxLines = 1
             )
@@ -227,13 +224,14 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Don't have an account?",
+                text = stringResource(R.string.don_t_have_an_account),
                 style = MaterialTheme.typography.bodyLarge,
             )
             Text(
-                text = "Register now",
+                text = stringResource(R.string.register_now),
                 style = MaterialTheme.typography.bodyLarge,
-                color = DarkBlue
+                color = DarkBlue,
+                textDecoration = TextDecoration.Underline
             )
         }
 

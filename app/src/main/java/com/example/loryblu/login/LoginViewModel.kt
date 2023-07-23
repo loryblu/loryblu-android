@@ -2,6 +2,7 @@ package com.example.loryblu.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.loryblu.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ data class LoginUiState(
     // serve para salvar o estado para a proxima visita
     val isLoginSaved: Boolean = false,
     val enterTrigger: Boolean = false,
-    var showPassword: Boolean = true
+    val showPassword: Boolean = true
 )
 
 class LoginViewModel constructor(
@@ -40,12 +41,12 @@ class LoginViewModel constructor(
             it.copy(isLoginSaved = newState)
         }
     }
-    fun printEmailProblem(): String {
+    fun IdEmailProblem(): Int {
         val problem =  when (_uiState.value.emailProblem) {
-            EmailProblem.INVALID -> "*Invalid E-mail"
-            EmailProblem.EMPTY -> "*Required field"
-            EmailProblem.ABSENT -> "*Absent E-mail"
-            EmailProblem.NONE -> ""
+            EmailProblem.INVALID -> R.string.invalid_e_mail
+            EmailProblem.EMPTY -> R.string.required_field
+            EmailProblem.ABSENT -> R.string.absent_e_mail
+            EmailProblem.NONE -> R.string.empty_string
         }
         return problem
     }
