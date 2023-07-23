@@ -27,4 +27,10 @@
     <string name="confirm_password">Confirm password</string>
     <string name="next">NEXT</string>
     <string name="the_password_must_be">The password must be:</string>
+    <string name="MoreThanEight">Has more than eight characters</string>
+    <string name="Lowercase">Has lowercase letters</string>
+    <string name="Uppercase">Has uppercase letters </string>
+    <string name="Numbers">Has Numbers</string>
+    <string name="SpecialCharacters">Has especial characters, like: ! @ # $ % &amp; *</string>
+
 </resources>

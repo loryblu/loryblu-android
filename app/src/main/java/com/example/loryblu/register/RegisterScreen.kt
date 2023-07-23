@@ -3,6 +3,7 @@ package com.example.loryblu.register
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
 import com.example.loryblu.ui.theme.Blue
+import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -134,7 +136,27 @@ fun RegisterScreen(
                     stringResource(R.string.the_password_must_be),
                     style = MaterialTheme.typography.labelMedium
                 )
-                
+                Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
+                    uiState.passwordHas.forEach{
+                        if (!it.value) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_close),
+                                    contentDescription = null
+                                )
+                                Text(
+                                    text = stringResource(id = it.key),
+                                    color = Error,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        }
+                    }
+                }
+
             }
             // confirmação de senha
             OutlinedTextField(
