@@ -61,7 +61,8 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(P_SMALL).fillMaxWidth()
+                .padding(P_SMALL)
+                .fillMaxWidth()
         ) {
             OutlinedTextField(
                 value = uiState.name,
@@ -94,7 +95,10 @@ fun RegisterScreen(
             // senha
             OutlinedTextField(
                 value = uiState.password,
-                onValueChange = viewModel::updatePassword,
+                onValueChange = { newPassword: String ->
+                    viewModel.updatePassword(newPassword = newPassword)
+                    viewModel.passwordCheck(newPassword = newPassword)
+                },
                 label = {
                     Text(text = stringResource(R.string.password))
                 },
@@ -133,7 +137,8 @@ fun RegisterScreen(
                 modifier = Modifier
                     .padding(
                         P_SMALL
-                    ).fillMaxWidth()
+                    )
+                    .fillMaxWidth()
             ) {
                 Text(
                     stringResource(R.string.the_password_must_be),

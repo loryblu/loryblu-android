@@ -67,7 +67,7 @@ class LoginViewModel constructor(
         val problem =  when (_uiState.value.emailProblem) {
             EmailProblem.INVALID -> R.string.invalid_e_mail
             EmailProblem.EMPTY -> R.string.required_field
-            EmailProblem.ABSENT -> R.string.absent_e_mail
+            EmailProblem.ABSENT -> R.string.empty_email
             EmailProblem.NONE -> R.string.empty_string
         }
         return problem

@@ -67,7 +67,6 @@ fun LoginScreen(
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(32.dp))
-        // isso esta bugado por que esta faltando um parametro
         OutlinedTextField(
             value = uiState.email,
             onValueChange = { it: String ->

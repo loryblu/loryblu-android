@@ -23,9 +23,25 @@ data class RegisterUiState(
     )
 )
 
-class RegisterViewModel constructor(): ViewModel() {
+class RegisterViewModel constructor() : ViewModel() {
+    // eu tenho uma duvida de usar isso com flow sera que
+    // não estou gerando muitos ojetos e como o CG faz para eliminar esses objetos
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState = _uiState
+
+    fun passwordCheck(newPassword: String) {
+        val _passwordHas = _uiState.value.passwordHas.toMutableMap()
+
+        _passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(newPassword)
+        _passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newPassword)
+        _passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newPassword)
+        _passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
+        _passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
+
+        _uiState.update {
+            it.copy(passwordHas = _passwordHas)
+        }
+    }
 
     fun togglePassword() {
         viewModelScope.launch {

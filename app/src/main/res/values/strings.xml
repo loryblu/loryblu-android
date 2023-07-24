@@ -15,7 +15,7 @@
     <string name="open_eye">Open eye</string>
     <string name="invalid_e_mail">*Invalid E-mail</string>
     <string name="required_field">*Required field</string>
-    <string name="absent_e_mail">*Absent E-mail</string>
+    <string name="empty_email">*Not found e-mail</string>
     <string name="empty_string"></string>
     <string name="guardian_registration">Guardian Registration</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
@@ -32,5 +32,8 @@
     <string name="Uppercase">Has uppercase letters </string>
     <string name="Numbers">Has Numbers</string>
     <string name="SpecialCharacters">Has especial characters, like: ! @ # $ % &amp; *</string>
-
+    <string name="reset_password">Reset your password here</string>
+    <string name="send">SEND</string>
+    <string name="email_not_found">*E-mail not found</string>
+    <string name="email_send">E-mail successfully sent</string>
 </resources>
