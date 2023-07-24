@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.DarkBlue
+import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.ui.theme.White
 import com.example.loryblu.util.P_LARGE
 import com.example.loryblu.util.P_MEDIUM
@@ -50,6 +53,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(P_SMALL)
     ) {
+        Spacer(modifier = Modifier.height(64.dp))
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = stringResource(R.string.loryblu_logo),
@@ -57,14 +61,19 @@ fun LoginScreen(
                 .width(187.dp)
                 .height(47.dp)
         )
+        Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = stringResource(R.string.login),
             style = MaterialTheme.typography.titleLarge
         )
+        Spacer(modifier = Modifier.height(32.dp))
         // isso esta bugado por que esta faltando um parametro
         OutlinedTextField(
             value = uiState.email,
-            onValueChange = { it: String -> viewModel.updateEmail(it) },
+            onValueChange = { it: String ->
+                viewModel.updateEmail(it)
+                viewModel.emailState(email = it)
+            },
             leadingIcon = {
                 Icon(
                     painterResource(id = R.drawable.ic_email),
@@ -75,7 +84,7 @@ fun LoginScreen(
             textStyle = MaterialTheme.typography.bodyLarge,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
-            )
+        )
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -121,7 +130,12 @@ fun LoginScreen(
                     )
 
                 }
-            }
+            },
+            visualTransformation =
+            if (uiState.showPassword)
+                PasswordVisualTransformation('*')
+            else
+                VisualTransformation.None
         )
         Spacer(
             modifier = Modifier
@@ -140,6 +154,7 @@ fun LoginScreen(
                 onCheckedChange = viewModel::updateIsSaved,
                 modifier = Modifier.weight(1f)
             )
+            Spacer(modifier = Modifier.weight(0.5f))
             Text(
                 text = stringResource(R.string.remember),
                 color = Color.Black,
@@ -150,7 +165,9 @@ fun LoginScreen(
             Text(
                 text = stringResource(viewModel.IdEmailProblem()),
                 modifier = Modifier.weight(2f),
-                maxLines = 1
+                maxLines = 1,
+                color = Error,
+                style = MaterialTheme.typography.labelLarge
             )
         }
         Button(
@@ -216,7 +233,7 @@ fun LoginScreen(
                 modifier = Modifier.weight(1f)
             )
         }
-        
+
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,

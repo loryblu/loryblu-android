@@ -13,7 +13,7 @@ data class LoginUiState(
     val password: String = "",
     val passwordProblem: PasswordProblem = PasswordProblem.NONE,
     // serve para salvar o estado para a proxima visita
-    val isLoginSaved: Boolean = false,
+    val isLoginSaved: Boolean = true,
     val enterTrigger: Boolean = false,
     val showPassword: Boolean = true
 )
@@ -24,9 +24,27 @@ class LoginViewModel constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState
 
-    fun validateEmail(email: String): Boolean {
+
+    fun emailState(email: String) {
         val regex = Regex("(\\w)+[\\.|-]?(\\w)+@(\\w|-)+\\.((\\w){2,})(\\.([a-zA-z0-9])+)*$")
-        return regex.containsMatchIn(email)
+        when {
+            "" == email.trim() -> {
+                _uiState.update {
+                    it.copy(emailProblem = EmailProblem.EMPTY)
+                }
+            }
+            regex.containsMatchIn(email).not() -> {
+                _uiState.update {
+                    it.copy(emailProblem = EmailProblem.INVALID)
+                }
+            }
+            else -> {
+                _uiState.update {
+                    it.copy(emailProblem = EmailProblem.NONE)
+                }
+            }
+            // aqui eu preciso achar a api para consultar e ver se o email é existente no sistema
+        }
     }
     fun updateEmail(newEmail: String) {
         _uiState.update {
