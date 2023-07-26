@@ -93,6 +93,7 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             // senha
+            // aqui tem um bug quando se trata da parte numerica da senha
             OutlinedTextField(
                 value = uiState.password,
                 onValueChange = { newPassword: String ->
