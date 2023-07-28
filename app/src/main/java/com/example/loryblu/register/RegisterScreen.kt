@@ -141,10 +141,20 @@ fun RegisterScreen(
                     )
                     .fillMaxWidth()
             ) {
-                Text(
-                    stringResource(R.string.the_password_must_be),
-                    style = MaterialTheme.typography.labelMedium
-                )
+                var counter = true
+                for (element in uiState.passwordHas.entries) {
+                    counter = element.value and counter
+                }
+
+                // test if the counter is true and this means that every field has the requirement
+                if (counter.not()) {
+                    Text(
+                        stringResource(R.string.the_password_must_be),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+
+
                 // possivelmente pode ter um problema de recomposição de ui mesmo mudando os valores do
                 // passwordHas talvez não der um trigger para essa função de recomposição em que mude a UI
                 uiState.passwordHas.forEach {
