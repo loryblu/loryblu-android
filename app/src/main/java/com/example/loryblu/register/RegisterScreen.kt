@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
@@ -78,6 +80,7 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
+//            Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = uiState.email,
                 onValueChange = viewModel::updateEmail,
@@ -92,8 +95,7 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-            // senha
-            // aqui tem um bug quando se trata da parte numerica da senha
+//            Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = uiState.password,
                 onValueChange = { newPassword: String ->
@@ -129,9 +131,14 @@ fun RegisterScreen(
                         )
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation =
+                if (uiState.showPassword)
+                    PasswordVisualTransformation('*')
+                else
+                VisualTransformation.None
             )
-
+//            Spacer(modifier = Modifier.height(16.dp))
             Column(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start,
@@ -154,9 +161,6 @@ fun RegisterScreen(
                     )
                 }
 
-
-                // possivelmente pode ter um problema de recomposição de ui mesmo mudando os valores do
-                // passwordHas talvez não der um trigger para essa função de recomposição em que mude a UI
                 uiState.passwordHas.forEach {
                     if (!it.value) {
                         Row(
@@ -178,8 +182,8 @@ fun RegisterScreen(
                         }
                     }
                 }
-
             }
+//            Spacer(modifier = Modifier.height(16.dp))
             // confirmação de senha
             OutlinedTextField(
                 value = uiState.confirmationPassword,
@@ -213,13 +217,26 @@ fun RegisterScreen(
                         )
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation =
+                if (uiState.showConfirmationPassword)
+                    PasswordVisualTransformation('*')
+                else
+                    VisualTransformation.None
             )
-
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(R.string.passwords_must_be_identical),
+                    color = Error,
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
+//        Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = { /*TODO*/ },
-            modifier = Modifier.fillMaxWidth(0.8f),
+            modifier = Modifier.fillMaxWidth(0.9f),
             colors = ButtonDefaults.buttonColors(
                 Blue
             )
