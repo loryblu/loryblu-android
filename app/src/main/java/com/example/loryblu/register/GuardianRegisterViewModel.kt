@@ -24,7 +24,7 @@ data class GuardianRegisterUiState(
     val equalsPassword: Boolean? = null
 )
 
-class GuardianRegisterViewModel constructor() : ViewModel() {
+class GuardianRegisterViewModel : ViewModel() {
     // eu tenho uma duvida de usar isso com flow sera que
     // não estou gerando muitos ojetos e como o CG faz para eliminar esses objetos ?
     private val _uiState = MutableStateFlow(GuardianRegisterUiState())

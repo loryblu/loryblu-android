@@ -38,7 +38,7 @@ import com.example.loryblu.util.P_SMALL
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
-    viewModel: RegisterViewModel
+    viewModel: GuardianRegisterViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
@@ -256,5 +256,5 @@ fun RegisterScreen(
 @Composable
 @Preview
 fun PreviewRegisterScreen() {
-    RegisterScreen(viewModel = RegisterViewModel())
+    RegisterScreen(viewModel = GuardianRegisterViewModel())
 }
