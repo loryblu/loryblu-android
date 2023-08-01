@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-data class RegisterUiState(
+data class GuardianRegisterUiState(
     val name: String = "",
     val email: String = "",
     val password: String = "",
@@ -24,10 +24,10 @@ data class RegisterUiState(
     val verifiedPassword: Boolean = false
 )
 
-class RegisterViewModel constructor() : ViewModel() {
+class GuardianRegisterViewModel constructor() : ViewModel() {
     // eu tenho uma duvida de usar isso com flow sera que
-    // não estou gerando muitos ojetos e como o CG faz para eliminar esses objetos
-    private val _uiState = MutableStateFlow(RegisterUiState())
+    // não estou gerando muitos ojetos e como o CG faz para eliminar esses objetos ?
+    private val _uiState = MutableStateFlow(GuardianRegisterUiState())
     val uiState = _uiState
 
     fun passwordCheck(newPassword: String) {
