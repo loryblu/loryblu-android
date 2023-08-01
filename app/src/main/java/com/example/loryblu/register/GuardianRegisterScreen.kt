@@ -31,14 +31,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(
-    viewModel: RegisterViewModel
+fun GuardianRegisterScreen(
+    viewModel: GuardianRegisterViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
@@ -96,48 +97,25 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 //            Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
-                value = uiState.password,
-                onValueChange = { newPassword: String ->
-                    viewModel.updatePassword(newPassword = newPassword)
-                    viewModel.passwordCheck(newPassword = newPassword)
-                },
-                label = {
-                    Text(text = stringResource(R.string.password))
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_lock),
-                        contentDescription = stringResource(R.string.lock_icon)
-                    )
-                },
-                trailingIcon = {
-                    val painterIcon =
-                        if (uiState.showPassword)
-                            painterResource(id = R.drawable.ic_eye_close)
-                        else
-                            painterResource(id = R.drawable.ic_eye_open)
-
-                    val contentDescription =
-                        if (uiState.showPassword)
-                            stringResource(R.string.close_eye)
-                        else
-                            stringResource(R.string.open_eye)
-
-                    IconButton(onClick = { viewModel.togglePassword() }) {
-                        Icon(
-                            painter = painterIcon,
-                            contentDescription = contentDescription
-                        )
+            // password
+            // logica da minha tela
+            // use case/clean/clean code
+            LBPasswordTextField(
+                show = uiState.showPassword,
+                onValueChange = { it: String ->
+                    viewModel.run {
+                        updatePassword(it)
+                        passwordCheck(it)
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation =
-                if (uiState.showPassword)
-                    PasswordVisualTransformation('*')
-                else
-                VisualTransformation.None
-            )
+                onButtonClick = {
+                    viewModel.run {
+                        togglePassword()
+                    }
+                },
+                labelRes = R.string.password,
+                value = uiState.password
+                )
 //            Spacer(modifier = Modifier.height(16.dp))
             Column(
                 verticalArrangement = Arrangement.Top,
@@ -184,10 +162,24 @@ fun RegisterScreen(
                 }
             }
 //            Spacer(modifier = Modifier.height(16.dp))
-            // confirmação de senha
+            // confirmation password
+            LBPasswordTextField(
+                show = uiState.showConfirmationPassword,
+                onValueChange = { it: String ->
+                    viewModel.run {
+                        updateConfirmationPassword(it)
+                        viewModel.verifyConfirmationPassword(it)
+                    }
+                },
+                onButtonClick = { viewModel.toggleConfirmationPassword() },
+                labelRes = R.string.confirm_password,
+                value = uiState.confirmationPassword
+            )
             OutlinedTextField(
                 value = uiState.confirmationPassword,
-                onValueChange = viewModel::updateConfirmationPassword,
+                onValueChange = { it: String ->
+                    viewModel.updateConfirmationPassword(it)
+                },
                 label = {
                     Text(text = stringResource(R.string.confirm_password))
                 },
@@ -235,6 +227,7 @@ fun RegisterScreen(
                     )
                 }
             }
+
         }
 //        Spacer(modifier = Modifier.height(32.dp))
         Button(
@@ -248,8 +241,9 @@ fun RegisterScreen(
         }
     }
 }
+
 @Composable
 @Preview
 fun PreviewRegisterScreen() {
-    RegisterScreen(viewModel = RegisterViewModel())
+    GuardianRegisterScreen(viewModel = GuardianRegisterViewModel())
 }
