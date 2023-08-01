@@ -21,7 +21,7 @@ data class RegisterUiState(
         R.string.Numbers to false,
         R.string.SpecialCharacters to false
     ),
-    val verifiedPassword: Boolean = false
+    val equalsPassword: Boolean? = null
 )
 
 class RegisterViewModel constructor() : ViewModel() {
@@ -47,7 +47,7 @@ class RegisterViewModel constructor() : ViewModel() {
     fun verifyConfirmationPassword(newConfirmationPassword: String) {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(verifiedPassword = (newConfirmationPassword == _uiState.value.password))
+                it.copy(equalsPassword = (newConfirmationPassword == _uiState.value.password))
             }
         }
     }

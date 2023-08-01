@@ -224,13 +224,16 @@ fun RegisterScreen(
                 else
                     VisualTransformation.None
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.passwords_must_be_identical),
-                    color = Error,
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.fillMaxWidth()
-                )
+
+            if (uiState.equalsPassword == false) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(R.string.passwords_must_be_identical),
+                        color = Error,
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
 //        Spacer(modifier = Modifier.height(32.dp))
