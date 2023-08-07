@@ -92,7 +92,7 @@ fun ForgotPasswordScreen(
         // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
 
 
-        viewModel.idEmailProblem(uiState.emailState)?.run {
+        viewModel.idEmailProblem()?.run {
                 Text(
                     text = stringResource(id = this@run),
                     style = MaterialTheme.typography.labelMedium,
