@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -34,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.DarkBlue
 import com.example.loryblu.ui.theme.Error
@@ -53,20 +53,10 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(P_SMALL)
     ) {
-        Spacer(modifier = Modifier.height(64.dp))
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = stringResource(R.string.loryblu_logo),
-            modifier = Modifier
-                .width(187.dp)
-                .height(47.dp)
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = stringResource(R.string.login),
-            style = MaterialTheme.typography.titleLarge
-        )
-        Spacer(modifier = Modifier.height(32.dp))
+        LBTitle(textRes = R.string.login)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         OutlinedTextField(
             value = uiState.email,
             onValueChange = { it: String ->

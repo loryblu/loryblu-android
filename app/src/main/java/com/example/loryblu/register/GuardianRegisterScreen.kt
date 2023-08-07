@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -47,6 +48,8 @@ fun GuardianRegisterScreen(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         LBTitle(textRes = R.string.guardian_registration)
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

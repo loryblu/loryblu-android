@@ -1,6 +1,5 @@
 package com.example.loryblu.createpassword
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
@@ -49,19 +49,7 @@ fun CreatePasswordScreen(
     ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = stringResource(R.string.loryblu_logo),
-            modifier = Modifier
-                .width(187.dp)
-                .height(47.dp)
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Text(text = "Create a new password", style = MaterialTheme.typography.titleLarge)
+        LBTitle(textRes = R.string.create_a_new_password)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -112,30 +100,92 @@ fun CreatePasswordScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-    // confirmation Password
-    OutlinedTextField(
-        value = uiState.confirmationPassword,
-        onValueChange = { newConfirmationPassword: String ->
-            viewModel.run {
-                updateConfirmationPassword(newConfirmationPassword)
-                verifyConfirmationPassword(newConfirmationPassword)
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .padding(
+                    P_SMALL
+                )
+                .fillMaxWidth()
+        ) {
+            var counter = true
+            for (element in uiState.passwordHas.entries) {
+                counter = element.value and counter
             }
-        },
-        label = {
-            Text(text = stringResource(R.string.confirm_password))
-        },
-        leadingIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_lock),
-                contentDescription = stringResource(R.string.lock_icon)
-            )
-        },
-        trailingIcon = {
-            val painterIcon =
-                if (uiState.showConfirmationPassword)
-                    painterResource(id = R.drawable.ic_eye_close)
-                else
-                    painterResource(id = R.drawable.ic_eye_open)
+
+            // test if the counter is true and this means that every field has the requirement
+            if (counter.not()) {
+                Text(
+                    stringResource(R.string.the_password_must_be),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                uiState.passwordHas.forEach {
+                    if (!it.value) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.padding(5.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_close),
+                                contentDescription = null,
+                                tint = Error
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = stringResource(id = it.key),
+                                color = Error,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                    } else {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.padding(5.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_check),
+                                contentDescription = null,
+                                tint = Color.Black
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = stringResource(id = it.key),
+                                color = Color.Black,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                    }
+                }
+            }
+            }
+
+
+        OutlinedTextField(
+            value = uiState.confirmationPassword,
+            onValueChange = { newConfirmationPassword: String ->
+                viewModel.run {
+                    updateConfirmationPassword(newConfirmationPassword)
+                    verifyConfirmationPassword(newConfirmationPassword)
+                }
+            },
+            label = {
+                Text(text = stringResource(R.string.confirm_password))
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_lock),
+                    contentDescription = stringResource(R.string.lock_icon)
+                )
+            },
+            trailingIcon = {
+                val painterIcon =
+                    if (uiState.showConfirmationPassword)
+                        painterResource(id = R.drawable.ic_eye_close)
+                    else
+                        painterResource(id = R.drawable.ic_eye_open)
 
                 val contentDescription =
                     if (uiState.showConfirmationPassword)

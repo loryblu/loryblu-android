@@ -1,6 +1,5 @@
 package com.example.loryblu.forgotpassword
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_MEDIUM
@@ -46,22 +45,7 @@ fun ForgotPasswordScreen(
              .fillMaxSize()
     ) {
 
-        Spacer(modifier =Modifier.height(100.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = stringResource(R.string.loryblu_logo),
-            modifier = Modifier
-                .width(187.dp)
-                .height(47.dp)
-        )
-
-        Spacer(modifier = Modifier.height(P_MEDIUM))
-
-        Text(
-            text = stringResource(R.string.forgot_password),
-            style = MaterialTheme.typography.titleLarge
-        )
+       LBTitle(textRes = R.string.forgot_password)
 
         Spacer(modifier = Modifier.height(24.dp))
 

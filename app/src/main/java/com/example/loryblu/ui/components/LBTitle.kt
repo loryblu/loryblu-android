@@ -23,6 +23,9 @@ import com.example.loryblu.R
 fun LBTitle(
     @StringRes textRes: Int
 ) {
+    /**
+     * Composable that creates logo and title
+     */
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -45,8 +48,6 @@ fun LBTitle(
             text = stringResource(id = textRes),
             style = MaterialTheme.typography.titleLarge
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 
 }
