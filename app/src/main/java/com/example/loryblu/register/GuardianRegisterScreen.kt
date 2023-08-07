@@ -128,7 +128,7 @@ fun GuardianRegisterScreen(
                 if (uiState.showPassword)
                     PasswordVisualTransformation('*')
                 else
-                VisualTransformation.None
+                    VisualTransformation.None
             )
 //            Spacer(modifier = Modifier.height(16.dp))
             Column(
@@ -266,6 +266,7 @@ fun GuardianRegisterScreen(
         }
     }
 }
+
 @Composable
 @Preview
 fun PreviewRegisterScreen() {

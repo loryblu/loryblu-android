@@ -73,9 +73,8 @@ fun ForgotPasswordScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
+
         // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
-
-
         viewModel.idEmailProblem()?.run {
                 Text(
                     text = stringResource(id = this@run),
@@ -83,13 +82,14 @@ fun ForgotPasswordScreen(
                     color = Error
                 )
             } ?: run {
+                // TODO
                 // fazer uma animação de carregamento
             }
 
         Spacer(modifier = Modifier.height(P_MEDIUM))
 
         Button(
-            onClick = {},
+            onClick = {/*TODO*/},
             modifier = Modifier.fillMaxWidth(0.9f),
             colors = ButtonDefaults.buttonColors(containerColor = Blue),
             shape = RoundedCornerShape(10.dp)

@@ -43,7 +43,7 @@ class LoginViewModel constructor(
                     it.copy(emailProblem = EmailProblem.NONE)
                 }
             }
-            // aqui eu preciso achar a api para consultar e ver se o email é existente no sistema
+            // TODO aqui eu preciso achar a api para consultar e ver se o email é existente no sistema
         }
     }
     fun updateEmail(newEmail: String) {

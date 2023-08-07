@@ -1,5 +1,6 @@
 package com.example.loryblu.createpassword
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,9 +28,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
@@ -221,9 +224,10 @@ fun CreatePasswordScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        // TODO fixed this text
         Text(
             text = stringResource(R.string.warning_about_change_the_password),
-            fontStyle = MaterialTheme.typography.labelMedium.fontStyle
+            fontStyle = MaterialTheme.typography.labelSmall.fontStyle
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -243,6 +247,20 @@ fun CreatePasswordScreen(
                 color = Color.White
             )
         }
-
+        // TODO investigate this bug in LBPass
+        Log.e("passwordTextField", "update")
+        LBPasswordTextField(
+            uiState = uiState,
+            onValueChange = { viewModel.updatePassword(it) },
+            onButtonClick = { viewModel.togglePassword() },
+            labelRes = R.string.password,
+            value = uiState.password
+        )
     }
+}
+
+@Preview
+@Composable
+fun PreviewCreatePasswordScreen() {
+    CreatePasswordScreen(viewModel = CreatePasswordViewModel())
 }
