@@ -58,9 +58,9 @@ class LoginViewModel constructor(
         }
     }
 
-    fun updateIsSaved(newState: Boolean) {
+    fun toggleIsLoginSaved() {
         _uiState.update {
-            it.copy(isLoginSaved = newState)
+            it.copy(isLoginSaved = it.isLoginSaved.not())
         }
     }
     fun IdEmailProblem(): Int {

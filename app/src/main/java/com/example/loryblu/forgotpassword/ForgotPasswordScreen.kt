@@ -89,8 +89,10 @@ fun ForgotPasswordScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
-        // se o id do problema for nul isso siginifica que esta carregando a procura de erros no e-mail
-            viewModel.IdEmailProblem(uiState.emailState)?.run {
+        // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
+
+
+        viewModel.idEmailProblem(uiState.emailState)?.run {
                 Text(
                     text = stringResource(id = this@run),
                     style = MaterialTheme.typography.labelMedium,

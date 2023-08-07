@@ -1,12 +1,10 @@
 package com.example.loryblu.register
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -24,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,13 +30,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(
+fun GuardianRegisterScreen(
     viewModel: GuardianRegisterViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -46,19 +46,8 @@ fun RegisterScreen(
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-//        Spacer(modifier = Modifier.height(100.dp))
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = stringResource(R.string.loryblu_logo),
-            modifier = Modifier
-                .width(187.dp)
-                .height(47.dp)
-        )
-//        Spacer(modifier = Modifier.padding(32.dp))
-        Text(
-            text = stringResource(R.string.guardian_registration),
-            style = MaterialTheme.typography.titleLarge
-        )
+        LBTitle(textRes = R.string.guardian_registration)
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
@@ -180,6 +169,24 @@ fun RegisterScreen(
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
+                    } else {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.padding(5.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_check),
+                                contentDescription = null,
+                                tint = Color.Black
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = stringResource(id = it.key),
+                                color = Color.Black,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
                     }
                 }
             }
@@ -249,12 +256,15 @@ fun RegisterScreen(
                 Blue
             )
         ) {
-            Text(text = stringResource(R.string.next))
+            Text(
+                text = stringResource(R.string.next),
+                color = Color.White
+            )
         }
     }
 }
 @Composable
 @Preview
 fun PreviewRegisterScreen() {
-    RegisterScreen(viewModel = GuardianRegisterViewModel())
+    GuardianRegisterScreen(viewModel = GuardianRegisterViewModel())
 }

@@ -27,6 +27,7 @@ class ForgotPasswordViewModel constructor() : ViewModel() {
                     it.copy(emailState = EmailState.EMPTY)
                 }
             }
+            // TODO
 //             procurar o email na api se não encontrar precisa mudar o state para not found
 //             o plano é aparecer uma menssagem de carregamento quando voce colocar o email porque
 //             vai ser preciso mandar uma requisição para o back-end para ver ser o e-mail existe
@@ -39,7 +40,10 @@ class ForgotPasswordViewModel constructor() : ViewModel() {
 
     }
 
-    fun IdEmailProblem(emailState: EmailState): Int? {
+    /**
+     * Verified if the e-mail has some problem, while search for that on e-mail.
+     */
+    fun idEmailProblem(emailState: EmailState): Int? {
         val state = when (_uiState.value.emailState) {
             EmailState.NOT_FOUND -> R.string.email_not_found
             EmailState.SEND -> R.string.email_send

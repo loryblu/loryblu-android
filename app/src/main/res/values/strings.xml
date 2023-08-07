@@ -37,4 +37,6 @@
     <string name="email_not_found">*E-mail not found</string>
     <string name="email_send">E-mail successfully sent</string>
     <string name="passwords_must_be_identical">*Passwords must be identical</string>
+    <string name="warning_about_change_the_password">You will be disconnected from all devices and will need to log in with your new password</string>
+    <string name="reset_your_password_here">Reset your password here</string>
 </resources>

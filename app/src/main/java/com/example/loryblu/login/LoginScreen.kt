@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -148,20 +148,14 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(P_MEDIUM)
         ) {
-            Switch(
-                checked = uiState.isLoginSaved,
-                onCheckedChange = viewModel::updateIsSaved,
-                modifier = Modifier.weight(1f),
-
-            )
-            Spacer(modifier = Modifier.weight(0.5f))
+            Checkbox(checked = uiState.isLoginSaved, onCheckedChange = { viewModel.toggleIsLoginSaved() })
+            Spacer(modifier = Modifier.weight(2f))
             Text(
                 text = stringResource(R.string.remember),
                 color = Color.Black,
                 modifier = Modifier.weight(2f),
                 maxLines = 1
             )
-            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(viewModel.IdEmailProblem()),
                 modifier = Modifier.weight(2f),
