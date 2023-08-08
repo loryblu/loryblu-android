@@ -27,7 +27,8 @@ fun LBPasswordTextField(
     labelRes: Int,
     value: String
 ) {
-    Log.e("textfield", "insideFucntion${uiState.showPassword}")
+    var trigger = false
+    Log.e("button", "insideFucntion ${uiState.showPassword}")
     val visualTransformation =
         if (uiState.showPassword)
             VisualTransformation.None
@@ -61,7 +62,11 @@ fun LBPasswordTextField(
         leadingIcon = {
             Log.e("Button", "button clicked")
             IconButton(onClick = {
+                // o problema é que mesmo clicando no botão ele não chama essa função então tem errado
                 onButtonClick()
+                trigger = true
+                Log.e("Button", "trigger = $trigger")
+                // essa parte do codigo nunca é alcançada ;-;
             }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_lock),

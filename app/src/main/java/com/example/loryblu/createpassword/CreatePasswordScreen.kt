@@ -252,6 +252,7 @@ fun CreatePasswordScreen(
         LBPasswordTextField(
             uiState = uiState,
             onValueChange = { viewModel.updatePassword(it) },
+            // TODO there is some problem here is not possible to call this fucntion inside the text field
             onButtonClick = { viewModel.togglePassword() },
             labelRes = R.string.password,
             value = uiState.password
