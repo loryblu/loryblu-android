@@ -34,7 +34,8 @@ import com.example.loryblu.util.P_SMALL
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
-    viewModel: ForgotPasswordViewModel
+    viewModel: ForgotPasswordViewModel,
+    navigateToNextScreen: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Column(
@@ -89,7 +90,10 @@ fun ForgotPasswordScreen(
         Spacer(modifier = Modifier.height(P_MEDIUM))
 
         Button(
-            onClick = {/*TODO*/},
+            // aqui o usuário vai clicar no botão para fazer a navegação caso ele não consiga navegar é necessário dizer o porque ele não conseguiu navegar
+            onClick = {
+                viewModel.idEmailProblem() ?: navigateToNextScreen()
+            },
             modifier = Modifier.fillMaxWidth(0.9f),
             colors = ButtonDefaults.buttonColors(containerColor = Blue),
             shape = RoundedCornerShape(10.dp)
@@ -102,5 +106,5 @@ fun ForgotPasswordScreen(
 @Composable
 @Preview
 fun PreviewForgotScreen() {
-    ForgotPasswordScreen(viewModel = ForgotPasswordViewModel())
+    ForgotPasswordScreen(viewModel = ForgotPasswordViewModel(), navigateToNextScreen = {})
 }

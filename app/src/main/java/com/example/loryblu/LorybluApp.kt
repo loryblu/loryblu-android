@@ -57,7 +57,12 @@ fun LorybluApp(
         }
 
         composable(route = LorybluApp.FORGOT_PASSWORD.name) {
-            ForgotPasswordScreen(viewModel = ForgotPasswordViewModel())
+            ForgotPasswordScreen(
+                viewModel = ForgotPasswordViewModel(),
+                navigateToNextScreen = {
+                    navController.navigate(route = LorybluApp.CREATE_PASSWORD.name)
+                }
+            )
         }
 
         composable(route = LorybluApp.CREATE_PASSWORD.name) {
