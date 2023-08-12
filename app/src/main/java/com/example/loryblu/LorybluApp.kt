@@ -41,7 +41,7 @@ fun LorybluApp(
     
     NavHost(
         navController = navController,
-        startDestination = LorybluApp.LOGIN.name
+        startDestination = LorybluApp.FORGOT_PASSWORD.name
     ) {
         composable(route = LorybluApp.LOGIN.name) {
             LoginScreen(viewModel = LoginViewModel())

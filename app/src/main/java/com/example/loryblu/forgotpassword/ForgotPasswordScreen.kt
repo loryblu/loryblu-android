@@ -1,5 +1,6 @@
 package com.example.loryblu.forgotpassword
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -89,10 +90,14 @@ fun ForgotPasswordScreen(
 
         Spacer(modifier = Modifier.height(P_MEDIUM))
 
+        Log.e("see", "the app arrive in the forgot password screen")
         Button(
-            // aqui o usuário vai clicar no botão para fazer a navegação caso ele não consiga navegar é necessário dizer o porque ele não conseguiu navegar
+            // aqui o usuário vai clicar no botão para fazer a navegação caso ele não consiga navegar
+            // é necessário dizer o porque ele não conseguiu navegar
             onClick = {
-                viewModel.idEmailProblem() ?: navigateToNextScreen()
+                if (uiState.emailState == EmailState.NONE) {
+                    navigateToNextScreen()
+                }
             },
             modifier = Modifier.fillMaxWidth(0.9f),
             colors = ButtonDefaults.buttonColors(containerColor = Blue),

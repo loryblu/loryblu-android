@@ -35,7 +35,11 @@ class ForgotPasswordViewModel constructor() : ViewModel() {
 //             mostrar se o email existe e foi enviado com suceeso ou não existe
 //             alem disso ele pode mostrar um erro de conexão com a internet porque sei internet é
 //             um problema diferente de o email não existe
-
+            else -> {
+                _uiState.update {
+                    it.copy(emailState = EmailState.NONE)
+                }
+            }
         }
 
     }
