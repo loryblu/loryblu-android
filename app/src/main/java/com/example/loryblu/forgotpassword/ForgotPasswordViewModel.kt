@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 
 data class ForgotPasswordUiState(
     val email: String = "",
-    val emailState: EmailState = EmailState.NONE
+    val emailState: EmailState = EmailState.LOADING
 )
 
 class ForgotPasswordViewModel constructor() : ViewModel() {
