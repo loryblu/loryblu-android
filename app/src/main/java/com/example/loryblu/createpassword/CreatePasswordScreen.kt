@@ -1,37 +1,34 @@
 package com.example.loryblu.createpassword
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.loryblu.R
-import com.example.loryblu.ui.components.LBPasswordTextField
-import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Blue
-import com.example.loryblu.ui.theme.Error
-import com.example.loryblu.util.P_SMALL
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.Spacer
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.width
+ import androidx.compose.material3.ExperimentalMaterial3Api
+ import androidx.compose.material3.Icon
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.res.painterResource
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import com.example.loryblu.R
+ import com.example.loryblu.ui.components.LBButton
+ import com.example.loryblu.ui.components.LBPasswordTextField
+ import com.example.loryblu.ui.components.LBTitle
+ import com.example.loryblu.ui.theme.Error
+ import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -164,26 +161,16 @@ fun CreatePasswordScreen(
         // TODO fixed this text
         Text(
             text = stringResource(R.string.warning_about_change_the_password),
-            fontStyle = MaterialTheme.typography.labelSmall.fontStyle
+            style = MaterialTheme.typography.labelSmall
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // TODO unify the buttons style in one single composable
-
-        Button(
+        LBButton(
+            textRes = R.string.reset_password,
             onClick = { /*TODO*/ },
-            modifier = Modifier.fillMaxWidth(0.9f),
-            colors = ButtonDefaults.buttonColors(
-                Blue
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.reset_password),
-                color = Color.White
-            )
-        }
+            modifier = Modifier
+        )
     }
 }
 

@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,9 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
 
@@ -192,18 +190,13 @@ fun GuardianRegisterScreen(
             }
         }
 //        Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.fillMaxWidth(0.9f),
-            colors = ButtonDefaults.buttonColors(
-                Blue
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.next),
-                color = Color.White
-            )
-        }
+        LBButton(
+            textRes = R.string.next,
+            onClick = {
+
+            },
+            modifier = Modifier
+        )
     }
 }
 

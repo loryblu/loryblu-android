@@ -1,6 +1,5 @@
 package com.example.loryblu.forgotpassword
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_MEDIUM
 import com.example.loryblu.util.P_SMALL
@@ -42,12 +38,12 @@ fun ForgotPasswordScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-         modifier = Modifier
-             .padding(P_SMALL)
-             .fillMaxSize()
+        modifier = Modifier
+            .padding(P_SMALL)
+            .fillMaxSize()
     ) {
 
-       LBTitle(textRes = R.string.forgot_password)
+        LBTitle(textRes = R.string.forgot_password)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -78,33 +74,27 @@ fun ForgotPasswordScreen(
 
         // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
         viewModel.idEmailProblem()?.run {
-                Text(
-                    text = stringResource(id = this@run),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Error
-                )
-            } ?: run {
-                // TODO
-                // fazer uma animação de carregamento
-            }
+            Text(
+                text = stringResource(id = this@run),
+                style = MaterialTheme.typography.labelMedium,
+                color = Error
+            )
+        } ?: run {
+            // TODO
+            // fazer uma animação de carregamento
+        }
 
         Spacer(modifier = Modifier.height(P_MEDIUM))
 
-        Log.e("see", "the app arrive in the forgot password screen")
-        Button(
-            // aqui o usuário vai clicar no botão para fazer a navegação caso ele não consiga navegar
-            // é necessário dizer o porque ele não conseguiu navegar
+        LBButton(
+            textRes = R.string.send,
             onClick = {
                 if (uiState.emailState == EmailState.NONE) {
                     navigateToNextScreen()
+
                 }
-            },
-            modifier = Modifier.fillMaxWidth(0.9f),
-            colors = ButtonDefaults.buttonColors(containerColor = Blue),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(text = stringResource(R.string.send))
-        }
+            }, modifier = Modifier
+        )
     }
 }
 
