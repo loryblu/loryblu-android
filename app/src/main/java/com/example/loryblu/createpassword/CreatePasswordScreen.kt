@@ -1,42 +1,34 @@
 package com.example.loryblu.createpassword
 
-import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.loryblu.R
-import com.example.loryblu.ui.components.LBPasswordTextField
-import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Blue
-import com.example.loryblu.ui.theme.Error
-import com.example.loryblu.util.P_SMALL
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.Spacer
+ import androidx.compose.foundation.layout.fillMaxSize
+ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.width
+ import androidx.compose.material3.ExperimentalMaterial3Api
+ import androidx.compose.material3.Icon
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.res.painterResource
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import com.example.loryblu.R
+ import com.example.loryblu.ui.components.LBButton
+ import com.example.loryblu.ui.components.LBPasswordTextField
+ import com.example.loryblu.ui.components.LBTitle
+ import com.example.loryblu.ui.theme.Error
+ import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,44 +55,18 @@ fun CreatePasswordScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        OutlinedTextField(
-            value = uiState.password,
+        // password
+        LBPasswordTextField(
             onValueChange = { newPassword: String ->
                 viewModel.run {
                     updatePassword(newPassword = newPassword)
                     passwordCheck(newPassword = newPassword)
                 }
             },
-            label = {
-                Text(text = stringResource(R.string.password))
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_lock),
-                    contentDescription = stringResource(R.string.lock_icon)
-                )
-            },
-            trailingIcon = {
-                val painterIcon =
-                    if (uiState.showPassword)
-                        painterResource(id = R.drawable.ic_eye_close)
-                    else
-                        painterResource(id = R.drawable.ic_eye_open)
-
-                val contentDescription =
-                    if (uiState.showPassword)
-                        stringResource(R.string.close_eye)
-                    else
-                        stringResource(R.string.open_eye)
-
-                IconButton(onClick = { viewModel.togglePassword() }) {
-                    Icon(
-                        painter = painterIcon,
-                        contentDescription = contentDescription
-                    )
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
+            onButtonClick = { viewModel.togglePassword() },
+            labelRes = R.string.password,
+            value = uiState.password,
+            show = uiState.showPassword
         )
 
         Column(
@@ -163,52 +129,20 @@ fun CreatePasswordScreen(
                     }
                 }
             }
-            }
+        }
 
 
-        OutlinedTextField(
-            value = uiState.confirmationPassword,
+        LBPasswordTextField(
             onValueChange = { newConfirmationPassword: String ->
                 viewModel.run {
                     updateConfirmationPassword(newConfirmationPassword)
                     verifyConfirmationPassword(newConfirmationPassword)
                 }
             },
-            label = {
-                Text(text = stringResource(R.string.confirm_password))
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_lock),
-                    contentDescription = stringResource(R.string.lock_icon)
-                )
-            },
-            trailingIcon = {
-                val painterIcon =
-                    if (uiState.showConfirmationPassword)
-                        painterResource(id = R.drawable.ic_eye_close)
-                    else
-                        painterResource(id = R.drawable.ic_eye_open)
-
-                val contentDescription =
-                    if (uiState.showConfirmationPassword)
-                        stringResource(R.string.close_eye)
-                    else
-                        stringResource(R.string.open_eye)
-
-                IconButton(onClick = { viewModel.toggleConfirmationPassword() }) {
-                    Icon(
-                        painter = painterIcon,
-                        contentDescription = contentDescription
-                    )
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation =
-            if (uiState.showConfirmationPassword)
-                PasswordVisualTransformation('*')
-            else
-                VisualTransformation.None
+            onButtonClick = { viewModel.toggleConfirmationPassword() },
+            labelRes = R.string.confirm_password,
+            value = uiState.confirmationPassword,
+            show = uiState.showConfirmationPassword
         )
 
         if (uiState.equalsPassword == false) {
@@ -227,35 +161,15 @@ fun CreatePasswordScreen(
         // TODO fixed this text
         Text(
             text = stringResource(R.string.warning_about_change_the_password),
-            fontStyle = MaterialTheme.typography.labelSmall.fontStyle
+            style = MaterialTheme.typography.labelSmall
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // TODO unify the buttons style in one single composable
-
-        Button(
+        LBButton(
+            textRes = R.string.reset_password,
             onClick = { /*TODO*/ },
-            modifier = Modifier.fillMaxWidth(0.9f),
-            colors = ButtonDefaults.buttonColors(
-                Blue
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.reset_password),
-                color = Color.White
-            )
-        }
-        // TODO investigate this bug in LBPass
-        Log.e("passwordTextField", "update")
-        LBPasswordTextField(
-            uiState = uiState,
-            onValueChange = { viewModel.updatePassword(it) },
-            // TODO there is some problem here is not possible to call this fucntion inside the text field
-            onButtonClick = { viewModel.togglePassword() },
-            labelRes = R.string.password,
-            value = uiState.password
+            modifier = Modifier
         )
     }
 }

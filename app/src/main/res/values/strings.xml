@@ -17,6 +17,7 @@
     <string name="required_field">*Required field</string>
     <string name="empty_email">*Not found e-mail</string>
     <string name="empty_string"></string>
+    <string name="kid_register">Register Kid</string>
     <string name="guardian_registration">Guardian Registration</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="register_now">Register now</string>
@@ -26,11 +27,13 @@
     <string name="lock_icon">lock icon</string>
     <string name="confirm_password">Confirm password</string>
     <string name="next">NEXT</string>
+    
     <string name="the_password_must_be">The password must be:</string>
     <string name="MoreThanEight">Has more than eight characters</string>
     <string name="Lowercase">Has lowercase letters</string>
     <string name="Uppercase">Has uppercase letters </string>
     <string name="Numbers">Has Numbers</string>
+    
     <string name="SpecialCharacters">Has especial characters, like: ! @ # $ % &amp; *</string>
     <string name="reset_password">Reset your password here</string>
     <string name="send">SEND</string>

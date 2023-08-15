@@ -8,5 +8,5 @@ enum class EmailProblem {
     // inexistente
     ABSENT,
     // nemhum
-    NONE
+    NONE,
 }

@@ -9,9 +9,9 @@ import kotlinx.coroutines.launch
 
 data class LoginUiState(
     val email: String = "",
-    val emailProblem: EmailProblem = EmailProblem.NONE,
+    val emailProblem: EmailProblem = EmailProblem.EMPTY,
     val password: String = "",
-    val passwordProblem: PasswordProblem = PasswordProblem.NONE,
+    val passwordProblem: PasswordProblem = PasswordProblem.EMPTY,
     // serve para salvar o estado para a proxima visita
     val isLoginSaved: Boolean = true,
     val enterTrigger: Boolean = false,
@@ -78,6 +78,17 @@ class LoginViewModel constructor(
             _uiState.update {
                 it.copy(showPassword = _uiState.value.showPassword.not())
             }
+        }
+    }
+
+    fun verifyPassword(newPassword: String) {
+        when {
+            newPassword.trim() == "" -> {
+                _uiState.update {
+                    it.copy(passwordProblem = PasswordProblem.EMPTY)
+                }
+            }
+            // procura no banco de dados pelas informações de login da pessoa
         }
     }
 }

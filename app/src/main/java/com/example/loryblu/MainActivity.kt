@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
 //                LoginScreen(viewModel = LoginViewModel())
 //                ForgotPasswordScreen(viewModel = ForgotPasswordViewModel())
                 CreatePasswordScreen(viewModel = CreatePasswordViewModel())
+//                LorybluApp()
             }
         }
     }

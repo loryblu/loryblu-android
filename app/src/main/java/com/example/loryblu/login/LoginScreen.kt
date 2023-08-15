@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -26,18 +23,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBButton
+import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.DarkBlue
 import com.example.loryblu.ui.theme.Error
-import com.example.loryblu.ui.theme.White
 import com.example.loryblu.util.P_LARGE
 import com.example.loryblu.util.P_MEDIUM
 import com.example.loryblu.util.P_SMALL
@@ -80,51 +75,15 @@ fun LoginScreen(
                 .height(P_MEDIUM)
         )
         // tem o problema que caso eu coloque os modifier que estava no figma ele mostra o texto enquando estou digitando
+        LBPasswordTextField(
+            onValueChange = { newPassword: String  -> viewModel.run {
+                updatePassword(newPassword)
 
-        OutlinedTextField(
+            }},
+            onButtonClick = { /*TODO*/ },
+            labelRes = R.string.password,
             value = uiState.password,
-            onValueChange = viewModel::updatePassword,
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_lock),
-                    contentDescription = stringResource(R.string.lock_icon)
-                )
-            },
-            label = { Text(text = stringResource(id = R.string.password)) },
-            textStyle = MaterialTheme.typography.bodyLarge,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            trailingIcon = {
-
-                val painterIcon =
-                    if (uiState.showPassword)
-                        painterResource(id = R.drawable.ic_eye_close)
-                    else
-                        painterResource(id = R.drawable.ic_eye_open)
-
-                val contentDescription =
-                    if (uiState.showPassword)
-                        stringResource(R.string.close_eye)
-                    else
-                        stringResource(R.string.open_eye)
-
-                IconButton(
-                    onClick = {
-                        viewModel.toggleVisibility()
-                    }
-                ) {
-                    Icon(
-                        painter = painterIcon,
-                        contentDescription = contentDescription
-                    )
-
-                }
-            },
-            visualTransformation =
-            if (uiState.showPassword)
-                PasswordVisualTransformation('*')
-            else
-                VisualTransformation.None
+            show = uiState.showPassword
         )
         Spacer(
             modifier = Modifier
@@ -154,19 +113,14 @@ fun LoginScreen(
                 style = MaterialTheme.typography.labelLarge
             )
         }
-        Button(
-            onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(Blue),
+        LBButton(
+            textRes = R.string.login,
+            onClick = { /*TODO*/ },
             modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.enter),
-                color = White,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-            )
-        }
+        )
+
         Spacer(modifier = Modifier.height(P_LARGE))
+
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.padding(horizontal = 4.dp),

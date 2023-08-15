@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -26,13 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
+import com.example.loryblu.ui.components.LBButton
+import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
 
@@ -88,48 +84,22 @@ fun GuardianRegisterScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 //            Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
-                value = uiState.password,
-                onValueChange = { newPassword: String ->
-                    viewModel.updatePassword(newPassword = newPassword)
-                    viewModel.passwordCheck(newPassword = newPassword)
-                },
-                label = {
-                    Text(text = stringResource(R.string.password))
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_lock),
-                        contentDescription = stringResource(R.string.lock_icon)
-                    )
-                },
-                trailingIcon = {
-                    val painterIcon =
-                        if (uiState.showPassword)
-                            painterResource(id = R.drawable.ic_eye_close)
-                        else
-                            painterResource(id = R.drawable.ic_eye_open)
 
-                    val contentDescription =
-                        if (uiState.showPassword)
-                            stringResource(R.string.close_eye)
-                        else
-                            stringResource(R.string.open_eye)
-
-                    IconButton(onClick = { viewModel.togglePassword() }) {
-                        Icon(
-                            painter = painterIcon,
-                            contentDescription = contentDescription
-                        )
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation =
-                if (uiState.showPassword)
-                    PasswordVisualTransformation('*')
-                else
-                    VisualTransformation.None
-            )
+            // Password
+           LBPasswordTextField(
+               onValueChange = { newPass: String ->
+                   viewModel.run {
+                       updatePassword(newPass)
+                       passwordCheck(newPass)
+                   }
+               },
+               onButtonClick = {
+                               viewModel.togglePassword()
+               },
+               labelRes = R.string.password,
+               value = uiState.password,
+               show = uiState.showPassword
+           )
 //            Spacer(modifier = Modifier.height(16.dp))
             Column(
                 verticalArrangement = Arrangement.Top,
@@ -194,51 +164,19 @@ fun GuardianRegisterScreen(
                 }
             }
 //            Spacer(modifier = Modifier.height(16.dp))
-            // confirmação de senha
-            OutlinedTextField(
-                value = uiState.confirmationPassword,
-                onValueChange = { newConfirmationPassword: String ->
-                    viewModel.run {
-                        updateConfirmationPassword(newConfirmationPassword)
-                        verifyConfirmationPassword(newConfirmationPassword)
-                    }
-                },
-                label = {
-                    Text(text = stringResource(R.string.confirm_password))
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_lock),
-                        contentDescription = stringResource(R.string.lock_icon)
-                    )
-                },
-                trailingIcon = {
-                    val painterIcon =
-                        if (uiState.showConfirmationPassword)
-                            painterResource(id = R.drawable.ic_eye_close)
-                        else
-                            painterResource(id = R.drawable.ic_eye_open)
-
-                    val contentDescription =
-                        if (uiState.showConfirmationPassword)
-                            stringResource(R.string.close_eye)
-                        else
-                            stringResource(R.string.open_eye)
-
-                    IconButton(onClick = { viewModel.toggleConfirmationPassword() }) {
-                        Icon(
-                            painter = painterIcon,
-                            contentDescription = contentDescription
-                        )
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation =
-                if (uiState.showConfirmationPassword)
-                    PasswordVisualTransformation('*')
-                else
-                    VisualTransformation.None
-            )
+            // confirmation password
+           LBPasswordTextField(
+               onValueChange = { newPassConfir ->
+                   viewModel.run{
+                       updateConfirmationPassword(newPassConfir)
+                       verifyConfirmationPassword(newPassConfir)
+                   }
+               },
+               onButtonClick = { viewModel.toggleConfirmationPassword() },
+               labelRes = R.string.confirm_password,
+               value = uiState.confirmationPassword,
+               show = uiState.showConfirmationPassword
+           )
 
             if (uiState.equalsPassword == false) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -252,18 +190,13 @@ fun GuardianRegisterScreen(
             }
         }
 //        Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.fillMaxWidth(0.9f),
-            colors = ButtonDefaults.buttonColors(
-                Blue
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.next),
-                color = Color.White
-            )
-        }
+        LBButton(
+            textRes = R.string.next,
+            onClick = {
+
+            },
+            modifier = Modifier
+        )
     }
 }
 
