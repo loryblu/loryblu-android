@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.loryblu.login.LoginScreen
 import com.example.loryblu.login.LoginViewModel
+import com.example.loryblu.register.child.ChildRegisterScreen
 import com.example.loryblu.register.guardian.GuardianRegisterScreen
 import com.example.loryblu.register.guardian.GuardianRegisterViewModel
 
@@ -24,7 +25,12 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                 navController.navigate(Screen.RegisterGuardian.route)
             }
         )
-        registerGuardianRoute()
+        registerGuardianRoute(
+            navigateToChildRegister = {
+                navController.popBackStack()
+                navController.navigate(Screen.RegisterChild.route)
+            }
+        )
         registerChildRoute()
         createPasswordRoute()
         forgotPasswordRoute()
@@ -50,19 +56,24 @@ fun NavGraphBuilder.loginRoute(
     }
 }
 
-fun NavGraphBuilder.registerGuardianRoute() {
+fun NavGraphBuilder.registerGuardianRoute(
+    navigateToChildRegister: () -> Unit,
+) {
     composable(route = Screen.RegisterGuardian.route) {
         val viewModel: GuardianRegisterViewModel = viewModel()
 
         GuardianRegisterScreen(
             viewModel = viewModel,
+            navigateToChildRegister = navigateToChildRegister
         )
     }
 }
 
 fun NavGraphBuilder.registerChildRoute() {
     composable(route = Screen.RegisterChild.route) {
+        ChildRegisterScreen(
 
+        )
     }
 }
 

@@ -31,11 +31,13 @@ import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuardianRegisterScreen(
-    viewModel: GuardianRegisterViewModel
+    viewModel: GuardianRegisterViewModel,
+    navigateToChildRegister: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
@@ -193,7 +195,7 @@ fun GuardianRegisterScreen(
         LBButton(
             textRes = R.string.next,
             onClick = {
-
+                navigateToChildRegister()
             },
             modifier = Modifier
         )
@@ -203,5 +205,10 @@ fun GuardianRegisterScreen(
 @Composable
 @Preview
 fun PreviewRegisterScreen() {
-    GuardianRegisterScreen(viewModel = GuardianRegisterViewModel())
+    GuardianRegisterScreen(
+        viewModel = GuardianRegisterViewModel(),
+        navigateToChildRegister = {
+
+        }
+        )
 }
