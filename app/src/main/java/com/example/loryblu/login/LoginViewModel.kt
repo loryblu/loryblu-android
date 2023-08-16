@@ -1,8 +1,10 @@
 package com.example.loryblu.login
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,6 +26,8 @@ class LoginViewModel constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState
 
+    var authenticated = mutableStateOf(false)
+        private set
 
     fun emailState(email: String) {
         val regex = Regex("(\\w)+[\\.|-]?(\\w)+@(\\w|-)+\\.((\\w){2,})(\\.([a-zA-z0-9])+)*$")
@@ -89,6 +93,14 @@ class LoginViewModel constructor(
                 }
             }
             // procura no banco de dados pelas informações de login da pessoa
+        }
+    }
+
+    fun loginWithEmailAndPassword() {
+        // TODO Lógica para verificar se está logado com a auth db
+        viewModelScope.launch {
+            delay(300)
+            authenticated.value = true
         }
     }
 }
