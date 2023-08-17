@@ -42,4 +42,5 @@
     <string name="warning_about_change_the_password">You will be disconnected from all devices and will need to log in with your new password</string>
     <string name="reset_your_password_here">Reset your password here</string>
     <string name="create_a_new_password">Create a new password</string>
+    <string name="password_is_empty">Password is empty</string>
 </resources>
