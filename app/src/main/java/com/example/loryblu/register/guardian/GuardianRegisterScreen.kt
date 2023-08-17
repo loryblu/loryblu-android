@@ -34,7 +34,6 @@ import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_SMALL
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,7 +102,7 @@ fun GuardianRegisterScreen(
                onButtonClick = {
                    passwordHidden = !passwordHidden
                },
-               labelRes = R.string.password,
+               labelRes = stringResource(id = R.string.password),
                value = uiState.password,
                hidden = passwordHidden
            )
@@ -180,7 +179,7 @@ fun GuardianRegisterScreen(
                    }
                },
                onButtonClick = { passwordHidden = !passwordHidden },
-               labelRes = R.string.confirm_password,
+               labelRes = stringResource(id = R.string.confirm_password),
                value = uiState.confirmationPassword,
                hidden = passwordHidden
            )

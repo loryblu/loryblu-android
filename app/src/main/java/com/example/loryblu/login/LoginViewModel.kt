@@ -66,14 +66,6 @@ class LoginViewModel constructor(
         }
     }
 
-    fun toggleVisibility() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showPassword = _uiState.value.showPassword.not())
-            }
-        }
-    }
-
     fun verifyPassword(newPassword: String) {
         when {
             newPassword.trim() == "" -> {
