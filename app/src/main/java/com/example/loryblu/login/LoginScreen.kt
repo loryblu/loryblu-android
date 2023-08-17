@@ -94,17 +94,15 @@ fun LoginScreen(
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.End,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(P_MEDIUM)
         ) {
             Checkbox(checked = uiState.isLoginSaved, onCheckedChange = { viewModel.toggleIsLoginSaved() })
-            Spacer(modifier = Modifier.weight(2f))
             Text(
                 text = stringResource(R.string.remember),
                 color = Color.Black,
-                modifier = Modifier.weight(2f),
                 maxLines = 1
             )
         }
@@ -159,7 +157,6 @@ fun LoginScreen(
                 contentDescription = stringResource(R.string.google_logo),
                 modifier = Modifier.weight(1f)
             )
-//            Spacer(modifier = Modifier.weight(1f))
             Image(
                 painter = painterResource(id = R.drawable.ic_facebook),
                 contentDescription = stringResource(R.string.facebook_logo),
