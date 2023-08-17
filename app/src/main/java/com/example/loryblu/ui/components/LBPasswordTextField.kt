@@ -25,7 +25,7 @@ import com.example.loryblu.R
 fun LBPasswordTextField(
     onValueChange: (String) -> Unit,
     onButtonClick: () -> Unit,
-    labelRes: Int,
+    labelRes: String,
     value: String,
     hidden: Boolean
 ) {
@@ -43,7 +43,7 @@ fun LBPasswordTextField(
         onValueChange = { onValueChange(it) },
         singleLine = true,
         label = {
-            Text(text = stringResource(labelRes))
+            Text(text = labelRes)
         },
         trailingIcon = {
             IconButton(onClick = { onButtonClick() }) {
