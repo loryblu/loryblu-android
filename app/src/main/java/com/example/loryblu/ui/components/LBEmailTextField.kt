@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.loryblu.R
-import com.example.loryblu.login.EmailInputValid
+import com.example.loryblu.util.EmailInputValid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
