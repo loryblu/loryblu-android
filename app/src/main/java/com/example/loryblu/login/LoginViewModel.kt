@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 
 data class LoginUiState(
     val email: String = "",
-    val emailProblem: EmailInputValid = EmailInputValid.Empty,
+    val emailState: EmailInputValid = EmailInputValid.Empty,
     val password: String = "",
-    val passwordProblem: PasswordProblem = PasswordProblem.EMPTY,
+    val passwordState: PasswordInputValid = PasswordInputValid.Empty,
     // serve para salvar o estado para a proxima visita
     val isLoginSaved: Boolean = true,
     val enterTrigger: Boolean = false,
@@ -33,17 +33,17 @@ class LoginViewModel constructor(
         when {
             email.isEmpty() -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailInputValid.Error(R.string.empty_email))
+                    it.copy(emailState = EmailInputValid.Error(R.string.empty_email))
                 }
             }
             email.isEmailValid().not() -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailInputValid.Error(R.string.invalid_e_mail))
+                    it.copy(emailState = EmailInputValid.Error(R.string.invalid_e_mail))
                 }
             }
             else -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailInputValid.Success)
+                    it.copy(emailState = EmailInputValid.Success)
                 }
             }
         }
@@ -66,14 +66,18 @@ class LoginViewModel constructor(
         }
     }
 
-    fun verifyPassword(newPassword: String) {
+    fun passwordState(newPassword: String) {
         when {
-            newPassword.trim() == "" -> {
+            newPassword.isEmpty() -> {
                 _uiState.update {
-                    it.copy(passwordProblem = PasswordProblem.EMPTY)
+                    it.copy(passwordState = PasswordInputValid.Error(R.string.password_is_empty))
                 }
             }
-            // procura no banco de dados pelas informações de login da pessoa
+            else -> {
+                _uiState.update {
+                    it.copy(passwordState = PasswordInputValid.Valid)
+                }
+            }
         }
     }
 

@@ -60,13 +60,13 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         LBEmailTextField(
-            onValueChange = { it: String ->
-                viewModel.updateEmail(it)
-                viewModel.emailState(email = it)
+            onValueChange = { email: String ->
+                viewModel.emailState(email = email)
+                viewModel.updateEmail(email)
             },
-            labelRes = stringResource(R.string.email),
+            labelRes = stringResource(id = R.string.email),
             value = uiState.email,
-            error = uiState.emailProblem,
+            error = uiState.emailState,
         )
 
         Spacer(
@@ -76,12 +76,14 @@ fun LoginScreen(
         )
 
         LBPasswordTextField(
-            onValueChange = { newPassword: String  -> viewModel.run {
-                updatePassword(newPassword)
+            onValueChange = { password: String  -> viewModel.run {
+                viewModel.passwordState(password)
+                updatePassword(password)
             }},
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.password),
             value = uiState.password,
+            error = uiState.passwordState,
             hidden = passwordHidden
         )
 
@@ -105,13 +107,6 @@ fun LoginScreen(
                 modifier = Modifier.weight(2f),
                 maxLines = 1
             )
-//            Text(
-//                text = stringResource(uiState.emailProblem),
-//                modifier = Modifier.weight(2f),
-//                maxLines = 1,
-//                color = Error,
-//                style = MaterialTheme.typography.labelLarge
-//            )
         }
         LBButton(
             textRes = R.string.login,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.loryblu.R
+import com.example.loryblu.login.EmailInputValid
+import com.example.loryblu.login.PasswordInputValid
 
 // TODO seek problems in this function
 /**
@@ -27,6 +30,7 @@ fun LBPasswordTextField(
     onButtonClick: () -> Unit,
     labelRes: String,
     value: String,
+    error: PasswordInputValid,
     hidden: Boolean
 ) {
     val visualTransformation =
@@ -58,6 +62,16 @@ fun LBPasswordTextField(
                 painter = painterResource(R.drawable.ic_lock),
                 contentDescription = stringResource(R.string.lock_icon)
             )
+        },
+        isError = error is PasswordInputValid.Error,
+        supportingText = {
+            if(error is PasswordInputValid.Error) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(error.messageId),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         },
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = visualTransformation,
