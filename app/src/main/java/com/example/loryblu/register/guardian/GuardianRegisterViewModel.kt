@@ -3,6 +3,7 @@ package com.example.loryblu.register.guardian
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
+import com.example.loryblu.login.PasswordInputValid
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -12,6 +13,7 @@ data class GuardianRegisterUiState(
     val email: String = "",
     val password: String = "",
     val confirmationPassword: String = "",
+    val passwordState: PasswordInputValid = PasswordInputValid.Empty,
     val showPassword: Boolean = true,
     val showConfirmationPassword: Boolean = true,
     val passwordHas: Map<Int, Boolean> = mapOf(

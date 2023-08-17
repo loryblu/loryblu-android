@@ -71,7 +71,8 @@ fun CreatePasswordScreen(
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.password),
             value = uiState.password,
-            hidden =  passwordHidden
+            error = uiState.passwordState,
+            hidden = passwordHidden,
         )
 
         Column(
@@ -147,6 +148,7 @@ fun CreatePasswordScreen(
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.confirm_password),
             value = uiState.confirmationPassword,
+            error = uiState.passwordState,
             hidden = passwordHidden
         )
 

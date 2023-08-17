@@ -104,6 +104,7 @@ fun GuardianRegisterScreen(
                },
                labelRes = stringResource(id = R.string.password),
                value = uiState.password,
+               error = uiState.passwordState,
                hidden = passwordHidden
            )
 //            Spacer(modifier = Modifier.height(16.dp))
@@ -181,7 +182,8 @@ fun GuardianRegisterScreen(
                onButtonClick = { passwordHidden = !passwordHidden },
                labelRes = stringResource(id = R.string.confirm_password),
                value = uiState.confirmationPassword,
-               hidden = passwordHidden
+               error = uiState.passwordState,
+               hidden = passwordHidden,
            )
 
             if (uiState.equalsPassword == false) {
