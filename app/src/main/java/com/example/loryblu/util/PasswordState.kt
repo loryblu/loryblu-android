@@ -1,4 +1,4 @@
-package com.example.loryblu.login
+package com.example.loryblu.util
 
 sealed class PasswordInputValid {
     object Valid: PasswordInputValid()
