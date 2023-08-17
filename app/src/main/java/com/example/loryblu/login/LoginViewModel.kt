@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 data class LoginUiState(
     val email: String = "",
-    val emailProblem: EmailProblem = EmailProblem.EMPTY,
+    val emailProblem: EmailInputValid = EmailInputValid.Empty,
     val password: String = "",
     val passwordProblem: PasswordProblem = PasswordProblem.EMPTY,
     // serve para salvar o estado para a proxima visita
@@ -30,24 +30,22 @@ class LoginViewModel constructor(
         private set
 
     fun emailState(email: String) {
-        val regex = Regex("(\\w)+[\\.|-]?(\\w)+@(\\w|-)+\\.((\\w){2,})(\\.([a-zA-z0-9])+)*$")
         when {
-            "" == email.trim() -> {
+            email.isEmpty() -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailProblem.EMPTY)
+                    it.copy(emailProblem = EmailInputValid.Error(R.string.empty_email))
                 }
             }
-            regex.containsMatchIn(email).not() -> {
+            email.isEmailValid().not() -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailProblem.INVALID)
+                    it.copy(emailProblem = EmailInputValid.Error(R.string.invalid_e_mail))
                 }
             }
             else -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailProblem.NONE)
+                    it.copy(emailProblem = EmailInputValid.Success)
                 }
             }
-            // TODO aqui eu preciso achar a api para consultar e ver se o email é existente no sistema
         }
     }
     fun updateEmail(newEmail: String) {
@@ -66,15 +64,6 @@ class LoginViewModel constructor(
         _uiState.update {
             it.copy(isLoginSaved = it.isLoginSaved.not())
         }
-    }
-    fun idEmailProblem(): Int {
-        val problem =  when (_uiState.value.emailProblem) {
-            EmailProblem.INVALID -> R.string.invalid_e_mail
-            EmailProblem.EMPTY -> R.string.required_field
-            EmailProblem.ABSENT -> R.string.empty_email
-            EmailProblem.NONE -> R.string.empty_string
-        }
-        return problem
     }
 
     fun toggleVisibility() {
