@@ -72,17 +72,18 @@ fun ForgotPasswordScreen(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
-        viewModel.idEmailProblem()?.run {
-            Text(
-                text = stringResource(id = this@run),
-                style = MaterialTheme.typography.labelMedium,
-                color = Error
-            )
-        } ?: run {
-            // TODO
-            // fazer uma animação de carregamento
-        }
+        // TODO Verificar como ficará o código apos mudanças no viewModel
+//        // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
+//        viewModel.idEmailProblem()?.run {
+//            Text(
+//                text = stringResource(id = this@run),
+//                style = MaterialTheme.typography.labelMedium,
+//                color = Error
+//            )
+//        } ?: run {
+//            // TODO
+//            // fazer uma animação de carregamento
+//        }
 
         Spacer(modifier = Modifier.height(P_MEDIUM))
 

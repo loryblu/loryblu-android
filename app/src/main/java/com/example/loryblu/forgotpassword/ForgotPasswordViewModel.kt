@@ -43,18 +43,4 @@ class ForgotPasswordViewModel constructor() : ViewModel() {
         }
 
     }
-
-    /**
-     * Verified if the e-mail has some problem, while search for that on e-mail.
-     */
-    fun idEmailProblem(): Int? {
-        val state = when (_uiState.value.emailState) {
-            EmailState.NOT_FOUND -> R.string.email_not_found
-            EmailState.SEND -> R.string.email_send
-            EmailState.EMPTY -> R.string.empty_email
-            EmailState.NONE -> R.string.empty_string
-            EmailState.LOADING -> null
-        }
-        return state
-    }
 }
