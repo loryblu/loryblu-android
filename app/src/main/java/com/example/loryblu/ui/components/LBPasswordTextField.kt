@@ -16,7 +16,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.loryblu.R
-import com.example.loryblu.login.EmailInputValid
 import com.example.loryblu.login.PasswordInputValid
 
 // TODO seek problems in this function

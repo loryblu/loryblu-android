@@ -24,7 +24,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_MEDIUM
 import com.example.loryblu.util.P_SMALL
 

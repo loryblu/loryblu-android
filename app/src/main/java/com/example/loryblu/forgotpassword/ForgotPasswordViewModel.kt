@@ -1,7 +1,6 @@
 package com.example.loryblu.forgotpassword
 
 import androidx.lifecycle.ViewModel
-import com.example.loryblu.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
