@@ -1,5 +1,6 @@
 package com.example.loryblu.login
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,7 +44,7 @@ class LoginViewModel constructor(
             }
             else -> {
                 _uiState.update {
-                    it.copy(emailState = EmailInputValid.Success)
+                    it.copy(emailState = EmailInputValid.Valid)
                 }
             }
         }
@@ -82,10 +83,16 @@ class LoginViewModel constructor(
     }
 
     fun loginWithEmailAndPassword() {
-        // TODO Lógica para verificar se está logado com a auth db
         viewModelScope.launch {
-            delay(300)
-            authenticated.value = true
+            // Essa verificação mudará para uma verificação com a db
+            if(uiState.value.passwordState is PasswordInputValid.Valid && uiState.value.emailState is EmailInputValid.Valid){
+                delay(300)
+                authenticated.value = true
+            }
+           else {
+               authenticated.value = false
+               Log.d("LoginViewModel", "Password or email is not valid")
+            }
         }
     }
 }
