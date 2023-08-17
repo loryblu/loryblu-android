@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -136,14 +138,24 @@ fun LoginScreen(
                 thickness = 2.dp
             )
         }
-        Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.padding(top = 4.dp)) {
-            Spacer(modifier = Modifier.weight(6f))
-            Text(
-                text = stringResource(R.string.forgot_password),
-                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.weight(4f)
-            )
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .fillMaxWidth()
+        ) {
+            TextButton(
+                onClick = { /*TODO*/ },
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = Color.Black
+                )
+            ) {
+                Text(
+                    text = stringResource(R.string.forgot_password),
+                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    textDecoration = TextDecoration.Underline,
+                )
+            }
         }
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -165,7 +177,7 @@ fun LoginScreen(
         }
 
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -173,12 +185,16 @@ fun LoginScreen(
                 text = stringResource(R.string.don_t_have_an_account),
                 style = MaterialTheme.typography.bodyLarge,
             )
-            Text(
-                text = stringResource(R.string.register_now),
-                style = MaterialTheme.typography.bodyLarge,
-                color = DarkBlue,
-                textDecoration = TextDecoration.Underline
-            )
+            TextButton(
+                onClick = { /*TODO*/ }
+            ) {
+                Text(
+                    text = stringResource(R.string.register_now),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = DarkBlue,
+                    textDecoration = TextDecoration.Underline
+                )
+            }
         }
 
     }
