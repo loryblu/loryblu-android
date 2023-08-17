@@ -15,7 +15,7 @@
     <string name="open_eye">Open eye</string>
     <string name="invalid_e_mail">*Invalid E-mail</string>
     <string name="required_field">*Required field</string>
-    <string name="empty_email">*Not found e-mail</string>
+    <string name="empty_email">*Empty email</string>
     <string name="empty_string"></string>
     <string name="kid_register">Register Kid</string>
     <string name="guardian_registration">Guardian Registration</string>
