@@ -31,7 +31,6 @@ fun LBEmailTextField(
             )
         },
         label = { Text(text = labelRes) },
-        textStyle = MaterialTheme.typography.bodyLarge,
         singleLine = true,
         modifier = Modifier.fillMaxWidth(),
         isError = error is EmailInputValid.Error,
