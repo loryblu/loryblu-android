@@ -1,4 +1,4 @@
-package com.example.loryblu.register
+package com.example.loryblu.register.guardian
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +41,10 @@ import com.example.loryblu.util.P_SMALL
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    authenticated: Boolean,
+    onLoginButtonClicked: () -> Unit,
+    navigateToGuardianRegister: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Column(
@@ -115,7 +119,7 @@ fun LoginScreen(
         }
         LBButton(
             textRes = R.string.login,
-            onClick = { /*TODO*/ },
+            onClick = { onLoginButtonClicked() },
             modifier = Modifier
         )
 
@@ -191,11 +195,25 @@ fun LoginScreen(
 
     }
 
+    LaunchedEffect(key1 = authenticated) {
+        if(authenticated) {
+            navigateToGuardianRegister()
+        }
+    }
 }
 
 @Composable
 @Preview
 fun PreviewComposable() {
-    LoginScreen(viewModel = LoginViewModel())
+    LoginScreen(
+        viewModel = LoginViewModel(),
+        authenticated = false,
+        onLoginButtonClicked = {
+
+        },
+        navigateToGuardianRegister = {
+
+        }
+    )
 }
 
