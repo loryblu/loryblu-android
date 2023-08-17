@@ -46,6 +46,8 @@ fun LoginScreen(
     authenticated: Boolean,
     onLoginButtonClicked: () -> Unit,
     navigateToGuardianRegister: () -> Unit,
+    navigateToForgotPassword: () -> Unit,
+    navigateToRegisterNow: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
@@ -145,7 +147,7 @@ fun LoginScreen(
                 .fillMaxWidth()
         ) {
             TextButton(
-                onClick = { /*TODO*/ },
+                onClick = { navigateToForgotPassword() },
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = Color.Black
                 )
@@ -186,7 +188,7 @@ fun LoginScreen(
                 style = MaterialTheme.typography.bodyLarge,
             )
             TextButton(
-                onClick = { /*TODO*/ }
+                onClick = { navigateToRegisterNow() }
             ) {
                 Text(
                     text = stringResource(R.string.register_now),
@@ -217,7 +219,13 @@ fun PreviewComposable() {
         },
         navigateToGuardianRegister = {
 
-        }
+        },
+        navigateToForgotPassword = {
+
+        },
+        navigateToRegisterNow = {
+
+        },
     )
 }
 
