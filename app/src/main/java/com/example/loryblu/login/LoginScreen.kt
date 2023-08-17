@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,17 +24,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
+import com.example.loryblu.ui.components.LBEmailTextField
 import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.DarkBlue
@@ -52,6 +58,8 @@ fun LoginScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
+
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -61,33 +69,25 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
-            value = uiState.email,
+        LBEmailTextField(
             onValueChange = { it: String ->
                 viewModel.updateEmail(it)
                 viewModel.emailState(email = it)
             },
-            leadingIcon = {
-                Icon(
-                    painterResource(id = R.drawable.ic_email),
-                    contentDescription = stringResource(R.string.mail_icon)
-                )
-            },
-            label = { Text(text = stringResource(R.string.email)) },
-            textStyle = MaterialTheme.typography.bodyLarge,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
+            labelRes = stringResource(R.string.email),
+            value = uiState.email,
+            error = uiState.emailProblem,
         )
+
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(P_MEDIUM)
         )
-        // tem o problema que caso eu coloque os modifier que estava no figma ele mostra o texto enquando estou digitando
+
         LBPasswordTextField(
             onValueChange = { newPassword: String  -> viewModel.run {
                 updatePassword(newPassword)
-
             }},
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = R.string.password,
@@ -114,13 +114,13 @@ fun LoginScreen(
                 modifier = Modifier.weight(2f),
                 maxLines = 1
             )
-            Text(
-                text = stringResource(viewModel.idEmailProblem()),
-                modifier = Modifier.weight(2f),
-                maxLines = 1,
-                color = Error,
-                style = MaterialTheme.typography.labelLarge
-            )
+//            Text(
+//                text = stringResource(uiState.emailProblem),
+//                modifier = Modifier.weight(2f),
+//                maxLines = 1,
+//                color = Error,
+//                style = MaterialTheme.typography.labelLarge
+//            )
         }
         LBButton(
             textRes = R.string.login,
