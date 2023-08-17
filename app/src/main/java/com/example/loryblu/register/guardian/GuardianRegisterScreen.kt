@@ -18,6 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +43,8 @@ fun GuardianRegisterScreen(
     navigateToChildRegister: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var passwordHidden by rememberSaveable { mutableStateOf(true) }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -96,11 +101,11 @@ fun GuardianRegisterScreen(
                    }
                },
                onButtonClick = {
-                               viewModel.togglePassword()
+                   passwordHidden = !passwordHidden
                },
                labelRes = R.string.password,
                value = uiState.password,
-               show = uiState.showPassword
+               hidden = passwordHidden
            )
 //            Spacer(modifier = Modifier.height(16.dp))
             Column(
@@ -174,10 +179,10 @@ fun GuardianRegisterScreen(
                        verifyConfirmationPassword(newPassConfir)
                    }
                },
-               onButtonClick = { viewModel.toggleConfirmationPassword() },
+               onButtonClick = { passwordHidden = !passwordHidden },
                labelRes = R.string.confirm_password,
                value = uiState.confirmationPassword,
-               show = uiState.showConfirmationPassword
+               hidden = passwordHidden
            )
 
             if (uiState.equalsPassword == false) {

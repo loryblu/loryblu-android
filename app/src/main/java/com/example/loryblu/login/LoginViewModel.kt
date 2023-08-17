@@ -67,7 +67,7 @@ class LoginViewModel constructor(
             it.copy(isLoginSaved = it.isLoginSaved.not())
         }
     }
-    fun IdEmailProblem(): Int {
+    fun idEmailProblem(): Int {
         val problem =  when (_uiState.value.emailProblem) {
             EmailProblem.INVALID -> R.string.invalid_e_mail
             EmailProblem.EMPTY -> R.string.required_field

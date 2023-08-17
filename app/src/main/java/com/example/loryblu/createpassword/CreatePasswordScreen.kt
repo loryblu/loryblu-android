@@ -15,6 +15,9 @@ package com.example.loryblu.createpassword
  import androidx.compose.material3.Text
  import androidx.compose.runtime.Composable
  import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.saveable.rememberSaveable
+ import androidx.compose.runtime.setValue
  import androidx.compose.ui.Alignment
  import androidx.compose.ui.Modifier
  import androidx.compose.ui.graphics.Color
@@ -43,6 +46,8 @@ fun CreatePasswordScreen(
             .fillMaxSize()
     ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        var passwordHidden by rememberSaveable { mutableStateOf(true) }
+
 
         LBTitle(textRes = R.string.create_a_new_password)
 
@@ -63,10 +68,10 @@ fun CreatePasswordScreen(
                     passwordCheck(newPassword = newPassword)
                 }
             },
-            onButtonClick = { viewModel.togglePassword() },
+            onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = R.string.password,
             value = uiState.password,
-            show = uiState.showPassword
+            hidden =  passwordHidden
         )
 
         Column(
@@ -139,10 +144,10 @@ fun CreatePasswordScreen(
                     verifyConfirmationPassword(newConfirmationPassword)
                 }
             },
-            onButtonClick = { viewModel.toggleConfirmationPassword() },
+            onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = R.string.confirm_password,
             value = uiState.confirmationPassword,
-            show = uiState.showConfirmationPassword
+            hidden = passwordHidden
         )
 
         if (uiState.equalsPassword == false) {

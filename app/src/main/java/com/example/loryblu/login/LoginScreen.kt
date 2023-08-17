@@ -18,6 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +50,8 @@ fun LoginScreen(
     navigateToGuardianRegister: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var passwordHidden by rememberSaveable { mutableStateOf(true) }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -84,10 +89,10 @@ fun LoginScreen(
                 updatePassword(newPassword)
 
             }},
-            onButtonClick = { /*TODO*/ },
+            onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = R.string.password,
             value = uiState.password,
-            show = uiState.showPassword
+            hidden = passwordHidden
         )
         Spacer(
             modifier = Modifier
@@ -110,7 +115,7 @@ fun LoginScreen(
                 maxLines = 1
             )
             Text(
-                text = stringResource(viewModel.IdEmailProblem()),
+                text = stringResource(viewModel.idEmailProblem()),
                 modifier = Modifier.weight(2f),
                 maxLines = 1,
                 color = Error,
