@@ -3,6 +3,7 @@ package com.example.loryblu.createpassword
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
+import com.example.loryblu.login.PasswordInputValid
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -12,6 +13,7 @@ data class UiStateCreatePassword(
     val showConfirmationPassword: Boolean = false,
     val password: String = "",
     val confirmationPassword: String = "",
+    val passwordState: PasswordInputValid = PasswordInputValid.Empty,
     val passwordHas: Map<Int, Boolean> = mapOf(
         R.string.MoreThanEight to false,
         R.string.Uppercase to false,
@@ -21,6 +23,7 @@ data class UiStateCreatePassword(
     ),
     val equalsPassword: Boolean? = null
 )
+
 class CreatePasswordViewModel constructor(): ViewModel() {
     private val _uiState = MutableStateFlow(UiStateCreatePassword())
     val uiState = _uiState

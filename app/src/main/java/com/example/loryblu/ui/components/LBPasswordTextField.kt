@@ -1,18 +1,22 @@
 package com.example.loryblu.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.loryblu.R
+import com.example.loryblu.login.PasswordInputValid
 
 // TODO seek problems in this function
 /**
@@ -23,33 +27,26 @@ import com.example.loryblu.R
 fun LBPasswordTextField(
     onValueChange: (String) -> Unit,
     onButtonClick: () -> Unit,
-    labelRes: Int,
+    labelRes: String,
     value: String,
-    show: Boolean
+    error: PasswordInputValid,
+    hidden: Boolean
 ) {
     val visualTransformation =
-        if (show)
-            VisualTransformation.None
-        else
-            PasswordVisualTransformation('*')
+        if (hidden) PasswordVisualTransformation() else VisualTransformation.None
 
     val trailingIconRes =
-        if (show)
-            R.drawable.ic_eye_open
-        else
-            R.drawable.ic_eye_close
+        if (hidden) R.drawable.ic_eye_close else R.drawable.ic_eye_open
 
     val trailingDescriptionRes =
-        if (show)
-            R.string.open_eye
-        else
-            R.string.close_eye
+        if (hidden) R.string.close_eye else R.string.open_eye
 
     OutlinedTextField(
         value = value,
         onValueChange = { onValueChange(it) },
+        singleLine = true,
         label = {
-            Text(text = stringResource(labelRes))
+            Text(text = labelRes)
         },
         trailingIcon = {
             IconButton(onClick = { onButtonClick() }) {
@@ -65,7 +62,18 @@ fun LBPasswordTextField(
                 contentDescription = stringResource(R.string.lock_icon)
             )
         },
+        isError = error is PasswordInputValid.Error,
+        supportingText = {
+            if(error is PasswordInputValid.Error) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(error.messageId),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
         modifier = Modifier.fillMaxWidth(),
-        visualTransformation = visualTransformation
-    )
+        visualTransformation = visualTransformation,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        )
 }

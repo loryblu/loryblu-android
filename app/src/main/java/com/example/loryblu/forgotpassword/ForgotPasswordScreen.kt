@@ -24,7 +24,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.P_MEDIUM
 import com.example.loryblu.util.P_SMALL
 
@@ -72,17 +71,18 @@ fun ForgotPasswordScreen(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
-        viewModel.idEmailProblem()?.run {
-            Text(
-                text = stringResource(id = this@run),
-                style = MaterialTheme.typography.labelMedium,
-                color = Error
-            )
-        } ?: run {
-            // TODO
-            // fazer uma animação de carregamento
-        }
+        // TODO Verificar como ficará o código apos mudanças no viewModel
+//        // se o id do problema for null isso siginifica que esta carregando a procura de erros no e-mail
+//        viewModel.idEmailProblem()?.run {
+//            Text(
+//                text = stringResource(id = this@run),
+//                style = MaterialTheme.typography.labelMedium,
+//                color = Error
+//            )
+//        } ?: run {
+//            // TODO
+//            // fazer uma animação de carregamento
+//        }
 
         Spacer(modifier = Modifier.height(P_MEDIUM))
 

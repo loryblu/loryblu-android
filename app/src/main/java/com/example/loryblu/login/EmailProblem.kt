@@ -1,12 +1,7 @@
 package com.example.loryblu.login
 
-enum class EmailProblem {
-    // invalido
-    INVALID,
-    // vazio
-    EMPTY,
-    // inexistente
-    ABSENT,
-    // nemhum
-    NONE,
+sealed class EmailInputValid {
+    object Valid: EmailInputValid()
+    data class Error(val messageId: Int): EmailInputValid()
+    object Empty: EmailInputValid()
 }

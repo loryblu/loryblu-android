@@ -15,8 +15,7 @@
     <string name="open_eye">Open eye</string>
     <string name="invalid_e_mail">*Invalid E-mail</string>
     <string name="required_field">*Required field</string>
-    <string name="empty_email">*Not found e-mail</string>
-    <string name="empty_string"></string>
+    <string name="empty_email">*Empty email</string>
     <string name="kid_register">Register Kid</string>
     <string name="guardian_registration">Guardian Registration</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
@@ -43,4 +42,5 @@
     <string name="warning_about_change_the_password">You will be disconnected from all devices and will need to log in with your new password</string>
     <string name="reset_your_password_here">Reset your password here</string>
     <string name="create_a_new_password">Create a new password</string>
+    <string name="password_is_empty">Password is empty</string>
 </resources>

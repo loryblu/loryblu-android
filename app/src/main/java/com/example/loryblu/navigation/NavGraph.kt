@@ -7,6 +7,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.loryblu.createpassword.CreatePasswordScreen
+import com.example.loryblu.createpassword.CreatePasswordViewModel
+import com.example.loryblu.forgotpassword.ForgotPasswordScreen
+import com.example.loryblu.forgotpassword.ForgotPasswordViewModel
 import com.example.loryblu.login.LoginScreen
 import com.example.loryblu.login.LoginViewModel
 import com.example.loryblu.register.child.ChildRegisterScreen
@@ -21,13 +25,17 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
     ) {
         loginRoute(
             navigateToGuardianRegister = {
-                navController.popBackStack()
+                navController.navigate(Screen.RegisterGuardian.route)
+            },
+            navigateToForgotPassword = {
+                navController.navigate(Screen.ForgetPassword.route)
+            },
+            navigateToRegisterNow = {
                 navController.navigate(Screen.RegisterGuardian.route)
             }
         )
         registerGuardianRoute(
             navigateToChildRegister = {
-                navController.popBackStack()
                 navController.navigate(Screen.RegisterChild.route)
             }
         )
@@ -39,6 +47,8 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
 
 fun NavGraphBuilder.loginRoute(
     navigateToGuardianRegister: () -> Unit,
+    navigateToForgotPassword: () -> Unit,
+    navigateToRegisterNow: () -> Unit,
 ) {
     composable(route = Screen.Login.route) {
         val viewModel: LoginViewModel = viewModel()
@@ -52,6 +62,8 @@ fun NavGraphBuilder.loginRoute(
                 viewModel.loginWithEmailAndPassword()
             },
             navigateToGuardianRegister = navigateToGuardianRegister,
+            navigateToRegisterNow = navigateToRegisterNow,
+            navigateToForgotPassword = navigateToForgotPassword,
         )
     }
 }
@@ -79,12 +91,21 @@ fun NavGraphBuilder.registerChildRoute() {
 
 fun NavGraphBuilder.createPasswordRoute() {
     composable(route = Screen.CreatePassword.route) {
-
+        val viewModel: CreatePasswordViewModel = viewModel()
+        CreatePasswordScreen(
+            viewModel = viewModel,
+        )
     }
 }
 
 fun NavGraphBuilder.forgotPasswordRoute() {
     composable(route = Screen.ForgetPassword.route) {
+        val viewModel: ForgotPasswordViewModel = viewModel()
+        ForgotPasswordScreen(
+            viewModel = viewModel,
+            navigateToNextScreen = {
 
+            }
+        )
     }
 }

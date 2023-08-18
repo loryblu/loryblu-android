@@ -1,5 +1,6 @@
 package com.example.loryblu.login
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,9 +12,9 @@ import kotlinx.coroutines.launch
 
 data class LoginUiState(
     val email: String = "",
-    val emailProblem: EmailProblem = EmailProblem.EMPTY,
+    val emailState: EmailInputValid = EmailInputValid.Empty,
     val password: String = "",
-    val passwordProblem: PasswordProblem = PasswordProblem.EMPTY,
+    val passwordState: PasswordInputValid = PasswordInputValid.Empty,
     // serve para salvar o estado para a proxima visita
     val isLoginSaved: Boolean = true,
     val enterTrigger: Boolean = false,
@@ -30,24 +31,22 @@ class LoginViewModel constructor(
         private set
 
     fun emailState(email: String) {
-        val regex = Regex("(\\w)+[\\.|-]?(\\w)+@(\\w|-)+\\.((\\w){2,})(\\.([a-zA-z0-9])+)*$")
         when {
-            "" == email.trim() -> {
+            email.isEmpty() -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailProblem.EMPTY)
+                    it.copy(emailState = EmailInputValid.Error(R.string.empty_email))
                 }
             }
-            regex.containsMatchIn(email).not() -> {
+            email.isEmailValid().not() -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailProblem.INVALID)
+                    it.copy(emailState = EmailInputValid.Error(R.string.invalid_e_mail))
                 }
             }
             else -> {
                 _uiState.update {
-                    it.copy(emailProblem = EmailProblem.NONE)
+                    it.copy(emailState = EmailInputValid.Valid)
                 }
             }
-            // TODO aqui eu preciso achar a api para consultar e ver se o email é existente no sistema
         }
     }
     fun updateEmail(newEmail: String) {
@@ -67,40 +66,33 @@ class LoginViewModel constructor(
             it.copy(isLoginSaved = it.isLoginSaved.not())
         }
     }
-    fun IdEmailProblem(): Int {
-        val problem =  when (_uiState.value.emailProblem) {
-            EmailProblem.INVALID -> R.string.invalid_e_mail
-            EmailProblem.EMPTY -> R.string.required_field
-            EmailProblem.ABSENT -> R.string.empty_email
-            EmailProblem.NONE -> R.string.empty_string
-        }
-        return problem
-    }
 
-    fun toggleVisibility() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showPassword = _uiState.value.showPassword.not())
-            }
-        }
-    }
-
-    fun verifyPassword(newPassword: String) {
+    fun passwordState(newPassword: String) {
         when {
-            newPassword.trim() == "" -> {
+            newPassword.isEmpty() -> {
                 _uiState.update {
-                    it.copy(passwordProblem = PasswordProblem.EMPTY)
+                    it.copy(passwordState = PasswordInputValid.Error(R.string.password_is_empty))
                 }
             }
-            // procura no banco de dados pelas informações de login da pessoa
+            else -> {
+                _uiState.update {
+                    it.copy(passwordState = PasswordInputValid.Valid)
+                }
+            }
         }
     }
 
     fun loginWithEmailAndPassword() {
-        // TODO Lógica para verificar se está logado com a auth db
         viewModelScope.launch {
-            delay(300)
-            authenticated.value = true
+            // Essa verificação mudará para uma verificação com a db
+            if(uiState.value.passwordState is PasswordInputValid.Valid && uiState.value.emailState is EmailInputValid.Valid){
+                delay(300)
+                authenticated.value = true
+            }
+           else {
+               authenticated.value = false
+               Log.d("LoginViewModel", "Password or email is not valid")
+            }
         }
     }
 }
