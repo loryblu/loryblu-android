@@ -45,14 +45,12 @@ fun LoginScreen(
     viewModel: LoginViewModel,
     authenticated: Boolean,
     onLoginButtonClicked: () -> Unit,
-    navigateToGuardianRegister: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
     navigateToForgotPassword: () -> Unit,
     navigateToRegisterNow: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
-
-
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -203,7 +201,7 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = authenticated) {
         if(authenticated) {
-            navigateToGuardianRegister()
+            navigateToHomeScreen()
         }
     }
 }
@@ -217,7 +215,7 @@ fun PreviewComposable() {
         onLoginButtonClicked = {
 
         },
-        navigateToGuardianRegister = {
+        navigateToHomeScreen = {
 
         },
         navigateToForgotPassword = {

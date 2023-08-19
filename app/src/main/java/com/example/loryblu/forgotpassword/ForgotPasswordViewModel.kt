@@ -64,9 +64,7 @@ class ForgotPasswordViewModel: ViewModel() {
         // Caso de certo redirecione para o createPassword
         viewModelScope.launch {
             delay(3000)
-            Log.d("ForgotPasswordViewModel", "Email state = ${uiState.value.emailState}")
             if(uiState.value.emailState is EmailInputValid.Valid) {
-                Log.d("ForgotPasswordViewModel", "authenticated = true")
                 authenticated.value = true
             }
         }

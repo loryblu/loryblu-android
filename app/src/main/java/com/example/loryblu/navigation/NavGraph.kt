@@ -11,6 +11,7 @@ import com.example.loryblu.createpassword.CreatePasswordScreen
 import com.example.loryblu.createpassword.CreatePasswordViewModel
 import com.example.loryblu.forgotpassword.ForgotPasswordScreen
 import com.example.loryblu.forgotpassword.ForgotPasswordViewModel
+import com.example.loryblu.home.HomeScreen
 import com.example.loryblu.login.LoginScreen
 import com.example.loryblu.login.LoginViewModel
 import com.example.loryblu.register.child.ChildRegisterScreen
@@ -24,8 +25,9 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         navController = navController
     ) {
         loginRoute(
-            navigateToGuardianRegister = {
-                navController.navigate(Screen.RegisterGuardian.route)
+            navigateToHomeScreen = {
+                navController.popBackStack()
+                navController.navigate(Screen.Home.route)
             },
             navigateToForgotPassword = {
                 navController.navigate(Screen.ForgetPassword.route)
@@ -47,11 +49,12 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                 navController.navigate(Screen.CreatePassword.route)
             }
         )
+        homeRoute()
     }
 }
 
 fun NavGraphBuilder.loginRoute(
-    navigateToGuardianRegister: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
     navigateToForgotPassword: () -> Unit,
     navigateToRegisterNow: () -> Unit,
 ) {
@@ -59,14 +62,13 @@ fun NavGraphBuilder.loginRoute(
         val viewModel: LoginViewModel = viewModel()
         val authenticated by viewModel.authenticated
 
-
         LoginScreen(
             viewModel = viewModel,
             authenticated = authenticated,
             onLoginButtonClicked = {
                 viewModel.loginWithEmailAndPassword()
             },
-            navigateToGuardianRegister = navigateToGuardianRegister,
+            navigateToHomeScreen = navigateToHomeScreen,
             navigateToRegisterNow = navigateToRegisterNow,
             navigateToForgotPassword = navigateToForgotPassword,
         )
@@ -114,6 +116,14 @@ fun NavGraphBuilder.forgotPasswordRoute(
             viewModel = viewModel,
             authenticated = authenticated,
             navigateToCreatePasswordScreen = navigateToCreatePassword
+        )
+    }
+}
+
+fun NavGraphBuilder.homeRoute() {
+    composable(route = Screen.Home.route) {
+        HomeScreen(
+
         )
     }
 }
