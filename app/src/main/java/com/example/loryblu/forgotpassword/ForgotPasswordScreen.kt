@@ -23,7 +23,6 @@ import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBEmailTextField
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.util.EmailInputValid
 import com.example.loryblu.util.P_MEDIUM
 import com.example.loryblu.util.P_SMALL
 
