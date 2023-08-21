@@ -1,17 +1,27 @@
 package com.example.loryblu.forgotpassword
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.loryblu.R
+import com.example.loryblu.login.isEmailValid
+import com.example.loryblu.util.EmailInputValid
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class ForgotPasswordUiState(
     val email: String = "",
-    val emailState: EmailState = EmailState.LOADING
+    val emailState: EmailInputValid = EmailInputValid.Empty
 )
 
-class ForgotPasswordViewModel constructor() : ViewModel() {
+class ForgotPasswordViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(ForgotPasswordUiState())
     val uiState = _uiState
+
+    var authenticated = mutableStateOf(false)
+        private set
 
     fun updateEmail(newEmail: String) {
         _uiState.update {
@@ -21,9 +31,19 @@ class ForgotPasswordViewModel constructor() : ViewModel() {
 
     fun emailState(email: String) {
         when {
-            "" == email.trim() -> {
+            email.isEmpty() -> {
                 _uiState.update {
-                    it.copy(emailState = EmailState.EMPTY)
+                    it.copy(emailState = EmailInputValid.Error(R.string.empty_email))
+                }
+            }
+            email.isEmailValid().not() -> {
+                _uiState.update {
+                    it.copy(emailState = EmailInputValid.Error(R.string.invalid_e_mail))
+                }
+            }
+            else -> {
+                _uiState.update {
+                    it.copy(emailState = EmailInputValid.Valid)
                 }
             }
             // TODO
@@ -34,12 +54,18 @@ class ForgotPasswordViewModel constructor() : ViewModel() {
 //             mostrar se o email existe e foi enviado com suceeso ou não existe
 //             alem disso ele pode mostrar um erro de conexão com a internet porque sei internet é
 //             um problema diferente de o email não existe
-            else -> {
-                _uiState.update {
-                    it.copy(emailState = EmailState.NONE)
-                }
-            }
         }
 
+    }
+
+    fun sendEmail() {
+        // TODO Aqui será feita a requição para a db com o email passado
+        // Caso de certo redirecione para o createPassword
+        viewModelScope.launch {
+            delay(3000)
+            if(uiState.value.emailState is EmailInputValid.Valid) {
+                authenticated.value = true
+            }
+        }
     }
 }
