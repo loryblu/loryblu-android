@@ -88,7 +88,7 @@ class LoginViewModel constructor(
         viewModelScope.launch {
             // Essa verificação mudará para uma verificação com a db
             if(uiState.value.passwordState is PasswordInputValid.Valid && uiState.value.emailState is EmailInputValid.Valid){
-                delay(300)
+                delay(3000)
                 authenticated.value = true
             }
            else {
