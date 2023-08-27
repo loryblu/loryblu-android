@@ -111,11 +111,13 @@ fun NavGraphBuilder.forgotPasswordRoute(
     composable(route = Screen.ForgetPassword.route) {
         val viewModel: ForgotPasswordViewModel = viewModel()
         val authenticated by viewModel.authenticated
+        val sendEmailSuccess by viewModel.sendEmailSuccess
 
         ForgotPasswordScreen(
             viewModel = viewModel,
             authenticated = authenticated,
-            navigateToCreatePasswordScreen = navigateToCreatePassword
+            sendEmailSuccess = sendEmailSuccess,
+            navigateToCreatePasswordScreen = navigateToCreatePassword,
         )
     }
 }
