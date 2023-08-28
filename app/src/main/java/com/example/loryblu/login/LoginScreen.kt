@@ -57,7 +57,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(P_SMALL)
     ) {
-        LBTitle(textRes = R.string.login)
+        LBTitle(textRes = R.string.login_title)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -109,7 +109,7 @@ fun LoginScreen(
             )
         }
         LBButton(
-            textRes = R.string.login,
+            textRes = R.string.sign_in_button,
             onClick = { onLoginButtonClicked() },
             modifier = Modifier
         )

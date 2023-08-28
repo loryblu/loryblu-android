@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LoryBlu</string>
-    <string name="login">Login</string>
+    <string name="sign_in_button">SIGN IN</string>
+    <string name="login_title">Login</string>
     <string name="loryblu_logo">loryblu logo</string>
     <string name="mail_icon">mail icon</string>
     <string name="email">email</string>
@@ -16,10 +17,14 @@
     <string name="invalid_e_mail">*Invalid E-mail</string>
     <string name="required_field">*Required field</string>
     <string name="empty_email">*Empty email</string>
-    <string name="kid_register">Register Kid</string>
+    <string name="child_registration">Child Registration</string>
+    <string name="birthday">Birthday</string>
     <string name="guardian_registration">Guardian Registration</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="register_now">Register now</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="boy">Boy</string>
+    <string name="girl">Girl</string>
     <string name="name">Name</string>
     <string name="person_icon">Person Icon</string>
     <string name="email_icon">Email Icon</string>
@@ -43,4 +48,6 @@
     <string name="reset_your_password_here">Reset your password here</string>
     <string name="create_a_new_password">Create a new password</string>
     <string name="password_is_empty">Password is empty</string>
+    <string name="boy_icon">Boy Icon</string>
+    <string name="girl_icon">Girl Icon</string>
 </resources>
