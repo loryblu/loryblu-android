@@ -23,9 +23,7 @@ data class LoginUiState(
     val showPassword: Boolean = true
 )
 
-class LoginViewModel constructor(
-
-): ViewModel() {
+class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState
 
