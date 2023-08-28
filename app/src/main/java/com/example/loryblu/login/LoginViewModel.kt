@@ -30,7 +30,8 @@ class LoginViewModel : ViewModel() {
     var authenticated = mutableStateOf(false)
         private set
 
-    fun emailState(email: String) {
+    fun emailState() {
+        val email = uiState.value.email
         when {
             email.isEmpty() -> {
                 _uiState.update {
@@ -67,9 +68,10 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun passwordState(newPassword: String) {
+    fun passwordState() {
+        val password = uiState.value.password
         when {
-            newPassword.isEmpty() -> {
+            password.isEmpty() -> {
                 _uiState.update {
                     it.copy(passwordState = PasswordInputValid.Error(R.string.password_is_empty))
                 }
@@ -84,15 +86,18 @@ class LoginViewModel : ViewModel() {
 
     fun loginWithEmailAndPassword() {
         viewModelScope.launch {
-            // Essa verificação mudará para uma verificação com a db
-            if(uiState.value.passwordState is PasswordInputValid.Valid && uiState.value.emailState is EmailInputValid.Valid){
-                delay(300)
-                authenticated.value = true
+            emailState()
+            passwordState()
+
+            if(uiState.value.emailState !is EmailInputValid.Valid || uiState.value.passwordState !is PasswordInputValid.Valid) {
+                Log.d("LoginViewModel", "Password or email is not valid")
+                authenticated.value = false
+                return@launch
             }
-           else {
-               authenticated.value = false
-               Log.d("LoginViewModel", "Password or email is not valid")
-            }
+            // Verificação na db
+
+            delay(3000)
+            authenticated.value = true
         }
     }
 }

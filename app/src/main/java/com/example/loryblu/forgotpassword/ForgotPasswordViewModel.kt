@@ -23,13 +23,17 @@ class ForgotPasswordViewModel: ViewModel() {
     var authenticated = mutableStateOf(false)
         private set
 
+    var sendEmailSuccess = mutableStateOf(false)
+        private set
+
     fun updateEmail(newEmail: String) {
         _uiState.update {
             it.copy(email = newEmail)
         }
     }
 
-    fun emailState(email: String) {
+    fun emailState() {
+        val email = uiState.value.email
         when {
             email.isEmpty() -> {
                 _uiState.update {
@@ -60,10 +64,13 @@ class ForgotPasswordViewModel: ViewModel() {
 
     fun sendEmail() {
         // TODO Aqui será feita a requição para a db com o email passado
-        // Caso de certo redirecione para o createPassword
-        viewModelScope.launch {
-            delay(3000)
-            if(uiState.value.emailState is EmailInputValid.Valid) {
+
+        emailState()
+        if(uiState.value.emailState is EmailInputValid.Valid) {
+            viewModelScope.launch {
+                delay(1000)
+                sendEmailSuccess.value = true
+                delay(5000)
                 authenticated.value = true
             }
         }

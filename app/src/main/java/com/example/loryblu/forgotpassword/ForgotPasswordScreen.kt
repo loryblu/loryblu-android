@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBEmailTextField
+import com.example.loryblu.ui.components.LBSuccessLabel
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.util.P_MEDIUM
 import com.example.loryblu.util.P_SMALL
@@ -31,9 +34,11 @@ import com.example.loryblu.util.P_SMALL
 fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel,
     authenticated: Boolean,
+    sendEmailSuccess: Boolean,
     navigateToCreatePasswordScreen: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val showSuccessLabel = remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -55,7 +60,7 @@ fun ForgotPasswordScreen(
         LBEmailTextField(
             onValueChange = { email: String ->
                 viewModel.updateEmail(email)
-                viewModel.emailState(email = email)
+                viewModel.emailState()
             },
             labelRes = stringResource(id = R.string.email),
             value = uiState.email,
@@ -70,12 +75,25 @@ fun ForgotPasswordScreen(
                 viewModel.sendEmail()
             }, modifier = Modifier
         )
+
+        if(showSuccessLabel.value) {
+            LBSuccessLabel(
+                labelRes = stringResource(R.string.send_email_successfully)
+            )
+        }
     }
 
     LaunchedEffect(key1 = authenticated) {
         if(authenticated) {
-            Log.d("ForgotPasswordScreen", "Navigate to next screen")
+            Log.d("ForgotPasswordScreen", "Navigate to create password screen")
             navigateToCreatePasswordScreen()
+        }
+    }
+
+    LaunchedEffect(key1 = sendEmailSuccess) {
+        if(sendEmailSuccess) {
+            Log.d("ForgotPasswordScreen", "Showing that email has been send successfully")
+            showSuccessLabel.value = true
         }
     }
 }
@@ -84,5 +102,5 @@ fun ForgotPasswordScreen(
 @Composable
 @Preview
 fun PreviewForgotScreen() {
-    ForgotPasswordScreen(viewModel = ForgotPasswordViewModel(), authenticated = false, navigateToCreatePasswordScreen = {})
+    ForgotPasswordScreen(viewModel = ForgotPasswordViewModel(), authenticated = false, sendEmailSuccess = true, navigateToCreatePasswordScreen = {})
 }

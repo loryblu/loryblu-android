@@ -50,4 +50,5 @@
     <string name="password_is_empty">Password is empty</string>
     <string name="boy_icon">Boy Icon</string>
     <string name="girl_icon">Girl Icon</string>
+    <string name="send_email_successfully">Send email successfully</string>
 </resources>

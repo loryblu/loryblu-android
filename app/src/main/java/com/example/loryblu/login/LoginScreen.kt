@@ -63,8 +63,8 @@ fun LoginScreen(
 
         LBEmailTextField(
             onValueChange = { email: String ->
-                viewModel.emailState(email = email)
                 viewModel.updateEmail(email)
+                viewModel.emailState()
             },
             labelRes = stringResource(id = R.string.email),
             value = uiState.email,
@@ -79,8 +79,8 @@ fun LoginScreen(
 
         LBPasswordTextField(
             onValueChange = { password: String  -> viewModel.run {
-                viewModel.passwordState(password)
                 updatePassword(password)
+                passwordState()
             }},
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.password),
