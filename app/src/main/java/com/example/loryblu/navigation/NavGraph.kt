@@ -88,10 +88,12 @@ fun NavGraphBuilder.registerGuardianRoute(
     }
 }
 
+// TODO: Modificar para a navegção e viewModel corretos
 fun NavGraphBuilder.registerChildRoute() {
     composable(route = Screen.RegisterChild.route) {
         ChildRegisterScreen(
-
+            viewModel = GuardianRegisterViewModel(),
+            navigateToChildRegister = {}
         )
     }
 }
