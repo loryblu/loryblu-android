@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.ui.theme.Blue
 import com.example.loryblu.ui.theme.White
@@ -25,7 +26,7 @@ fun LBButton(
         onClick = { onClick() }, colors = ButtonDefaults.buttonColors(Blue),
         modifier = Modifier
             .fillMaxWidth(0.9f)
-            .height(48.dp),
+            .height(50.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Text(
@@ -37,6 +38,11 @@ fun LBButton(
 }
 
 @Composable
+@Preview
 fun PreviewLBButton() {
-
+    LBButton(
+        textRes = 0,
+        onClick = {},
+        modifier = Modifier
+    )
 }
