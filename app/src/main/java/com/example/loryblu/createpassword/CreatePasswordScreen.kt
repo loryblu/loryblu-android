@@ -9,7 +9,6 @@ package com.example.loryblu.createpassword
  import androidx.compose.foundation.layout.height
  import androidx.compose.foundation.layout.padding
  import androidx.compose.foundation.layout.width
- import androidx.compose.material3.ExperimentalMaterial3Api
  import androidx.compose.material3.Icon
  import androidx.compose.material3.MaterialTheme
  import androidx.compose.material3.Text
@@ -161,10 +160,9 @@ fun CreatePasswordScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // TODO fixed this text
         Text(
             text = stringResource(R.string.warning_about_change_the_password),
-            style = MaterialTheme.typography.labelSmall
+            style = MaterialTheme.typography.bodySmall
         )
 
         Spacer(modifier = Modifier.height(32.dp))
