@@ -14,6 +14,7 @@ package com.example.loryblu.createpassword
  import androidx.compose.material3.MaterialTheme
  import androidx.compose.material3.Text
  import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
  import androidx.compose.runtime.getValue
  import androidx.compose.runtime.mutableStateOf
  import androidx.compose.runtime.saveable.rememberSaveable
@@ -39,6 +40,8 @@ package com.example.loryblu.createpassword
 fun CreatePasswordScreen(
     viewModel: CreatePasswordViewModel,
     navigateToLoginScreen: () -> Unit,
+    onResetPasswordButtonClicked: () -> Unit,
+    shouldGoToNextScreen: Boolean,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -168,10 +171,16 @@ fun CreatePasswordScreen(
         LBButton(
             textRes = R.string.reset_password,
             onClick = {
-                navigateToLoginScreen()
+                onResetPasswordButtonClicked()
             },
             modifier = Modifier
         )
+    }
+
+    LaunchedEffect(key1 = shouldGoToNextScreen) {
+        if(shouldGoToNextScreen) {
+            navigateToLoginScreen()
+        }
     }
 }
 
@@ -183,5 +192,9 @@ fun PreviewCreatePasswordScreen() {
         navigateToLoginScreen = {
 
         },
-        )
+        onResetPasswordButtonClicked = {
+
+        },
+        shouldGoToNextScreen = false,
+    )
 }

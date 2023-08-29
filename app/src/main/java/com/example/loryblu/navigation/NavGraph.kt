@@ -106,9 +106,14 @@ fun NavGraphBuilder.createPasswordRoute(
 ) {
     composable(route = Screen.CreatePassword.route) {
         val viewModel: CreatePasswordViewModel = viewModel()
+        val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
         CreatePasswordScreen(
             viewModel = viewModel,
             navigateToLoginScreen = navigateToLoginScreen,
+            onResetPasswordButtonClicked = {
+                viewModel.verifyAllConditions()
+            },
+            shouldGoToNextScreen = shouldGoToNextScreen,
         )
     }
 }

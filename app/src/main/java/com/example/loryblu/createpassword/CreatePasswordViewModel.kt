@@ -1,9 +1,11 @@
 package com.example.loryblu.createpassword
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
 import com.example.loryblu.util.PasswordInputValid
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,6 +29,9 @@ data class UiStateCreatePassword(
 class CreatePasswordViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiStateCreatePassword())
     val uiState = _uiState
+
+    var shouldGoToNextScreen = mutableStateOf(false)
+        private set
 
     fun updatePassword(newPassword: String) {
         viewModelScope.launch {
@@ -93,6 +98,18 @@ class CreatePasswordViewModel : ViewModel() {
 
         _uiState.update {
             it.copy(confirmPasswordState = state)
+        }
+    }
+
+    fun verifyAllConditions() {
+        viewModelScope.launch {
+            passwordCheck()
+            verifyConfirmationPassword(force = true)
+
+            if(uiState.value.confirmPasswordState == PasswordInputValid.Valid && uiState.value.passwordState == PasswordInputValid.Valid){
+                delay(1000)
+                shouldGoToNextScreen.value = true
+            }
         }
     }
 }
