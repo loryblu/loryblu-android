@@ -21,7 +21,7 @@ data class UiStateCreatePassword(
         R.string.Numbers to false,
         R.string.SpecialCharacters to false
     ),
-    val equalsPassword: Boolean? = null
+    val confirmPasswordState: PasswordInputValid = PasswordInputValid.Empty,
 )
 
 class CreatePasswordViewModel : ViewModel() {
@@ -80,15 +80,19 @@ class CreatePasswordViewModel : ViewModel() {
         }
     }
 
-    fun verifyConfirmationPassword() {
-        val password = uiState.value.confirmationPassword
+    fun verifyConfirmationPassword(force: Boolean = false) {
+        val confirmPassword = uiState.value.confirmationPassword
 
-        if(password.isNotEmpty()) {
-            viewModelScope.launch {
-                _uiState.update {
-                    it.copy(equalsPassword = (password == _uiState.value.password))
-                }
-            }
+        if(!force && confirmPassword.isEmpty()) return
+
+        val state = if(confirmPassword != _uiState.value.password) {
+            PasswordInputValid.Error(R.string.passwords_must_be_identical)
+        } else {
+            PasswordInputValid.Valid
+        }
+
+        _uiState.update {
+            it.copy(confirmPasswordState = state)
         }
     }
 }

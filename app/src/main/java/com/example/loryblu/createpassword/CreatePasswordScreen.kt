@@ -151,20 +151,9 @@ fun CreatePasswordScreen(
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.confirm_password),
             value = uiState.confirmationPassword,
-            error = PasswordInputValid.Empty,
+            error = uiState.confirmPasswordState,
             hidden = passwordHidden
         )
-
-        if (uiState.equalsPassword == false) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.passwords_must_be_identical),
-                    color = Error,
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -179,7 +168,7 @@ fun CreatePasswordScreen(
         LBButton(
             textRes = R.string.reset_password,
             onClick = {
-                      navigateToLoginScreen()
+                navigateToLoginScreen()
             },
             modifier = Modifier
         )
