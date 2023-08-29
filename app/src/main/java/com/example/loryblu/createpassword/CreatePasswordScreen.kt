@@ -35,7 +35,6 @@ package com.example.loryblu.createpassword
  import com.example.loryblu.util.P_SMALL
  import com.example.loryblu.util.PasswordInputValid
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatePasswordScreen(
     viewModel: CreatePasswordViewModel,
@@ -52,6 +51,8 @@ fun CreatePasswordScreen(
     ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         var passwordHidden by rememberSaveable { mutableStateOf(true) }
+        var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
+
 
 
         LBTitle(textRes = R.string.create_a_new_password)
@@ -151,11 +152,11 @@ fun CreatePasswordScreen(
                     verifyConfirmationPassword()
                 }
             },
-            onButtonClick = { passwordHidden = !passwordHidden },
+            onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
             labelRes = stringResource(id = R.string.confirm_password),
             value = uiState.confirmationPassword,
             error = uiState.confirmPasswordState,
-            hidden = passwordHidden
+            hidden = confirmPasswordHidden
         )
 
         Spacer(modifier = Modifier.height(32.dp))

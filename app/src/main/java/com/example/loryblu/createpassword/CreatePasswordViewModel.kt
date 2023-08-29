@@ -49,21 +49,6 @@ class CreatePasswordViewModel : ViewModel() {
         }
     }
 
-    fun togglePassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showPassword = it.showPassword.not())
-            }
-        }
-    }
-    fun toggleConfirmationPassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showConfirmationPassword = it.showConfirmationPassword.not())
-            }
-        }
-    }
-
     fun passwordCheck() {
         val password = uiState.value.password
         val passwordErrors = _uiState.value.passwordErrors.toMutableMap()
