@@ -44,6 +44,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         registerChildRoute()
         createPasswordRoute(
             navigateToLoginScreen = {
+                navController.popBackStack()
                 navController.navigate(Screen.Login.route)
             }
         )
