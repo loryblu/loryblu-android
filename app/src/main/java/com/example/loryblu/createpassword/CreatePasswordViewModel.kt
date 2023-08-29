@@ -14,7 +14,7 @@ data class UiStateCreatePassword(
     val password: String = "",
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
-    val passwordHas: Map<Int, Boolean> = mapOf(
+    val passwordErrors: Map<Int, Boolean> = mapOf(
         R.string.MoreThanEight to false,
         R.string.Uppercase to false,
         R.string.Lowercase to false,
@@ -24,7 +24,7 @@ data class UiStateCreatePassword(
     val equalsPassword: Boolean? = null
 )
 
-class CreatePasswordViewModel constructor(): ViewModel() {
+class CreatePasswordViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiStateCreatePassword())
     val uiState = _uiState
 
@@ -59,24 +59,35 @@ class CreatePasswordViewModel constructor(): ViewModel() {
         }
     }
 
-    fun passwordCheck(newPassword: String) {
-        val _passwordHas = _uiState.value.passwordHas.toMutableMap()
+    fun passwordCheck() {
+        val password = uiState.value.password
+        val passwordErrors = _uiState.value.passwordErrors.toMutableMap()
 
-        _passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(newPassword)
-        _passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
-        _passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
+        passwordErrors[R.string.MoreThanEight] = password.length > 8
+        passwordErrors[R.string.Uppercase] = password.any { it.isUpperCase() }
+        passwordErrors[R.string.Lowercase] = password.any { it.isLowerCase() }
+        passwordErrors[R.string.Numbers] = password.any { it.isDigit() }
+        passwordErrors[R.string.SpecialCharacters] = password.any { !it.isLetterOrDigit() }
+
+        val passwordState = if (passwordErrors.values.contains(false)) {
+            PasswordInputValid.Error(R.string.password_invalid)
+        } else {
+            PasswordInputValid.Valid
+        }
 
         _uiState.update {
-            it.copy(passwordHas = _passwordHas)
+            it.copy(passwordErrors = passwordErrors, passwordState = passwordState)
         }
     }
 
-    fun verifyConfirmationPassword(newConfirmationPassword: String) {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(equalsPassword = (newConfirmationPassword == _uiState.value.password))
+    fun verifyConfirmationPassword() {
+        val password = uiState.value.confirmationPassword
+
+        if(password.isNotEmpty()) {
+            viewModelScope.launch {
+                _uiState.update {
+                    it.copy(equalsPassword = (password == _uiState.value.password))
+                }
             }
         }
     }

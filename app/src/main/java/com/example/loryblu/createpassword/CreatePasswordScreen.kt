@@ -32,6 +32,7 @@ package com.example.loryblu.createpassword
  import com.example.loryblu.ui.components.LBTitle
  import com.example.loryblu.ui.theme.Error
  import com.example.loryblu.util.P_SMALL
+ import com.example.loryblu.util.PasswordInputValid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,13 +67,14 @@ fun CreatePasswordScreen(
             onValueChange = { newPassword: String ->
                 viewModel.run {
                     updatePassword(newPassword = newPassword)
-                    passwordCheck(newPassword = newPassword)
+                    passwordCheck()
+                    verifyConfirmationPassword()
                 }
             },
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.password),
             value = uiState.password,
-            error = uiState.passwordState,
+            error = PasswordInputValid.Empty,
             hidden = passwordHidden,
         )
 
@@ -86,7 +88,7 @@ fun CreatePasswordScreen(
                 .fillMaxWidth()
         ) {
             var counter = true
-            for (element in uiState.passwordHas.entries) {
+            for (element in uiState.passwordErrors) {
                 counter = element.value and counter
             }
 
@@ -96,7 +98,7 @@ fun CreatePasswordScreen(
                     stringResource(R.string.the_password_must_be),
                     style = MaterialTheme.typography.labelMedium
                 )
-                uiState.passwordHas.forEach {
+                uiState.passwordErrors.forEach {
                     if (!it.value) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -143,13 +145,13 @@ fun CreatePasswordScreen(
             onValueChange = { newConfirmationPassword: String ->
                 viewModel.run {
                     updateConfirmationPassword(newConfirmationPassword)
-                    verifyConfirmationPassword(newConfirmationPassword)
+                    verifyConfirmationPassword()
                 }
             },
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.confirm_password),
             value = uiState.confirmationPassword,
-            error = uiState.passwordState,
+            error = PasswordInputValid.Empty,
             hidden = passwordHidden
         )
 
