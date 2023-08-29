@@ -36,7 +36,8 @@ package com.example.loryblu.createpassword
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatePasswordScreen(
-    viewModel: CreatePasswordViewModel
+    viewModel: CreatePasswordViewModel,
+    navigateToLoginScreen: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -175,7 +176,9 @@ fun CreatePasswordScreen(
 
         LBButton(
             textRes = R.string.reset_password,
-            onClick = { /*TODO*/ },
+            onClick = {
+                      navigateToLoginScreen()
+            },
             modifier = Modifier
         )
     }
@@ -184,5 +187,10 @@ fun CreatePasswordScreen(
 @Preview
 @Composable
 fun PreviewCreatePasswordScreen() {
-    CreatePasswordScreen(viewModel = CreatePasswordViewModel())
+    CreatePasswordScreen(
+        viewModel = CreatePasswordViewModel(),
+        navigateToLoginScreen = {
+
+        },
+        )
 }
