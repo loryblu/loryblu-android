@@ -44,4 +44,5 @@
     <string name="create_a_new_password">Create a new password</string>
     <string name="password_is_empty">Password is empty</string>
     <string name="send_email_successfully">Send email successfully</string>
+    <string name="password_invalid">The password is invalid</string>
 </resources>

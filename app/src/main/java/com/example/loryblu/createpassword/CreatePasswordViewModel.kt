@@ -1,9 +1,11 @@
 package com.example.loryblu.createpassword
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
 import com.example.loryblu.util.PasswordInputValid
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -14,19 +16,22 @@ data class UiStateCreatePassword(
     val password: String = "",
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
-    val passwordHas: Map<Int, Boolean> = mapOf(
+    val passwordErrors: Map<Int, Boolean> = mapOf(
         R.string.MoreThanEight to false,
         R.string.Uppercase to false,
         R.string.Lowercase to false,
         R.string.Numbers to false,
         R.string.SpecialCharacters to false
     ),
-    val equalsPassword: Boolean? = null
+    val confirmPasswordState: PasswordInputValid = PasswordInputValid.Empty,
 )
 
-class CreatePasswordViewModel constructor(): ViewModel() {
+class CreatePasswordViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiStateCreatePassword())
     val uiState = _uiState
+
+    var shouldGoToNextScreen = mutableStateOf(false)
+        private set
 
     fun updatePassword(newPassword: String) {
         viewModelScope.launch {
@@ -44,39 +49,51 @@ class CreatePasswordViewModel constructor(): ViewModel() {
         }
     }
 
-    fun togglePassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showPassword = it.showPassword.not())
-            }
-        }
-    }
-    fun toggleConfirmationPassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showConfirmationPassword = it.showConfirmationPassword.not())
-            }
-        }
-    }
+    fun passwordCheck() {
+        val password = uiState.value.password
+        val passwordErrors = _uiState.value.passwordErrors.toMutableMap()
 
-    fun passwordCheck(newPassword: String) {
-        val _passwordHas = _uiState.value.passwordHas.toMutableMap()
+        passwordErrors[R.string.MoreThanEight] = password.length > 8
+        passwordErrors[R.string.Uppercase] = password.any { it.isUpperCase() }
+        passwordErrors[R.string.Lowercase] = password.any { it.isLowerCase() }
+        passwordErrors[R.string.Numbers] = password.any { it.isDigit() }
+        passwordErrors[R.string.SpecialCharacters] = password.any { !it.isLetterOrDigit() }
 
-        _passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(newPassword)
-        _passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
-        _passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
+        val passwordState = if (passwordErrors.values.contains(false)) {
+            PasswordInputValid.Error(R.string.password_invalid)
+        } else {
+            PasswordInputValid.Valid
+        }
 
         _uiState.update {
-            it.copy(passwordHas = _passwordHas)
+            it.copy(passwordErrors = passwordErrors, passwordState = passwordState)
         }
     }
 
-    fun verifyConfirmationPassword(newConfirmationPassword: String) {
+    fun verifyConfirmationPassword(force: Boolean = false) {
+        val confirmPassword = uiState.value.confirmationPassword
+
+        if(!force && confirmPassword.isEmpty()) return
+
+        val state = if(confirmPassword != _uiState.value.password) {
+            PasswordInputValid.Error(R.string.passwords_must_be_identical)
+        } else {
+            PasswordInputValid.Valid
+        }
+
+        _uiState.update {
+            it.copy(confirmPasswordState = state)
+        }
+    }
+
+    fun verifyAllConditions() {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(equalsPassword = (newConfirmationPassword == _uiState.value.password))
+            passwordCheck()
+            verifyConfirmationPassword(force = true)
+
+            if(uiState.value.confirmPasswordState == PasswordInputValid.Valid && uiState.value.passwordState == PasswordInputValid.Valid){
+                delay(1000)
+                shouldGoToNextScreen.value = true
             }
         }
     }
