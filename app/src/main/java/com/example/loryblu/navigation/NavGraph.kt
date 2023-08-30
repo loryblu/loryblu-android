@@ -42,7 +42,12 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             }
         )
         registerChildRoute()
-        createPasswordRoute()
+        createPasswordRoute(
+            navigateToLoginScreen = {
+                navController.popBackStack()
+                navController.navigate(Screen.Login.route)
+            }
+        )
         forgotPasswordRoute(
             navigateToCreatePassword = {
                 navController.popBackStack()
@@ -98,11 +103,19 @@ fun NavGraphBuilder.registerChildRoute() {
     }
 }
 
-fun NavGraphBuilder.createPasswordRoute() {
+fun NavGraphBuilder.createPasswordRoute(
+    navigateToLoginScreen: () -> Unit,
+) {
     composable(route = Screen.CreatePassword.route) {
         val viewModel: CreatePasswordViewModel = viewModel()
+        val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
         CreatePasswordScreen(
             viewModel = viewModel,
+            navigateToLoginScreen = navigateToLoginScreen,
+            onResetPasswordButtonClicked = {
+                viewModel.verifyAllConditions()
+            },
+            shouldGoToNextScreen = shouldGoToNextScreen,
         )
     }
 }
