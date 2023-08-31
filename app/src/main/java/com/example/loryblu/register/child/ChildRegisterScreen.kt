@@ -1,6 +1,6 @@
 package com.example.loryblu.register.child
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,24 +21,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.loryblu.R
-import com.example.loryblu.register.guardian.GuardianRegisterViewModel
-import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBBoyButton
+import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBGirlButton
+import com.example.loryblu.ui.components.LBRadioButton
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ChildRegisterScreen(
-    viewModel: GuardianRegisterViewModel,
-    navigateToChildRegister: () -> Unit
+    viewModel: ChildRegisterViewModel,
+    navigateToHomeScreen: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -77,8 +80,8 @@ fun ChildRegisterScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = uiState.email,
-                onValueChange = viewModel::updateEmail,
+                value = uiState.birthday,
+                onValueChange = viewModel::updateBirthday,
                 label = { Text(text = stringResource(R.string.birthday)) },
                 leadingIcon = {
                     Icon(
@@ -95,35 +98,63 @@ fun ChildRegisterScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // TODO: Botão de escolha de genero, menino ou menina
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             LBBoyButton(
-                textRes = R.string.boy,
-                onClick = { /*TODO*/ },
-                modifier = Modifier.padding(end = 8.dp)
+                onClick = { viewModel.updateBoyButtonState(!uiState.isBoyButtonClicked)
+                    viewModel.updateGirlButtonState(false) },
+                modifier = Modifier.padding(end = 8.dp),
+                isClicked = uiState.isBoyButtonClicked
             )
 
             LBGirlButton(
-                textRes = R.string.girl,
-                onClick = { /*TODO*/ },
-                modifier = Modifier.padding(start = 8.dp)
+                onClick = { viewModel.updateGirlButtonState(!uiState.isGirlButtonClicked)
+                    viewModel.updateBoyButtonState(false) },
+                modifier = Modifier.padding(start = 8.dp),
+                isClicked = uiState.isGirlButtonClicked
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            LBRadioButton(
+                isChecked = uiState.privacyPolicyButtonState,
+                onCheckedChange = viewModel::updatePrivacyPolicyButtonState,
+                modifier = Modifier
+            )
+            Text(
+                text = stringResource(R.string.i_agree_with_the),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                color = Color.LightGray,
+            )
+            Text(
+                text = stringResource(R.string.privacy_policy),
+                textDecoration = TextDecoration.Underline,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                color = Color.LightGray,
+                modifier = Modifier
+                    .clickable { /*TODO*/ }
+                    .padding(start = 4.dp),
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // TODO: Radio button para concordar com a política de privacidade
+        Spacer(modifier = Modifier.height(32.dp))
 
         LBButton(
             textRes = R.string.sign_up,
             onClick = {
-                navigateToChildRegister()
+                navigateToHomeScreen()
             },
             modifier = Modifier
         )
+
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
@@ -132,8 +163,8 @@ fun ChildRegisterScreen(
 @Preview
 fun PreviewComposable() {
     ChildRegisterScreen(
-        viewModel = GuardianRegisterViewModel(),
-        navigateToChildRegister = {
+        viewModel = ChildRegisterViewModel(),
+        navigateToHomeScreen = {
         }
 
     )
