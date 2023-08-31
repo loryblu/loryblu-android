@@ -15,6 +15,7 @@ import com.example.loryblu.home.HomeScreen
 import com.example.loryblu.login.LoginScreen
 import com.example.loryblu.login.LoginViewModel
 import com.example.loryblu.register.child.ChildRegisterScreen
+import com.example.loryblu.register.child.ChildRegisterViewModel
 import com.example.loryblu.register.guardian.GuardianRegisterScreen
 import com.example.loryblu.register.guardian.GuardianRegisterViewModel
 
@@ -41,7 +42,11 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                 navController.navigate(Screen.RegisterChild.route)
             }
         )
-        registerChildRoute()
+        registerChildRoute(
+            navigateToHomeScreen = {
+                navController.navigate(Screen.Home.route)
+            }
+        )
         createPasswordRoute(
             navigateToLoginScreen = {
                 navController.popBackStack()
@@ -93,12 +98,15 @@ fun NavGraphBuilder.registerGuardianRoute(
     }
 }
 
-// TODO: Modificar para a navegção e viewModel corretos
-fun NavGraphBuilder.registerChildRoute() {
+fun NavGraphBuilder.registerChildRoute(
+    navigateToHomeScreen: () -> Unit,
+) {
     composable(route = Screen.RegisterChild.route) {
+        val viewModel: ChildRegisterViewModel = viewModel()
+
         ChildRegisterScreen(
-            viewModel = GuardianRegisterViewModel(),
-            navigateToChildRegister = {}
+            viewModel = viewModel,
+            navigateToHomeScreen = navigateToHomeScreen
         )
     }
 }
