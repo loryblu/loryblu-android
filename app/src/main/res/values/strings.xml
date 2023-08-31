@@ -34,9 +34,12 @@
     
     <string name="the_password_must_be">The password must be:</string>
     <string name="MoreThanEight">Has more than eight characters</string>
+    <string name="at_least_five_letters">Has at least five letters</string>
     <string name="Lowercase">Has lowercase letters</string>
     <string name="Uppercase">Has uppercase letters </string>
     <string name="Numbers">Has Numbers</string>
+    <string name="i_agree_with_the">I agree with the </string>
+    <string name="privacy_policy">privacy policy</string>
     
     <string name="SpecialCharacters">Has especial characters, like: ! @ # $ % &amp; *</string>
     <string name="reset_password">Reset your password here</string>
