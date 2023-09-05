@@ -55,4 +55,5 @@
     <string name="girl_icon">Girl Icon</string>
     <string name="send_email_successfully">Send email successfully</string>
     <string name="password_invalid">The password is invalid</string>
+    <string name="choose_date">Choose date</string>
 </resources>
