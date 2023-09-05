@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBBoyButton
 import com.example.loryblu.ui.components.LBButton
+import com.example.loryblu.ui.components.LBDatePicker
 import com.example.loryblu.ui.components.LBGirlButton
 import com.example.loryblu.ui.components.LBRadioButton
 import com.example.loryblu.ui.components.LBTitle
@@ -79,20 +80,8 @@ fun ChildRegisterScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
-                value = uiState.birthday,
-                onValueChange = viewModel::updateBirthday,
-                label = { Text(text = stringResource(R.string.birthday)) },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_birthday_cake),
-                        contentDescription = stringResource(
-                            R.string.email_icon
-                        )
-                    )
-                },
-                modifier = Modifier.width(352.dp),
-                shape = RoundedCornerShape(10.dp),
+            LBDatePicker(
+                labelRes = stringResource(id = R.string.birthday),
             )
         }
 
@@ -103,22 +92,23 @@ fun ChildRegisterScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             LBBoyButton(
-                onClick = { viewModel.updateBoyButtonState(!uiState.isBoyButtonClicked)
-                    viewModel.updateGirlButtonState(false) },
-                modifier = Modifier.padding(end = 8.dp),
-                isClicked = uiState.isBoyButtonClicked
+                onClick = {
+                    viewModel.updateBoyButtonState(!uiState.isBoyButtonClicked)
+                    viewModel.updateGirlButtonState(false)
+                }, modifier = Modifier.padding(end = 8.dp), isClicked = uiState.isBoyButtonClicked
             )
 
             LBGirlButton(
-                onClick = { viewModel.updateGirlButtonState(!uiState.isGirlButtonClicked)
-                    viewModel.updateBoyButtonState(false) },
+                onClick = {
+                    viewModel.updateGirlButtonState(!uiState.isGirlButtonClicked)
+                    viewModel.updateBoyButtonState(false)
+                },
                 modifier = Modifier.padding(start = 8.dp),
                 isClicked = uiState.isGirlButtonClicked
             )
         }
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -148,11 +138,9 @@ fun ChildRegisterScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         LBButton(
-            textRes = R.string.sign_up,
-            onClick = {
+            textRes = R.string.sign_up, onClick = {
                 navigateToHomeScreen()
-            },
-            modifier = Modifier
+            }, modifier = Modifier
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -162,10 +150,7 @@ fun ChildRegisterScreen(
 @Composable
 @Preview
 fun PreviewComposable() {
-    ChildRegisterScreen(
-        viewModel = ChildRegisterViewModel(),
-        navigateToHomeScreen = {
-        }
+    ChildRegisterScreen(viewModel = ChildRegisterViewModel(), navigateToHomeScreen = {}
 
     )
 }
