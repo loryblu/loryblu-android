@@ -1,5 +1,6 @@
 package com.example.loryblu.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,10 @@ fun LBBoyButton(
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = if (isClicked) Color.White else Color.LightGray,
             containerColor = if (isClicked) Color(0xff004a98) else Color.Transparent,
-            // You can customize other colors here as well
+        ),
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (isClicked) Color(0xff004a98) else Color.Gray,
         )
     ) {
         Icon(
