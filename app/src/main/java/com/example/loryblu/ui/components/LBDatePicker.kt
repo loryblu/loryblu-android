@@ -7,10 +7,12 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,10 +34,11 @@ fun LBDatePicker(
     var showDatePickerDialog by remember {
         mutableStateOf(false)
     }
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(yearRange = 2013..2023)
     var selectedDate by remember {
         mutableStateOf("")
     }
+    val confirmEnabled by remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
 
     if (showDatePickerDialog) {
         DatePickerDialog(
@@ -48,11 +51,20 @@ fun LBDatePicker(
                                 selectedDate = millis.toBrazilianDateFormat()
                             }
                         showDatePickerDialog = false
-                    }) {
-                    Text(text = stringResource(R.string.choose_date))
+                    },
+                    enabled = confirmEnabled
+                ) {
+                    Text(text = stringResource(R.string.confirm))
                 }
-            }) {
-            DatePicker(state = datePickerState)
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = { showDatePickerDialog = false }) {
+                    Text(text = stringResource(R.string.cancel))
+                }
+            },
+        ) {
+            DatePicker(state = datePickerState, showModeToggle = false)
         }
     }
 
@@ -64,7 +76,7 @@ fun LBDatePicker(
             Icon(
                 painter = painterResource(id = R.drawable.ic_birthday_cake),
                 contentDescription = stringResource(
-                    R.string.email_icon
+                    R.string.birthday_icon
                 )
             )
         },
