@@ -1,18 +1,26 @@
 package com.example.loryblu.register.child
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
+import com.example.loryblu.util.NameInputValid
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 data class ChildRegisterUiState(
     val name: String = "",
-    val nameHas: Map<Int, Boolean> = mapOf(
+    val confirmationName: String = "",
+    val nameState: NameInputValid = NameInputValid.Empty,
+    val nameErrors: Map<Int, Boolean> = mapOf(
         R.string.at_least_five_letters to false,
         R.string.Uppercase to false,
         R.string.Lowercase to false,
+        R.string.SpecialCharacters to false
     ),
-    val birthday: String = "",
+    val confirmNameState: NameInputValid = NameInputValid.Empty,
     val privacyPolicyButtonState: Boolean = false,
     val isBoyButtonClicked: Boolean = false,
     val isGirlButtonClicked: Boolean = false,
@@ -21,23 +29,59 @@ data class ChildRegisterUiState(
 class ChildRegisterViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ChildRegisterUiState())
     val uiState = _uiState
+    var shouldGoToNextScreen = mutableStateOf(false)
+        private set
 
-    fun nameCheck(newName: String) {
-        val _nameHas = _uiState.value.nameHas.toMutableMap()
-
-        _nameHas[R.string.at_least_five_letters] = Regex(".{5,}").containsMatchIn(newName)
-        _nameHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newName)
-        _nameHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newName)
-
-        _uiState.update { it.copy(nameHas = _nameHas) }
+    fun nameState() {
+        val name = uiState.value.name
+        when {
+            name.isEmpty() -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.empty_name))
+                }
+            }
+            !name.matches(Regex("^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ ]+\$")) -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
+                }
+            }
+            name.count { it.isLetter() } < 5 -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.at_least_five_letters))
+                }
+            }
+            name.contains("  ") -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
+                }
+            }
+            else -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Valid)
+                }
+            }
+        }
     }
 
     fun updateName(newName: String) {
-        _uiState.update { it.copy(name = newName) }
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(name = newName)
+            }
+        }
     }
 
-    fun updateBirthday(newBirthday: String) {
-        _uiState.update { it.copy(birthday = newBirthday) }
+    fun loginWithCorrectName() {
+        viewModelScope.launch {
+            nameState()
+            if (uiState.value.nameState !is NameInputValid.Valid) {
+                shouldGoToNextScreen.value = false
+                return@launch
+            }
+
+            delay(3000)
+            shouldGoToNextScreen.value = true
+        }
     }
 
     fun updatePrivacyPolicyButtonState(newPrivacyPolicyButtonState: Boolean) {
