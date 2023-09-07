@@ -103,10 +103,14 @@ fun NavGraphBuilder.registerChildRoute(
 ) {
     composable(route = Screen.RegisterChild.route) {
         val viewModel: ChildRegisterViewModel = viewModel()
-
+        val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
         ChildRegisterScreen(
             viewModel = viewModel,
-            navigateToHomeScreen = navigateToHomeScreen
+            navigateToHomeScreen = navigateToHomeScreen,
+            onSignUpButtonClicked = {
+                viewModel.loginWithCorrectName()
+            },
+            shouldGoToNextScreen = shouldGoToNextScreen,
         )
     }
 }
