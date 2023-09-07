@@ -2,7 +2,6 @@ package com.example.loryblu.ui.theme
 
 import android.app.Activity
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -14,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val ColorScheme = lightColorScheme(
+private val colorScheme = lightColorScheme(
     primary = Blue,
     secondary = LightGray,
     tertiary = Gray,
@@ -22,7 +21,7 @@ private val ColorScheme = lightColorScheme(
 
 @Composable
 fun LoryBluTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
@@ -33,8 +32,8 @@ fun LoryBluTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> ColorScheme
-        else -> ColorScheme
+        darkTheme -> colorScheme
+        else -> colorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
