@@ -44,6 +44,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         )
         registerChildRoute(
             navigateToHomeScreen = {
+                navController.popBackStack()
                 navController.navigate(Screen.Home.route)
             }
         )
