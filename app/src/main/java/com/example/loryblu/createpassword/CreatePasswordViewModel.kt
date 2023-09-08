@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 
 data class UiStateCreatePassword(
     val showPassword: Boolean = false,
-    val showConfirmationPassword: Boolean = false,
     val password: String = "",
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
