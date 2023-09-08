@@ -75,7 +75,6 @@ fun GuardianRegisterScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-//            Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = uiState.email,
                 onValueChange = viewModel::updateEmail,
@@ -90,9 +89,8 @@ fun GuardianRegisterScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-//            Spacer(modifier = Modifier.height(16.dp))
 
-            // Password
+            // Password field
            LBPasswordTextField(
                onValueChange = { newPass: String ->
                    viewModel.run {
@@ -168,8 +166,8 @@ fun GuardianRegisterScreen(
                     }
                 }
             }
-//            Spacer(modifier = Modifier.height(16.dp))
-            // confirmation password
+
+            // Confirm password field
            LBPasswordTextField(
                onValueChange = { newPassConfirm ->
                    viewModel.run{
@@ -184,7 +182,6 @@ fun GuardianRegisterScreen(
                hidden = confirmPasswordHidden,
            )
         }
-//        Spacer(modifier = Modifier.height(32.dp))
         LBButton(
             textRes = R.string.next,
             onClick = {
