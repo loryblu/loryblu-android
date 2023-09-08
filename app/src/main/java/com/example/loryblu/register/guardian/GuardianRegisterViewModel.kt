@@ -27,8 +27,6 @@ data class GuardianRegisterUiState(
 )
 
 class GuardianRegisterViewModel : ViewModel() {
-    // eu tenho uma duvida de usar isso com flow sera que
-    // não estou gerando muitos ojetos e como o CG faz para eliminar esses objetos ?
     private val _uiState = MutableStateFlow(GuardianRegisterUiState())
     val uiState = _uiState
 
@@ -59,22 +57,6 @@ class GuardianRegisterViewModel : ViewModel() {
 
         _uiState.update {
             it.copy(confirmPasswordState = state)
-        }
-    }
-
-    fun togglePassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showPassword = it.showPassword.not())
-            }
-        }
-    }
-
-    fun toggleConfirmationPassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showConfirmationPassword = it.showConfirmationPassword.not())
-            }
         }
     }
 
