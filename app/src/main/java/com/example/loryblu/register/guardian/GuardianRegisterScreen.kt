@@ -1,5 +1,6 @@
 package com.example.loryblu.register.guardian
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -108,65 +109,62 @@ fun GuardianRegisterScreen(
                error = uiState.passwordState,
                hidden = passwordHidden
            )
-//            Spacer(modifier = Modifier.height(16.dp))
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(
-                        P_SMALL
-                    )
-                    .fillMaxWidth()
-            ) {
-                var counter = true
-                for (element in uiState.passwordHas.entries) {
-                    counter = element.value and counter
-                }
 
-                // test if the counter is true and this means that every field has the requirement
-                if (counter.not()) {
+            /**
+             * If any of the entries in passwordHas is false so it contain some error
+             * So it will display the errors below
+             */
+            if (false in uiState.passwordHas.values) {
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .padding(
+                            P_SMALL
+                        )
+                        .fillMaxWidth()
+                ) {
                     Text(
-                        stringResource(R.string.the_password_must_be),
-                        style = MaterialTheme.typography.labelMedium
+                        text = stringResource(R.string.the_password_must_be)
                     )
-                }
-
-                uiState.passwordHas.forEach {
-                    if (!it.value) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
-                                contentDescription = null,
-                                tint = Error
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = stringResource(id = it.key),
-                                color = Error,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        }
-                    } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_check),
-                                contentDescription = null,
-                                tint = Color.Black
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = stringResource(id = it.key),
-                                color = Color.Black,
-                                style = MaterialTheme.typography.labelMedium
-                            )
+                    uiState.passwordHas.forEach {
+                        // It value is the entry, if some error so its false, if there is no error so its true
+                        if (!it.value) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier.padding(5.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_close),
+                                    contentDescription = null,
+                                    tint = Error
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = stringResource(id = it.key),
+                                    color = Error,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        } else {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier.padding(5.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_check),
+                                    contentDescription = null,
+                                    tint = Color.Black
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = stringResource(id = it.key),
+                                    color = Color.Black,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
                         }
                     }
                 }
