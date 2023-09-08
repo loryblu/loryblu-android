@@ -1,5 +1,7 @@
 package com.example.loryblu.register.child
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,9 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -34,6 +38,7 @@ import com.example.loryblu.ui.components.LBNameTextField
 import com.example.loryblu.ui.components.LBRadioButton
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.util.P_SMALL
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,6 +49,8 @@ fun ChildRegisterScreen(
     shouldGoToNextScreen: Boolean,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -131,7 +138,9 @@ fun ChildRegisterScreen(
 
         LBButton(
             textRes = R.string.sign_up,
-            onClick = { onSignUpButtonClicked() },
+            onClick = {
+                onSignUpButtonClicked()
+            },
             modifier = Modifier
         )
 
@@ -140,9 +149,16 @@ fun ChildRegisterScreen(
 
     LaunchedEffect(key1 = shouldGoToNextScreen) {
         if (shouldGoToNextScreen) {
-            navigateToHomeScreen()
+            coroutineScope.launch {
+                showToast(context, "Sign up successful! Logging in...")
+                navigateToHomeScreen()
+            }
         }
     }
+}
+
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 @Composable
@@ -152,6 +168,6 @@ fun PreviewComposable() {
         viewModel = ChildRegisterViewModel(),
         navigateToHomeScreen = {},
         onSignUpButtonClicked = {},
-        shouldGoToNextScreen = false
+        shouldGoToNextScreen = false,
     )
 }
