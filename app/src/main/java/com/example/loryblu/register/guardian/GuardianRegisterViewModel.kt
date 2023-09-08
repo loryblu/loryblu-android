@@ -1,7 +1,11 @@
 package com.example.loryblu.register.guardian
 
+import android.util.Log
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import com.example.loryblu.R
+import com.example.loryblu.util.EmailInputValid
+import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.PasswordInputValid
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -9,6 +13,7 @@ import kotlinx.coroutines.flow.update
 data class GuardianRegisterUiState(
     val name: String = "",
     val email: String = "",
+    val emailState: EmailInputValid = EmailInputValid.Empty,
     val password: String = "",
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
@@ -22,6 +27,7 @@ data class GuardianRegisterUiState(
         R.string.Numbers to false,
         R.string.SpecialCharacters to false
     ),
+    val nameState: NameInputValid = NameInputValid.Empty,
 )
 
 class GuardianRegisterViewModel : ViewModel() {
@@ -85,6 +91,58 @@ class GuardianRegisterViewModel : ViewModel() {
     fun updateConfirmationPassword(newConfirmationPassword: String) {
         _uiState.update {
             it.copy(confirmationPassword = newConfirmationPassword)
+        }
+    }
+
+    fun nameState() {
+        val name = uiState.value.name
+        when {
+            name.isEmpty() -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.empty_name))
+                }
+            }
+            !name.matches(Regex("^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ ]+\$")) -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
+                }
+            }
+            name.count { it.isLetter() } < 5 -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.at_least_five_letters))
+                }
+            }
+            name.contains("  ") -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
+                }
+            }
+            else -> {
+                _uiState.update {
+                    it.copy(nameState = NameInputValid.Valid)
+                }
+            }
+        }
+    }
+
+    fun emailState() {
+        val email = uiState.value.email
+        val state : EmailInputValid = when {
+            email.isEmpty() -> {
+                EmailInputValid.Error(R.string.empty_email)
+            }
+
+            email.matches(Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\$")).not() -> {
+                EmailInputValid.Error(R.string.invalid_e_mail)
+            }
+
+            else -> {
+                EmailInputValid.Valid
+            }
+        }
+        Log.d("GuardianRegisterViewModel", "EmailState: $state")
+        _uiState.update {
+            it.copy(emailState = state)
         }
     }
 }

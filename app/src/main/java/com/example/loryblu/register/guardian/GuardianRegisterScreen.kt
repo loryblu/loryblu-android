@@ -30,9 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
+import com.example.loryblu.ui.components.LBEmailTextField
+import com.example.loryblu.ui.components.LBNameTextField
 import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Error
+import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.P_SMALL
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +66,10 @@ fun GuardianRegisterScreen(
         ) {
             OutlinedTextField(
                 value = uiState.name,
-                onValueChange = viewModel::updateName,
+                onValueChange = {
+                    viewModel.updateName(it)
+                    viewModel.nameState()
+                },
                 label = { Text(text = stringResource(R.string.name)) },
                 leadingIcon = {
                     Icon(
@@ -73,21 +79,52 @@ fun GuardianRegisterScreen(
                         )
                     )
                 },
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = uiState.email,
-                onValueChange = viewModel::updateEmail,
-                label = { Text(text = stringResource(R.string.email)) },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_email),
-                        contentDescription = stringResource(
-                            R.string.email_icon
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = uiState.nameState is NameInputValid.Error,
+                supportingText = {
+                    if(uiState.nameState is NameInputValid.Error) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = (uiState.nameState as NameInputValid.Error).messageId),
+                            color = MaterialTheme.colorScheme.error
                         )
-                    )
+                    }
                 },
-                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Mudar para esse quando configurarmos o layout
+//            LBNameTextField(
+//                value = uiState.name,
+//                onValueChange = { name: String ->
+//                    viewModel.updateName(name)
+//                    viewModel.nameState()
+//                },
+//                labelRes = stringResource(id = R.string.name),
+//                error = uiState.nameState,
+//            )
+//            OutlinedTextField(
+//                value = uiState.email,
+//                onValueChange = viewModel::updateEmail,
+//                label = { Text(text = stringResource(R.string.email)) },
+//                leadingIcon = {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_email),
+//                        contentDescription = stringResource(
+//                            R.string.email_icon
+//                        )
+//                    )
+//                },
+//                modifier = Modifier.fillMaxWidth()
+//            )
+            LBEmailTextField(
+                onValueChange = {
+                    viewModel.updateEmail(it)
+                    viewModel.emailState()
+                },
+                labelRes = stringResource(R.string.email),
+                value = uiState.email,
+                error = uiState.emailState,
             )
 
             // Password field
