@@ -43,6 +43,7 @@ fun GuardianRegisterScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
+    var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -179,11 +180,11 @@ fun GuardianRegisterScreen(
                        verifyConfirmationPassword(newPassConfir)
                    }
                },
-               onButtonClick = { passwordHidden = !passwordHidden },
+               onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
                labelRes = stringResource(id = R.string.confirm_password),
                value = uiState.confirmationPassword,
                error = uiState.passwordState,
-               hidden = passwordHidden,
+               hidden = confirmPasswordHidden,
            )
 
             if (uiState.equalsPassword == false) {
