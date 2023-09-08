@@ -39,6 +39,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         )
         registerGuardianRoute(
             navigateToChildRegister = {
+                navController.popBackStack()
                 navController.navigate(Screen.RegisterChild.route)
             }
         )
