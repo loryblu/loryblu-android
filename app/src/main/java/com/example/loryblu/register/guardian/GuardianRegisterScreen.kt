@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
 import com.example.loryblu.ui.components.LBEmailTextField
-import com.example.loryblu.ui.components.LBNameTextField
 import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Error
@@ -42,7 +42,9 @@ import com.example.loryblu.util.P_SMALL
 @Composable
 fun GuardianRegisterScreen(
     viewModel: GuardianRegisterViewModel,
-    navigateToChildRegister: () -> Unit
+    navigateToChildRegister: () -> Unit,
+    onNextButtonClicked: () -> Unit,
+    shouldGoToNextScreen: Boolean,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
@@ -132,7 +134,7 @@ fun GuardianRegisterScreen(
                onValueChange = { newPass: String ->
                    viewModel.run {
                        updatePassword(newPass)
-                       passwordCheck(newPass)
+                       passwordState()
                    }
                },
                onButtonClick = {
@@ -209,7 +211,7 @@ fun GuardianRegisterScreen(
                onValueChange = { newPassConfirm ->
                    viewModel.run{
                        updateConfirmationPassword(newPassConfirm)
-                       verifyConfirmationPassword()
+                       confirmPasswordState()
                    }
                },
                onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
@@ -222,10 +224,16 @@ fun GuardianRegisterScreen(
         LBButton(
             textRes = R.string.next,
             onClick = {
-                navigateToChildRegister()
+                onNextButtonClicked()
             },
             modifier = Modifier
         )
+
+        LaunchedEffect(key1 = shouldGoToNextScreen) {
+            if(shouldGoToNextScreen) {
+                navigateToChildRegister()
+            }
+        }
     }
 }
 
@@ -236,6 +244,10 @@ fun PreviewRegisterScreen() {
         viewModel = GuardianRegisterViewModel(),
         navigateToChildRegister = {
 
-        }
+        },
+        onNextButtonClicked = {
+
+        },
+        shouldGoToNextScreen = false,
         )
 }

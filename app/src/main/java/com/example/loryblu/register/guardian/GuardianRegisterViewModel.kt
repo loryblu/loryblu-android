@@ -1,14 +1,17 @@
 package com.example.loryblu.register.guardian
 
 import android.util.Log
-import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
 import com.example.loryblu.util.EmailInputValid
 import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.PasswordInputValid
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class GuardianRegisterUiState(
     val name: String = "",
@@ -31,17 +34,21 @@ data class GuardianRegisterUiState(
 )
 
 class GuardianRegisterViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(GuardianRegisterUiState())
-    val uiState = _uiState
+    var uiState = MutableStateFlow(GuardianRegisterUiState())
+        private set
 
-    fun passwordCheck(newPassword: String) {
-        val passwordHas = _uiState.value.passwordHas.toMutableMap()
+    var shouldGoToNextScreen = mutableStateOf(false)
+        private set
 
-        passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(newPassword)
-        passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newPassword)
-        passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newPassword)
-        passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
-        passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
+    fun passwordState() {
+        val password = uiState.value.password
+        val passwordHas = uiState.value.passwordHas.toMutableMap()
+
+        passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(password)
+        passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(password)
+        passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(password)
+        passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(password)
+        passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(password)
 
         val passwordState: PasswordInputValid = if (false in passwordHas.values) {
             PasswordInputValid.EmptyError
@@ -49,47 +56,47 @@ class GuardianRegisterViewModel : ViewModel() {
             PasswordInputValid.Valid
         }
 
-        _uiState.update {
+        uiState.update {
             it.copy(passwordHas = passwordHas, passwordState = passwordState)
         }
     }
 
-    fun verifyConfirmationPassword(force: Boolean = false) {
+    fun confirmPasswordState(force: Boolean = false) {
         val confirmPassword = uiState.value.confirmationPassword
 
         if(!force && confirmPassword.isEmpty()) return
 
-        val state = if(confirmPassword != _uiState.value.password) {
+        val state = if(confirmPassword != uiState.value.password) {
             PasswordInputValid.Error(R.string.passwords_must_be_identical)
         } else {
             PasswordInputValid.Valid
         }
 
-        _uiState.update {
+        uiState.update {
             it.copy(confirmPasswordState = state)
         }
     }
 
     fun updateName(newName: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(name = newName)
         }
     }
 
     fun updateEmail(newEmail: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(email = newEmail)
         }
     }
 
     fun updatePassword(newPassword: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(password = newPassword)
         }
     }
 
     fun updateConfirmationPassword(newConfirmationPassword: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(confirmationPassword = newConfirmationPassword)
         }
     }
@@ -98,27 +105,27 @@ class GuardianRegisterViewModel : ViewModel() {
         val name = uiState.value.name
         when {
             name.isEmpty() -> {
-                _uiState.update {
+                uiState.update {
                     it.copy(nameState = NameInputValid.Error(R.string.empty_name))
                 }
             }
             !name.matches(Regex("^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ ]+\$")) -> {
-                _uiState.update {
+                uiState.update {
                     it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
                 }
             }
             name.count { it.isLetter() } < 5 -> {
-                _uiState.update {
+                uiState.update {
                     it.copy(nameState = NameInputValid.Error(R.string.at_least_five_letters))
                 }
             }
             name.contains("  ") -> {
-                _uiState.update {
+                uiState.update {
                     it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
                 }
             }
             else -> {
-                _uiState.update {
+                uiState.update {
                     it.copy(nameState = NameInputValid.Valid)
                 }
             }
@@ -141,8 +148,26 @@ class GuardianRegisterViewModel : ViewModel() {
             }
         }
         Log.d("GuardianRegisterViewModel", "EmailState: $state")
-        _uiState.update {
+        uiState.update {
             it.copy(emailState = state)
+        }
+    }
+
+    fun verifyAllConditions() {
+        viewModelScope.launch {
+            passwordState()
+            confirmPasswordState(force = true)
+            emailState()
+            nameState()
+
+            if(uiState.value.confirmPasswordState == PasswordInputValid.Valid &&
+                uiState.value.passwordState == PasswordInputValid.Valid &&
+                uiState.value.nameState == NameInputValid.Valid &&
+                uiState.value.emailState == EmailInputValid.Valid
+            ){
+                delay(2000)
+                shouldGoToNextScreen.value = true
+            }
         }
     }
 }

@@ -92,10 +92,15 @@ fun NavGraphBuilder.registerGuardianRoute(
 ) {
     composable(route = Screen.RegisterGuardian.route) {
         val viewModel: GuardianRegisterViewModel = viewModel()
+        val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
 
         GuardianRegisterScreen(
             viewModel = viewModel,
-            navigateToChildRegister = navigateToChildRegister
+            onNextButtonClicked = {
+                viewModel.verifyAllConditions()
+            },
+            navigateToChildRegister = navigateToChildRegister,
+            shouldGoToNextScreen = shouldGoToNextScreen,
         )
     }
 }
