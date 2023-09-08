@@ -14,6 +14,7 @@ data class GuardianRegisterUiState(
     val password: String = "",
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
+    val confirmPasswordState: PasswordInputValid = PasswordInputValid.Empty,
     val showPassword: Boolean = true,
     val showConfirmationPassword: Boolean = true,
     val passwordHas: Map<Int, Boolean> = mapOf(
@@ -23,7 +24,6 @@ data class GuardianRegisterUiState(
         R.string.Numbers to false,
         R.string.SpecialCharacters to false
     ),
-    val equalsPassword: Boolean? = null
 )
 
 class GuardianRegisterViewModel : ViewModel() {
@@ -33,24 +33,32 @@ class GuardianRegisterViewModel : ViewModel() {
     val uiState = _uiState
 
     fun passwordCheck(newPassword: String) {
-        val _passwordHas = _uiState.value.passwordHas.toMutableMap()
+        val passwordHas = _uiState.value.passwordHas.toMutableMap()
 
-        _passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(newPassword)
-        _passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
-        _passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
+        passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(newPassword)
+        passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newPassword)
+        passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newPassword)
+        passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
+        passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
 
         _uiState.update {
-            it.copy(passwordHas = _passwordHas)
+            it.copy(passwordHas = passwordHas)
         }
     }
 
-    fun verifyConfirmationPassword(newConfirmationPassword: String) {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(equalsPassword = (newConfirmationPassword == _uiState.value.password))
-            }
+    fun verifyConfirmationPassword(force: Boolean = false) {
+        val confirmPassword = uiState.value.confirmationPassword
+
+        if(!force && confirmPassword.isEmpty()) return
+
+        val state = if(confirmPassword != _uiState.value.password) {
+            PasswordInputValid.Error(R.string.passwords_must_be_identical)
+        } else {
+            PasswordInputValid.Valid
+        }
+
+        _uiState.update {
+            it.copy(confirmPasswordState = state)
         }
     }
 

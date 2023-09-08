@@ -172,29 +172,18 @@ fun GuardianRegisterScreen(
 //            Spacer(modifier = Modifier.height(16.dp))
             // confirmation password
            LBPasswordTextField(
-               onValueChange = { newPassConfir ->
+               onValueChange = { newPassConfirm ->
                    viewModel.run{
-                       updateConfirmationPassword(newPassConfir)
-                       verifyConfirmationPassword(newPassConfir)
+                       updateConfirmationPassword(newPassConfirm)
+                       verifyConfirmationPassword()
                    }
                },
                onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
                labelRes = stringResource(id = R.string.confirm_password),
                value = uiState.confirmationPassword,
-               error = uiState.passwordState,
+               error = uiState.confirmPasswordState,
                hidden = confirmPasswordHidden,
            )
-
-            if (uiState.equalsPassword == false) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = stringResource(R.string.passwords_must_be_identical),
-                        color = Error,
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
         }
 //        Spacer(modifier = Modifier.height(32.dp))
         LBButton(
