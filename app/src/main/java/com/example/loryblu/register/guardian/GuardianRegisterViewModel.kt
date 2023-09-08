@@ -37,8 +37,14 @@ class GuardianRegisterViewModel : ViewModel() {
         passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
         passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
 
+        val passwordState: PasswordInputValid = if (false in passwordHas.values) {
+            PasswordInputValid.EmptyError
+        } else {
+            PasswordInputValid.Valid
+        }
+
         _uiState.update {
-            it.copy(passwordHas = passwordHas)
+            it.copy(passwordHas = passwordHas, passwordState = passwordState)
         }
     }
 
