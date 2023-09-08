@@ -62,7 +62,7 @@ fun LBPasswordTextField(
                 contentDescription = stringResource(R.string.lock_icon)
             )
         },
-        isError = error is PasswordInputValid.Error,
+        isError = error is PasswordInputValid.Error || error is PasswordInputValid.EmptyError,
         supportingText = {
             if(error is PasswordInputValid.Error) {
                 Text(
