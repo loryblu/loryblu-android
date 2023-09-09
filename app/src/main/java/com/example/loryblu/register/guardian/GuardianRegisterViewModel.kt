@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
+import com.example.loryblu.login.isEmailValid
 import com.example.loryblu.util.EmailInputValid
 import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.PasswordInputValid
@@ -138,11 +139,9 @@ class GuardianRegisterViewModel : ViewModel() {
             email.isEmpty() -> {
                 EmailInputValid.Error(R.string.empty_email)
             }
-
-            email.matches(Regex("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\$")).not() -> {
+            email.isEmailValid().not() -> {
                 EmailInputValid.Error(R.string.invalid_e_mail)
             }
-
             else -> {
                 EmailInputValid.Valid
             }
