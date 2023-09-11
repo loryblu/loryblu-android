@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,7 +31,8 @@ fun LBPasswordTextField(
     labelRes: String,
     value: String,
     error: PasswordInputValid,
-    hidden: Boolean
+    hidden: Boolean,
+    fieldFocus: (Boolean) -> Unit = {},
 ) {
     val visualTransformation =
         if (hidden) PasswordVisualTransformation() else VisualTransformation.None
@@ -72,7 +74,10 @@ fun LBPasswordTextField(
                 )
             }
         },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .onFocusChanged { focusState ->
+                fieldFocus(focusState.isFocused)
+            },
         visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         )

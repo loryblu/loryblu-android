@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -20,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,7 +38,6 @@ import com.example.loryblu.ui.theme.Error
 import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.P_SMALL
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuardianRegisterScreen(
     viewModel: GuardianRegisterViewModel,
@@ -49,6 +48,7 @@ fun GuardianRegisterScreen(
     val uiState by viewModel.uiState.collectAsState()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
+    var isPasswordTextFieldSelected by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -130,76 +130,81 @@ fun GuardianRegisterScreen(
             )
 
             // Password field
-           LBPasswordTextField(
-               onValueChange = { newPass: String ->
-                   viewModel.run {
-                       updatePassword(newPass)
-                       passwordState()
-                   }
-               },
-               onButtonClick = {
-                   passwordHidden = !passwordHidden
-               },
-               labelRes = stringResource(id = R.string.password),
-               value = uiState.password,
-               error = uiState.passwordState,
-               hidden = passwordHidden
-           )
+            LBPasswordTextField(
+                onValueChange = { newPass: String ->
+                    viewModel.run {
+                        updatePassword(newPass)
+                        passwordState()
+                    }
+                },
+                onButtonClick = {
+                    passwordHidden = !passwordHidden
+                },
+                labelRes = stringResource(id = R.string.password),
+                value = uiState.password,
+                error = uiState.passwordState,
+                hidden = passwordHidden,
+                fieldFocus = {
+                  isPasswordTextFieldSelected = it
+                },
+            )
 
             /**
              * If any of the entries in passwordHas is false so it contain some error
              * So it will display the errors below
              */
-            if (false in uiState.passwordHas.values) {
-                Column(
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.Start,
-                    modifier = Modifier
-                        .padding(
-                            P_SMALL
+            if(isPasswordTextFieldSelected) {
+                if (false in uiState.passwordHas.values) {
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .padding(
+                                P_SMALL
+                            )
+                            .fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.the_password_must_be)
                         )
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = stringResource(R.string.the_password_must_be)
-                    )
-                    uiState.passwordHas.forEach {
-                        // It value is the entry, if some error so its false, if there is no error so its true
-                        if (!it.value) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.padding(5.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_close),
-                                    contentDescription = null,
-                                    tint = Error
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    text = stringResource(id = it.key),
-                                    color = Error,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            }
-                        } else {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier.padding(5.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_check),
-                                    contentDescription = null,
-                                    tint = Color.Black
-                                )
-                                Spacer(modifier = Modifier.width(5.dp))
-                                Text(
-                                    text = stringResource(id = it.key),
-                                    color = Color.Black,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
+                        uiState.passwordHas.forEach {
+                            // It value is the entry, if some error so its false, if there is no error so its true
+                            if (!it.value) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start,
+                                    modifier = Modifier.padding(5.dp)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_close),
+                                        contentDescription = null,
+                                        tint = Error
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                    Text(
+                                        text = stringResource(id = it.key),
+                                        color = Error,
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
+                            } else {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start,
+                                    modifier = Modifier.padding(5.dp)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_check),
+                                        contentDescription = null,
+                                        tint = Color.Black
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                    Text(
+                                        text = stringResource(id = it.key),
+                                        color = Color.Black,
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
                             }
                         }
                     }
