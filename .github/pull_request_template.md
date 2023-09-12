@@ -11,9 +11,7 @@ Please include a summary of the change and which issue is fixed.
 ## Types of changes #
 
 - [ ] New feature (non-breaking change which adds functionality).
-
 - [ ] Bug fix (non-breaking change which fixes an issue).
-
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected).
 
 ## What changed: #
@@ -23,7 +21,6 @@ Please include a summary of the change and which issue is fixed.
 - [ ] Documentation
 - [ ] Gradle or Build
 - [ ] Navigation
-- [ ] Validations
 - [ ] Tests
 - [ ] Resource files
 - [ ] Project architecture
@@ -36,4 +33,4 @@ Please include a summary of the change and which issue is fixed.
 - [ ] Verified if branch is up-to-date with `development` (if not - rebase it or merge it).
 - [ ] Resolve git conflicts
 
-If any of the acceptance criteria are not met, please explain why below
+## If any of the acceptance criteria are not met, please explain why below #
