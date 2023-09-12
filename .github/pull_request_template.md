@@ -34,3 +34,4 @@ Please include a summary of the change and which issue is fixed.
 - [ ] Resolve git conflicts
 
 ## If any of the acceptance criteria are not met, please explain why below #
+What is the criteria? Why it is different?
