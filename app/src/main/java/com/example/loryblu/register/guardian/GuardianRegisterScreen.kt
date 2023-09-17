@@ -10,15 +10,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -30,19 +31,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.loryblu.R
 import com.example.loryblu.ui.components.LBButton
+import com.example.loryblu.ui.components.LBEmailTextField
 import com.example.loryblu.ui.components.LBPasswordTextField
 import com.example.loryblu.ui.components.LBTitle
 import com.example.loryblu.ui.theme.Error
+import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.P_SMALL
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuardianRegisterScreen(
     viewModel: GuardianRegisterViewModel,
-    navigateToChildRegister: () -> Unit
+    navigateToChildRegister: () -> Unit,
+    onNextButtonClicked: () -> Unit,
+    shouldGoToNextScreen: Boolean,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
+    var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
+    var isPasswordTextFieldSelected by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,7 +68,10 @@ fun GuardianRegisterScreen(
         ) {
             OutlinedTextField(
                 value = uiState.name,
-                onValueChange = viewModel::updateName,
+                onValueChange = {
+                    viewModel.updateName(it)
+                    viewModel.nameState()
+                },
                 label = { Text(text = stringResource(R.string.name)) },
                 leadingIcon = {
                     Icon(
@@ -72,139 +81,164 @@ fun GuardianRegisterScreen(
                         )
                     )
                 },
-                modifier = Modifier.fillMaxWidth()
-            )
-//            Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
-                value = uiState.email,
-                onValueChange = viewModel::updateEmail,
-                label = { Text(text = stringResource(R.string.email)) },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_email),
-                        contentDescription = stringResource(
-                            R.string.email_icon
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = uiState.nameState is NameInputValid.Error,
+                supportingText = {
+                    if(uiState.nameState is NameInputValid.Error) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(id = (uiState.nameState as NameInputValid.Error).messageId),
+                            color = MaterialTheme.colorScheme.error
                         )
-                    )
+                    }
                 },
-                modifier = Modifier.fillMaxWidth()
             )
-//            Spacer(modifier = Modifier.height(16.dp))
 
-            // Password
-           LBPasswordTextField(
-               onValueChange = { newPass: String ->
-                   viewModel.run {
-                       updatePassword(newPass)
-                       passwordCheck(newPass)
-                   }
-               },
-               onButtonClick = {
-                   passwordHidden = !passwordHidden
-               },
-               labelRes = stringResource(id = R.string.password),
-               value = uiState.password,
-               error = uiState.passwordState,
-               hidden = passwordHidden
-           )
-//            Spacer(modifier = Modifier.height(16.dp))
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(
-                        P_SMALL
-                    )
-                    .fillMaxWidth()
-            ) {
-                var counter = true
-                for (element in uiState.passwordHas.entries) {
-                    counter = element.value and counter
-                }
+            // Mudar para esse quando configurarmos o layout
+//            LBNameTextField(
+//                value = uiState.name,
+//                onValueChange = { name: String ->
+//                    viewModel.updateName(name)
+//                    viewModel.nameState()
+//                },
+//                labelRes = stringResource(id = R.string.name),
+//                error = uiState.nameState,
+//            )
+//            OutlinedTextField(
+//                value = uiState.email,
+//                onValueChange = viewModel::updateEmail,
+//                label = { Text(text = stringResource(R.string.email)) },
+//                leadingIcon = {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_email),
+//                        contentDescription = stringResource(
+//                            R.string.email_icon
+//                        )
+//                    )
+//                },
+//                modifier = Modifier.fillMaxWidth()
+//            )
+            LBEmailTextField(
+                onValueChange = {
+                    viewModel.updateEmail(it)
+                    viewModel.emailState()
+                },
+                labelRes = stringResource(R.string.email),
+                value = uiState.email,
+                error = uiState.emailState,
+            )
 
-                // test if the counter is true and this means that every field has the requirement
-                if (counter.not()) {
-                    Text(
-                        stringResource(R.string.the_password_must_be),
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                }
+            // Password field
+            LBPasswordTextField(
+                onValueChange = { newPass: String ->
+                    viewModel.run {
+                        updatePassword(newPass)
+                        passwordState()
+                    }
+                },
+                onButtonClick = {
+                    passwordHidden = !passwordHidden
+                },
+                labelRes = stringResource(id = R.string.password),
+                value = uiState.password,
+                error = uiState.passwordState,
+                hidden = passwordHidden,
+                fieldFocus = {
+                  isPasswordTextFieldSelected = it
+                },
+            )
 
-                uiState.passwordHas.forEach {
-                    if (!it.value) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
-                                contentDescription = null,
-                                tint = Error
+            /**
+             * If any of the entries in passwordHas is false so it contain some error
+             * So it will display the errors below
+             */
+            if(isPasswordTextFieldSelected) {
+                if (false in uiState.passwordHas.values) {
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .padding(
+                                P_SMALL
                             )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = stringResource(id = it.key),
-                                color = Error,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        }
-                    } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_check),
-                                contentDescription = null,
-                                tint = Color.Black
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = stringResource(id = it.key),
-                                color = Color.Black,
-                                style = MaterialTheme.typography.labelMedium
-                            )
+                            .fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.the_password_must_be)
+                        )
+                        uiState.passwordHas.forEach {
+                            // It value is the entry, if some error so its false, if there is no error so its true
+                            if (!it.value) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start,
+                                    modifier = Modifier.padding(5.dp)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_close),
+                                        contentDescription = null,
+                                        tint = Error
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                    Text(
+                                        text = stringResource(id = it.key),
+                                        color = Error,
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
+                            } else {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Start,
+                                    modifier = Modifier.padding(5.dp)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_check),
+                                        contentDescription = null,
+                                        tint = Color.Black
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
+                                    Text(
+                                        text = stringResource(id = it.key),
+                                        color = Color.Black,
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
-//            Spacer(modifier = Modifier.height(16.dp))
-            // confirmation password
+
+            // Confirm password field
            LBPasswordTextField(
-               onValueChange = { newPassConfir ->
+               onValueChange = { newPassConfirm ->
                    viewModel.run{
-                       updateConfirmationPassword(newPassConfir)
-                       verifyConfirmationPassword(newPassConfir)
+                       updateConfirmationPassword(newPassConfirm)
+                       confirmPasswordState()
                    }
                },
-               onButtonClick = { passwordHidden = !passwordHidden },
+               onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
                labelRes = stringResource(id = R.string.confirm_password),
                value = uiState.confirmationPassword,
-               error = uiState.passwordState,
-               hidden = passwordHidden,
+               error = uiState.confirmPasswordState,
+               hidden = confirmPasswordHidden,
            )
-
-            if (uiState.equalsPassword == false) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = stringResource(R.string.passwords_must_be_identical),
-                        color = Error,
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
         }
-//        Spacer(modifier = Modifier.height(32.dp))
         LBButton(
             textRes = R.string.next,
             onClick = {
-                navigateToChildRegister()
+                onNextButtonClicked()
             },
             modifier = Modifier
         )
+
+        LaunchedEffect(key1 = shouldGoToNextScreen) {
+            if(shouldGoToNextScreen) {
+                navigateToChildRegister()
+            }
+        }
     }
 }
 
@@ -215,6 +249,10 @@ fun PreviewRegisterScreen() {
         viewModel = GuardianRegisterViewModel(),
         navigateToChildRegister = {
 
-        }
+        },
+        onNextButtonClicked = {
+
+        },
+        shouldGoToNextScreen = false,
         )
 }

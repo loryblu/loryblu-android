@@ -1,9 +1,15 @@
 package com.example.loryblu.register.guardian
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
+import com.example.loryblu.login.isEmailValid
+import com.example.loryblu.util.EmailInputValid
+import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.PasswordInputValid
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -11,9 +17,11 @@ import kotlinx.coroutines.launch
 data class GuardianRegisterUiState(
     val name: String = "",
     val email: String = "",
+    val emailState: EmailInputValid = EmailInputValid.Empty,
     val password: String = "",
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
+    val confirmPasswordState: PasswordInputValid = PasswordInputValid.Empty,
     val showPassword: Boolean = true,
     val showConfirmationPassword: Boolean = true,
     val passwordHas: Map<Int, Boolean> = mapOf(
@@ -23,74 +31,142 @@ data class GuardianRegisterUiState(
         R.string.Numbers to false,
         R.string.SpecialCharacters to false
     ),
-    val equalsPassword: Boolean? = null
+    val nameState: NameInputValid = NameInputValid.Empty,
 )
 
 class GuardianRegisterViewModel : ViewModel() {
-    // eu tenho uma duvida de usar isso com flow sera que
-    // não estou gerando muitos ojetos e como o CG faz para eliminar esses objetos ?
-    private val _uiState = MutableStateFlow(GuardianRegisterUiState())
-    val uiState = _uiState
+    var uiState = MutableStateFlow(GuardianRegisterUiState())
+        private set
 
-    fun passwordCheck(newPassword: String) {
-        val _passwordHas = _uiState.value.passwordHas.toMutableMap()
+    var shouldGoToNextScreen = mutableStateOf(false)
+        private set
 
-        _passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(newPassword)
-        _passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(newPassword)
-        _passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(newPassword)
-        _passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(newPassword)
+    fun passwordState() {
+        val password = uiState.value.password
+        val passwordHas = uiState.value.passwordHas.toMutableMap()
 
-        _uiState.update {
-            it.copy(passwordHas = _passwordHas)
+        passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(password)
+        passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(password)
+        passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(password)
+        passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(password)
+        passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(password)
+
+        val passwordState: PasswordInputValid = if (false in passwordHas.values) {
+            PasswordInputValid.EmptyError
+        } else {
+            PasswordInputValid.Valid
+        }
+
+        uiState.update {
+            it.copy(passwordHas = passwordHas, passwordState = passwordState)
         }
     }
 
-    fun verifyConfirmationPassword(newConfirmationPassword: String) {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(equalsPassword = (newConfirmationPassword == _uiState.value.password))
-            }
-        }
-    }
+    fun confirmPasswordState(force: Boolean = false) {
+        val confirmPassword = uiState.value.confirmationPassword
 
-    fun togglePassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showPassword = it.showPassword.not())
-            }
-        }
-    }
+        if(!force && confirmPassword.isEmpty()) return
 
-    fun toggleConfirmationPassword() {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(showConfirmationPassword = it.showConfirmationPassword.not())
-            }
+        val state = if(confirmPassword != uiState.value.password) {
+            PasswordInputValid.Error(R.string.passwords_must_be_identical)
+        } else {
+            PasswordInputValid.Valid
+        }
+
+        uiState.update {
+            it.copy(confirmPasswordState = state)
         }
     }
 
     fun updateName(newName: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(name = newName)
         }
     }
 
     fun updateEmail(newEmail: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(email = newEmail)
         }
     }
 
     fun updatePassword(newPassword: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(password = newPassword)
         }
     }
 
     fun updateConfirmationPassword(newConfirmationPassword: String) {
-        _uiState.update {
+        uiState.update {
             it.copy(confirmationPassword = newConfirmationPassword)
+        }
+    }
+
+    fun nameState() {
+        val name = uiState.value.name
+        when {
+            name.isEmpty() -> {
+                uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.empty_name))
+                }
+            }
+            !name.matches(Regex("^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ ]+\$")) -> {
+                uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
+                }
+            }
+            name.count { it.isLetter() } < 5 -> {
+                uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.at_least_five_letters))
+                }
+            }
+            name.contains("  ") -> {
+                uiState.update {
+                    it.copy(nameState = NameInputValid.Error(R.string.invalid_name))
+                }
+            }
+            else -> {
+                uiState.update {
+                    it.copy(nameState = NameInputValid.Valid)
+                }
+            }
+        }
+    }
+
+    fun emailState() {
+        val email = uiState.value.email
+        val state : EmailInputValid = when {
+            email.isEmpty() -> {
+                EmailInputValid.Error(R.string.empty_email)
+            }
+            email.isEmailValid().not() -> {
+                EmailInputValid.Error(R.string.invalid_e_mail)
+            }
+            else -> {
+                EmailInputValid.Valid
+            }
+        }
+        Log.d("GuardianRegisterViewModel", "EmailState: $state")
+        uiState.update {
+            it.copy(emailState = state)
+        }
+    }
+
+    fun verifyAllConditions() {
+        viewModelScope.launch {
+            passwordState()
+            confirmPasswordState(force = true)
+            emailState()
+            nameState()
+
+            if(uiState.value.confirmPasswordState == PasswordInputValid.Valid &&
+                uiState.value.passwordState == PasswordInputValid.Valid &&
+                uiState.value.nameState == NameInputValid.Valid &&
+                uiState.value.emailState == EmailInputValid.Valid
+            ){
+                delay(2000)
+                shouldGoToNextScreen.value = true
+            }
         }
     }
 }
