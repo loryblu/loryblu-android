@@ -1,5 +1,6 @@
 package com.example.loryblu.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +26,9 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.loryblu.R
 import com.example.loryblu.register.child.ChildRegisterViewModel
 import com.example.loryblu.util.BirthdayInputValid
@@ -34,10 +37,10 @@ import com.example.loryblu.util.NameInputValid
 @ExperimentalMaterial3Api
 @Composable
 fun LBDatePicker(
-    valueSelectedDate : String,
-    viewModel: ChildRegisterViewModel,
     labelRes: String,
     error: BirthdayInputValid,
+    onBirthdayChange: (String) -> Unit,
+    birthDayState: () -> Unit,
     ) {
     val focusManager = LocalFocusManager.current
     var showDatePickerDialog by remember {
@@ -48,7 +51,6 @@ fun LBDatePicker(
         mutableStateOf("")
     }
     val confirmEnabled by remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
-    val uiState by viewModel.uiState.collectAsState()
     if (showDatePickerDialog) {
         DatePickerDialog(
             onDismissRequest = { showDatePickerDialog = false },
@@ -60,6 +62,8 @@ fun LBDatePicker(
                                 selectedDate = millis.toBrazilianDateFormat()
                             }
                         showDatePickerDialog = false
+                        onBirthdayChange(selectedDate)
+                        birthDayState()
                     },
                     enabled = confirmEnabled
                 ) {
@@ -78,13 +82,8 @@ fun LBDatePicker(
     }
 
     OutlinedTextField(
-        onValueChange = { newBirthday: String ->
-            viewModel.run {
-                updateBirthday(newBirthday)
-                birthdayState()
-            }
-        },
-        value = valueSelectedDate,
+        onValueChange = { },
+        value = selectedDate,
         label = { Text(text = labelRes) },
         leadingIcon = {
             Icon(
@@ -104,7 +103,7 @@ fun LBDatePicker(
             },
         shape = RoundedCornerShape(10.dp),
         readOnly = true,
-        isError = uiState.birthdayState is BirthdayInputValid.Error,
+        isError = error is BirthdayInputValid.Error,
         supportingText = {
             if(error is BirthdayInputValid.Error) {
                 Text(

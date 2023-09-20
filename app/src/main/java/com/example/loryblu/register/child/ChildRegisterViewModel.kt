@@ -1,5 +1,6 @@
 package com.example.loryblu.register.child
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
