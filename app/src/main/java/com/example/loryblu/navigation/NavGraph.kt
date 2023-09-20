@@ -115,7 +115,7 @@ fun NavGraphBuilder.registerChildRoute(
             viewModel = viewModel,
             navigateToHomeScreen = navigateToHomeScreen,
             onSignUpButtonClicked = {
-                viewModel.loginWithCorrectName()
+                viewModel.verifyAllConditions()
             },
             shouldGoToNextScreen = shouldGoToNextScreen,
         )

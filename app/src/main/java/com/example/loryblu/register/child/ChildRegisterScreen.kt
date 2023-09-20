@@ -80,7 +80,10 @@ fun ChildRegisterScreen(
             )
 
             LBDatePicker(
+                uiState.birthday,
+                viewModel,
                 labelRes = stringResource(id = R.string.birthday),
+                error = uiState.birthdayState,
             )
         }
 

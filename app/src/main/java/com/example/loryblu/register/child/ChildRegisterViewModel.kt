@@ -4,7 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
+import com.example.loryblu.util.BirthdayInputValid
+import com.example.loryblu.util.EmailInputValid
 import com.example.loryblu.util.NameInputValid
+import com.example.loryblu.util.PasswordInputValid
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,13 +27,14 @@ data class ChildRegisterUiState(
     val privacyPolicyButtonState: Boolean = false,
     val isBoyButtonClicked: Boolean = false,
     val isGirlButtonClicked: Boolean = false,
+    val birthday: String = "",
+    val birthdayState: BirthdayInputValid = BirthdayInputValid.Empty,
 )
 
 class ChildRegisterViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ChildRegisterUiState())
     val uiState = _uiState
     var shouldGoToNextScreen = mutableStateOf(false)
-        private set
 
     fun nameState() {
         val name = uiState.value.name
@@ -62,6 +66,21 @@ class ChildRegisterViewModel : ViewModel() {
             }
         }
     }
+    fun birthdayState() {
+        val birthday = uiState.value.birthday
+        when {
+            birthday.isEmpty() -> {
+                uiState.update {
+                    it.copy(birthdayState = BirthdayInputValid.Error(R.string.empty_birthday))
+                }
+            }
+            else -> {
+                uiState.update {
+                    it.copy(birthdayState = BirthdayInputValid.Valid)
+                }
+            }
+        }
+    }
 
     fun updateName(newName: String) {
         viewModelScope.launch {
@@ -71,7 +90,13 @@ class ChildRegisterViewModel : ViewModel() {
         }
     }
 
-    fun loginWithCorrectName() {
+    fun updateBirthday(newBirthday: String) {
+        uiState.update {
+            it.copy(birthday = newBirthday)
+        }
+    }
+
+   /* fun loginWithCorrectName() {
         viewModelScope.launch {
             nameState()
             if (uiState.value.nameState !is NameInputValid.Valid) {
@@ -81,6 +106,18 @@ class ChildRegisterViewModel : ViewModel() {
 
             delay(3000)
             shouldGoToNextScreen.value = true
+        }
+    }*/
+
+    fun verifyAllConditions() {
+        viewModelScope.launch {
+            nameState()
+            birthdayState()
+            if (uiState.value.nameState is NameInputValid.Valid &&
+                uiState.value.birthdayState is BirthdayInputValid.Empty) {
+                delay(3000)
+                shouldGoToNextScreen.value = true
+            }
         }
     }
 
