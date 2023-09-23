@@ -111,7 +111,7 @@ fun LoginScreen(
             )
         }
         LBButton(
-            textRes = R.string.sign_in_button,
+            textRes = R.string.sign_in,
             onClick = { onLoginButtonClicked() },
             modifier = Modifier
         )
@@ -153,7 +153,7 @@ fun LoginScreen(
                 )
             ) {
                 Text(
-                    text = stringResource(R.string.forgot_password),
+                    text = stringResource(R.string.forgot_your_password),
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     textDecoration = TextDecoration.Underline,
                 )

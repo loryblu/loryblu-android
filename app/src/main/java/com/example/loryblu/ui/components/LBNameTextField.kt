@@ -29,7 +29,7 @@ fun LBNameTextField(
         leadingIcon = {
             Icon(
                 painterResource(id = R.drawable.ic_user),
-                contentDescription = stringResource(R.string.person_icon)
+                contentDescription = stringResource(R.string.name_icon)
             )
         },
         label = { Text(text = labelRes) },
