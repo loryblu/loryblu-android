@@ -25,11 +25,11 @@ data class GuardianRegisterUiState(
     val showPassword: Boolean = true,
     val showConfirmationPassword: Boolean = true,
     val passwordHas: Map<Int, Boolean> = mapOf(
-        R.string.MoreThanEight to false,
-        R.string.Uppercase to false,
-        R.string.Lowercase to false,
-        R.string.Numbers to false,
-        R.string.SpecialCharacters to false
+        R.string.at_least_eight_characters to false,
+        R.string.at_least_one_uppercase_letter to false,
+        R.string.lowercase_letters to false,
+        R.string.numbers to false,
+        R.string.at_least_one_special_character to false
     ),
     val nameState: NameInputValid = NameInputValid.Empty,
 )
@@ -45,11 +45,11 @@ class GuardianRegisterViewModel : ViewModel() {
         val password = uiState.value.password
         val passwordHas = uiState.value.passwordHas.toMutableMap()
 
-        passwordHas[R.string.MoreThanEight] = Regex(".{8,}").containsMatchIn(password)
-        passwordHas[R.string.Uppercase] = Regex("[A-Z]").containsMatchIn(password)
-        passwordHas[R.string.Lowercase] = Regex("[a-z]").containsMatchIn(password)
-        passwordHas[R.string.Numbers] = Regex("[0-9]").containsMatchIn(password)
-        passwordHas[R.string.SpecialCharacters] = Regex("\\W").containsMatchIn(password)
+        passwordHas[R.string.at_least_eight_characters] = Regex(".{8,}").containsMatchIn(password)
+        passwordHas[R.string.at_least_one_uppercase_letter] = Regex("[A-Z]").containsMatchIn(password)
+        passwordHas[R.string.lowercase_letters] = Regex("[a-z]").containsMatchIn(password)
+        passwordHas[R.string.numbers] = Regex("[0-9]").containsMatchIn(password)
+        passwordHas[R.string.at_least_one_special_character] = Regex("\\W").containsMatchIn(password)
 
         val passwordState: PasswordInputValid = if (false in passwordHas.values) {
             PasswordInputValid.EmptyError
@@ -107,7 +107,7 @@ class GuardianRegisterViewModel : ViewModel() {
         when {
             name.isEmpty() -> {
                 uiState.update {
-                    it.copy(nameState = NameInputValid.Error(R.string.empty_name))
+                    it.copy(nameState = NameInputValid.Error(R.string.empty_field))
                 }
             }
             !name.matches(Regex("^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ ]+\$")) -> {
@@ -140,7 +140,7 @@ class GuardianRegisterViewModel : ViewModel() {
                 EmailInputValid.Error(R.string.empty_email)
             }
             email.isEmailValid().not() -> {
-                EmailInputValid.Error(R.string.invalid_e_mail)
+                EmailInputValid.Error(R.string.invalid_field)
             }
             else -> {
                 EmailInputValid.Valid

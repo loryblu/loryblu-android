@@ -1,63 +1,78 @@
 <resources>
+
+    <!-- Application name -->
     <string name="app_name">LoryBlu</string>
-    <string name="sign_in_button">SIGN IN</string>
-    <string name="login_title">Login</string>
-    <string name="loryblu_logo">loryblu logo</string>
-    <string name="mail_icon">mail icon</string>
-    <string name="email">email</string>
-    <string name="password">Password</string>
-    <string name="remember">Remember</string>
-    <string name="enter">Enter</string>
-    <string name="or">OR</string>
-    <string name="forgot_password">Forgot Password ?</string>
+
+    <!-- Logos -->
+    <string name="loryblu_logo">LoryBlu logo</string>
     <string name="google_logo">Google Logo</string>
     <string name="facebook_logo">Facebook Logo</string>
-    <string name="close_eye">close eye</string>
-    <string name="open_eye">Open eye</string>
-    <string name="invalid_e_mail">*Invalid E-mail</string>
-    <string name="required_field">*Required field</string>
-    <string name="empty_email">*Empty email</string>
-    <string name="child_registration">Child Registration</string>
-    <string name="birthday">Birthday</string>
+
+    <!-- Screen labels -->
+    <string name="login_title">Login</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="create_a_new_password">Create a new password</string>
     <string name="guardian_registration">Guardian Registration</string>
-    <string name="don_t_have_an_account">Don\'t have an account?</string>
-    <string name="register_now">Register now</string>
-    <string name="sign_up">SIGN UP</string>
-    <string name="boy">Boy</string>
-    <string name="girl">Girl</string>
-    <string name="name">Name</string>
-    <string name="person_icon">Person Icon</string>
-    <string name="email_icon">Email Icon</string>
-    <string name="lock_icon">lock icon</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="next">NEXT</string>
-    
-    <string name="the_password_must_be">The password must be:</string>
-    <string name="MoreThanEight">Has more than eight characters</string>
-    <string name="at_least_five_letters">Name must have at least five letters</string>
-    <string name="Lowercase">Has lowercase letters</string>
-    <string name="Uppercase">Has uppercase letters </string>
-    <string name="Numbers">Has Numbers</string>
-    <string name="i_agree_with_the">I agree with the </string>
-    <string name="privacy_policy">privacy policy</string>
-    
-    <string name="SpecialCharacters">Has special characters, like: ! @ # $ % &amp; *</string>
-    <string name="reset_password">Reset your password here</string>
-    <string name="send">SEND</string>
-    <string name="email_not_found">*E-mail not found</string>
-    <string name="email_send">E-mail successfully sent</string>
-    <string name="passwords_must_be_identical">*Passwords must be identical</string>
+    <string name="child_registration">Child Registration</string>
+
+    <!-- Screen general information -->
+    <string name="or">or</string>
+    <string name="don_t_have_an_account">Don\'t have an account ?</string>
     <string name="warning_about_change_the_password">You will be disconnected from all devices and will need to log in with your new password</string>
     <string name="reset_your_password_here">Reset your password here</string>
-    <string name="create_a_new_password">Create a new password</string>
-    <string name="password_is_empty">Password is empty</string>
-    <string name="boy_icon">Boy Icon</string>
-    <string name="girl_icon">Girl Icon</string>
-    <string name="send_email_successfully">Send email successfully</string>
-    <string name="password_invalid">The password is invalid</string>
-    <string name="confirm">Confirm</string>
-    <string name="cancel">Cancel</string>
-    <string name="invalid_name">Invalid name</string>
-    <string name="empty_name">Empty name</string>
+    <string name="i_agree_with_the">I agree with the </string>
+
+    <!-- TextFields icons description -->
+    <string name="email_icon">Email Icon</string>
+    <string name="password_icon">Password icon</string>
+    <string name="show_password_icon">Show password icon</string>
+    <string name="hide_password_icon">Hide password icon</string>
+    <string name="name_icon">Name Icon</string>
     <string name="birthday_icon">Birthday icon</string>
+    <string name="boy_icon">Boy button Icon</string>
+    <string name="girl_icon">Girl button Icon</string>
+
+    <!-- TextFields labels -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="new_password">New password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="name">Name</string>
+    <string name="birthday">Birthday</string>
+
+    <!-- TextFields validations -->
+    <string name="required_field">*Required field</string>
+    <string name="empty_email">*Empty e-mail</string>
+    <string name="invalid_field">*Invalid field</string>
+    <string name="email_not_found">*E-mail not found</string>
+    <string name="email_sent_successfully">E-mail sent successfully</string>
+    <string name="the_password_must_have">The password must have:</string>
+    <string name="at_least_eight_characters">At least eight characters</string>
+    <string name="at_least_one_uppercase_letter">At least one uppercase letter</string>
+    <string name="lowercase_letters">Lowercase letters</string>
+    <string name="numbers">Numbers</string>
+    <string name="at_least_one_special_character">At least one special character: ! @ # $ % &amp; *</string>
+    <string name="passwords_must_be_identical">*Passwords must be identical</string>
+    <string name="invalid_name">*Invalid name</string>
+    <string name="empty_field">*Empty field</string>
+    <string name="at_least_five_letters">*The name must have at least five letters</string>
+    <string name="password_is_empty">*Password is empty</string>
+    <string name="password_invalid">*The password is invalid</string>
+
+    <!-- Buttons labels -->
+    <string name="remember">Remember</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="register_now">Register now</string>
+    <string name="send">SEND</string>
+    <string name="reset_password">RESET PASSWORD</string>
+    <string name="next">NEXT</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="boy">Boy</string>
+    <string name="girl">Girl</string>
+    <string name="privacy_policy">privacy policy</string>
+    <string name="sign_up">SIGN UP</string>
+
 </resources>

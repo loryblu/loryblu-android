@@ -40,7 +40,7 @@ class LoginViewModel : ViewModel() {
             }
             email.isEmailValid().not() -> {
                 _uiState.update {
-                    it.copy(emailState = EmailInputValid.Error(R.string.invalid_e_mail))
+                    it.copy(emailState = EmailInputValid.Error(R.string.invalid_field))
                 }
             }
             else -> {

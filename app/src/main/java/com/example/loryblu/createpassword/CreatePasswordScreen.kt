@@ -75,7 +75,7 @@ fun CreatePasswordScreen(
                 }
             },
             onButtonClick = { passwordHidden = !passwordHidden },
-            labelRes = stringResource(id = R.string.password),
+            labelRes = stringResource(id = R.string.new_password),
             value = uiState.password,
             error = PasswordInputValid.Empty,
             hidden = passwordHidden,
@@ -98,7 +98,7 @@ fun CreatePasswordScreen(
             // test if the counter is true and this means that every field has the requirement
             if (counter.not()) {
                 Text(
-                    stringResource(R.string.the_password_must_be),
+                    stringResource(R.string.the_password_must_have),
                     style = MaterialTheme.typography.labelMedium
                 )
                 uiState.passwordErrors.forEach {
@@ -152,7 +152,7 @@ fun CreatePasswordScreen(
                 }
             },
             onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
-            labelRes = stringResource(id = R.string.confirm_password),
+            labelRes = stringResource(id = R.string.repeat_password),
             value = uiState.confirmationPassword,
             error = uiState.confirmPasswordState,
             hidden = confirmPasswordHidden
