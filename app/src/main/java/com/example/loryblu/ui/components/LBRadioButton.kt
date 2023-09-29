@@ -16,7 +16,7 @@ fun LBRadioButton(
 ) {
     RadioButton(
         selected = isChecked,
-        onClick = { onCheckedChange(!isChecked) },
+        onClick = { onCheckedChange(isChecked) },
         colors = RadioButtonDefaults.colors(
             selectedColor = MaterialTheme.colorScheme.primary,
             unselectedColor = Color.Gray

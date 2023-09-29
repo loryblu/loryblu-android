@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.loryblu.R
 import com.example.loryblu.util.BirthdayInputValid
 import com.example.loryblu.util.EmailInputValid
+import com.example.loryblu.util.GenderButtonValid
 import com.example.loryblu.util.NameInputValid
 import com.example.loryblu.util.PasswordInputValid
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 
 data class ChildRegisterUiState(
+    val genderState: GenderButtonValid = GenderButtonValid.Empty,
     val name: String = "",
     val confirmationName: String = "",
     val nameState: NameInputValid = NameInputValid.Empty,
@@ -26,7 +28,7 @@ data class ChildRegisterUiState(
     ),
     val confirmNameState: NameInputValid = NameInputValid.Empty,
     val privacyPolicyButtonState: Boolean = false,
-    val isBoyButtonClicked: Boolean = false,
+    val isBoyButtonClicked: Boolean = false, //mudar para uma só variavel genderSelect: String ("Boy" "Girl")
     val isGirlButtonClicked: Boolean = false,
     val birthday: String = "",
     val birthdayState: BirthdayInputValid = BirthdayInputValid.Empty,
@@ -64,6 +66,20 @@ class ChildRegisterViewModel : ViewModel() {
                 _uiState.update {
                     it.copy(nameState = NameInputValid.Valid)
                 }
+            }
+        }
+    }
+
+    fun genderState() {
+        val boy = uiState.value.isBoyButtonClicked
+        val girl = uiState.value.isGirlButtonClicked
+        if (!boy && !girl){
+            uiState.update {
+                it.copy(genderState = GenderButtonValid.EmptyError)
+            }
+        }else{
+            uiState.update {
+                it.copy(genderState = GenderButtonValid.Valid)
             }
         }
     }
@@ -114,8 +130,12 @@ class ChildRegisterViewModel : ViewModel() {
         viewModelScope.launch {
             nameState()
             birthdayState()
+            genderState()
             if (uiState.value.nameState is NameInputValid.Valid &&
-                uiState.value.birthdayState is BirthdayInputValid.Empty) {
+                uiState.value.birthdayState is BirthdayInputValid.Valid &&
+                (uiState.value.isBoyButtonClicked || uiState.value.isGirlButtonClicked)
+                && uiState.value.privacyPolicyButtonState) {
+
                 delay(3000)
                 shouldGoToNextScreen.value = true
             }

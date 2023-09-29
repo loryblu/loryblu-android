@@ -20,6 +20,7 @@
     <string name="child_registration">Child Registration</string>
     <string name="birthday">Birthday</string>
     <string name="empty_birthday">*Empty birthday</string>
+    <string name="empty_click_boy_girl">*Select a button</string>
     <string name="guardian_registration">Guardian Registration</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="register_now">Register now</string>
@@ -58,7 +59,9 @@
     <string name="password_invalid">The password is invalid</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
-    <string name="invalid_name">Invalid name</string>
-    <string name="empty_name">Empty name</string>
+    <string name="invalid_name">*Invalid name</string>
+    <string name="empty_name">*Empty name</string>
     <string name="birthday_icon">Birthday icon</string>
+    <string name="select_a_button">*Select a button</string>
+    <string name="acepte_privacy_policy">*Accept the privacy policy</string>
 </resources>

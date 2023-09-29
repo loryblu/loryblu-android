@@ -94,7 +94,7 @@ fun LBDatePicker(
             )
         },
         modifier = Modifier
-            .width(352.dp)
+            .fillMaxWidth()
             .onFocusEvent {
                 if (it.isFocused) {
                     showDatePickerDialog = true
