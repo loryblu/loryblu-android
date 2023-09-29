@@ -16,11 +16,11 @@ data class UiStateCreatePassword(
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
     val passwordErrors: Map<Int, Boolean> = mapOf(
-        R.string.MoreThanEight to false,
-        R.string.Uppercase to false,
-        R.string.Lowercase to false,
-        R.string.Numbers to false,
-        R.string.SpecialCharacters to false
+        R.string.at_least_eight_characters to false,
+        R.string.at_least_one_uppercase_letter to false,
+        R.string.lowercase_letters to false,
+        R.string.numbers to false,
+        R.string.at_least_one_special_character to false
     ),
     val confirmPasswordState: PasswordInputValid = PasswordInputValid.Empty,
 )
@@ -52,11 +52,11 @@ class CreatePasswordViewModel : ViewModel() {
         val password = uiState.value.password
         val passwordErrors = _uiState.value.passwordErrors.toMutableMap()
 
-        passwordErrors[R.string.MoreThanEight] = password.length > 8
-        passwordErrors[R.string.Uppercase] = password.any { it.isUpperCase() }
-        passwordErrors[R.string.Lowercase] = password.any { it.isLowerCase() }
-        passwordErrors[R.string.Numbers] = password.any { it.isDigit() }
-        passwordErrors[R.string.SpecialCharacters] = password.any { !it.isLetterOrDigit() }
+        passwordErrors[R.string.at_least_eight_characters] = password.length > 8
+        passwordErrors[R.string.at_least_one_uppercase_letter] = password.any { it.isUpperCase() }
+        passwordErrors[R.string.lowercase_letters] = password.any { it.isLowerCase() }
+        passwordErrors[R.string.numbers] = password.any { it.isDigit() }
+        passwordErrors[R.string.at_least_one_special_character] = password.any { !it.isLetterOrDigit() }
 
         val passwordState = if (passwordErrors.values.contains(false)) {
             PasswordInputValid.Error(R.string.password_invalid)

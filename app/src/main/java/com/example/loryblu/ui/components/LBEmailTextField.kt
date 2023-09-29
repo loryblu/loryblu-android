@@ -27,7 +27,7 @@ fun LBEmailTextField(
         leadingIcon = {
             Icon(
                 painterResource(id = R.drawable.ic_email),
-                contentDescription = stringResource(R.string.mail_icon)
+                contentDescription = stringResource(R.string.email_icon)
             )
         },
         label = { Text(text = labelRes) },

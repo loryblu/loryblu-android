@@ -51,7 +51,7 @@ fun ForgotPasswordScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = stringResource(R.string.reset_password),
+            text = stringResource(R.string.reset_your_password_here),
             style = MaterialTheme.typography.labelLarge
         )
 
@@ -78,7 +78,7 @@ fun ForgotPasswordScreen(
 
         if(showSuccessLabel.value) {
             LBSuccessLabel(
-                labelRes = stringResource(R.string.send_email_successfully)
+                labelRes = stringResource(R.string.email_sent_successfully)
             )
         }
     }

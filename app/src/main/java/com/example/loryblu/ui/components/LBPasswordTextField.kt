@@ -41,7 +41,7 @@ fun LBPasswordTextField(
         if (hidden) R.drawable.ic_eye_close else R.drawable.ic_eye_open
 
     val trailingDescriptionRes =
-        if (hidden) R.string.close_eye else R.string.open_eye
+        if (hidden) R.string.hide_password_icon else R.string.show_password_icon
 
     OutlinedTextField(
         value = value,
@@ -61,7 +61,7 @@ fun LBPasswordTextField(
         leadingIcon = {
             Icon(
                 painter = painterResource(R.drawable.ic_lock),
-                contentDescription = stringResource(R.string.lock_icon)
+                contentDescription = stringResource(R.string.password_icon)
             )
         },
         isError = error is PasswordInputValid.Error || error is PasswordInputValid.EmptyError,

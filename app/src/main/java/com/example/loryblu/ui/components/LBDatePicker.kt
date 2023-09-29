@@ -67,7 +67,7 @@ fun LBDatePicker(
                     },
                     enabled = confirmEnabled
                 ) {
-                    Text(text = stringResource(R.string.confirm))
+                    Text(text = stringResource(R.string.ok))
                 }
             },
             dismissButton = {

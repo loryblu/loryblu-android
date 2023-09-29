@@ -22,9 +22,9 @@ data class ChildRegisterUiState(
     val nameState: NameInputValid = NameInputValid.Empty,
     val nameErrors: Map<Int, Boolean> = mapOf(
         R.string.at_least_five_letters to false,
-        R.string.Uppercase to false,
-        R.string.Lowercase to false,
-        R.string.SpecialCharacters to false
+        R.string.at_least_one_uppercase_letter to false,
+        R.string.lowercase_letters to false,
+        R.string.at_least_one_special_character to false
     ),
     val confirmNameState: NameInputValid = NameInputValid.Empty,
     val privacyPolicyButtonState: Boolean = false,
@@ -44,7 +44,7 @@ class ChildRegisterViewModel : ViewModel() {
         when {
             name.isEmpty() -> {
                 _uiState.update {
-                    it.copy(nameState = NameInputValid.Error(R.string.empty_name))
+                    it.copy(nameState = NameInputValid.Error(R.string.empty_field))
                 }
             }
             !name.matches(Regex("^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ ]+\$")) -> {

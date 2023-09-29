@@ -77,7 +77,7 @@ fun GuardianRegisterScreen(
                     Icon(
                         painterResource(id = R.drawable.ic_user),
                         contentDescription = stringResource(
-                            R.string.person_icon
+                            R.string.name_icon
                         )
                     )
                 },
@@ -165,7 +165,7 @@ fun GuardianRegisterScreen(
                             .fillMaxWidth(),
                     ) {
                         Text(
-                            text = stringResource(R.string.the_password_must_be)
+                            text = stringResource(R.string.the_password_must_have)
                         )
                         uiState.passwordHas.forEach {
                             // It value is the entry, if some error so its false, if there is no error so its true
