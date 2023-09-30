@@ -12,8 +12,6 @@
     <string name="login_title">Login</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="create_a_new_password">Create a new password</string>
-    <string name="empty_birthday">*Empty birthday</string>
-    <string name="empty_click_boy_girl">*Select a button</string>
     <string name="guardian_registration">Guardian Registration</string>
     <string name="child_registration">Child Registration</string>
 
@@ -61,6 +59,10 @@
     <string name="at_least_five_letters">*The name must have at least five letters</string>
     <string name="password_is_empty">*Password is empty</string>
     <string name="password_invalid">*The password is invalid</string>
+    <string name="empty_name">*Empty name</string>
+    <string name="select_a_button">*Select a button</string>
+    <string name="accept_privacy_policy">*Accept the privacy policy</string>
+    <string name="empty_birthday">*Empty birthday</string>
 
     <!-- Buttons labels -->
     <string name="remember">Remember</string>
@@ -76,10 +78,4 @@
     <string name="girl">Girl</string>
     <string name="privacy_policy">privacy policy</string>
     <string name="sign_up">SIGN UP</string>
-
-    <string name="invalid_name">*Invalid name</string>
-    <string name="empty_name">*Empty name</string>
-    <string name="birthday_icon">Birthday icon</string>
-    <string name="select_a_button">*Select a button</string>
-    <string name="acepte_privacy_policy">*Accept the privacy policy</string>
 </resources>
