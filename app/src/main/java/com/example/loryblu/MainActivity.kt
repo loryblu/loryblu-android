@@ -9,9 +9,7 @@ import com.example.loryblu.createpassword.CreatePasswordViewModel
 import com.example.loryblu.navigation.Screen
 import com.example.loryblu.navigation.SetupNavGraph
 import com.example.loryblu.ui.theme.LoryBluTheme
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
