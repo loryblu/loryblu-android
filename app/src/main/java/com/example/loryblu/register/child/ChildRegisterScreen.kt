@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,8 +43,6 @@ import com.example.loryblu.ui.components.LBGirlButton
 import com.example.loryblu.ui.components.LBNameTextField
 import com.example.loryblu.ui.components.LBRadioButton
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.util.GenderButtonValid
-import com.example.loryblu.util.P_SMALL
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -205,7 +202,7 @@ fun ChildRegisterScreen(
                     fontSize = 12.sp,
                     modifier = Modifier
                         .align(Alignment.End),
-                    text = stringResource(R.string.acepte_privacy_policy),
+                    text = stringResource(R.string.accept_privacy_policy),
                     color = MaterialTheme.colorScheme.error
                 )
             }
