@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,12 +28,13 @@ fun LBGirlButton(
     onClick: () -> Unit,
     modifier: Modifier,
     isClicked: Boolean,
+    isBothButtonClicked: Boolean
 ) {
+    val buttonBorderColor = if (isClicked || isBothButtonClicked) Color(0xff004a98) else MaterialTheme.colorScheme.error
+
     OutlinedButton(
     onClick = { onClick() },
-    modifier = modifier
-    .width(168.dp)
-    .height(50.dp),
+    modifier = modifier,
     shape = RoundedCornerShape(10.dp),
     contentPadding = PaddingValues(end = 16.dp, start = 8.dp),
         colors = ButtonDefaults.outlinedButtonColors(
@@ -41,7 +43,7 @@ fun LBGirlButton(
         ),
         border = BorderStroke(
             width = 1.dp,
-            color = if (isClicked) Color(0xff004a98) else Color.Gray,
+            color = buttonBorderColor,
         )
     ) {
         Icon(
@@ -56,7 +58,6 @@ fun LBGirlButton(
             textAlign = TextAlign.Left,
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
-            modifier = Modifier.width(95.dp).padding(end = 16.dp),
         )
 
     }
@@ -66,6 +67,6 @@ fun LBGirlButton(
 @Preview
 fun PreviewLBGirlButton() {
     LBGirlButton(
-        onClick = {}, modifier = Modifier, isClicked = false
+        onClick = {}, modifier = Modifier, isClicked = false, isBothButtonClicked = false
     )
 }

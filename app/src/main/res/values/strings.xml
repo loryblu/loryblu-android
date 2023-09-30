@@ -59,6 +59,10 @@
     <string name="at_least_five_letters">*The name must have at least five letters</string>
     <string name="password_is_empty">*Password is empty</string>
     <string name="password_invalid">*The password is invalid</string>
+    <string name="empty_name">*Empty name</string>
+    <string name="select_a_button">*Select a button</string>
+    <string name="accept_privacy_policy">*Accept the privacy policy</string>
+    <string name="empty_birthday">*Empty birthday</string>
 
     <!-- Buttons labels -->
     <string name="remember">Remember</string>
@@ -74,5 +78,4 @@
     <string name="girl">Girl</string>
     <string name="privacy_policy">privacy policy</string>
     <string name="sign_up">SIGN UP</string>
-
 </resources>

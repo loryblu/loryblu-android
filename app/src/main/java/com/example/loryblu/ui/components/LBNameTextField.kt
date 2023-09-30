@@ -44,7 +44,7 @@ fun LBNameTextField(
                 )
             }
         },
-        modifier = Modifier.width(352.dp),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
     )
 }

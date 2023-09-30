@@ -75,5 +75,9 @@
     <string name="girl">Menina</string>
     <string name="privacy_policy">política de privacidade</string>
     <string name="sign_up">CADASTRAR</string>
+    <string name="empty_name">*Nome vazio</string>
+    <string name="select_a_button">*Selecione um botão</string>
+    <string name="accept_privacy_policy">*Aceite a política de privacidade</string>
+    <string name="empty_birthday">*Selecione uma data</string>
 
 </resources>

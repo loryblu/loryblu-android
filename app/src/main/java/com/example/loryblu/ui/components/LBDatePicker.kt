@@ -1,5 +1,7 @@
 package com.example.loryblu.ui.components
 
+import android.util.Log
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -7,11 +9,13 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +26,22 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.loryblu.R
+import com.example.loryblu.register.child.ChildRegisterViewModel
+import com.example.loryblu.util.BirthdayInputValid
+import com.example.loryblu.util.NameInputValid
 
 @ExperimentalMaterial3Api
 @Composable
 fun LBDatePicker(
     labelRes: String,
-) {
+    error: BirthdayInputValid,
+    onBirthdayChange: (String) -> Unit,
+    birthDayState: () -> Unit,
+    ) {
     val focusManager = LocalFocusManager.current
     var showDatePickerDialog by remember {
         mutableStateOf(false)
@@ -39,7 +51,6 @@ fun LBDatePicker(
         mutableStateOf("")
     }
     val confirmEnabled by remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
-
     if (showDatePickerDialog) {
         DatePickerDialog(
             onDismissRequest = { showDatePickerDialog = false },
@@ -51,6 +62,8 @@ fun LBDatePicker(
                                 selectedDate = millis.toBrazilianDateFormat()
                             }
                         showDatePickerDialog = false
+                        onBirthdayChange(selectedDate)
+                        birthDayState()
                     },
                     enabled = confirmEnabled
                 ) {
@@ -69,8 +82,8 @@ fun LBDatePicker(
     }
 
     OutlinedTextField(
-        value = selectedDate,
         onValueChange = { },
+        value = selectedDate,
         label = { Text(text = labelRes) },
         leadingIcon = {
             Icon(
@@ -81,7 +94,7 @@ fun LBDatePicker(
             )
         },
         modifier = Modifier
-            .width(352.dp)
+            .fillMaxWidth()
             .onFocusEvent {
                 if (it.isFocused) {
                     showDatePickerDialog = true
@@ -89,6 +102,16 @@ fun LBDatePicker(
                 }
             },
         shape = RoundedCornerShape(10.dp),
-        readOnly = true
+        readOnly = true,
+        isError = error is BirthdayInputValid.Error,
+        supportingText = {
+            if(error is BirthdayInputValid.Error) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(error.messageId),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
     )
 }

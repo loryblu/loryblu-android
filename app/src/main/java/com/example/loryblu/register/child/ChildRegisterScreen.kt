@@ -7,17 +7,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +43,6 @@ import com.example.loryblu.ui.components.LBGirlButton
 import com.example.loryblu.ui.components.LBNameTextField
 import com.example.loryblu.ui.components.LBRadioButton
 import com.example.loryblu.ui.components.LBTitle
-import com.example.loryblu.util.P_SMALL
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +56,8 @@ fun ChildRegisterScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-
+    var areButtonsClicked by remember { mutableStateOf(true) }
+    var isPrivacyChecked by remember { mutableStateOf(true) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -65,7 +71,7 @@ fun ChildRegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(P_SMALL)
+                .padding(16.dp)
                 .fillMaxWidth()
         ) {
 
@@ -81,12 +87,18 @@ fun ChildRegisterScreen(
 
             LBDatePicker(
                 labelRes = stringResource(id = R.string.birthday),
+                error = uiState.birthdayState,
+                onBirthdayChange = { newBirthday ->
+                    viewModel.updateBirthday(newBirthday)
+                },
+                birthDayState = {
+                    viewModel.birthdayState()
+                }
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         Row(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -94,44 +106,106 @@ fun ChildRegisterScreen(
                 onClick = {
                     viewModel.updateBoyButtonState(!uiState.isBoyButtonClicked)
                     viewModel.updateGirlButtonState(false)
-                }, modifier = Modifier.padding(end = 8.dp), isClicked = uiState.isBoyButtonClicked
+                    areButtonsClicked = true
+                },
+                modifier = Modifier
+                    .height(44.dp)
+                    .weight(1f)
+                    .fillMaxHeight(),
+                isClicked = uiState.isBoyButtonClicked,
+                isBothButtonClicked = areButtonsClicked,
             )
-
+            Spacer(modifier = Modifier.width(16.dp))
             LBGirlButton(
                 onClick = {
                     viewModel.updateGirlButtonState(!uiState.isGirlButtonClicked)
                     viewModel.updateBoyButtonState(false)
+                    areButtonsClicked = true
                 },
-                modifier = Modifier.padding(start = 8.dp),
-                isClicked = uiState.isGirlButtonClicked
+                modifier = Modifier
+                    .height(44.dp)
+                    .weight(1f)
+                    .fillMaxHeight(),
+                isClicked = uiState.isGirlButtonClicked,
+                isBothButtonClicked = areButtonsClicked,
             )
+
+        }
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.End)
+                .padding(end = 42.dp)
+        ) {
+            if (!areButtonsClicked) {
+                Text(
+                    fontSize = 12.sp,
+                    modifier = Modifier
+                        .align(Alignment.End),
+                    text = stringResource(R.string.select_a_button),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 16.dp, bottom = 0.dp, top = 0.dp, start = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.End
         ) {
             LBRadioButton(
                 isChecked = uiState.privacyPolicyButtonState,
-                onCheckedChange = viewModel::updatePrivacyPolicyButtonState,
-                modifier = Modifier
+                onCheckedChange = {
+                    viewModel.updatePrivacyPolicyButtonState(!uiState.privacyPolicyButtonState)
+                    isPrivacyChecked = true
+                },
+                modifier = Modifier,
             )
             Text(
                 text = stringResource(R.string.i_agree_with_the),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
-                color = Color.LightGray,
+                color = if (!isPrivacyChecked) {
+                    MaterialTheme.colorScheme.error
+                }else {
+                    Color.LightGray
+                }
             )
             Text(
                 text = stringResource(R.string.privacy_policy),
                 textDecoration = TextDecoration.Underline,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
-                color = Color.LightGray,
+                color = if (!isPrivacyChecked) {
+                    MaterialTheme.colorScheme.error
+                }else {
+                    Color.LightGray
+                }
+                ,
                 modifier = Modifier
                     .clickable { /*TODO*/ }
-                    .padding(start = 4.dp),
             )
+        }
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.End)
+                .padding(end = 16.dp)
+        ) {
+            if (!isPrivacyChecked) {
+                Text(
+                    fontSize = 12.sp,
+                    modifier = Modifier
+                        .align(Alignment.End),
+                    text = stringResource(R.string.accept_privacy_policy),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -139,6 +213,10 @@ fun ChildRegisterScreen(
         LBButton(
             textRes = R.string.sign_up,
             onClick = {
+                if (!uiState.isBoyButtonClicked && !uiState.isGirlButtonClicked)
+                    areButtonsClicked = false
+                if (!uiState.privacyPolicyButtonState)
+                    isPrivacyChecked = false
                 onSignUpButtonClicked()
             },
             modifier = Modifier
