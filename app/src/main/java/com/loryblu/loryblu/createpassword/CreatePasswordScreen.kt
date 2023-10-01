@@ -26,7 +26,7 @@ package com.loryblu.loryblu.createpassword
  import androidx.compose.ui.tooling.preview.Preview
  import androidx.compose.ui.unit.dp
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
- import com.example.loryblu.R
+ import com.loryblu.loryblu.R
  import com.loryblu.loryblu.ui.components.LBButton
  import com.loryblu.loryblu.ui.components.LBPasswordTextField
  import com.loryblu.loryblu.ui.components.LBTitle

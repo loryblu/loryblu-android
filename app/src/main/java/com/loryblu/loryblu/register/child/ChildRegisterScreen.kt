@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.loryblu.R
+import com.loryblu.loryblu.R
 import com.loryblu.loryblu.ui.components.LBBoyButton
 import com.loryblu.loryblu.ui.components.LBButton
 import com.loryblu.loryblu.ui.components.LBDatePicker

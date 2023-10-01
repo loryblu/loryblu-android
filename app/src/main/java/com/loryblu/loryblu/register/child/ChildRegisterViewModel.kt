@@ -3,7 +3,7 @@ package com.loryblu.loryblu.register.child
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.loryblu.R
+import com.loryblu.loryblu.R
 import com.loryblu.loryblu.util.BirthdayInputValid
 import com.loryblu.loryblu.util.GenderButtonValid
 import com.loryblu.loryblu.util.NameInputValid

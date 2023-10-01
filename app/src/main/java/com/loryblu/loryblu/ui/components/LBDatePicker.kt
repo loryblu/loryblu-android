@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.loryblu.R
+import com.loryblu.loryblu.R
 import com.loryblu.loryblu.util.BirthdayInputValid
 
 @ExperimentalMaterial3Api
