@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.loryblu.R
+import com.loryblu.loryblu.R
 import com.loryblu.loryblu.login.isEmailValid
 import com.loryblu.loryblu.util.EmailInputValid
 import com.loryblu.loryblu.util.NameInputValid

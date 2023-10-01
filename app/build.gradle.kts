@@ -5,11 +5,11 @@ plugins {
 
 
 android {
-    namespace = "com.example.loryblu"
+    namespace = "com.loryblu.loryblu"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.loryblu"
+        applicationId = "com.loryblu.loryblu"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -38,9 +38,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.1"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes +=("/META-INF/{AL2.0,LGPL2.1}")
         }
@@ -48,7 +48,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
