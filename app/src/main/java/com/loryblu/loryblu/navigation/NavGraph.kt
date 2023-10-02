@@ -11,6 +11,7 @@ import com.loryblu.loryblu.createpassword.CreatePasswordScreen
 import com.loryblu.loryblu.createpassword.CreatePasswordViewModel
 import com.loryblu.loryblu.forgotpassword.ForgotPasswordScreen
 import com.loryblu.loryblu.forgotpassword.ForgotPasswordViewModel
+import com.loryblu.loryblu.register.registration.RegistrationConfirmedScreen
 import com.loryblu.loryblu.home.HomeScreen
 import com.loryblu.loryblu.login.LoginScreen
 import com.loryblu.loryblu.login.LoginViewModel
@@ -46,7 +47,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         registerChildRoute(
             navigateToHomeScreen = {
                 navController.popBackStack(Screen.Login.route, true)
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.RegistrationConfirmed.route)
             }
         )
         createPasswordRoute(
@@ -59,6 +60,12 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             navigateToCreatePassword = {
                 navController.popBackStack()
                 navController.navigate(Screen.CreatePassword.route)
+            }
+        )
+        registrationConfirmedRoute(
+            navigateToHomeScreen = {
+                navController.popBackStack()
+                navController.navigate(Screen.Home.route)
             }
         )
         homeRoute()
@@ -152,6 +159,17 @@ fun NavGraphBuilder.forgotPasswordRoute(
             authenticated = authenticated,
             sendEmailSuccess = sendEmailSuccess,
             navigateToCreatePasswordScreen = navigateToCreatePassword,
+        )
+    }
+}
+
+fun NavGraphBuilder.registrationConfirmedRoute(
+    navigateToHomeScreen: () -> Unit,
+) {
+    composable(route = Screen.RegistrationConfirmed.route) {
+        RegistrationConfirmedScreen(
+            navigateToHomeScreen = navigateToHomeScreen,
+            shouldGoToNextScreen = true //sempre será true
         )
     }
 }
