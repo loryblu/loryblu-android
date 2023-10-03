@@ -32,7 +32,7 @@
     <string name="birthday_icon">Birthday icon</string>
     <string name="boy_icon">Boy button Icon</string>
     <string name="girl_icon">Girl button Icon</string>
-    <string name="registration_ok_icon">registration completed</string>
+    <string name="registration_ok_icon">registration completed icon</string>
 
     <!-- TextFields labels -->
     <string name="email">Email</string>
