@@ -14,6 +14,7 @@
     <string name="create_a_new_password">Create a new password</string>
     <string name="guardian_registration">Guardian Registration</string>
     <string name="child_registration">Child Registration</string>
+    <string name="registration_ok">Registration successfully completed</string>
 
     <!-- Screen general information -->
     <string name="or">or</string>
@@ -31,6 +32,7 @@
     <string name="birthday_icon">Birthday icon</string>
     <string name="boy_icon">Boy button Icon</string>
     <string name="girl_icon">Girl button Icon</string>
+    <string name="registration_ok_icon">registration completed</string>
 
     <!-- TextFields labels -->
     <string name="email">Email</string>

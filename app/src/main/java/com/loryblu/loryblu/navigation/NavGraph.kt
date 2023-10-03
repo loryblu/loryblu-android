@@ -45,7 +45,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             }
         )
         registerChildRoute(
-            navigateToHomeScreen = {
+            navigateToConfirmationScreen = {
                 navController.popBackStack(Screen.Login.route, true)
                 navController.navigate(Screen.RegistrationConfirmed.route)
             }
@@ -113,14 +113,14 @@ fun NavGraphBuilder.registerGuardianRoute(
 }
 
 fun NavGraphBuilder.registerChildRoute(
-    navigateToHomeScreen: () -> Unit,
+    navigateToConfirmationScreen: () -> Unit,
 ) {
     composable(route = Screen.RegisterChild.route) {
         val viewModel: ChildRegisterViewModel = viewModel()
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
         ChildRegisterScreen(
             viewModel = viewModel,
-            navigateToHomeScreen = navigateToHomeScreen,
+            navigateToConfirmationScreen = navigateToConfirmationScreen,
             onSignUpButtonClicked = {
                 viewModel.verifyAllConditions()
             },
