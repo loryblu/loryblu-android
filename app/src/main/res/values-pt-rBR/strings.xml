@@ -33,7 +33,7 @@
     <string name="birthday_icon">Ícone de data de nascimento</string>
     <string name="boy_icon">Ícone do botão menino</string>
     <string name="girl_icon">Ícone do botão da menina</string>
-    <string name="registration_ok_icon">registration completed</string>
+    <string name="registration_ok_icon">Registro completo</string>
 
     <!-- Títulos dos TextFields -->
     <string name="email">Email</string>
