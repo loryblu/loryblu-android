@@ -15,6 +15,7 @@
     <string name="create_a_new_password">Criar nova senha</string>
     <string name="guardian_registration">Cadastro do responsável</string>
     <string name="child_registration">Cadastro da criança</string>
+    <string name="registration_ok">Cadastro efetuado com sucesso</string>
 
     <!-- Informação geral das telas -->
     <string name="or">ou</string>
@@ -32,6 +33,7 @@
     <string name="birthday_icon">Ícone de data de nascimento</string>
     <string name="boy_icon">Ícone do botão menino</string>
     <string name="girl_icon">Ícone do botão da menina</string>
+    <string name="registration_ok_icon">registration completed</string>
 
     <!-- Títulos dos TextFields -->
     <string name="email">Email</string>
