@@ -1,4 +1,4 @@
-package com.loryblu.loryblu.navigation
+package com.loryblu.util
 
 sealed class Screen(val route: String) {
     object Login: Screen(route = "login_screen")
