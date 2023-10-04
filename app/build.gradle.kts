@@ -72,4 +72,5 @@ dependencies {
     implementation(project(":feature:auth:register"))
     implementation(project(":feature:auth:forgot_password"))
     implementation(project(":feature:auth:create_password"))
+    implementation(project(":feature:home"))
 }
