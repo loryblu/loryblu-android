@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.loryblu.ui"
-    compileSdk = 34
+    compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
-        minSdk = 26
+        minSdk = ProjectConfig.minSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -35,7 +35,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
     }
 }
 
