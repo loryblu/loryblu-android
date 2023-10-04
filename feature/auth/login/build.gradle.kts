@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.ui"
+    namespace = "com.loryblu.login"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -48,5 +48,12 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.activity.compose)
     implementation(libs.ui.tooling.preview)
+    implementation(libs.navigation.compose)
+    implementation(libs.lifecycle.runtime.compose)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+
+    implementation(project(":core:ui"))
     implementation(project(":core:util"))
 }
