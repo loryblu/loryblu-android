@@ -49,4 +49,6 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.ui.tooling.preview)
     implementation(project(":core:util"))
+
+    debugImplementation(libs.ui.tooling)
 }
