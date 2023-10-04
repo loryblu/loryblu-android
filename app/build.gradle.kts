@@ -69,4 +69,5 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":feature:auth:login"))
+    implementation(project(":feature:auth:register"))
 }

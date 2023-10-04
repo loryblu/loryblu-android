@@ -1,4 +1,4 @@
-package com.loryblu.loryblu.register.guardian
+package com.loryblu.register.guardian
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
