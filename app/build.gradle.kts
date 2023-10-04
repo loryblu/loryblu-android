@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.loryblu.loryblu"
-    compileSdk = 34
+    compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
         applicationId = "com.loryblu.loryblu"
-        minSdk = 26
-        targetSdk = 34
+        minSdk = ProjectConfig.minSdk
+        targetSdk = ProjectConfig.targetSdk
         versionCode = 1
         versionName = "1.0"
 
@@ -38,7 +38,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
     }
     packaging {
         resources {
