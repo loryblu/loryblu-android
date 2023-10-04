@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.home"
+    namespace = "com.loryblu.feature.home"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {

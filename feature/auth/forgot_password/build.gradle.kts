@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.forgot_password"
+    namespace = "com.loryblu.feature.auth.forgot_password"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
