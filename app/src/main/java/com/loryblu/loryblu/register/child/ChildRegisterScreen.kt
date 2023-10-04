@@ -1,6 +1,8 @@
 package com.loryblu.loryblu.register.child
 
-import androidx.compose.foundation.clickable
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,11 +52,17 @@ fun ChildRegisterScreen(
     navigateToConfirmationScreen: () -> Unit,
     onSignUpButtonClicked: () -> Unit,
     shouldGoToNextScreen: Boolean,
+    intentForPrivacy: Intent,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     var areButtonsClicked by remember { mutableStateOf(true) }
     var isPrivacyChecked by remember { mutableStateOf(true) }
+
+    val activityResultLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { _ -> }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -170,20 +179,23 @@ fun ChildRegisterScreen(
                     Color.LightGray
                 }
             )
-            Text(
-                text = stringResource(R.string.privacy_policy),
-                textDecoration = TextDecoration.Underline,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
-                color = if (!isPrivacyChecked) {
-                    MaterialTheme.colorScheme.error
-                }else {
-                    Color.LightGray
-                }
-                ,
-                modifier = Modifier
-                    .clickable { /*TODO*/ }
-            )
+            TextButton(
+                onClick = {
+                    activityResultLauncher.launch(intentForPrivacy)
+                },
+            ) {
+                Text(
+                    text = stringResource(R.string.privacy_policy),
+                    textDecoration = TextDecoration.Underline,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = if (!isPrivacyChecked) {
+                        MaterialTheme.colorScheme.error
+                    }else {
+                        Color.LightGray
+                    }
+                )
+            }
         }
         Column(
             verticalArrangement = Arrangement.Center,
@@ -239,5 +251,6 @@ fun PreviewComposable() {
         navigateToConfirmationScreen = {},
         onSignUpButtonClicked = {},
         shouldGoToNextScreen = false,
+        intentForPrivacy = Intent(Intent.ACTION_VIEW),
     )
 }
