@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.loryblu.login.navigation.loginRoute
 import com.loryblu.loryblu.createpassword.CreatePasswordScreen
 import com.loryblu.loryblu.createpassword.CreatePasswordViewModel
 import com.loryblu.loryblu.forgotpassword.ForgotPasswordScreen
@@ -75,27 +76,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
     }
 }
 
-fun NavGraphBuilder.loginRoute(
-    navigateToHomeScreen: () -> Unit,
-    navigateToForgotPassword: () -> Unit,
-    navigateToRegisterNow: () -> Unit,
-) {
-    composable(route = Screen.Login.route) {
-        val viewModel: LoginViewModel = viewModel()
-        val authenticated by viewModel.authenticated
 
-        LoginScreen(
-            viewModel = viewModel,
-            authenticated = authenticated,
-            onLoginButtonClicked = {
-                viewModel.loginWithEmailAndPassword()
-            },
-            navigateToHomeScreen = navigateToHomeScreen,
-            navigateToRegisterNow = navigateToRegisterNow,
-            navigateToForgotPassword = navigateToForgotPassword,
-        )
-    }
-}
 
 fun NavGraphBuilder.registerGuardianRoute(
     navigateToChildRegister: () -> Unit,

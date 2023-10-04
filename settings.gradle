@@ -16,3 +16,4 @@ rootProject.name = "LoryBlu"
 include ':app'
 include ':core:ui'
 include ':core:util'
+include ':feature:auth:login'
