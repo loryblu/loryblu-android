@@ -65,4 +65,7 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.navigation.compose)
+
+    implementation(project(":core:ui"))
+    implementation(project(":core:util"))
 }

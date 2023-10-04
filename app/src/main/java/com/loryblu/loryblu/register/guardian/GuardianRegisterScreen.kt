@@ -29,14 +29,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.loryblu.loryblu.R
-import com.loryblu.loryblu.ui.components.LBButton
-import com.loryblu.loryblu.ui.components.LBEmailTextField
-import com.loryblu.loryblu.ui.components.LBPasswordTextField
-import com.loryblu.loryblu.ui.components.LBTitle
-import com.loryblu.loryblu.ui.theme.Error
-import com.loryblu.loryblu.util.NameInputValid
-import com.loryblu.loryblu.util.P_SMALL
+import com.loryblu.ui.P_SMALL
+import com.loryblu.ui.R
+import com.loryblu.ui.components.LBEmailTextField
+import com.loryblu.ui.components.LBPasswordTextField
+import com.loryblu.ui.components.LBTitle
+import com.loryblu.util.validators.NameInputValid
 
 @Composable
 fun GuardianRegisterScreen(
@@ -145,7 +143,7 @@ fun GuardianRegisterScreen(
                 error = uiState.passwordState,
                 hidden = passwordHidden,
                 fieldFocus = {
-                  isPasswordTextFieldSelected = it
+                    isPasswordTextFieldSelected = it
                 },
             )
 
@@ -178,12 +176,12 @@ fun GuardianRegisterScreen(
                                     Icon(
                                         painter = painterResource(id = R.drawable.ic_close),
                                         contentDescription = null,
-                                        tint = Error
+                                        tint = com.loryblu.ui.theme.Error
                                     )
                                     Spacer(modifier = Modifier.width(5.dp))
                                     Text(
                                         text = stringResource(id = it.key),
-                                        color = Error,
+                                        color = com.loryblu.ui.theme.Error,
                                         style = MaterialTheme.typography.labelMedium
                                     )
                                 }
@@ -212,21 +210,21 @@ fun GuardianRegisterScreen(
             }
 
             // Confirm password field
-           LBPasswordTextField(
-               onValueChange = { newPassConfirm ->
-                   viewModel.run{
-                       updateConfirmationPassword(newPassConfirm)
-                       confirmPasswordState()
-                   }
-               },
-               onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
-               labelRes = stringResource(id = R.string.confirm_password),
-               value = uiState.confirmationPassword,
-               error = uiState.confirmPasswordState,
-               hidden = confirmPasswordHidden,
-           )
+            LBPasswordTextField(
+                onValueChange = { newPassConfirm ->
+                    viewModel.run {
+                        updateConfirmationPassword(newPassConfirm)
+                        confirmPasswordState()
+                    }
+                },
+                onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
+                labelRes = stringResource(id = R.string.confirm_password),
+                value = uiState.confirmationPassword,
+                error = uiState.confirmPasswordState,
+                hidden = confirmPasswordHidden,
+            )
         }
-        LBButton(
+        com.loryblu.ui.components.LBButton(
             textRes = R.string.next,
             onClick = {
                 onNextButtonClicked()

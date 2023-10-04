@@ -3,10 +3,10 @@ package com.loryblu.loryblu.register.child
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.loryblu.loryblu.R
-import com.loryblu.loryblu.util.BirthdayInputValid
-import com.loryblu.loryblu.util.GenderButtonValid
-import com.loryblu.loryblu.util.NameInputValid
+import com.loryblu.ui.R
+import com.loryblu.util.validators.BirthdayInputValid
+import com.loryblu.util.validators.GenderButtonValid
+import com.loryblu.util.validators.NameInputValid
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

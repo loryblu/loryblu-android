@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.loryblu.loryblu.navigation.Screen
 import com.loryblu.loryblu.navigation.SetupNavGraph
-import com.loryblu.loryblu.ui.theme.LoryBluTheme
+import com.loryblu.ui.theme.LoryBluTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

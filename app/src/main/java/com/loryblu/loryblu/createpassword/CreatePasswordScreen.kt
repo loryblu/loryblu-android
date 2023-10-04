@@ -26,13 +26,11 @@ package com.loryblu.loryblu.createpassword
  import androidx.compose.ui.tooling.preview.Preview
  import androidx.compose.ui.unit.dp
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
- import com.loryblu.loryblu.R
- import com.loryblu.loryblu.ui.components.LBButton
- import com.loryblu.loryblu.ui.components.LBPasswordTextField
- import com.loryblu.loryblu.ui.components.LBTitle
- import com.loryblu.loryblu.ui.theme.Error
- import com.loryblu.loryblu.util.P_SMALL
- import com.loryblu.loryblu.util.PasswordInputValid
+ import com.loryblu.ui.R
+ import com.loryblu.ui.P_SMALL
+ import com.loryblu.ui.components.LBButton
+ import com.loryblu.ui.components.LBPasswordTextField
+ import com.loryblu.util.validators.PasswordInputValid
 
 @Composable
 fun CreatePasswordScreen(
@@ -54,7 +52,7 @@ fun CreatePasswordScreen(
 
 
 
-        LBTitle(textRes = R.string.create_a_new_password)
+        com.loryblu.ui.components.LBTitle(textRes = R.string.create_a_new_password)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -111,12 +109,12 @@ fun CreatePasswordScreen(
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_close),
                                 contentDescription = null,
-                                tint = Error
+                                tint = com.loryblu.ui.theme.Error
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
                                 text = stringResource(id = it.key),
-                                color = Error,
+                                color = com.loryblu.ui.theme.Error,
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }

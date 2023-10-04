@@ -35,14 +35,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.loryblu.loryblu.R
-import com.loryblu.loryblu.ui.components.LBBoyButton
-import com.loryblu.loryblu.ui.components.LBButton
-import com.loryblu.loryblu.ui.components.LBDatePicker
-import com.loryblu.loryblu.ui.components.LBGirlButton
-import com.loryblu.loryblu.ui.components.LBNameTextField
-import com.loryblu.loryblu.ui.components.LBRadioButton
-import com.loryblu.loryblu.ui.components.LBTitle
+import com.loryblu.ui.R
+import com.loryblu.ui.components.LBBoyButton
+import com.loryblu.ui.components.LBButton
+import com.loryblu.ui.components.LBDatePicker
+import com.loryblu.ui.components.LBGirlButton
+import com.loryblu.ui.components.LBNameTextField
+import com.loryblu.ui.components.LBTitle
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -161,7 +160,7 @@ fun ChildRegisterScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
-            LBRadioButton(
+            com.loryblu.ui.components.LBRadioButton(
                 isChecked = uiState.privacyPolicyButtonState,
                 onCheckedChange = {
                     viewModel.updatePrivacyPolicyButtonState(!uiState.privacyPolicyButtonState)
