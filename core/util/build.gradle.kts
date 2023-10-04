@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.util"
+    namespace = "com.loryblu.core.util"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {

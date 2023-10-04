@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.register"
+    namespace = "com.loryblu.feature.auth.register"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {

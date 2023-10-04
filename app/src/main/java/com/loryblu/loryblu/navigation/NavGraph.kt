@@ -3,14 +3,14 @@ package com.loryblu.loryblu.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.loryblu.create_password.navigation.createPasswordRoute
-import com.loryblu.forgot_password.navigation.forgotPasswordRoute
-import com.loryblu.home.navigation.homeRoute
-import com.loryblu.login.navigation.loginRoute
-import com.loryblu.register.navigation.registerChildRoute
-import com.loryblu.register.navigation.registerGuardianRoute
-import com.loryblu.register.navigation.registrationConfirmedRoute
-import com.loryblu.util.Screen
+import com.loryblu.feature.auth.create_password.navigation.createPasswordRoute
+import com.loryblu.feature.auth.forgot_password.navigation.forgotPasswordRoute
+import com.loryblu.feature.home.navigation.homeRoute
+import com.loryblu.feature.auth.login.navigation.loginRoute
+import com.loryblu.feature.auth.register.navigation.registerChildRoute
+import com.loryblu.feature.auth.register.navigation.registerGuardianRoute
+import com.loryblu.feature.auth.register.navigation.registrationConfirmedRoute
+import com.loryblu.core.util.Screen
 
 @Composable
 fun SetupNavGraph(startDestination: String, navController: NavHostController) {

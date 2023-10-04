@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.create_password"
+    namespace = "com.loryblu.feature.auth.create_password"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
