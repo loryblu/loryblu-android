@@ -4,9 +4,10 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.loryblu.loryblu.R
-import com.loryblu.loryblu.util.EmailInputValid
-import com.loryblu.loryblu.util.PasswordInputValid
+import com.loryblu.ui.R
+import com.loryblu.util.extensions.isEmailValid
+import com.loryblu.util.validators.EmailInputValid
+import com.loryblu.util.validators.PasswordInputValid
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

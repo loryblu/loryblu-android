@@ -21,15 +21,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.loryblu.loryblu.R
-import com.loryblu.loryblu.ui.components.LBButton
-import com.loryblu.loryblu.ui.components.LBEmailTextField
-import com.loryblu.loryblu.ui.components.LBSuccessLabel
-import com.loryblu.loryblu.ui.components.LBTitle
-import com.loryblu.loryblu.util.P_MEDIUM
-import com.loryblu.loryblu.util.P_SMALL
+import com.loryblu.ui.P_MEDIUM
+import com.loryblu.ui.P_SMALL
+import com.loryblu.ui.R
+import com.loryblu.ui.components.LBButton
+import com.loryblu.ui.components.LBEmailTextField
+import com.loryblu.ui.components.LBTitle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel,
@@ -77,7 +75,7 @@ fun ForgotPasswordScreen(
         )
 
         if(showSuccessLabel.value) {
-            LBSuccessLabel(
+            com.loryblu.ui.components.LBSuccessLabel(
                 labelRes = stringResource(R.string.email_sent_successfully)
             )
         }

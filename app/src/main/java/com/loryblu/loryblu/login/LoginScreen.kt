@@ -32,15 +32,13 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.loryblu.loryblu.R
-import com.loryblu.loryblu.ui.components.LBButton
-import com.loryblu.loryblu.ui.components.LBEmailTextField
-import com.loryblu.loryblu.ui.components.LBPasswordTextField
-import com.loryblu.loryblu.ui.components.LBTitle
-import com.loryblu.loryblu.ui.theme.DarkBlue
-import com.loryblu.loryblu.util.P_LARGE
-import com.loryblu.loryblu.util.P_MEDIUM
-import com.loryblu.loryblu.util.P_SMALL
+import com.loryblu.ui.P_LARGE
+import com.loryblu.ui.P_MEDIUM
+import com.loryblu.ui.P_SMALL
+import com.loryblu.ui.R
+import com.loryblu.ui.components.LBEmailTextField
+import com.loryblu.ui.components.LBPasswordTextField
+import com.loryblu.ui.components.LBTitle
 
 @Composable
 fun LoginScreen(
@@ -80,10 +78,12 @@ fun LoginScreen(
         )
 
         LBPasswordTextField(
-            onValueChange = { password: String  -> viewModel.run {
-                updatePassword(password)
-                passwordState()
-            }},
+            onValueChange = { password: String ->
+                viewModel.run {
+                    updatePassword(password)
+                    passwordState()
+                }
+            },
             onButtonClick = { passwordHidden = !passwordHidden },
             labelRes = stringResource(id = R.string.password),
             value = uiState.password,
@@ -110,7 +110,7 @@ fun LoginScreen(
                 maxLines = 1
             )
         }
-        LBButton(
+        com.loryblu.ui.components.LBButton(
             textRes = R.string.sign_in,
             onClick = { onLoginButtonClicked() },
             modifier = Modifier
@@ -193,7 +193,7 @@ fun LoginScreen(
                 Text(
                     text = stringResource(R.string.register_now),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = DarkBlue,
+                    color = com.loryblu.ui.theme.DarkBlue,
                     textDecoration = TextDecoration.Underline
                 )
             }
