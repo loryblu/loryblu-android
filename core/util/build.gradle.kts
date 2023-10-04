@@ -34,6 +34,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.junit)
-    implementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
 }
