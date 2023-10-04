@@ -1,4 +1,4 @@
-package com.loryblu.loryblu.createpassword
+package com.loryblu.create_password
 
  import androidx.compose.foundation.layout.Arrangement
  import androidx.compose.foundation.layout.Column
@@ -26,11 +26,11 @@ package com.loryblu.loryblu.createpassword
  import androidx.compose.ui.tooling.preview.Preview
  import androidx.compose.ui.unit.dp
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
- import com.loryblu.ui.R
  import com.loryblu.ui.P_SMALL
  import com.loryblu.ui.components.LBButton
  import com.loryblu.ui.components.LBPasswordTextField
  import com.loryblu.util.validators.PasswordInputValid
+ import com.loryblu.ui.R
 
 @Composable
 fun CreatePasswordScreen(

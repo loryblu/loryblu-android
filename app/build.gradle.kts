@@ -70,4 +70,6 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":feature:auth:login"))
     implementation(project(":feature:auth:register"))
+    implementation(project(":feature:auth:forgot_password"))
+    implementation(project(":feature:auth:create_password"))
 }

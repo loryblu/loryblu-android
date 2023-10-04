@@ -1,14 +1,14 @@
-package com.loryblu.loryblu.createpassword
+package com.loryblu.create_password
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.loryblu.ui.R
 import com.loryblu.util.validators.PasswordInputValid
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.loryblu.ui.R
 
 data class UiStateCreatePassword(
     val showPassword: Boolean = false,
@@ -52,7 +52,7 @@ class CreatePasswordViewModel : ViewModel() {
         val password = uiState.value.password
         val passwordErrors = _uiState.value.passwordErrors.toMutableMap()
 
-        passwordErrors[R.string.at_least_eight_characters] = password.length > 8
+        passwordErrors[R.string.at_least_eight_characters] = password.length >= 8
         passwordErrors[R.string.at_least_one_uppercase_letter] = password.any { it.isUpperCase() }
         passwordErrors[R.string.lowercase_letters] = password.any { it.isLowerCase() }
         passwordErrors[R.string.numbers] = password.any { it.isDigit() }
