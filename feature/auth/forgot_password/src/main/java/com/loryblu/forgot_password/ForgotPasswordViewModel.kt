@@ -1,4 +1,4 @@
-package com.loryblu.loryblu.forgotpassword
+package com.loryblu.forgot_password
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
