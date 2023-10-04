@@ -1,5 +1,7 @@
 package com.loryblu.loryblu.navigation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -118,6 +120,9 @@ fun NavGraphBuilder.registerChildRoute(
     composable(route = Screen.RegisterChild.route) {
         val viewModel: ChildRegisterViewModel = viewModel()
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
+        val intentForPrivacyPolicy = Intent(Intent.ACTION_VIEW)
+        intentForPrivacyPolicy.setData(Uri.parse("https://online.fliphtml5.com/ibqqn/mtvs/#p=1"))
+
         ChildRegisterScreen(
             viewModel = viewModel,
             navigateToConfirmationScreen = navigateToConfirmationScreen,
@@ -125,6 +130,7 @@ fun NavGraphBuilder.registerChildRoute(
                 viewModel.verifyAllConditions()
             },
             shouldGoToNextScreen = shouldGoToNextScreen,
+            intentForPrivacy = intentForPrivacyPolicy,
         )
     }
 }
