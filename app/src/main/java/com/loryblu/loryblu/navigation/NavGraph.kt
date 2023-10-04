@@ -21,6 +21,7 @@ import com.loryblu.loryblu.register.child.ChildRegisterScreen
 import com.loryblu.loryblu.register.child.ChildRegisterViewModel
 import com.loryblu.loryblu.register.guardian.GuardianRegisterScreen
 import com.loryblu.loryblu.register.guardian.GuardianRegisterViewModel
+import com.loryblu.util.Screen
 
 @Composable
 fun SetupNavGraph(startDestination: String, navController: NavHostController) {
