@@ -1,4 +1,4 @@
-package com.loryblu.loryblu.register.guardian
+package com.loryblu.register.guardian
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

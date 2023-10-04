@@ -1,4 +1,4 @@
-package com.loryblu.loryblu.register.child
+package com.loryblu.register.child
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

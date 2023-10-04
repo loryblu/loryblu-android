@@ -1,4 +1,4 @@
-package com.loryblu.loryblu.register.child
+package com.loryblu.register.child
 
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
