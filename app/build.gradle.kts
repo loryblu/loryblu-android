@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.navigation.compose)
+    implementation(libs.koin.androidx.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -65,4 +66,5 @@ dependencies {
     implementation(project(":feature:auth:forgot_password"))
     implementation(project(":feature:auth:create_password"))
     implementation(project(":feature:home"))
+    implementation(project(":data:auth"))
 }
