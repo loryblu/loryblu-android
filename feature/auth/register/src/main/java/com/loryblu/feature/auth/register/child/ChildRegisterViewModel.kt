@@ -7,6 +7,7 @@ import com.loryblu.core.ui.R
 import com.loryblu.core.util.validators.BirthdayInputValid
 import com.loryblu.core.util.validators.GenderButtonValid
 import com.loryblu.core.util.validators.NameInputValid
+import com.loryblu.data.auth.repository.RegisterRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,10 +32,16 @@ data class ChildRegisterUiState(
     val birthdayState: BirthdayInputValid = BirthdayInputValid.Empty,
 )
 
-class ChildRegisterViewModel : ViewModel() {
+class ChildRegisterViewModel(
+    private val registerRepository: RegisterRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ChildRegisterUiState())
     val uiState = _uiState
     var shouldGoToNextScreen = mutableStateOf(false)
+
+    private fun registerUser() {
+        registerRepository.registerUser()
+    }
 
     fun nameState() {
         val name = uiState.value.name
@@ -133,6 +140,7 @@ class ChildRegisterViewModel : ViewModel() {
                 (uiState.value.isBoyButtonClicked || uiState.value.isGirlButtonClicked)
                 && uiState.value.privacyPolicyButtonState) {
 
+                registerUser()
                 delay(3000)
                 shouldGoToNextScreen.value = true
             }

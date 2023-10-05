@@ -12,6 +12,7 @@ import com.loryblu.feature.auth.register.child.ChildRegisterViewModel
 import com.loryblu.feature.auth.register.guardian.GuardianRegisterScreen
 import com.loryblu.feature.auth.register.guardian.GuardianRegisterViewModel
 import com.loryblu.core.util.Screen
+import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.registerGuardianRoute(
     navigateToChildRegister: () -> Unit,
@@ -35,7 +36,7 @@ fun NavGraphBuilder.registerChildRoute(
     navigateToConfirmationScreen: () -> Unit,
 ) {
     composable(route = Screen.RegisterChild.route) {
-        val viewModel: ChildRegisterViewModel = viewModel()
+        val viewModel: ChildRegisterViewModel = koinViewModel()
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
         val intentForPrivacyPolicy = Intent(Intent.ACTION_VIEW)
         intentForPrivacyPolicy.setData(Uri.parse("https://online.fliphtml5.com/ibqqn/mtvs/#p=1"))
