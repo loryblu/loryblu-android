@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.koin.androidx.compose)
 
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)
@@ -57,4 +58,5 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
+    implementation(project(":data:auth"))
 }

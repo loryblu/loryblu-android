@@ -15,6 +15,7 @@ androidx-compose-ui = "1.6.0-alpha06"
 androidx-lifecycle = "2.6.2"
 appcompat = "1.6.1"
 material = "1.9.0"
+koin_version = "3.5.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -36,6 +37,7 @@ ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", versi
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "androidx-compose-ui" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin_version"}
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
