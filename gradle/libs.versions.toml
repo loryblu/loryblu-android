@@ -16,6 +16,7 @@ androidx-lifecycle = "2.6.2"
 appcompat = "1.6.1"
 material = "1.9.0"
 koin_version = "3.5.0"
+ktor_version = "2.3.4"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -38,6 +39,13 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", v
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin_version"}
+ktor-client-core = { group="io.ktor", name= "ktor-client-core", version.ref = "ktor_version" }
+ktor-client-android = { group="io.ktor", name= "ktor-client-android", version.ref = "ktor_version" }
+ktor-client-logging = { group="io.ktor", name= "ktor-client-logging", version.ref = "ktor_version" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor_version" }
+ktor-serialization-kotlinx-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor_version"}
+ktor-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref = "ktor_version"}
+
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
