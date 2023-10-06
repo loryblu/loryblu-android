@@ -67,4 +67,5 @@ dependencies {
     implementation(project(":feature:auth:create_password"))
     implementation(project(":feature:home"))
     implementation(project(":data:auth"))
+    implementation(project(":core:network"))
 }
