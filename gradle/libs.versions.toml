@@ -17,6 +17,7 @@ appcompat = "1.6.1"
 material = "1.9.0"
 koin_version = "3.5.0"
 ktor_version = "2.3.4"
+secrets-gradle = "2.0.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -51,3 +52,4 @@ ktor-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref =
 com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
 com-android-library = { id = "com.android.library", version.ref = "com-android-library" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+secrets-gradle = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets-gradle"}
