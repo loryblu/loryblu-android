@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.ui.R
 import com.loryblu.core.util.validators.BirthdayInputValid
 import com.loryblu.core.util.validators.GenderButtonValid
@@ -15,8 +16,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.util.Date
 
 data class ChildRegisterUiState(
     val genderState: GenderButtonValid = GenderButtonValid.Empty,
@@ -47,15 +46,15 @@ class ChildRegisterViewModel(
     private fun registerUser() {
         viewModelScope.launch {
             val test = RegisterRequest(
-                email = "test@asfasfasfsafsatest.com",
+                email = "test@dsfast.com",
                 password = "Test@123",
                 policiesAccepted = true,
-                parentName = "André",
-                childrenName = "Jeann",
+                parentName = "Andnnnn",
+                childrenName = "Jeannn",
                 childrenBirthDate = "2009-02-28",
                 childrenGender = ChildrenGender.MALE
             )
-            val response = registerApi.registerUser(test)
+            val response : ApiResponse = registerApi.registerUser(test)
             Log.d("Resposta mensagem", response.message.toString())
         }
     }
