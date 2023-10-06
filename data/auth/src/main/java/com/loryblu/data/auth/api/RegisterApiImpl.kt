@@ -1,11 +1,11 @@
 package com.loryblu.data.auth.api
 
+import com.loryblu.core.network.extensions.toApiResponse
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.data.auth.HttpRoutes
 import com.loryblu.data.auth.model.RegisterRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import com.loryblu.core.network.extensions.toApiResponse
-import com.loryblu.core.network.model.ApiResponse
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ServerResponseException

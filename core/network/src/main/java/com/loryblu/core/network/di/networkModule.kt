@@ -17,6 +17,7 @@ val networkModule = module {
             install(ContentNegotiation){
                 gson {
                     serializeNulls()
+
                 }
             }
         }
