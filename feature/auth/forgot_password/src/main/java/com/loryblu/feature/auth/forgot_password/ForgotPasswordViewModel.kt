@@ -9,9 +9,7 @@ import com.loryblu.core.ui.R
 import com.loryblu.core.util.extensions.isEmailValid
 import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.data.auth.api.PasswordRecoveryApi
-import com.loryblu.data.auth.api.RegisterApi
 import com.loryblu.data.auth.model.PasswordRecoveryRequest
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
