@@ -50,6 +50,9 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.koin.androidx.compose)
+    implementation(project(mapOf("path" to ":data:auth")))
+    implementation(project(mapOf("path" to ":core:network")))
 
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)

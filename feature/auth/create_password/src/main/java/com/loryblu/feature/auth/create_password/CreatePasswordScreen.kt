@@ -1,5 +1,6 @@
 package com.loryblu.feature.auth.create_password
 
+ import android.util.Log
  import androidx.compose.foundation.layout.Arrangement
  import androidx.compose.foundation.layout.Column
  import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ package com.loryblu.feature.auth.create_password
  import androidx.compose.runtime.LaunchedEffect
  import androidx.compose.runtime.getValue
  import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
  import androidx.compose.runtime.saveable.rememberSaveable
  import androidx.compose.runtime.setValue
  import androidx.compose.ui.Alignment
@@ -31,6 +33,7 @@ package com.loryblu.feature.auth.create_password
  import com.loryblu.core.ui.components.LBPasswordTextField
  import com.loryblu.core.util.validators.PasswordInputValid
  import com.loryblu.core.ui.R
+ import com.loryblu.core.ui.components.LBSuccessLabel
  import com.loryblu.core.ui.components.LBTitle
  import com.loryblu.core.ui.theme.Error
 
@@ -40,6 +43,7 @@ fun CreatePasswordScreen(
     navigateToLoginScreen: () -> Unit,
     onResetPasswordButtonClicked: () -> Unit,
     shouldGoToNextScreen: Boolean,
+    newPasswordFailure: Boolean,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,7 +55,7 @@ fun CreatePasswordScreen(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         var passwordHidden by rememberSaveable { mutableStateOf(true) }
         var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
-
+        val showFailureLabel = remember { mutableStateOf(false) }
 
 
         LBTitle(textRes = R.string.create_a_new_password)
@@ -174,6 +178,18 @@ fun CreatePasswordScreen(
             },
             modifier = Modifier
         )
+
+        if(showFailureLabel.value) {
+            LBSuccessLabel(
+                labelRes = uiState.newPasswordErrorMessage
+            )
+        }
+        LaunchedEffect(key1 = newPasswordFailure) {
+            if(newPasswordFailure) {
+                Log.d("CreateNewPassword", "Showing that new password has been send Failure")
+                showFailureLabel.value = true
+            }
+        }
     }
 
     LaunchedEffect(key1 = shouldGoToNextScreen) {
@@ -183,17 +199,17 @@ fun CreatePasswordScreen(
     }
 }
 
-@Preview
-@Composable
-fun PreviewCreatePasswordScreen() {
-    CreatePasswordScreen(
-        viewModel = CreatePasswordViewModel(),
-        navigateToLoginScreen = {
-
-        },
-        onResetPasswordButtonClicked = {
-
-        },
-        shouldGoToNextScreen = false,
-    )
-}
+//@Preview
+//@Composable
+//fun PreviewCreatePasswordScreen() {
+//    CreatePasswordScreen(
+//        viewModel = CreatePasswordViewModel(),
+//        navigateToLoginScreen = {
+//
+//        },
+//        onResetPasswordButtonClicked = {
+//
+//        },
+//        shouldGoToNextScreen = false,
+//    )
+//}

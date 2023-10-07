@@ -91,8 +91,7 @@ class ForgotPasswordViewModel(
             viewModelScope.launch {
                 passwordRecovery()
 
-                //delay(5000)
-                //authenticated.value = true
+
             }
         }
     }
