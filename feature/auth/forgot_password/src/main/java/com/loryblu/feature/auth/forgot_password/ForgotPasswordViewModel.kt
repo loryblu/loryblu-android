@@ -1,11 +1,16 @@
 package com.loryblu.feature.auth.forgot_password
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.ui.R
 import com.loryblu.core.util.extensions.isEmailValid
 import com.loryblu.core.util.validators.EmailInputValid
+import com.loryblu.data.auth.api.PasswordRecoveryApi
+import com.loryblu.data.auth.api.RegisterApi
+import com.loryblu.data.auth.model.PasswordRecoveryRequest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,10 +18,14 @@ import kotlinx.coroutines.launch
 
 data class ForgotPasswordUiState(
     val email: String = "",
-    val emailState: EmailInputValid = EmailInputValid.Empty
+    val emailState: EmailInputValid = EmailInputValid.Empty,
+    val emailErrorMessage: String = ""
 )
 
-class ForgotPasswordViewModel: ViewModel() {
+class ForgotPasswordViewModel(
+    private val passwordRecovery: PasswordRecoveryApi
+): ViewModel() {
+
     private val _uiState = MutableStateFlow(ForgotPasswordUiState())
     val uiState = _uiState
 
@@ -24,6 +33,9 @@ class ForgotPasswordViewModel: ViewModel() {
         private set
 
     var sendEmailSuccess = mutableStateOf(false)
+        private set
+
+    var sendEmailFailure = mutableStateOf(false)
         private set
 
     fun updateEmail(newEmail: String) {
@@ -61,17 +73,36 @@ class ForgotPasswordViewModel: ViewModel() {
         }
 
     }
-
+    private fun passwordRecovery() {
+        viewModelScope.launch {
+            viewModelScope.launch {
+                val test = PasswordRecoveryRequest(
+                    email = uiState.value.email,
+                )
+                val response : ApiResponse = passwordRecovery.passwordRecovery(test)
+                if (response.statusCode == null){
+                    sendEmailSuccess.value = true
+                    sendEmailFailure.value = false
+                }else{
+                    _uiState.update {
+                        it.copy(emailErrorMessage = response.message[0])
+                    }
+                    sendEmailSuccess.value = false
+                    sendEmailFailure.value = true
+                }
+                Log.d("Resposta mensagem", response.message.toString())
+            }
+        }
+    }
     fun sendEmail() {
-        // TODO Aqui será feita a requição para a db com o email passado
 
         emailState()
         if(uiState.value.emailState is EmailInputValid.Valid) {
             viewModelScope.launch {
-                delay(1000)
-                sendEmailSuccess.value = true
-                delay(5000)
-                authenticated.value = true
+                passwordRecovery()
+
+                //delay(5000)
+                //authenticated.value = true
             }
         }
     }

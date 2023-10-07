@@ -7,19 +7,21 @@ import com.loryblu.core.util.Screen
 import androidx.compose.runtime.getValue
 import com.loryblu.feature.auth.forgot_password.ForgotPasswordScreen
 import com.loryblu.feature.auth.forgot_password.ForgotPasswordViewModel
+import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.forgotPasswordRoute(
     navigateToCreatePassword: () -> Unit,
 ) {
     composable(route = Screen.ForgetPassword.route) {
-        val viewModel: ForgotPasswordViewModel = viewModel()
+        val viewModel: ForgotPasswordViewModel = koinViewModel()
         val authenticated by viewModel.authenticated
         val sendEmailSuccess by viewModel.sendEmailSuccess
-
+        val sendEmailFailure by viewModel.sendEmailFailure
         ForgotPasswordScreen(
             viewModel = viewModel,
             authenticated = authenticated,
             sendEmailSuccess = sendEmailSuccess,
+            sendEmailFailure = sendEmailFailure,
             navigateToCreatePasswordScreen = navigateToCreatePassword,
         )
     }
