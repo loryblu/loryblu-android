@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.navDeepLink
 import com.loryblu.feature.auth.create_password.CreatePasswordScreen
 import com.loryblu.feature.auth.create_password.CreatePasswordViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
 fun NavGraphBuilder.createPasswordRoute(
@@ -28,8 +29,9 @@ fun NavGraphBuilder.createPasswordRoute(
         Log.d("token-createPasswordRoute", "token: $token")
         Log.d("token-createPasswordRoute", "expires in: $expires")
 
-        val viewModel: CreatePasswordViewModel = viewModel()
+        val viewModel: CreatePasswordViewModel = koinViewModel()
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
+        val sendEmailFailure by viewModel.newPasswordFailure
         CreatePasswordScreen(
             viewModel = viewModel,
             navigateToLoginScreen = navigateToLoginScreen,
@@ -37,6 +39,7 @@ fun NavGraphBuilder.createPasswordRoute(
                 viewModel.verifyAllConditions()
             },
             shouldGoToNextScreen = shouldGoToNextScreen,
+            newPasswordFailure = sendEmailFailure
         )
     }
 }

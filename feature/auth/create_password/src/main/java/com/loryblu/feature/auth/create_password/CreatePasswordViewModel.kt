@@ -1,14 +1,20 @@
 package com.loryblu.feature.auth.create_password
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.util.validators.PasswordInputValid
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.loryblu.core.ui.R
+import com.loryblu.data.auth.api.NewPasswordApi
+import com.loryblu.data.auth.api.PasswordRecoveryApi
+import com.loryblu.data.auth.model.NewPasswordRequest
+import java.util.Base64
 
 data class UiStateCreatePassword(
     val showPassword: Boolean = false,
@@ -23,15 +29,23 @@ data class UiStateCreatePassword(
         R.string.at_least_one_special_character to false
     ),
     val confirmPasswordState: PasswordInputValid = PasswordInputValid.Empty,
+    val newPasswordErrorMessage: String = ""
 )
 
-class CreatePasswordViewModel : ViewModel() {
+class CreatePasswordViewModel(
+    private val newPassword: NewPasswordApi
+) : ViewModel() {
     private val _uiState = MutableStateFlow(UiStateCreatePassword())
     val uiState = _uiState
 
     var shouldGoToNextScreen = mutableStateOf(false)
         private set
 
+    var newPasswordSuccess = mutableStateOf(false)
+        private set
+
+    var newPasswordFailure = mutableStateOf(false)
+        private set
     fun updatePassword(newPassword: String) {
         viewModelScope.launch {
             _uiState.update {
@@ -69,6 +83,29 @@ class CreatePasswordViewModel : ViewModel() {
         }
     }
 
+    private fun passwordRecovery() {
+        viewModelScope.launch {
+            viewModelScope.launch {
+                val test = NewPasswordRequest(
+                    password = uiState.value.password,
+                    recoveryToken = String(Base64.getUrlEncoder().encode(uiState.value.password.toByteArray()))
+                )
+                val response : ApiResponse = newPassword.newPassword(test)
+                if (response.statusCode == null){
+                    newPasswordSuccess.value = true
+                    newPasswordFailure.value = false
+                }else{
+                    Log.d("newPasswordErrorMessage", "passwordRecovery: " + response.message)
+                    _uiState.update {
+                        it.copy(newPasswordErrorMessage = response.message[0])
+                    }
+                    newPasswordSuccess.value = false
+                    newPasswordFailure.value = true
+                }
+                Log.d("Resposta mensagem", response.message.toString())
+            }
+        }
+    }
     fun verifyConfirmationPassword(force: Boolean = false) {
         val confirmPassword = uiState.value.confirmationPassword
 
@@ -91,8 +128,10 @@ class CreatePasswordViewModel : ViewModel() {
             verifyConfirmationPassword(force = true)
 
             if(uiState.value.confirmPasswordState == PasswordInputValid.Valid && uiState.value.passwordState == PasswordInputValid.Valid){
-                delay(1000)
-                shouldGoToNextScreen.value = true
+                passwordRecovery()
+                if(newPasswordSuccess.value){
+                    shouldGoToNextScreen.value = true
+                }
             }
         }
     }

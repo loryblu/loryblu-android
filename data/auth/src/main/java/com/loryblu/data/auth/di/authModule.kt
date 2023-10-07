@@ -1,5 +1,7 @@
 package com.loryblu.data.auth.di
 
+import com.loryblu.data.auth.api.NewPasswordApi
+import com.loryblu.data.auth.api.NewPasswordApiImpl
 import com.loryblu.data.auth.api.PasswordRecoveryApi
 import com.loryblu.data.auth.api.PasswordRecoveryApiImpl
 import com.loryblu.data.auth.api.RegisterApi
@@ -17,5 +19,8 @@ val authModule = module {
     }
     single<PasswordRecoveryApi> {
         PasswordRecoveryApiImpl(get())
+    }
+    single<NewPasswordApi> {
+        NewPasswordApiImpl(get())
     }
 }
