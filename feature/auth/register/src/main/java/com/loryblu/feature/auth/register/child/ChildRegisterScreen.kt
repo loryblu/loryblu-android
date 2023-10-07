@@ -33,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.loryblu.core.ui.R
 import com.loryblu.core.ui.components.LBBoyButton
 import com.loryblu.core.ui.components.LBButton
@@ -41,7 +40,12 @@ import com.loryblu.core.ui.components.LBDatePicker
 import com.loryblu.core.ui.components.LBGirlButton
 import com.loryblu.core.ui.components.LBNameTextField
 import com.loryblu.core.ui.components.LBRadioButton
+import com.loryblu.core.ui.components.LBSuccessLabel
 import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.ui.models.GenderInput
+import com.loryblu.core.util.validators.BirthdayInputValid
+import com.loryblu.core.util.validators.NameInputValid
+import com.loryblu.feature.auth.register.util.Children
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,14 +53,25 @@ import kotlinx.coroutines.launch
 fun ChildRegisterScreen(
     viewModel: ChildRegisterViewModel,
     navigateToConfirmationScreen: () -> Unit,
-    onSignUpButtonClicked: () -> Unit,
+    onSignUpButtonClicked: (Children) -> Unit,
     shouldGoToNextScreen: Boolean,
     intentForPrivacy: Intent,
+    apiErrorMessage: String?,
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
-    var areButtonsClicked by remember { mutableStateOf(true) }
-    var isPrivacyChecked by remember { mutableStateOf(true) }
+    var privacy by remember { mutableStateOf(false) }
+    var privacyState by remember { mutableStateOf(true) }
+
+    var name by remember { mutableStateOf("") }
+    var nameState by remember { mutableStateOf<NameInputValid>(NameInputValid.Empty) }
+
+    var birthday by remember { mutableStateOf("") }
+    var birthdayState by remember { mutableStateOf<BirthdayInputValid>(BirthdayInputValid.Empty) }
+
+    var gender by remember { mutableStateOf<GenderInput>(GenderInput.Empty) }
+
+    var showApiFailure by remember { mutableStateOf(false) }
+
 
     val activityResultLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -80,23 +95,21 @@ fun ChildRegisterScreen(
         ) {
 
             LBNameTextField(
-                value = uiState.name,
-                onValueChange = { name: String ->
-                    viewModel.updateName(name)
-                    viewModel.nameState()
+                value = name,
+                onValueChange = { newName: String ->
+                    name = newName
+                    nameState = viewModel.nameState(newName)
                 },
                 labelRes = stringResource(id = R.string.name),
-                error = uiState.nameState,
+                error = nameState,
             )
 
             LBDatePicker(
                 labelRes = stringResource(id = R.string.birthday),
-                error = uiState.birthdayState,
+                error = birthdayState,
                 onBirthdayChange = { newBirthday ->
-                    viewModel.updateBirthday(newBirthday)
-                },
-                birthDayState = {
-                    viewModel.birthdayState()
+                    birthday = newBirthday
+                    birthdayState = viewModel.birthdayState(newBirthday)
                 }
             )
         }
@@ -108,30 +121,24 @@ fun ChildRegisterScreen(
         ) {
             LBBoyButton(
                 onClick = {
-                    viewModel.updateBoyButtonState(!uiState.isBoyButtonClicked)
-                    viewModel.updateGirlButtonState(false)
-                    areButtonsClicked = true
+                    gender = GenderInput.MALE
                 },
                 modifier = Modifier
                     .height(44.dp)
                     .weight(1f)
                     .fillMaxHeight(),
-                isClicked = uiState.isBoyButtonClicked,
-                isBothButtonClicked = areButtonsClicked,
+                genderInput = gender,
             )
             Spacer(modifier = Modifier.width(16.dp))
             LBGirlButton(
                 onClick = {
-                    viewModel.updateGirlButtonState(!uiState.isGirlButtonClicked)
-                    viewModel.updateBoyButtonState(false)
-                    areButtonsClicked = true
+                    gender = GenderInput.FEMALE
                 },
                 modifier = Modifier
                     .height(44.dp)
                     .weight(1f)
                     .fillMaxHeight(),
-                isClicked = uiState.isGirlButtonClicked,
-                isBothButtonClicked = areButtonsClicked,
+                genderInput = gender,
             )
 
         }
@@ -143,7 +150,7 @@ fun ChildRegisterScreen(
                 .align(Alignment.End)
                 .padding(end = 42.dp)
         ) {
-            if (!areButtonsClicked) {
+            if (gender == GenderInput.Error) {
                 Text(
                     fontSize = 12.sp,
                     modifier = Modifier
@@ -161,10 +168,10 @@ fun ChildRegisterScreen(
             horizontalArrangement = Arrangement.End
         ) {
             LBRadioButton(
-                isChecked = uiState.privacyPolicyButtonState,
+                isChecked = privacy,
                 onCheckedChange = {
-                    viewModel.updatePrivacyPolicyButtonState(!uiState.privacyPolicyButtonState)
-                    isPrivacyChecked = true
+                    privacy = !privacy
+                    privacyState = viewModel.privacyState(privacy)
                 },
                 modifier = Modifier,
             )
@@ -172,10 +179,10 @@ fun ChildRegisterScreen(
                 text = stringResource(R.string.i_agree_with_the),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
-                color = if (!isPrivacyChecked) {
-                    MaterialTheme.colorScheme.error
-                }else {
+                color = if (privacyState) {
                     Color.LightGray
+                }else {
+                    MaterialTheme.colorScheme.error
                 }
             )
             TextButton(
@@ -188,10 +195,10 @@ fun ChildRegisterScreen(
                     textDecoration = TextDecoration.Underline,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
-                    color = if (!isPrivacyChecked) {
-                        MaterialTheme.colorScheme.error
-                    }else {
+                    color = if (privacyState) {
                         Color.LightGray
+                    }else {
+                        MaterialTheme.colorScheme.error
                     }
                 )
             }
@@ -204,7 +211,7 @@ fun ChildRegisterScreen(
                 .align(Alignment.End)
                 .padding(end = 16.dp)
         ) {
-            if (!isPrivacyChecked) {
+            if (!privacyState) {
                 Text(
                     fontSize = 12.sp,
                     modifier = Modifier
@@ -213,18 +220,37 @@ fun ChildRegisterScreen(
                     color = MaterialTheme.colorScheme.error
                 )
             }
+            if (showApiFailure) {
+                LBSuccessLabel(labelRes = "Ocorreu algum erro.")
+            }
         }
+
 
         Spacer(modifier = Modifier.height(32.dp))
 
         LBButton(
             textRes = R.string.sign_up,
             onClick = {
-                if (!uiState.isBoyButtonClicked && !uiState.isGirlButtonClicked)
-                    areButtonsClicked = false
-                if (!uiState.privacyPolicyButtonState)
-                    isPrivacyChecked = false
-                onSignUpButtonClicked()
+                nameState = viewModel.nameState(name)
+                birthdayState = viewModel.birthdayState(birthday)
+                gender = viewModel.genderState(gender)
+                privacyState = viewModel.privacyState(privacy)
+
+                if(
+                    nameState == NameInputValid.Valid
+                    && birthdayState == BirthdayInputValid.Valid
+                    && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
+                    && privacyState
+                    ) {
+                    onSignUpButtonClicked(
+                        Children(
+                            name = name,
+                            policiesAccepted = privacy,
+                            birthday = birthday,
+                            gender = gender
+                        )
+                    )
+                }
             },
             modifier = Modifier
         )
@@ -239,7 +265,15 @@ fun ChildRegisterScreen(
             }
         }
     }
+
+    LaunchedEffect(key1 = apiErrorMessage) {
+        if (apiErrorMessage != null) {
+            showApiFailure = true
+        }
+    }
 }
+
+
 
 
 //@Composable

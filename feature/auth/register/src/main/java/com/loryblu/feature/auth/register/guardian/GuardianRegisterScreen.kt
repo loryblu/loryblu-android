@@ -37,10 +37,12 @@ import com.loryblu.core.ui.components.LBPasswordTextField
 import com.loryblu.core.ui.theme.Error
 import com.loryblu.core.ui.components.LBTitle
 import com.loryblu.core.util.validators.NameInputValid
+import com.loryblu.feature.auth.register.child.ChildRegisterViewModel
+import com.loryblu.feature.auth.register.util.Guardian
 
 @Composable
 fun GuardianRegisterScreen(
-    viewModel: GuardianRegisterViewModel,
+    viewModel: ChildRegisterViewModel,
     navigateToChildRegister: () -> Unit,
     onNextButtonClicked: () -> Unit,
     shouldGoToNextScreen: Boolean,
@@ -122,7 +124,7 @@ fun GuardianRegisterScreen(
             LBEmailTextField(
                 onValueChange = {
                     viewModel.updateEmail(it)
-                    viewModel.emailState()
+                    viewModel.emailStateGurdian()
                 },
                 labelRes = stringResource(R.string.email),
                 value = uiState.email,
@@ -134,7 +136,7 @@ fun GuardianRegisterScreen(
                 onValueChange = { newPass: String ->
                     viewModel.run {
                         updatePassword(newPass)
-                        passwordState()
+                        passwordState(newPass)
                     }
                 },
                 onButtonClick = {
@@ -230,6 +232,11 @@ fun GuardianRegisterScreen(
             textRes = R.string.next,
             onClick = {
                 onNextButtonClicked()
+                viewModel.saveGuardian(Guardian(
+                    password = uiState.password,
+                    email = uiState.email,
+                    name = uiState.name
+                ))
             },
             modifier = Modifier
         )
@@ -242,17 +249,17 @@ fun GuardianRegisterScreen(
     }
 }
 
-@Composable
-@Preview
-fun PreviewRegisterScreen() {
-    GuardianRegisterScreen(
-        viewModel = GuardianRegisterViewModel(),
-        navigateToChildRegister = {
-
-        },
-        onNextButtonClicked = {
-
-        },
-        shouldGoToNextScreen = false,
-        )
-}
+//@Composable
+//@Preview
+//fun PreviewRegisterScreen() {
+//    GuardianRegisterScreen(
+//        viewModel = GuardianRegisterViewModel(),
+//        navigateToChildRegister = {
+//
+//        },
+//        onNextButtonClicked = {
+//
+//        },
+//        shouldGoToNextScreen = false,
+//        )
+//}

@@ -33,7 +33,6 @@ fun LBDatePicker(
     labelRes: String,
     error: BirthdayInputValid,
     onBirthdayChange: (String) -> Unit,
-    birthDayState: () -> Unit,
     ) {
     val focusManager = LocalFocusManager.current
     var showDatePickerDialog by remember {
@@ -56,7 +55,6 @@ fun LBDatePicker(
                             }
                         showDatePickerDialog = false
                         onBirthdayChange(selectedDate)
-                        birthDayState()
                     },
                     enabled = confirmEnabled
                 ) {
