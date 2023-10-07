@@ -62,14 +62,6 @@ class ForgotPasswordViewModel(
                     it.copy(emailState = EmailInputValid.Valid)
                 }
             }
-            // TODO
-//             procurar o email na api se não encontrar precisa mudar o state para not found
-//             o plano é aparecer uma menssagem de carregamento quando voce colocar o email porque
-//             vai ser preciso mandar uma requisição para o back-end para ver ser o e-mail existe
-//             uma animação de carregamento vai aparecer equanto o e-mail não aparece e depois ele
-//             mostrar se o email existe e foi enviado com suceeso ou não existe
-//             alem disso ele pode mostrar um erro de conexão com a internet porque sei internet é
-//             um problema diferente de o email não existe
         }
 
     }
