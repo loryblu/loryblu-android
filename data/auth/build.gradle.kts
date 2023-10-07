@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "com.loryblu.data.auth"
-    compileSdk = 34
+    compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
-        minSdk = 24
+        minSdk = ProjectConfig.minSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "BASE_URL", "\"null\"")
+        buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
     }
 
     buildTypes {
@@ -25,6 +25,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
         }
     }
     compileOptions {
