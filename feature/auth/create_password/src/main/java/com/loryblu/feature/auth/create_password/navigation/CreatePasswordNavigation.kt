@@ -24,7 +24,7 @@ fun NavGraphBuilder.createPasswordRoute(
         ),
     ) { backStack ->
         val token = backStack.arguments?.getString("token")
-        Log.d("token", "createPasswordRoute: $token")
+        Log.d("token-createPasswordRoute", "createPasswordRoute: $token")
         val viewModel: CreatePasswordViewModel = viewModel()
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
         CreatePasswordScreen(
