@@ -5,7 +5,7 @@ import androidx.core.net.toUri
 
 object DeepLinkPattern {
     private val BaseUri = "loryblu:/"
-    val RecoveryPasswordPattern = "$BaseUri/password_recovery/"
+    val RecoveryPasswordPattern = "$BaseUri/"
 
     fun getPasswordRecoveryUri(): Uri = RecoveryPasswordPattern.toUri()
 }
