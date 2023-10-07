@@ -33,10 +33,12 @@ fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel,
     authenticated: Boolean,
     sendEmailSuccess: Boolean,
+    sendEmailFailure: Boolean,
     navigateToCreatePasswordScreen: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showSuccessLabel = remember { mutableStateOf(false) }
+    val showFailureLabel = remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -79,6 +81,11 @@ fun ForgotPasswordScreen(
                 labelRes = stringResource(R.string.email_sent_successfully)
             )
         }
+        if(showFailureLabel.value) {
+            LBSuccessLabel(
+                labelRes = uiState.emailErrorMessage
+            )
+        }
     }
 
     LaunchedEffect(key1 = authenticated) {
@@ -94,11 +101,17 @@ fun ForgotPasswordScreen(
             showSuccessLabel.value = true
         }
     }
+    LaunchedEffect(key1 = sendEmailFailure) {
+        if(sendEmailFailure) {
+            Log.d("ForgotPasswordScreen", "Showing that email has been send Failure")
+            showFailureLabel.value = true
+        }
+    }
 }
 
 
-@Composable
-@Preview
-fun PreviewForgotScreen() {
-    ForgotPasswordScreen(viewModel = ForgotPasswordViewModel(), authenticated = false, sendEmailSuccess = true, navigateToCreatePasswordScreen = {})
-}
+//@Composable
+//@Preview
+//fun PreviewForgotScreen() {
+//    ForgotPasswordScreen(viewModel = ForgotPasswordViewModel(), authenticated = false, sendEmailSuccess = true, navigateToCreatePasswordScreen = {})
+//}
