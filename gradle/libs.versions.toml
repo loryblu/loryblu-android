@@ -18,6 +18,7 @@ material = "1.9.0"
 koin_version = "3.5.0"
 ktor_version = "2.3.4"
 secrets-gradle = "2.0.1"
+deep_link = "2.4.0-alpha08"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }

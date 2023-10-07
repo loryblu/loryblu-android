@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(project(mapOf("path" to ":data:auth")))
     implementation(project(mapOf("path" to ":core:network")))
+    implementation(project(mapOf("path" to ":feature:auth:create_password")))
 
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)
