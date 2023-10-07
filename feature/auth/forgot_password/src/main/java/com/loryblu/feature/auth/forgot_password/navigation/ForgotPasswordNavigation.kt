@@ -16,8 +16,6 @@ fun NavGraphBuilder.forgotPasswordRoute(
     composable(
         route = Screen.ForgetPassword.route,
     ) {
-        val token = it.arguments?.getString("token")
-        Log.d("token", "forgotPasswordRoute: $token")
         val viewModel: ForgotPasswordViewModel = koinViewModel()
         val authenticated by viewModel.authenticated
         val sendEmailSuccess by viewModel.sendEmailSuccess

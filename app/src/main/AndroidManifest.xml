@@ -29,7 +29,8 @@
                 <category android:name="android.intent.category.DEFAULT"/>
 
                 <data
-                    android:scheme="loryblu"/>
+                    android:scheme="loryblu" android:host="password_recovery" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <category android:name="android.intent.category.BROWSABLE"/>
