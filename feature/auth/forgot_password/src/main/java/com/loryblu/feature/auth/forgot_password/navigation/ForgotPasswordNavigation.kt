@@ -17,11 +17,6 @@ fun NavGraphBuilder.forgotPasswordRoute(
 ) {
     composable(
         route = Screen.ForgetPassword.route,
-        deepLinks = listOf(
-            navDeepLink {
-                uriPattern = "DeepLinkPattern.RecoveryPasswordPattern{token}"
-            }
-        ),
     ) {
         val token = it.arguments?.getString("token")
         Log.d("token", "forgotPasswordRoute: $token")
