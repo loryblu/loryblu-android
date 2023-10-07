@@ -24,8 +24,13 @@
             android:theme="@style/Theme.LoryBlu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                    android:host="loryblu://password_recovery/"
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
     </application>

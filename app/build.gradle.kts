@@ -54,7 +54,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.navigation.compose)
     implementation(libs.koin.androidx.compose)
-
+    implementation(libs.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.ui.test.junit4)

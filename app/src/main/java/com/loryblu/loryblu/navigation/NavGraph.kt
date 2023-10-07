@@ -1,8 +1,11 @@
 package com.loryblu.loryblu.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.loryblu.feature.auth.create_password.navigation.createPasswordRoute
 import com.loryblu.feature.auth.forgot_password.navigation.forgotPasswordRoute
 import com.loryblu.feature.home.navigation.homeRoute
@@ -61,5 +64,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             }
         )
         homeRoute()
+
+
     }
 }
