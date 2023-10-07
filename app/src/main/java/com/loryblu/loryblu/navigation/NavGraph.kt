@@ -1,19 +1,16 @@
 package com.loryblu.loryblu.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
+import com.loryblu.core.util.Screen
 import com.loryblu.feature.auth.create_password.navigation.createPasswordRoute
 import com.loryblu.feature.auth.forgot_password.navigation.forgotPasswordRoute
-import com.loryblu.feature.home.navigation.homeRoute
 import com.loryblu.feature.auth.login.navigation.loginRoute
 import com.loryblu.feature.auth.register.navigation.registerChildRoute
 import com.loryblu.feature.auth.register.navigation.registerGuardianRoute
 import com.loryblu.feature.auth.register.navigation.registrationConfirmedRoute
-import com.loryblu.core.util.Screen
+import com.loryblu.feature.home.navigation.homeRoute
 
 @Composable
 fun SetupNavGraph(startDestination: String, navController: NavHostController) {
@@ -43,7 +40,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             navigateToConfirmationScreen = {
                 navController.popBackStack(Screen.Login.route, true)
                 navController.navigate(Screen.RegistrationConfirmed.route)
-            }
+            },
         )
         createPasswordRoute(
             navigateToLoginScreen = {
