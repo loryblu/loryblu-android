@@ -19,12 +19,15 @@ fun NavGraphBuilder.createPasswordRoute(
         route = Screen.CreatePassword.route,
         deepLinks = listOf(
             navDeepLink {
-                uriPattern = "loryblu://password_recovery/{token}"
+                uriPattern = "loryblu://password_recovery/?r_token%3D{token}%26expires_in%3D{expires}"
             }
         ),
     ) { backStack ->
         val token = backStack.arguments?.getString("token")
-        Log.d("token-createPasswordRoute", "createPasswordRoute: $token")
+        val expires = backStack.arguments?.getString("expires")
+        Log.d("token-createPasswordRoute", "token: $token")
+        Log.d("token-createPasswordRoute", "expires in: $expires")
+
         val viewModel: CreatePasswordViewModel = viewModel()
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
         CreatePasswordScreen(
