@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       isCI: "true"
+      BASE_URL: https://testapi.com
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -21,3 +22,5 @@ jobs:
           java-version: '17'
       - name: Build android 
         run: ./gradlew assembleDebug testDebug
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
