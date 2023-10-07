@@ -25,6 +25,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                    android:host="loryblu://password_recovery/"
+                    android:scheme="https"/>
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <category android:name="android.intent.category.BROWSABLE"/>
