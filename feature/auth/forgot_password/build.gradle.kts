@@ -62,6 +62,5 @@ dependencies {
     implementation(project(":data:auth"))
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
-    implementation(project(":core:network"))
 
 }
