@@ -17,28 +17,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.loryblu.core.ui.P_MEDIUM
 import com.loryblu.core.ui.P_SMALL
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.components.LBSuccessLabel
 import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBEmailTextField
 import com.loryblu.core.ui.components.LBErrorLabel
+import com.loryblu.core.ui.components.LBSuccessLabel
 import com.loryblu.core.ui.components.LBTitle
 
 @Composable
 fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel,
     authenticated: Boolean,
-    sendEmailSuccess: Boolean,
     navigateToCreatePasswordScreen: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showSuccessLabel = remember { mutableStateOf(false) }
-    val showFailureLabel = remember { mutableStateOf(false) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,

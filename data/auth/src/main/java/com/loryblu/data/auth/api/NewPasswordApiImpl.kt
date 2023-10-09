@@ -19,7 +19,7 @@ internal class NewPasswordApiImpl(
 ) : NewPasswordApi {
     override suspend fun newPassword(newPasswordRequest: NewPasswordRequest): ApiResponse {
         return try {
-            client.put(HttpRoutes.NEW_PASSWORD) {  // Altere esta linha para usar put
+            client.put(HttpRoutes.NEW_PASSWORD) {
                 setBody(newPasswordRequest)
                 contentType(ContentType.Application.Json)
             }.toApiResponse()
