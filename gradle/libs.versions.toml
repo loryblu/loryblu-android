@@ -47,6 +47,7 @@ ktor-client-logging = { group="io.ktor", name= "ktor-client-logging", version.re
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor_version" }
 ktor-serialization-kotlinx-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor_version"}
 ktor-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref = "ktor_version"}
+androidx-databinding-runtime = { group = "androidx.databinding", name = "databinding-runtime", version = "8.1.2" }
 
 
 [plugins]

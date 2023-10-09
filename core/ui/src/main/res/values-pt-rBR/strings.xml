@@ -82,4 +82,8 @@
     <string name="accept_privacy_policy">*Aceite a política de privacidade</string>
     <string name="empty_birthday">*Selecione uma data</string>
 
+    <!-- API validation -->
+    <string name="email_successful_send">E-mail enviado com sucesso</string>
+
+
 </resources>

@@ -33,9 +33,11 @@ package com.loryblu.feature.auth.create_password
  import com.loryblu.core.ui.components.LBPasswordTextField
  import com.loryblu.core.util.validators.PasswordInputValid
  import com.loryblu.core.ui.R
+ import com.loryblu.core.ui.components.LBErrorLabel
  import com.loryblu.core.ui.components.LBSuccessLabel
  import com.loryblu.core.ui.components.LBTitle
  import com.loryblu.core.ui.theme.Error
+ import kotlinx.coroutines.delay
 
 @Composable
 fun CreatePasswordScreen(
@@ -43,7 +45,6 @@ fun CreatePasswordScreen(
     navigateToLoginScreen: () -> Unit,
     onResetPasswordButtonClicked: () -> Unit,
     shouldGoToNextScreen: Boolean,
-    newPasswordFailure: Boolean,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,8 +56,6 @@ fun CreatePasswordScreen(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         var passwordHidden by rememberSaveable { mutableStateOf(true) }
         var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
-        val showFailureLabel = remember { mutableStateOf(false) }
-
 
         LBTitle(textRes = R.string.create_a_new_password)
 
@@ -174,26 +173,25 @@ fun CreatePasswordScreen(
         LBButton(
             textRes = R.string.reset_password,
             onClick = {
-                onResetPasswordButtonClicked()
+                onResetPasswordButtonClicked ()
             },
             modifier = Modifier
         )
 
-        if(showFailureLabel.value) {
+        if(viewModel.newPasswordSuccess.value) {
             LBSuccessLabel(
-                labelRes = uiState.newPasswordErrorMessage
+                labelRes = uiState.newPasswordMessage
             )
-        }
-        LaunchedEffect(key1 = newPasswordFailure) {
-            if(newPasswordFailure) {
-                Log.d("CreateNewPassword", "Showing that new password has been send Failure")
-                showFailureLabel.value = true
-            }
+        }else{
+            LBErrorLabel(
+                labelRes = uiState.newPasswordMessage
+            )
         }
     }
 
     LaunchedEffect(key1 = shouldGoToNextScreen) {
         if(shouldGoToNextScreen) {
+            delay(3000)
             navigateToLoginScreen()
         }
     }

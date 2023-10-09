@@ -14,6 +14,9 @@ import com.loryblu.core.ui.R
 import com.loryblu.data.auth.api.NewPasswordApi
 import com.loryblu.data.auth.api.PasswordRecoveryApi
 import com.loryblu.data.auth.model.NewPasswordRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.util.Base64
 
 data class UiStateCreatePassword(
@@ -29,7 +32,7 @@ data class UiStateCreatePassword(
         R.string.at_least_one_special_character to false
     ),
     val confirmPasswordState: PasswordInputValid = PasswordInputValid.Empty,
-    val newPasswordErrorMessage: String = ""
+    val newPasswordMessage: String = ""
 )
 
 class CreatePasswordViewModel(
@@ -44,8 +47,6 @@ class CreatePasswordViewModel(
     var newPasswordSuccess = mutableStateOf(false)
         private set
 
-    var newPasswordFailure = mutableStateOf(false)
-        private set
     fun updatePassword(newPassword: String) {
         viewModelScope.launch {
             _uiState.update {
@@ -82,28 +83,28 @@ class CreatePasswordViewModel(
             it.copy(passwordErrors = passwordErrors, passwordState = passwordState)
         }
     }
-
-    private fun passwordRecovery() {
-        viewModelScope.launch {
-            viewModelScope.launch {
-                val test = NewPasswordRequest(
-                    password = uiState.value.password,
-                    recoveryToken = String(Base64.getUrlEncoder().encode(uiState.value.password.toByteArray()))
-                )
-                val response : ApiResponse = newPassword.newPassword(test)
-                if (response.statusCode == null){
-                    newPasswordSuccess.value = true
-                    newPasswordFailure.value = false
-                }else{
-                    Log.d("newPasswordErrorMessage", "passwordRecovery: " + response.message)
-                    _uiState.update {
-                        it.copy(newPasswordErrorMessage = response.message[0])
-                    }
-                    newPasswordSuccess.value = false
-                    newPasswordFailure.value = true
-                }
-                Log.d("Resposta mensagem", response.message.toString())
+    data class PasswordRequest(val newPassword: Boolean, val message: String)
+    suspend fun passwordRecovery(token: String): PasswordRequest = withContext(Dispatchers.IO) {
+        Log.d("recoveryToken", "Token em base64: $token")
+        Log.d("password", "passwordRecovery: " + uiState.value.password)
+        val params = NewPasswordRequest(
+            password = uiState.value.password,
+            recoveryToken = token
+        )
+        val response : ApiResponse = newPassword.newPassword(params)
+        if (response.statusCode == null){
+            _uiState.update {
+                it.copy(newPasswordMessage = response.message[0])
             }
+            newPasswordSuccess.value = true
+            return@withContext PasswordRequest(newPasswordSuccess.value, response.message[0])
+        }else{
+            Log.d("newPasswordErrorMessage", "passwordRecovery: " + response.message)
+            _uiState.update {
+                it.copy(newPasswordMessage = response.message[0])
+            }
+            newPasswordSuccess.value = false
+            return@withContext PasswordRequest(newPasswordSuccess.value, response.message[0])
         }
     }
     fun verifyConfirmationPassword(force: Boolean = false) {
@@ -122,14 +123,13 @@ class CreatePasswordViewModel(
         }
     }
 
-    fun verifyAllConditions() {
+    fun verifyAllConditions(token: String) {
         viewModelScope.launch {
             passwordCheck()
             verifyConfirmationPassword(force = true)
-
+            val passwordRequest = runBlocking { passwordRecovery(token) }
             if(uiState.value.confirmPasswordState == PasswordInputValid.Valid && uiState.value.passwordState == PasswordInputValid.Valid){
-                passwordRecovery()
-                if(newPasswordSuccess.value){
+                if(passwordRequest.newPassword){
                     shouldGoToNextScreen.value = true
                 }
             }

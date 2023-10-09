@@ -19,12 +19,10 @@ fun NavGraphBuilder.forgotPasswordRoute(
         val viewModel: ForgotPasswordViewModel = koinViewModel()
         val authenticated by viewModel.authenticated
         val sendEmailSuccess by viewModel.sendEmailSuccess
-        val sendEmailFailure by viewModel.sendEmailFailure
         ForgotPasswordScreen(
             viewModel = viewModel,
             authenticated = authenticated,
             sendEmailSuccess = sendEmailSuccess,
-            sendEmailFailure = sendEmailFailure,
             navigateToCreatePasswordScreen = navigateToCreatePassword,
         )
     }

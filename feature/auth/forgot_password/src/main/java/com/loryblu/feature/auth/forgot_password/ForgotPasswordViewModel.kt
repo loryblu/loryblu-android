@@ -1,6 +1,5 @@
 package com.loryblu.feature.auth.forgot_password
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,11 +16,11 @@ import kotlinx.coroutines.launch
 data class ForgotPasswordUiState(
     val email: String = "",
     val emailState: EmailInputValid = EmailInputValid.Empty,
-    val emailErrorMessage: String = ""
+    val emailMessage: String = ""
 )
 
 class ForgotPasswordViewModel(
-    private val passwordRecovery: PasswordRecoveryApi
+    private val passwordRecovery: PasswordRecoveryApi,
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(ForgotPasswordUiState())
@@ -31,9 +30,6 @@ class ForgotPasswordViewModel(
         private set
 
     var sendEmailSuccess = mutableStateOf(false)
-        private set
-
-    var sendEmailFailure = mutableStateOf(false)
         private set
 
     fun updateEmail(newEmail: String) {
@@ -63,6 +59,7 @@ class ForgotPasswordViewModel(
         }
 
     }
+
     private fun passwordRecovery() {
         viewModelScope.launch {
             viewModelScope.launch {
@@ -71,16 +68,16 @@ class ForgotPasswordViewModel(
                 )
                 val response : ApiResponse = passwordRecovery.passwordRecovery(test)
                 if (response.statusCode == null){
+                    _uiState.update {
+                        it.copy(emailMessage = "E-mail enviado com sucesso")
+                    }
                     sendEmailSuccess.value = true
-                    sendEmailFailure.value = false
                 }else{
                     _uiState.update {
-                        it.copy(emailErrorMessage = response.message[0])
+                        it.copy(emailMessage = response.message[0])
                     }
                     sendEmailSuccess.value = false
-                    sendEmailFailure.value = true
                 }
-                Log.d("Resposta mensagem", response.message.toString())
             }
         }
     }
@@ -90,8 +87,6 @@ class ForgotPasswordViewModel(
         if(uiState.value.emailState is EmailInputValid.Valid) {
             viewModelScope.launch {
                 passwordRecovery()
-
-
             }
         }
     }
