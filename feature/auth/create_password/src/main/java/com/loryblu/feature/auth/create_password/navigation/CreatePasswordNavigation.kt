@@ -1,12 +1,10 @@
 package com.loryblu.feature.auth.create_password.navigation
 
-import android.util.Log
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.loryblu.core.util.Screen
-import androidx.compose.runtime.getValue
 import androidx.navigation.navDeepLink
+import com.loryblu.core.util.Screen
 import com.loryblu.feature.auth.create_password.CreatePasswordScreen
 import com.loryblu.feature.auth.create_password.CreatePasswordViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -25,21 +23,18 @@ fun NavGraphBuilder.createPasswordRoute(
         ),
     ) { backStack ->
         val token = backStack.arguments?.getString("token")
-        val expires = backStack.arguments?.getString("expires")
-        Log.d("token-createPasswordRoute", "token: $token")
-        Log.d("token-createPasswordRoute", "expires in: $expires")
 
         val viewModel: CreatePasswordViewModel = koinViewModel()
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreen
-        val sendEmailFailure by viewModel.newPasswordFailure
-        CreatePasswordScreen(
-            viewModel = viewModel,
-            navigateToLoginScreen = navigateToLoginScreen,
-            onResetPasswordButtonClicked = {
-                viewModel.verifyAllConditions()
-            },
-            shouldGoToNextScreen = shouldGoToNextScreen,
-            newPasswordFailure = sendEmailFailure
-        )
+        if (token != null) {
+            CreatePasswordScreen(
+                viewModel = viewModel,
+                navigateToLoginScreen = navigateToLoginScreen,
+                onResetPasswordButtonClicked = {
+                    viewModel.verifyAllConditions(token)
+                },
+                shouldGoToNextScreen = shouldGoToNextScreen
+            )
+        }
     }
 }

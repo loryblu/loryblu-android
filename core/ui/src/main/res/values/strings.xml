@@ -80,4 +80,7 @@
     <string name="girl">Girl</string>
     <string name="privacy_policy">privacy policy</string>
     <string name="sign_up">SIGN UP</string>
+
+    <!-- API validation -->
+    <string name="email_successful_send">Email was sent successfully</string>
 </resources>

@@ -26,6 +26,7 @@ import com.loryblu.core.ui.R
 import com.loryblu.core.ui.components.LBSuccessLabel
 import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBEmailTextField
+import com.loryblu.core.ui.components.LBErrorLabel
 import com.loryblu.core.ui.components.LBTitle
 
 @Composable
@@ -33,7 +34,6 @@ fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel,
     authenticated: Boolean,
     sendEmailSuccess: Boolean,
-    sendEmailFailure: Boolean,
     navigateToCreatePasswordScreen: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -81,9 +81,13 @@ fun ForgotPasswordScreen(
                 labelRes = stringResource(R.string.email_sent_successfully)
             )
         }
-        if(showFailureLabel.value) {
+        if(viewModel.sendEmailSuccess.value) {
             LBSuccessLabel(
-                labelRes = uiState.emailErrorMessage
+                labelRes = uiState.emailMessage
+            )
+        }else{
+            LBErrorLabel(
+                labelRes = uiState.emailMessage
             )
         }
     }
@@ -92,19 +96,6 @@ fun ForgotPasswordScreen(
         if(authenticated) {
             Log.d("ForgotPasswordScreen", "Navigate to create password screen")
             navigateToCreatePasswordScreen()
-        }
-    }
-
-    LaunchedEffect(key1 = sendEmailSuccess) {
-        if(sendEmailSuccess) {
-            Log.d("ForgotPasswordScreen", "Showing that email has been send successfully")
-            showSuccessLabel.value = true
-        }
-    }
-    LaunchedEffect(key1 = sendEmailFailure) {
-        if(sendEmailFailure) {
-            Log.d("ForgotPasswordScreen", "Showing that email has been send Failure")
-            showFailureLabel.value = true
         }
     }
 }
