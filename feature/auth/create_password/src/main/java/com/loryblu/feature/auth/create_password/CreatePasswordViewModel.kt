@@ -5,19 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.loryblu.core.network.model.ApiResponse
+import com.loryblu.core.ui.R
 import com.loryblu.core.util.validators.PasswordInputValid
-import kotlinx.coroutines.delay
+import com.loryblu.data.auth.api.NewPasswordApi
+import com.loryblu.data.auth.model.NewPasswordRequest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.loryblu.core.ui.R
-import com.loryblu.data.auth.api.NewPasswordApi
-import com.loryblu.data.auth.api.PasswordRecoveryApi
-import com.loryblu.data.auth.model.NewPasswordRequest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.util.Base64
 
 data class UiStateCreatePassword(
     val showPassword: Boolean = false,
@@ -127,8 +124,8 @@ class CreatePasswordViewModel(
         viewModelScope.launch {
             passwordCheck()
             verifyConfirmationPassword(force = true)
-            val passwordRequest = runBlocking { passwordRecovery(token) }
             if(uiState.value.confirmPasswordState == PasswordInputValid.Valid && uiState.value.passwordState == PasswordInputValid.Valid){
+                val passwordRequest = runBlocking { passwordRecovery(token) }
                 if(passwordRequest.newPassword){
                     shouldGoToNextScreen.value = true
                 }
