@@ -1,6 +1,5 @@
 package com.loryblu.feature.auth.create_password
 
- import android.util.Log
  import androidx.compose.foundation.layout.Arrangement
  import androidx.compose.foundation.layout.Column
  import androidx.compose.foundation.layout.Row
@@ -17,7 +16,6 @@ package com.loryblu.feature.auth.create_password
  import androidx.compose.runtime.LaunchedEffect
  import androidx.compose.runtime.getValue
  import androidx.compose.runtime.mutableStateOf
- import androidx.compose.runtime.remember
  import androidx.compose.runtime.saveable.rememberSaveable
  import androidx.compose.runtime.setValue
  import androidx.compose.ui.Alignment
@@ -25,18 +23,17 @@ package com.loryblu.feature.auth.create_password
  import androidx.compose.ui.graphics.Color
  import androidx.compose.ui.res.painterResource
  import androidx.compose.ui.res.stringResource
- import androidx.compose.ui.tooling.preview.Preview
  import androidx.compose.ui.unit.dp
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
  import com.loryblu.core.ui.P_SMALL
- import com.loryblu.core.ui.components.LBButton
- import com.loryblu.core.ui.components.LBPasswordTextField
- import com.loryblu.core.util.validators.PasswordInputValid
  import com.loryblu.core.ui.R
+ import com.loryblu.core.ui.components.LBButton
  import com.loryblu.core.ui.components.LBErrorLabel
+ import com.loryblu.core.ui.components.LBPasswordTextField
  import com.loryblu.core.ui.components.LBSuccessLabel
  import com.loryblu.core.ui.components.LBTitle
  import com.loryblu.core.ui.theme.Error
+ import com.loryblu.core.util.validators.PasswordInputValid
  import kotlinx.coroutines.delay
 
 @Composable
@@ -173,7 +170,7 @@ fun CreatePasswordScreen(
         LBButton(
             textRes = R.string.reset_password,
             onClick = {
-                onResetPasswordButtonClicked ()
+                onResetPasswordButtonClicked()
             },
             modifier = Modifier
         )

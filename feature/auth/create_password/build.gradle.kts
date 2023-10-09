@@ -51,13 +51,12 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.koin.androidx.compose)
-    implementation(project(mapOf("path" to ":data:auth")))
-    implementation(project(mapOf("path" to ":core:network")))
-
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
 
+    implementation(project(":data:auth"))
+    implementation(project(":core:network"))
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
 }
