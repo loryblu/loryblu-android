@@ -11,7 +11,6 @@
   <h3 align="center">Loryblu Android</h3>
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/loryblu/loryblu-android/blob/development/README.md)
-
 [![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/loryblu/loryblu-android/blob/development/README.pt.br.md)
 
   <p align="center">
