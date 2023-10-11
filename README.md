@@ -6,13 +6,15 @@
   </a>
 
 
-
   <h3 align="center">Loryblu Android</h3>
+
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/loryblu/loryblu-android/blob/development/README.md)
+
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/loryblu/loryblu-android/blob/development/README.pt.br.md)
 
   <p align="center">
     Loryblu is an app designed to help parents and children diagnosed with ASD, especially those looking for or waiting for multidisciplinary treatment, with a playful and interactive environment to contribute in a light, inclusive, and functional way through activities, cognitive stimulation games, and music.
   </p>
-
 <br/>
 <br/>
 
@@ -59,12 +61,12 @@ Modules Responsibilities
 - **core**: Resources that is useful for all modules
   - ***network***:  Implementation of Ktor and models that API can return.
 
-  - ***ui***: UI resources thatares used in multiple modules, as strings, drawables and some components.
+  - ***ui***: UI resources that are used in multiple modules, as strings, drawables and some components.
 
   - ***util***: Extensions functions and some type validators that are used in multiple modules
 
 - **feature**: Contains all screens and screen's logic.
-- **buildSrc**: Configurations that is used in multiple modules
+- **buildSrc**: Configurations that are used in multiple modules
 
 
 ## License
