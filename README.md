@@ -20,6 +20,7 @@
 
 * [About the Project](#about-the-project)
 * [Built With](#built-with)
+* [Development](#development)
 * [License](#license)
 * [Authors](#authors)
 
@@ -34,24 +35,6 @@ The app has several Stories to help parents with organization, and games for chi
   -  LoryRotina: allows the responsible person to organize the child's tasks, selecting the day of the week, the time of day, and the recurrence.
 - Other stories are still under development. 
 
-Modules Responsibilities
-
-* **app**: Contains the application-level classes and scaffolding that tie together the rest of the codebase.
-
-* **data**: Abstraction for accessing data sources, remote or local
-  * ***auth***: Implementation for auth endpoints. Using Ktor for REST API
-
-- **core**: Resources that is useful for all modules
-  - ***network***:  Implementation of Ktor and models that API can return.
-
-  - ***ui***: Ui resources thatares used in multiple modules, as strings, drawables and some components.
-
-  - ***util***: Extensions functions and some type validators that are used in multiple modules
-
-- **feature**: Contains all screens and screen's logic.
-- **buildSrc**: Configurations that is used in multiple modules
-
-
 
 ## Built With
 
@@ -63,6 +46,25 @@ Modules Responsibilities
 - Multi modules
 - Clean architecture
 
+
+## Development
+
+Modules Responsibilities
+
+* **app**: Contains the application-level classes and scaffolding that tie together the rest of the codebase.
+
+* **data**: Abstraction for accessing data sources, remote or local
+  * ***auth***: Implementation for auth endpoints. Using Ktor for REST API
+
+- **core**: Resources that is useful for all modules
+  - ***network***:  Implementation of Ktor and models that API can return.
+
+  - ***ui***: UI resources thatares used in multiple modules, as strings, drawables and some components.
+
+  - ***util***: Extensions functions and some type validators that are used in multiple modules
+
+- **feature**: Contains all screens and screen's logic.
+- **buildSrc**: Configurations that is used in multiple modules
 
 
 ## License
