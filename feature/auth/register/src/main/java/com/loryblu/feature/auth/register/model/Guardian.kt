@@ -1,6 +1,4 @@
-package com.loryblu.feature.auth.register.util
-
-import com.loryblu.core.ui.models.GenderInput
+package com.loryblu.feature.auth.register.model
 
 data class Guardian(
     val email: String,

@@ -1,8 +1,12 @@
 package com.loryblu.core.util.validators
 
-sealed class BirthdayInputValid {
-    object Valid: BirthdayInputValid()
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+sealed class BirthdayInputValid : Parcelable {
+    data object Valid: BirthdayInputValid()
     data class Error(val messageId: Int): BirthdayInputValid()
-    object EmptyError : BirthdayInputValid()
-    object Empty: BirthdayInputValid()
+    data object EmptyError : BirthdayInputValid()
+    data object Empty: BirthdayInputValid()
 }

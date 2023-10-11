@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -51,4 +52,5 @@ dependencies {
     implementation(project(":core:util"))
 
     debugImplementation(libs.ui.tooling)
+
 }

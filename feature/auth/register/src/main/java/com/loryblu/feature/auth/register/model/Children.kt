@@ -1,4 +1,4 @@
-package com.loryblu.feature.auth.register.util
+package com.loryblu.feature.auth.register.model
 
 import com.loryblu.core.ui.models.GenderInput
 

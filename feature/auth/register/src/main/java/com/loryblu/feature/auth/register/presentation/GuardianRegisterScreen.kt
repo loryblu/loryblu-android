@@ -1,4 +1,4 @@
-package com.loryblu.feature.auth.register.guardian
+package com.loryblu.feature.auth.register.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,10 +16,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,23 +32,35 @@ import com.loryblu.core.ui.R
 import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBEmailTextField
 import com.loryblu.core.ui.components.LBPasswordTextField
-import com.loryblu.core.ui.theme.Error
 import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.ui.theme.Error
+import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.NameInputValid
-import com.loryblu.feature.auth.register.child.ChildRegisterViewModel
-import com.loryblu.feature.auth.register.util.Guardian
+import com.loryblu.core.util.validators.PasswordInputValid
+import com.loryblu.feature.auth.register.model.Guardian
 
 @Composable
 fun GuardianRegisterScreen(
-    viewModel: ChildRegisterViewModel,
     navigateToChildRegister: () -> Unit,
-    onNextButtonClicked: () -> Unit,
+    onNextButtonClicked: (Guardian) -> Unit,
     shouldGoToNextScreen: Boolean,
+    nameStateValidation: (name: String) -> NameInputValid,
+    emailStateValidation: (email: String) -> EmailInputValid,
+    passwordStateValidation: (password: String) -> PasswordInputValid,
+    confirmPasswordStateValidation: (password: String, confirmPassword: String) -> PasswordInputValid,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
-    var isPasswordTextFieldSelected by remember { mutableStateOf(false) }
+    var isPasswordTextFieldSelected by rememberSaveable { mutableStateOf(false) }
+
+    var name by rememberSaveable { mutableStateOf("") }
+    var nameState by rememberSaveable { mutableStateOf<NameInputValid>(NameInputValid.Empty) }
+    var email by rememberSaveable { mutableStateOf("") }
+    var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
+    var confirmPassword by rememberSaveable { mutableStateOf("") }
+    var confirmPasswordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,10 +79,10 @@ fun GuardianRegisterScreen(
                 .fillMaxWidth()
         ) {
             OutlinedTextField(
-                value = uiState.name,
-                onValueChange = {
-                    viewModel.updateName(it)
-                    viewModel.nameState()
+                value = name,
+                onValueChange = { newName ->
+                    name = newName
+                    nameState = nameStateValidation(name)
                 },
                 label = { Text(text = stringResource(R.string.name)) },
                 leadingIcon = {
@@ -85,66 +95,43 @@ fun GuardianRegisterScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                isError = uiState.nameState is NameInputValid.Error,
+                isError = nameState is NameInputValid.Error,
                 supportingText = {
-                    if(uiState.nameState is NameInputValid.Error) {
+                    if(nameState is NameInputValid.Error) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(id = (uiState.nameState as NameInputValid.Error).messageId),
+                            text = stringResource(id = (nameState as NameInputValid.Error).messageId),
                             color = MaterialTheme.colorScheme.error
                         )
                     }
                 },
             )
-
-            // Mudar para esse quando configurarmos o layout
-//            LBNameTextField(
-//                value = uiState.name,
-//                onValueChange = { name: String ->
-//                    viewModel.updateName(name)
-//                    viewModel.nameState()
-//                },
-//                labelRes = stringResource(id = R.string.name),
-//                error = uiState.nameState,
-//            )
-//            OutlinedTextField(
-//                value = uiState.email,
-//                onValueChange = viewModel::updateEmail,
-//                label = { Text(text = stringResource(R.string.email)) },
-//                leadingIcon = {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_email),
-//                        contentDescription = stringResource(
-//                            R.string.email_icon
-//                        )
-//                    )
-//                },
-//                modifier = Modifier.fillMaxWidth()
-//            )
             LBEmailTextField(
-                onValueChange = {
-                    viewModel.updateEmail(it)
-                    viewModel.emailStateGurdian()
+                onValueChange = { newEmail ->
+                    email = newEmail
+                    emailState = emailStateValidation(email)
                 },
                 labelRes = stringResource(R.string.email),
-                value = uiState.email,
-                error = uiState.emailState,
+                value = email,
+                error = emailState,
             )
 
             // Password field
             LBPasswordTextField(
                 onValueChange = { newPass: String ->
-                    viewModel.run {
-                        updatePassword(newPass)
-                        passwordState(newPass)
-                    }
+//                    viewModel.run {
+//                        updatePassword(newPass)
+//                        passwordState(newPass)
+//                    }
+                    password = newPass
+                    passwordState = passwordStateValidation(password)
                 },
                 onButtonClick = {
                     passwordHidden = !passwordHidden
                 },
                 labelRes = stringResource(id = R.string.password),
-                value = uiState.password,
-                error = uiState.passwordState,
+                value = password,
+                error = passwordState,
                 hidden = passwordHidden,
                 fieldFocus = {
                     isPasswordTextFieldSelected = it
@@ -156,7 +143,7 @@ fun GuardianRegisterScreen(
              * So it will display the errors below
              */
             if(isPasswordTextFieldSelected) {
-                if (false in uiState.passwordHas.values) {
+                if (passwordState is PasswordInputValid.ErrorList) {
                     Column(
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.Start,
@@ -169,7 +156,7 @@ fun GuardianRegisterScreen(
                         Text(
                             text = stringResource(R.string.the_password_must_have)
                         )
-                        uiState.passwordHas.forEach {
+                        (passwordState as PasswordInputValid.ErrorList).errors.forEach {
                             // It value is the entry, if some error so its false, if there is no error so its true
                             if (!it.value) {
                                 Row(
@@ -216,27 +203,37 @@ fun GuardianRegisterScreen(
             // Confirm password field
             LBPasswordTextField(
                 onValueChange = { newPassConfirm ->
-                    viewModel.run {
-                        updateConfirmationPassword(newPassConfirm)
-                        confirmPasswordState()
-                    }
+                    confirmPassword = newPassConfirm
+                    confirmPasswordState = confirmPasswordStateValidation(password, confirmPassword)
                 },
                 onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
                 labelRes = stringResource(id = R.string.confirm_password),
-                value = uiState.confirmationPassword,
-                error = uiState.confirmPasswordState,
+                value = confirmPassword,
+                error = confirmPasswordState,
                 hidden = confirmPasswordHidden,
             )
         }
         LBButton(
             textRes = R.string.next,
             onClick = {
-                onNextButtonClicked()
-                viewModel.saveGuardian(Guardian(
-                    password = uiState.password,
-                    email = uiState.email,
-                    name = uiState.name
-                ))
+                nameState = nameStateValidation(name)
+                passwordState = passwordStateValidation(password)
+                confirmPasswordState = confirmPasswordStateValidation(password, confirmPassword)
+                emailState = emailStateValidation(email)
+                if(
+                    nameState == NameInputValid.Valid
+                    && passwordState == PasswordInputValid.Valid
+                    && confirmPasswordState == PasswordInputValid.Valid
+                    && emailState == EmailInputValid.Valid
+                ) {
+                    onNextButtonClicked(
+                        Guardian(
+                            email = email,
+                            password = password,
+                            name = name
+                        )
+                    )
+                }
             },
             modifier = Modifier
         )
@@ -249,17 +246,28 @@ fun GuardianRegisterScreen(
     }
 }
 
-//@Composable
-//@Preview
-//fun PreviewRegisterScreen() {
-//    GuardianRegisterScreen(
-//        viewModel = GuardianRegisterViewModel(),
-//        navigateToChildRegister = {
-//
-//        },
-//        onNextButtonClicked = {
-//
-//        },
-//        shouldGoToNextScreen = false,
-//        )
-//}
+@Composable
+@Preview
+fun PreviewRegisterScreen() {
+    GuardianRegisterScreen(
+        navigateToChildRegister = {
+
+        },
+        onNextButtonClicked = {
+
+        },
+        shouldGoToNextScreen = false,
+        passwordStateValidation = {
+            PasswordInputValid.Valid
+        },
+        confirmPasswordStateValidation = { password, confirmPassword ->
+            PasswordInputValid.Valid
+        },
+        emailStateValidation = {
+            EmailInputValid.Valid
+        },
+        nameStateValidation = {
+            NameInputValid.Valid
+        }
+    )
+}
