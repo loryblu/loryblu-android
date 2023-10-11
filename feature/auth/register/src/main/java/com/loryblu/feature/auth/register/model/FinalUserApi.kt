@@ -1,4 +1,4 @@
-package com.loryblu.feature.auth.register.util
+package com.loryblu.feature.auth.register.model
 
 data class FinalUserApi(
     var email: String,

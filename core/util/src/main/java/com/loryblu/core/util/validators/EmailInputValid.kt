@@ -1,7 +1,11 @@
 package com.loryblu.core.util.validators
 
-sealed class EmailInputValid {
-    object Valid: EmailInputValid()
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+sealed class EmailInputValid : Parcelable {
+    data object Valid: EmailInputValid()
     data class Error(val messageId: Int): EmailInputValid()
-    object Empty: EmailInputValid()
+    data object Empty: EmailInputValid()
 }

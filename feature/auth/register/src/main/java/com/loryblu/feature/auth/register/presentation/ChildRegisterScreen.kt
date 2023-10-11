@@ -1,4 +1,4 @@
-package com.loryblu.feature.auth.register.child
+package com.loryblu.feature.auth.register.presentation
 
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -22,8 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
@@ -40,37 +40,36 @@ import com.loryblu.core.ui.components.LBDatePicker
 import com.loryblu.core.ui.components.LBGirlButton
 import com.loryblu.core.ui.components.LBNameTextField
 import com.loryblu.core.ui.components.LBRadioButton
-import com.loryblu.core.ui.components.LBSuccessLabel
 import com.loryblu.core.ui.components.LBTitle
 import com.loryblu.core.ui.models.GenderInput
 import com.loryblu.core.util.validators.BirthdayInputValid
 import com.loryblu.core.util.validators.NameInputValid
-import com.loryblu.feature.auth.register.util.Children
-import kotlinx.coroutines.launch
+import com.loryblu.feature.auth.register.model.Children
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChildRegisterScreen(
-    viewModel: ChildRegisterViewModel,
     navigateToConfirmationScreen: () -> Unit,
     onSignUpButtonClicked: (Children) -> Unit,
     shouldGoToNextScreen: Boolean,
+    nameStateValidation: (name: String) -> NameInputValid,
+    birthdayStateValidation: (birthday: String) -> BirthdayInputValid,
+    genderStateValidation: (gender: GenderInput) -> GenderInput,
     intentForPrivacy: Intent,
-    apiErrorMessage: String?,
+    apiErrorMessage: List<String>,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    var privacy by remember { mutableStateOf(false) }
-    var privacyState by remember { mutableStateOf(true) }
 
-    var name by remember { mutableStateOf("") }
-    var nameState by remember { mutableStateOf<NameInputValid>(NameInputValid.Empty) }
+    var privacy by rememberSaveable { mutableStateOf(false) }
+    var privacyState by rememberSaveable { mutableStateOf(true) }
+    var name by rememberSaveable { mutableStateOf("") }
+    var nameState by rememberSaveable { mutableStateOf<NameInputValid>(NameInputValid.Empty) }
+    var birthday by rememberSaveable { mutableStateOf("") }
+    var birthdayState by rememberSaveable { mutableStateOf<BirthdayInputValid>(BirthdayInputValid.Empty) }
+    var gender by rememberSaveable { mutableStateOf<GenderInput>(GenderInput.Empty) }
 
-    var birthday by remember { mutableStateOf("") }
-    var birthdayState by remember { mutableStateOf<BirthdayInputValid>(BirthdayInputValid.Empty) }
-
-    var gender by remember { mutableStateOf<GenderInput>(GenderInput.Empty) }
-
-    var showApiFailure by remember { mutableStateOf(false) }
+//    nameState = nameStateValidation(name)
+//    birthdayState = birthdayStateValidation(birthday)
+//    gender = genderStateValidation(gender)
 
 
     val activityResultLauncher = rememberLauncherForActivityResult(
@@ -98,7 +97,7 @@ fun ChildRegisterScreen(
                 value = name,
                 onValueChange = { newName: String ->
                     name = newName
-                    nameState = viewModel.nameState(newName)
+                    nameState = nameStateValidation(name)
                 },
                 labelRes = stringResource(id = R.string.name),
                 error = nameState,
@@ -109,7 +108,7 @@ fun ChildRegisterScreen(
                 error = birthdayState,
                 onBirthdayChange = { newBirthday ->
                     birthday = newBirthday
-                    birthdayState = viewModel.birthdayState(newBirthday)
+                    birthdayState = birthdayStateValidation(newBirthday)
                 }
             )
         }
@@ -171,7 +170,7 @@ fun ChildRegisterScreen(
                 isChecked = privacy,
                 onCheckedChange = {
                     privacy = !privacy
-                    privacyState = viewModel.privacyState(privacy)
+                    privacyState = privacy
                 },
                 modifier = Modifier,
             )
@@ -220,8 +219,14 @@ fun ChildRegisterScreen(
                     color = MaterialTheme.colorScheme.error
                 )
             }
-            if (showApiFailure) {
-                LBSuccessLabel(labelRes = "Ocorreu algum erro.")
+            apiErrorMessage.forEach {
+                Text(
+                    fontSize = 12.sp,
+                    modifier = Modifier
+                        .align(Alignment.End),
+                    text = it,
+                    color = MaterialTheme.colorScheme.error
+                )
             }
         }
 
@@ -231,11 +236,10 @@ fun ChildRegisterScreen(
         LBButton(
             textRes = R.string.sign_up,
             onClick = {
-                nameState = viewModel.nameState(name)
-                birthdayState = viewModel.birthdayState(birthday)
-                gender = viewModel.genderState(gender)
-                privacyState = viewModel.privacyState(privacy)
-
+                nameState = nameStateValidation(name)
+                birthdayState = birthdayStateValidation(birthday)
+                gender = genderStateValidation(gender)
+                privacyState = privacy
                 if(
                     nameState == NameInputValid.Valid
                     && birthdayState == BirthdayInputValid.Valid
@@ -260,15 +264,7 @@ fun ChildRegisterScreen(
 
     LaunchedEffect(key1 = shouldGoToNextScreen) {
         if (shouldGoToNextScreen) {
-            coroutineScope.launch {
-                navigateToConfirmationScreen()
-            }
-        }
-    }
-
-    LaunchedEffect(key1 = apiErrorMessage) {
-        if (apiErrorMessage != null) {
-            showApiFailure = true
+            navigateToConfirmationScreen()
         }
     }
 }
@@ -276,14 +272,25 @@ fun ChildRegisterScreen(
 
 
 
-//@Composable
-//@Preview
-//fun PreviewComposable() {
-//    ChildRegisterScreen(
-//        viewModel = ChildRegisterViewModel(),
-//        navigateToConfirmationScreen = {},
-//        onSignUpButtonClicked = {},
-//        shouldGoToNextScreen = false,
-//        intentForPrivacy = Intent(Intent.ACTION_VIEW),
-//    )
-//}
+@Composable
+@Preview(showBackground = true)
+fun PreviewChildRegisterScreen() {
+    ChildRegisterScreen(
+        navigateToConfirmationScreen = {},
+        onSignUpButtonClicked = {},
+        shouldGoToNextScreen = false,
+        intentForPrivacy = Intent(Intent.ACTION_VIEW),
+        nameStateValidation = {
+            NameInputValid.Error(R.string.invalid_name)
+        },
+        genderStateValidation = {
+            GenderInput.FEMALE
+        },
+        birthdayStateValidation = {
+            BirthdayInputValid.Valid
+        },
+        apiErrorMessage = listOf(
+//            "Email inválido", "Senha deve ser maior", "Gênero não existe"
+        )
+    )
+}

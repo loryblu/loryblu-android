@@ -17,6 +17,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
@@ -39,7 +40,7 @@ fun LBDatePicker(
         mutableStateOf(false)
     }
     val datePickerState = rememberDatePickerState(yearRange = 2013..2023)
-    var selectedDate by remember {
+    var selectedDate by rememberSaveable {
         mutableStateOf("")
     }
     val confirmEnabled by remember { derivedStateOf { datePickerState.selectedDateMillis != null } }

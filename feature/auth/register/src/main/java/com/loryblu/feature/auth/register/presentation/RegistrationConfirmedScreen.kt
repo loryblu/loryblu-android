@@ -1,4 +1,4 @@
-package com.loryblu.feature.auth.register
+package com.loryblu.feature.auth.register.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
