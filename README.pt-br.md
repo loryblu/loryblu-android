@@ -20,7 +20,7 @@ O LoryBlu é um aplicativo pensado para ajudar pais e crianças diagnosticadas c
 <br/>
 <br/>
 
-## Table Of Contents
+## Tabela de conteúdos
 
 * [Sobre O Projeto](#sobre-o-projeto)
 * [Desenvolvido Com](#desenvolvido-com)
