@@ -9,7 +9,7 @@
   <h3 align="center">Loryblu Android</h3>
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/loryblu/loryblu-android/blob/development/README.md)
-[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/loryblu/loryblu-android/blob/development/README.pt.br.md)
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/loryblu/loryblu-android/blob/development/README.pt-br.md)
 
   <p align="center">
     Loryblu is an app designed to help parents and children diagnosed with ASD, especially those looking for or waiting for multidisciplinary treatment, with a playful and interactive environment to contribute in a light, inclusive, and functional way through activities, cognitive stimulation games, and music.
