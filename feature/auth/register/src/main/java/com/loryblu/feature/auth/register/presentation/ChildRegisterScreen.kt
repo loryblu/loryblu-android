@@ -41,6 +41,7 @@ import com.loryblu.core.ui.components.LBGirlButton
 import com.loryblu.core.ui.components.LBNameTextField
 import com.loryblu.core.ui.components.LBRadioButton
 import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.util.extensions.toApiFormat
 import com.loryblu.core.ui.models.GenderInput
 import com.loryblu.core.util.validators.BirthdayInputValid
 import com.loryblu.core.util.validators.NameInputValid
@@ -250,7 +251,7 @@ fun ChildRegisterScreen(
                         Children(
                             name = name,
                             policiesAccepted = privacy,
-                            birthday = birthday,
+                            birthday = birthday.toApiFormat(),
                             gender = gender
                         )
                     )

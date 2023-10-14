@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.loryblu.core.ui.R
+import com.loryblu.core.util.extensions.toBrazilianDateFormat
 import com.loryblu.core.util.validators.BirthdayInputValid
 
 @ExperimentalMaterial3Api
@@ -40,7 +41,7 @@ fun LBDatePicker(
         mutableStateOf(false)
     }
     val datePickerState = rememberDatePickerState(yearRange = 2013..2023)
-    var selectedDate by rememberSaveable {
+    var showDate by rememberSaveable {
         mutableStateOf("")
     }
     val confirmEnabled by remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
@@ -52,10 +53,10 @@ fun LBDatePicker(
                     onClick = {
                         datePickerState
                             .selectedDateMillis?.let { millis ->
-                                selectedDate = millis.toBrazilianDateFormat()
+                                showDate = millis.toBrazilianDateFormat()
                             }
                         showDatePickerDialog = false
-                        onBirthdayChange(selectedDate)
+                        onBirthdayChange(showDate)
                     },
                     enabled = confirmEnabled
                 ) {
@@ -75,7 +76,7 @@ fun LBDatePicker(
 
     OutlinedTextField(
         onValueChange = { },
-        value = selectedDate,
+        value = showDate,
         label = { Text(text = labelRes) },
         leadingIcon = {
             Icon(
