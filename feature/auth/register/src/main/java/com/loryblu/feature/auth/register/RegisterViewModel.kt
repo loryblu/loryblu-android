@@ -32,8 +32,6 @@ class RegisterViewModel(
     private val _apiErrorMessage = MutableStateFlow(listOf<String>())
     val apiErrorMessage = _apiErrorMessage.asStateFlow()
 
-//    private val apiResponse = MutableStateFlow<ApiResponse>()
-
     private val passwordHas: Map<Int, Boolean> = mapOf(
         R.string.at_least_eight_characters to false,
         R.string.at_least_one_uppercase_letter to false,

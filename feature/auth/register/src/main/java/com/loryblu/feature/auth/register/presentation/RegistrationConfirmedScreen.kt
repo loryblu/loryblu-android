@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,15 +24,12 @@ import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
 import com.loryblu.core.ui.theme.DarkBlue
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun RegistrationConfirmedScreen(
     navigateToHomeScreen: () -> Unit,
     shouldGoToNextScreen: Boolean,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -77,10 +73,8 @@ fun RegistrationConfirmedScreen(
 
     LaunchedEffect(key1 = shouldGoToNextScreen) {
         if (shouldGoToNextScreen) {
-            coroutineScope.launch {
-                delay(3000)
-                navigateToHomeScreen()
-            }
+            delay(3000)
+            navigateToHomeScreen()
         }
     }
 }

@@ -119,10 +119,6 @@ fun GuardianRegisterScreen(
             // Password field
             LBPasswordTextField(
                 onValueChange = { newPass: String ->
-//                    viewModel.run {
-//                        updatePassword(newPass)
-//                        passwordState(newPass)
-//                    }
                     password = newPass
                     passwordState = passwordStateValidation(password)
                 },
