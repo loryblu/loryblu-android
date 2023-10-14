@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -51,6 +52,9 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.koin.androidx.compose)
+
+    implementation(libs.ktor.client.core)
+
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

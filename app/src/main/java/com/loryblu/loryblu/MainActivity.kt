@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
             LoryBluTheme {
                 val navController = rememberNavController()
                 SetupNavGraph(
-                    startDestination = Screen.RegisterChild.route,
+                    startDestination = Screen.Login.route,
                     navController = navController
                 )
             }

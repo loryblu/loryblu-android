@@ -63,11 +63,11 @@ class ForgotPasswordViewModel(
     private fun passwordRecovery() {
         viewModelScope.launch {
             viewModelScope.launch {
-                val test = PasswordRecoveryRequest(
-                    email = uiState.value.email,
+                val passwordRecoveryRequest = PasswordRecoveryRequest(
+                    email = uiState.value.email.lowercase(),
                 )
-                val response : ApiResponse = passwordRecovery.passwordRecovery(test)
-                if (response.statusCode == null){
+                val response : ApiResponse = passwordRecovery.passwordRecovery(passwordRecoveryRequest)
+                if (response.serverStatusCode.value < 300){
                     _uiState.update {
                         it.copy(emailMessage = "E-mail enviado com sucesso")
                     }
