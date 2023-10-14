@@ -43,15 +43,15 @@ class RegisterViewModel(
     private suspend fun registerUser(finalUserApi: FinalUserApi): ApiResponse {
         return withContext(Dispatchers.IO) {
             val response: ApiResponse
-        
+
             val registerRequest = RegisterRequest(
-                email = finalUserApi.email,
+                email = finalUserApi.email.lowercase(),
                 password = finalUserApi.password,
                 policiesAccepted = finalUserApi.policiesAccepted,
                 parentName = finalUserApi.parentName,
                 childrenName = finalUserApi.childrenName,
-                childrenBirthDate = "2014-02-28",
-                childrenGender = "MALE"
+                childrenBirthDate = finalUserApi.childrenBirthDate,
+                childrenGender = finalUserApi.childrenGender
             )
 
             response = registerApi.registerUser(registerRequest)
@@ -68,7 +68,9 @@ class RegisterViewModel(
 //                childrenGender = "MALE"
 //            )
 //
-//            apiResponse.value = registerApi.registerUser(registerRequest)
+//            val response = registerApi.registerUser(registerRequest)
+//
+//            return@launch response
 //        }
     }
 
@@ -122,9 +124,8 @@ class RegisterViewModel(
 
             val response = registerUser(finalUserApi)
 
-            if(response.statusCode == null) {
+            if(response.serverStatusCode.value < 300) {
                 shouldGoToNextScreenChildren.value = true
-                _apiErrorMessage.value = listOf()
             } else {
                 _apiErrorMessage.value = response.message
             }

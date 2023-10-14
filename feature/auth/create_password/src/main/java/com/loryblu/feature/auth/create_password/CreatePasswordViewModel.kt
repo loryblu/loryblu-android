@@ -81,7 +81,7 @@ class CreatePasswordViewModel(
         }
     }
     data class PasswordRequest(val newPassword: Boolean, val message: String)
-    suspend fun passwordRecovery(token: String): PasswordRequest = withContext(Dispatchers.IO) {
+    private suspend fun passwordRecovery(token: String): PasswordRequest = withContext(Dispatchers.IO) {
         Log.d("recoveryToken", "Token em base64: $token")
         Log.d("password", "passwordRecovery: " + uiState.value.password)
         val params = NewPasswordRequest(
@@ -89,7 +89,7 @@ class CreatePasswordViewModel(
             recoveryToken = token
         )
         val response : ApiResponse = newPassword.newPassword(params)
-        if (response.statusCode == null){
+        if (response.serverStatusCode.value < 300){
             _uiState.update {
                 it.copy(newPasswordMessage = response.message[0])
             }

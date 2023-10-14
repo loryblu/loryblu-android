@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.databinding.runtime)
 
+    implementation(libs.ktor.client.core)
+
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
