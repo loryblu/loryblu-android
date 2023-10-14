@@ -10,15 +10,7 @@ data class ApiResponse(
     @Contextual var serverStatusCode: HttpStatusCode,
 )
 
-//@Serializable
-//data class HttpStatusCodeServer(
-//    val value: Int,
-//    val description: String
-//)
-
 @Serializable
 internal data class ResponseStringTemp(
     val message: String,
-    val statusCode: Int?,
-    val error: String?
 )
