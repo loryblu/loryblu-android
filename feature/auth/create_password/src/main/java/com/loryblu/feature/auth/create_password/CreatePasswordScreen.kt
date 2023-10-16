@@ -16,23 +16,25 @@ package com.loryblu.feature.auth.create_password
  import androidx.compose.runtime.LaunchedEffect
  import androidx.compose.runtime.getValue
  import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
  import androidx.compose.runtime.saveable.rememberSaveable
  import androidx.compose.runtime.setValue
  import androidx.compose.ui.Alignment
  import androidx.compose.ui.Modifier
- import androidx.compose.ui.graphics.Color
  import androidx.compose.ui.res.painterResource
  import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.text.font.FontWeight
  import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
  import androidx.lifecycle.compose.collectAsStateWithLifecycle
- import com.loryblu.core.ui.P_SMALL
  import com.loryblu.core.ui.R
  import com.loryblu.core.ui.components.LBButton
  import com.loryblu.core.ui.components.LBErrorLabel
  import com.loryblu.core.ui.components.LBPasswordTextField
  import com.loryblu.core.ui.components.LBSuccessLabel
  import com.loryblu.core.ui.components.LBTitle
- import com.loryblu.core.ui.theme.Error
+ import com.loryblu.core.ui.theme.LBErrorColor
+ import com.loryblu.core.ui.theme.LBShadowGray
  import com.loryblu.core.util.validators.PasswordInputValid
  import kotlinx.coroutines.delay
 
@@ -47,23 +49,26 @@ fun CreatePasswordScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
         modifier = Modifier
-            .padding(P_SMALL)
+            .padding(24.dp)
             .fillMaxSize()
     ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         var passwordHidden by rememberSaveable { mutableStateOf(true) }
         var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
+        var isPasswordFieldFocused by remember { mutableStateOf(false) }
+        var isConfirmPasswordFieldFocused by remember { mutableStateOf(false) }
 
         LBTitle(textRes = R.string.create_a_new_password)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Text(
             stringResource(R.string.reset_your_password_here),
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.titleSmall,
+            color = LBShadowGray
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(56.dp))
 
         // password
         LBPasswordTextField(
@@ -75,70 +80,75 @@ fun CreatePasswordScreen(
                 }
             },
             onButtonClick = { passwordHidden = !passwordHidden },
-            labelRes = stringResource(id = R.string.new_password),
+            placeholderRes = stringResource(id = R.string.new_password),
             value = uiState.password,
-            error = PasswordInputValid.Empty,
+            error = uiState.passwordState,
             hidden = passwordHidden,
+            fieldFocus = {
+                isPasswordFieldFocused = it
+            },
         )
 
-        Column(
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier
-                .padding(
-                    P_SMALL
-                )
-                .fillMaxWidth()
-        ) {
-            var counter = true
-            for (element in uiState.passwordErrors) {
-                counter = element.value and counter
-            }
+        if (!isPasswordFieldFocused || true in uiState.passwordHas.values) {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-            // test if the counter is true and this means that every field has the requirement
-            if (counter.not()) {
-                Text(
-                    stringResource(R.string.the_password_must_have),
-                    style = MaterialTheme.typography.labelMedium
-                )
-                uiState.passwordErrors.forEach {
-                    if (!it.value) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_close),
-                                contentDescription = null,
-                                tint = Error
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = stringResource(id = it.key),
-                                color = Error,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        }
-                    } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier.padding(5.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_check),
-                                contentDescription = null,
-                                tint = Color.Black
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = stringResource(id = it.key),
-                                color = Color.Black,
-                                style = MaterialTheme.typography.labelMedium
-                            )
+        if (isPasswordFieldFocused) {
+            if (false in uiState.passwordHas.values) {
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        stringResource(R.string.the_password_must_have),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    uiState.passwordHas.forEach {
+                        if (!it.value) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier.padding(vertical = 5.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_close),
+                                    contentDescription = null,
+                                    tint = LBErrorColor
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = stringResource(id = it.key),
+                                    color = LBErrorColor,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        } else {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier.padding(vertical = 5.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_check),
+                                    contentDescription = null,
+                                    tint = LBShadowGray
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = stringResource(id = it.key),
+                                    color = LBShadowGray,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
                         }
                     }
+
                 }
             }
         }
@@ -152,27 +162,52 @@ fun CreatePasswordScreen(
                 }
             },
             onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
-            labelRes = stringResource(id = R.string.repeat_password),
+            placeholderRes = stringResource(id = R.string.repeat_password),
             value = uiState.confirmationPassword,
             error = uiState.confirmPasswordState,
-            hidden = confirmPasswordHidden
+            hidden = confirmPasswordHidden,
+            fieldFocus = {
+                isConfirmPasswordFieldFocused = it
+            },
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        if (
+            uiState.confirmPasswordState is PasswordInputValid.Error
+            && isConfirmPasswordFieldFocused
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, top = 8.dp)
+            ) {
+                val emailError = uiState.confirmPasswordState as PasswordInputValid.Error
+
+                Text(
+                    fontSize = 14.sp,
+                    modifier = Modifier,
+                    text = stringResource(id = emailError.messageId),
+                    fontWeight = FontWeight.Bold,
+                    color = LBErrorColor
+                )
+            }
+        }
 
         Text(
             text = stringResource(R.string.warning_about_change_the_password),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.labelMedium,
+            color = LBShadowGray,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp, bottom = 44.dp)
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
 
         LBButton(
             textRes = R.string.reset_password,
             onClick = {
                 onResetPasswordButtonClicked()
-            },
-            modifier = Modifier
+            }
         )
 
         if(viewModel.newPasswordSuccess.value) {
@@ -193,18 +228,3 @@ fun CreatePasswordScreen(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewCreatePasswordScreen() {
-//    CreatePasswordScreen(
-//        viewModel = CreatePasswordViewModel(),
-//        navigateToLoginScreen = {
-//
-//        },
-//        onResetPasswordButtonClicked = {
-//
-//        },
-//        shouldGoToNextScreen = false,
-//    )
-//}

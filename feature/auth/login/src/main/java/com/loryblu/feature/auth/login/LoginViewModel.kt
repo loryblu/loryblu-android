@@ -19,7 +19,7 @@ data class LoginUiState(
     val password: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
     // serve para salvar o estado para a proxima visita
-    val isLoginSaved: Boolean = true,
+    val isLoginSaved: Boolean = false,
     val enterTrigger: Boolean = false,
     val showPassword: Boolean = true
 )

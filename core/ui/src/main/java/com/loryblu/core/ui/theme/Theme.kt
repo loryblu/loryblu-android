@@ -1,8 +1,11 @@
 package com.loryblu.core.ui.theme
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Build
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -14,11 +17,12 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val colorScheme = lightColorScheme(
-    primary = Blue,
-    secondary = LightGray,
-    tertiary = Gray,
+    primary = LBSoftGray,
+    secondary = LBSoftGray,
+    tertiary = LBSoftGray,
 )
 
+@SuppressLint("SourceLockedOrientationActivity")
 @Composable
 fun LoryBluTheme(
     darkTheme: Boolean = false,
@@ -39,9 +43,16 @@ fun LoryBluTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = LBSoftGray.toArgb()
+            window.navigationBarColor = LBSoftGray.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
         }
+    }
+
+    val context = LocalContext.current
+    if (context is Activity) {
+        context.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     MaterialTheme(
@@ -49,4 +60,8 @@ fun LoryBluTheme(
         typography = Typography,
         content = content
     )
+
+    Surface(color = LBSoftGray) {
+        content()
+    }
 }

@@ -1,34 +1,39 @@
 package com.loryblu.core.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
+import com.loryblu.core.ui.theme.LBSilverGray
+import com.loryblu.core.ui.theme.LBSoftBlue
 import com.loryblu.core.util.validators.PasswordInputValid
 
-// TODO seek problems in this function
 /**
  * this function call the outilinedTextField for password and confirmationPassword
  * **/
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun LBPasswordTextField(
     onValueChange: (String) -> Unit,
     onButtonClick: () -> Unit,
-    labelRes: String,
+    placeholderRes: String,
     value: String,
     error: PasswordInputValid,
     hidden: Boolean,
@@ -47,38 +52,54 @@ fun LBPasswordTextField(
         value = value,
         onValueChange = { onValueChange(it) },
         singleLine = true,
-        label = {
-            Text(text = labelRes)
+        placeholder = {
+            Text(
+                text = placeholderRes,
+                color = LBSilverGray,
+                fontWeight = FontWeight.Bold
+            )
         },
+        textStyle = TextStyle(
+            color = LBSilverGray,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        ),
         trailingIcon = {
-            IconButton(onClick = { onButtonClick() }) {
+            IconButton(
+                modifier = Modifier.padding(end = 18.dp),
+                onClick = { onButtonClick() }) {
                 Icon(
                     painter = painterResource(id = trailingIconRes),
-                    contentDescription = stringResource(id = trailingDescriptionRes)
+                    contentDescription = stringResource(id = trailingDescriptionRes),
+                    tint = LBSilverGray,
                 )
             }
         },
         leadingIcon = {
             Icon(
                 painter = painterResource(R.drawable.ic_lock),
-                contentDescription = stringResource(R.string.password_icon)
+                contentDescription = stringResource(R.string.password_icon),
+                tint = LBSilverGray,
             )
         },
         isError = error is PasswordInputValid.ErrorList || error is PasswordInputValid.Error,
-        supportingText = {
-            if(error is PasswordInputValid.Error) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(error.messageId),
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-        },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .onFocusChanged { focusState ->
                 fieldFocus(focusState.isFocused)
             },
+        shape = RoundedCornerShape(10.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            cursorColor = LBSilverGray,
+            focusedBorderColor = LBSoftBlue,
+            unfocusedBorderColor = LBSoftBlue,
+            disabledBorderColor = LBSoftBlue,
+            errorContainerColor = LBSoftBlue,
+            disabledContainerColor = LBSoftBlue,
+            focusedContainerColor = LBSoftBlue,
+            unfocusedContainerColor = LBSoftBlue,
+        ),
         visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        )
+    )
 }
