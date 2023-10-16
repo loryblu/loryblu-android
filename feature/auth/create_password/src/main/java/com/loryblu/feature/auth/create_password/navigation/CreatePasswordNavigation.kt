@@ -31,9 +31,30 @@ fun NavGraphBuilder.createPasswordRoute(
                 viewModel = viewModel,
                 navigateToLoginScreen = navigateToLoginScreen,
                 onResetPasswordButtonClicked = {
-                    viewModel.verifyAllConditions(token)
+                    viewModel.verifyAllConditions(token, it)
                 },
-                shouldGoToNextScreen = shouldGoToNextScreen
+                shouldGoToNextScreen = shouldGoToNextScreen,
+                confirmPasswordStateValidation = { password, confirmPassword ->
+                    viewModel.confirmPasswordState(password, confirmPassword)
+                },
+                passwordStateValidation = {
+                    viewModel.passwordState(it)
+                }
+            )
+        } else {
+            CreatePasswordScreen(
+                viewModel = viewModel,
+                navigateToLoginScreen = navigateToLoginScreen,
+                onResetPasswordButtonClicked = {
+                    viewModel.verifyAllConditions("token", "")
+                },
+                shouldGoToNextScreen = shouldGoToNextScreen,
+                confirmPasswordStateValidation = { password, confirmPassword ->
+                    viewModel.confirmPasswordState(password, confirmPassword)
+                },
+                passwordStateValidation = {
+                    viewModel.passwordState(it)
+                }
             )
         }
     }

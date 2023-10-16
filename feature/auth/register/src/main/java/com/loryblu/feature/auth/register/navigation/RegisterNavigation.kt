@@ -51,7 +51,7 @@ fun NavGraphBuilder.registerChildRoute(
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreenChildren
         val intentForPrivacyPolicy = Intent(Intent.ACTION_VIEW)
         val apiErrorMessage by viewModel.apiErrorMessage.collectAsState()
-        intentForPrivacyPolicy.setData(Uri.parse("https://online.fliphtml5.com/ibqqn/mtvs/#p=1"))
+        intentForPrivacyPolicy.data = Uri.parse("https://online.fliphtml5.com/ibqqn/mtvs/#p=1")
 
         ChildRegisterScreen(
             navigateToConfirmationScreen = navigateToConfirmationScreen,
