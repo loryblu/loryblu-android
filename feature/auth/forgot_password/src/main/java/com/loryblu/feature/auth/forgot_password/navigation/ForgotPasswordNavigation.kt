@@ -12,7 +12,7 @@ fun NavGraphBuilder.forgotPasswordRoute(
     navigateToCreatePassword: () -> Unit,
 ) {
     composable(
-        route = Screen.ForgetPassword.route,
+        route = Screen.ForgotPassword.route,
     ) {
         val viewModel: ForgotPasswordViewModel = koinViewModel()
         val authenticated by viewModel.authenticated

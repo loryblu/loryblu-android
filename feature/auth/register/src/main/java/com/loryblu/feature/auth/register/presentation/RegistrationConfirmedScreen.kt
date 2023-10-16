@@ -18,11 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.theme.DarkBlue
+import com.loryblu.core.ui.theme.LBDarkBlue
 import kotlinx.coroutines.delay
 
 @Composable
@@ -48,7 +47,7 @@ fun RegistrationConfirmedScreen(
                     }),
                 fontSize = 20.sp,
                 text = "X",
-                color = DarkBlue
+                color = LBDarkBlue
             )
         }
         Column(
@@ -77,14 +76,4 @@ fun RegistrationConfirmedScreen(
             navigateToHomeScreen()
         }
     }
-}
-
-
-@Composable
-@Preview
-fun PreviewComposable() {
-    RegistrationConfirmedScreen(
-        navigateToHomeScreen = {},
-        shouldGoToNextScreen = false,
-    )
 }

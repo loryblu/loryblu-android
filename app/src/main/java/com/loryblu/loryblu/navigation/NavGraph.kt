@@ -24,7 +24,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                 navController.navigate(Screen.Home.route)
             },
             navigateToForgotPassword = {
-                navController.navigate(Screen.ForgetPassword.route)
+                navController.navigate(Screen.ForgotPassword.route)
             },
             navigateToRegisterNow = {
                 navController.navigate(Screen.RegisterGuardian.route)
