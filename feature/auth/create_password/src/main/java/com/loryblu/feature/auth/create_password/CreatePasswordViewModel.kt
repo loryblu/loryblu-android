@@ -21,7 +21,7 @@ data class UiStateCreatePassword(
     val password: String = "",
     val confirmationPassword: String = "",
     val passwordState: PasswordInputValid = PasswordInputValid.Empty,
-    val passwordErrors: Map<Int, Boolean> = mapOf(
+    val passwordHas: Map<Int, Boolean> = mapOf(
         R.string.at_least_eight_characters to false,
         R.string.at_least_one_uppercase_letter to false,
         R.string.lowercase_letters to false,
@@ -62,7 +62,7 @@ class CreatePasswordViewModel(
 
     fun passwordCheck() {
         val password = uiState.value.password
-        val passwordErrors = _uiState.value.passwordErrors.toMutableMap()
+        val passwordErrors = _uiState.value.passwordHas.toMutableMap()
 
         passwordErrors[R.string.at_least_eight_characters] = password.length >= 8
         passwordErrors[R.string.at_least_one_uppercase_letter] = password.any { it.isUpperCase() }
@@ -77,7 +77,7 @@ class CreatePasswordViewModel(
         }
 
         _uiState.update {
-            it.copy(passwordErrors = passwordErrors, passwordState = passwordState)
+            it.copy(passwordHas = passwordErrors, passwordState = passwordState)
         }
     }
     data class PasswordRequest(val newPassword: Boolean, val message: String)

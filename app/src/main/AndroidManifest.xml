@@ -20,7 +20,6 @@
         <activity
             android:name="com.loryblu.loryblu.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.LoryBlu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
