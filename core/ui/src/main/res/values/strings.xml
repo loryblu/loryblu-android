@@ -15,6 +15,7 @@
     <string name="guardian_registration">Guardian Registration</string>
     <string name="child_registration">Child Registration</string>
     <string name="registration_ok">Registration successfully completed</string>
+    <string name="select_the_date">Select the date</string>
 
     <!-- Screen general information -->
     <string name="or">or</string>
@@ -40,7 +41,7 @@
     <string name="new_password">New password</string>
     <string name="repeat_password">Repeat password</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="name">Name</string>
+    <string name="full_name">Full Name</string>
     <string name="birthday">Birthday</string>
 
     <!-- TextFields validations -->
