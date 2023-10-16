@@ -1,4 +1,4 @@
-package com.loryblu.feature.auth.create_password.navigation.di
+package com.loryblu.feature.auth.create_password.di
 
 import com.loryblu.feature.auth.create_password.CreatePasswordViewModel
 
