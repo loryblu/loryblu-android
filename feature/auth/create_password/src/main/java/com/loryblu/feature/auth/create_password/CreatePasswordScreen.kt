@@ -1,48 +1,49 @@
 package com.loryblu.feature.auth.create_password
 
- import androidx.compose.foundation.layout.Arrangement
- import androidx.compose.foundation.layout.Column
- import androidx.compose.foundation.layout.Row
- import androidx.compose.foundation.layout.Spacer
- import androidx.compose.foundation.layout.fillMaxSize
- import androidx.compose.foundation.layout.fillMaxWidth
- import androidx.compose.foundation.layout.height
- import androidx.compose.foundation.layout.padding
- import androidx.compose.foundation.layout.width
- import androidx.compose.material3.Icon
- import androidx.compose.material3.MaterialTheme
- import androidx.compose.material3.Text
- import androidx.compose.runtime.Composable
- import androidx.compose.runtime.LaunchedEffect
- import androidx.compose.runtime.getValue
- import androidx.compose.runtime.mutableStateOf
- import androidx.compose.runtime.remember
- import androidx.compose.runtime.saveable.rememberSaveable
- import androidx.compose.runtime.setValue
- import androidx.compose.ui.Alignment
- import androidx.compose.ui.Modifier
- import androidx.compose.ui.res.painterResource
- import androidx.compose.ui.res.stringResource
- import androidx.compose.ui.text.font.FontWeight
- import androidx.compose.ui.unit.dp
- import androidx.compose.ui.unit.sp
- import androidx.lifecycle.compose.collectAsStateWithLifecycle
- import com.loryblu.core.ui.R
- import com.loryblu.core.ui.components.LBButton
- import com.loryblu.core.ui.components.LBErrorLabel
- import com.loryblu.core.ui.components.LBPasswordTextField
- import com.loryblu.core.ui.components.LBSuccessLabel
- import com.loryblu.core.ui.components.LBTitle
- import com.loryblu.core.ui.theme.LBErrorColor
- import com.loryblu.core.ui.theme.LBShadowGray
- import com.loryblu.core.util.validators.PasswordInputValid
- import kotlinx.coroutines.delay
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.loryblu.core.ui.R
+import com.loryblu.core.ui.components.LBButton
+import com.loryblu.core.ui.components.LBErrorLabel
+import com.loryblu.core.ui.components.LBPasswordTextField
+import com.loryblu.core.ui.components.LBSuccessLabel
+import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.ui.theme.LBErrorColor
+import com.loryblu.core.ui.theme.LBShadowGray
+import com.loryblu.core.util.validators.PasswordInputValid
+import kotlinx.coroutines.delay
 
 @Composable
 fun CreatePasswordScreen(
     viewModel: CreatePasswordViewModel,
+    passwordStateValidation: (password: String) -> PasswordInputValid,
+    confirmPasswordStateValidation: (password: String, confirmPassword: String) -> PasswordInputValid,
     navigateToLoginScreen: () -> Unit,
-    onResetPasswordButtonClicked: () -> Unit,
+    onResetPasswordButtonClicked: (password: String) -> Unit,
     shouldGoToNextScreen: Boolean,
 ) {
     Column(
@@ -52,11 +53,23 @@ fun CreatePasswordScreen(
             .padding(24.dp)
             .fillMaxSize()
     ) {
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         var passwordHidden by rememberSaveable { mutableStateOf(true) }
+        var passwordState by rememberSaveable {
+            mutableStateOf<PasswordInputValid>(
+                PasswordInputValid.Empty
+            )
+        }
+        var password by rememberSaveable { mutableStateOf("") }
         var confirmPasswordHidden by rememberSaveable { mutableStateOf(true) }
         var isPasswordFieldFocused by remember { mutableStateOf(false) }
         var isConfirmPasswordFieldFocused by remember { mutableStateOf(false) }
+        var confirmPassword by rememberSaveable { mutableStateOf("") }
+        var confirmPasswordState by rememberSaveable {
+            mutableStateOf<PasswordInputValid>(
+                PasswordInputValid.Empty
+            )
+        }
+        val newPasswordMessage by rememberSaveable { mutableStateOf("") }
 
         LBTitle(textRes = R.string.create_a_new_password)
 
@@ -72,29 +85,24 @@ fun CreatePasswordScreen(
 
         // password
         LBPasswordTextField(
-            onValueChange = { newPassword: String ->
-                viewModel.run {
-                    updatePassword(newPassword = newPassword)
-                    passwordCheck()
-                    verifyConfirmationPassword()
-                }
+            onValueChange = { newPass: String ->
+                password = newPass
+                passwordState = passwordStateValidation(password)
             },
             onButtonClick = { passwordHidden = !passwordHidden },
             placeholderRes = stringResource(id = R.string.new_password),
-            value = uiState.password,
-            error = uiState.passwordState,
+            value = password,
+            error = passwordState,
             hidden = passwordHidden,
-            fieldFocus = {
-                isPasswordFieldFocused = it
-            },
+            fieldFocus = { isPasswordFieldFocused = it },
         )
 
-        if (!isPasswordFieldFocused || true in uiState.passwordHas.values) {
+        if (!isPasswordFieldFocused || passwordState !is PasswordInputValid.ErrorList) {
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         if (isPasswordFieldFocused) {
-            if (false in uiState.passwordHas.values) {
+            if (passwordState is PasswordInputValid.ErrorList) {
                 Column(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start,
@@ -109,7 +117,7 @@ fun CreatePasswordScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    uiState.passwordHas.forEach {
+                    (passwordState as PasswordInputValid.ErrorList).errors.forEach {
                         if (!it.value) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -155,16 +163,14 @@ fun CreatePasswordScreen(
 
 
         LBPasswordTextField(
-            onValueChange = { newConfirmationPassword: String ->
-                viewModel.run {
-                    updateConfirmationPassword(newConfirmationPassword)
-                    verifyConfirmationPassword()
-                }
+            onValueChange = { newPassConfirm: String ->
+                confirmPassword = newPassConfirm
+                confirmPasswordState = confirmPasswordStateValidation(password, confirmPassword)
             },
             onButtonClick = { confirmPasswordHidden = !confirmPasswordHidden },
             placeholderRes = stringResource(id = R.string.repeat_password),
-            value = uiState.confirmationPassword,
-            error = uiState.confirmPasswordState,
+            value = confirmPassword,
+            error = confirmPasswordState,
             hidden = confirmPasswordHidden,
             fieldFocus = {
                 isConfirmPasswordFieldFocused = it
@@ -172,7 +178,7 @@ fun CreatePasswordScreen(
         )
 
         if (
-            uiState.confirmPasswordState is PasswordInputValid.Error
+            confirmPasswordState is PasswordInputValid.Error
             && isConfirmPasswordFieldFocused
         ) {
             Row(
@@ -182,7 +188,7 @@ fun CreatePasswordScreen(
                     .fillMaxWidth()
                     .padding(start = 8.dp, top = 8.dp)
             ) {
-                val emailError = uiState.confirmPasswordState as PasswordInputValid.Error
+                val emailError = confirmPasswordState as PasswordInputValid.Error
 
                 Text(
                     fontSize = 14.sp,
@@ -206,23 +212,23 @@ fun CreatePasswordScreen(
         LBButton(
             textRes = R.string.reset_password,
             onClick = {
-                onResetPasswordButtonClicked()
+                onResetPasswordButtonClicked(password)
             }
         )
 
-        if(viewModel.newPasswordSuccess.value) {
+        if (viewModel.newPasswordSuccess.value) {
             LBSuccessLabel(
-                labelRes = uiState.newPasswordMessage
+                labelRes = newPasswordMessage
             )
-        }else{
+        } else {
             LBErrorLabel(
-                labelRes = uiState.newPasswordMessage
+                labelRes = newPasswordMessage
             )
         }
     }
 
     LaunchedEffect(key1 = shouldGoToNextScreen) {
-        if(shouldGoToNextScreen) {
+        if (shouldGoToNextScreen) {
             delay(3000)
             navigateToLoginScreen()
         }
