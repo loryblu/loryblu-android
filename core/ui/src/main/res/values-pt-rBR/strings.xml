@@ -16,6 +16,7 @@
     <string name="guardian_registration">Cadastro do responsável</string>
     <string name="child_registration">Cadastro da criança</string>
     <string name="registration_ok">Cadastro efetuado com sucesso</string>
+    <string name="select_the_date">Selecione a data</string>
 
     <!-- Informação geral das telas -->
     <string name="or">ou</string>
@@ -41,7 +42,7 @@
     <string name="new_password">Nova senha</string>
     <string name="repeat_password">Repetir senha</string>
     <string name="confirm_password">Confirmar senha</string>
-    <string name="name">Nome</string>
+    <string name="full_name">Nome Completo</string>
     <string name="birthday">Data de nascimento</string>
 
     <!-- Validações dos TextFields -->
@@ -84,6 +85,4 @@
 
     <!-- API validation -->
     <string name="email_successful_send">E-mail enviado com sucesso</string>
-
-
 </resources>
