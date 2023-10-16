@@ -13,19 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.loryblu.core.ui.R
+import com.loryblu.core.ui.theme.LBShadowGray
 
 @Composable
 fun LBTitle(
     @StringRes textRes: Int
 ) {
-    /**
-     * Composable that creates logo and title
-     */
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -35,25 +34,21 @@ fun LBTitle(
         Spacer(modifier = Modifier.height(48.dp))
 
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.ic_loryblu_logo),
             contentDescription = stringResource(R.string.loryblu_logo),
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .width(187.dp)
                 .height(47.dp)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Text(
             text = stringResource(id = textRes),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Medium,
+            color = LBShadowGray
         )
     }
-
-}
-
-@Preview
-@Composable
-fun PreviewLBTitle() {
-    LBTitle(R.string.confirm_password)
 }
