@@ -3,13 +3,11 @@ package com.loryblu.feature.auth.register.presentation
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -44,12 +41,11 @@ import com.loryblu.core.ui.components.LBNameTextField
 import com.loryblu.core.ui.components.LBRadioButton
 import com.loryblu.core.ui.components.LBTitle
 import com.loryblu.core.ui.models.GenderInput
-import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
-import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBSkyBlue
+import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.extensions.toApiFormat
 import com.loryblu.core.util.validators.BirthdayInputValid
 import com.loryblu.core.util.validators.NameInputValid
@@ -77,38 +73,6 @@ fun ChildRegisterScreen(
     var gender by rememberSaveable { mutableStateOf<GenderInput>(GenderInput.Empty) }
     var isNameFieldFocused by remember { mutableStateOf(false) }
     var isBirthdayFieldFocused by remember { mutableStateOf(false) }
-
-    val boyButtonSelected = (gender is GenderInput.MALE)
-    val girlButtonSelected = (gender is GenderInput.FEMALE)
-    val genderButtonError = (gender is GenderInput.Error)
-
-    val (
-        boyButtonBorderColor,
-        boyButtonContentIconAndTextColor,
-        boyButtonContainerColor
-    ) = listOf(
-        when {
-            boyButtonSelected -> LBDarkBlue
-            genderButtonError -> LBErrorColor
-            else -> LBSilverGray
-        },
-        if (boyButtonSelected) LBSoftGray else LBSilverGray,
-        if (boyButtonSelected) LBDarkBlue else LBSoftGray,
-    )
-
-    val (
-        girlButtonBorderColor,
-        girlButtonContentIconAndTextColor,
-        girlButtonContainerColor
-    ) = listOf(
-        when {
-            girlButtonSelected -> LBDarkBlue
-            genderButtonError -> LBErrorColor
-            else -> LBSilverGray
-        },
-        if (girlButtonSelected) LBSoftGray else LBSilverGray,
-        if (girlButtonSelected) LBDarkBlue else LBSoftGray,
-    )
 
     val activityResultLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -200,23 +164,11 @@ fun ChildRegisterScreen(
                 onClick = {
                     gender = GenderInput.MALE
                 },
-                modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-                    .fillMaxHeight(),
-                painterRes = painterResource(id = R.drawable.ic_boy),
-                contentDescriptionRes = stringResource(R.string.boy_icon),
-                textRes = stringResource(R.string.boy),
-                buttonColors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = boyButtonContentIconAndTextColor,
-                    containerColor = boyButtonContainerColor
-                ),
-                borderStrokeAndColors = BorderStroke(
-                    width = 2.dp,
-                    color = boyButtonBorderColor
-                ),
-                iconColor = boyButtonContentIconAndTextColor,
-                textColor = boyButtonContentIconAndTextColor
+                iconRes = R.drawable.ic_boy,
+                contentDescriptionRes = R.string.boy_icon,
+                textRes = R.string.boy,
+                genderSelected = gender is GenderInput.MALE,
+                error = gender is GenderInput.Error
             )
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -225,23 +177,11 @@ fun ChildRegisterScreen(
                 onClick = {
                     gender = GenderInput.FEMALE
                 },
-                modifier = Modifier
-                    .height(50.dp)
-                    .weight(1f)
-                    .fillMaxHeight(),
-                painterRes = painterResource(id = R.drawable.ic_girl),
-                contentDescriptionRes = stringResource(R.string.girl_icon),
-                textRes = stringResource(R.string.girl),
-                buttonColors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = girlButtonContentIconAndTextColor,
-                    containerColor = girlButtonContainerColor
-                ),
-                borderStrokeAndColors = BorderStroke(
-                    width = 2.dp,
-                    color = girlButtonBorderColor
-                ),
-                iconColor = girlButtonContentIconAndTextColor,
-                textColor = girlButtonContentIconAndTextColor
+                iconRes = R.drawable.ic_girl,
+                contentDescriptionRes = R.string.girl_icon,
+                textRes = R.string.girl,
+                genderSelected = gender is GenderInput.FEMALE,
+                error = gender is GenderInput.Error
             )
         }
 
@@ -347,7 +287,7 @@ fun ChildRegisterScreen(
             areAllFieldsValid = nameState is NameInputValid.Valid
                     && birthdayState is BirthdayInputValid.Valid
                     && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
-                    && privacyState == privacy,
+                    && privacy,
             textRes = R.string.sign_up,
             onClick = {
                 nameState = nameStateValidation(name)
@@ -378,7 +318,7 @@ fun ChildRegisterScreen(
                 nameState == NameInputValid.Valid
                 && birthdayState == BirthdayInputValid.Valid
                 && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
-                && privacyState == privacy
+                && privacy
             ) LBSoftGray else LBSkyBlue
         )
 
