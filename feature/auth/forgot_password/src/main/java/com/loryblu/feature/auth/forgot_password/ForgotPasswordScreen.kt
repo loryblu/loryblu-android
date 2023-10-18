@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +31,10 @@ import com.loryblu.core.ui.components.LBErrorLabel
 import com.loryblu.core.ui.components.LBSuccessLabel
 import com.loryblu.core.ui.components.LBTitle
 import com.loryblu.core.ui.theme.LBErrorColor
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray
+import com.loryblu.core.ui.theme.LBSkyBlue
+import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.validators.EmailInputValid
 
 @Composable
@@ -73,10 +77,18 @@ fun ForgotPasswordScreen(
         Spacer(modifier = Modifier.height(44.dp))
 
         LBButton(
+            areAllFieldsValid = uiState.emailState is EmailInputValid.Valid,
             textRes = R.string.send,
             onClick = {
                 viewModel.sendEmail()
-            }
+            },
+            buttonColors = ButtonDefaults.buttonColors(
+                disabledContainerColor = LBLightGray,
+                containerColor = LBSkyBlue
+            ),
+            textColor = if (
+                uiState.emailState is EmailInputValid.Valid
+            ) LBSoftGray else LBSkyBlue
         )
 
         if (uiState.emailState is EmailInputValid.Error) {
@@ -101,14 +113,17 @@ fun ForgotPasswordScreen(
         }
 
         when {
-            showSuccessLabel.value && uiState.emailState !is EmailInputValid.Error ->
-                LBSuccessLabel(labelRes = stringResource(R.string.email_sent_successfully))
+            showSuccessLabel.value && uiState.emailState !is EmailInputValid.Error -> LBSuccessLabel(
+                labelRes = stringResource(R.string.email_sent_successfully)
+            )
 
-            viewModel.sendEmailSuccess.value && uiState.emailState !is EmailInputValid.Error ->
-                LBSuccessLabel(labelRes = uiState.emailMessage)
+            viewModel.sendEmailSuccess.value && uiState.emailState !is EmailInputValid.Error -> LBSuccessLabel(
+                labelRes = uiState.emailMessage
+            )
 
-            !viewModel.sendEmailSuccess.value && uiState.emailState !is EmailInputValid.Error ->
-                LBErrorLabel(labelRes = uiState.emailMessage)
+            !viewModel.sendEmailSuccess.value && uiState.emailState !is EmailInputValid.Error -> LBErrorLabel(
+                labelRes = uiState.emailMessage
+            )
         }
     }
 

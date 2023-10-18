@@ -46,8 +46,10 @@ import com.loryblu.core.ui.components.LBTitle
 import com.loryblu.core.ui.models.GenderInput
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBErrorColor
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.ui.theme.LBSilverGray
+import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.core.util.extensions.toApiFormat
 import com.loryblu.core.util.validators.BirthdayInputValid
 import com.loryblu.core.util.validators.NameInputValid
@@ -342,6 +344,10 @@ fun ChildRegisterScreen(
         Spacer(modifier = Modifier.height(44.dp))
 
         LBButton(
+            areAllFieldsValid = nameState is NameInputValid.Valid
+                    && birthdayState is BirthdayInputValid.Valid
+                    && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
+                    && privacyState == privacy,
             textRes = R.string.sign_up,
             onClick = {
                 nameState = nameStateValidation(name)
@@ -363,7 +369,17 @@ fun ChildRegisterScreen(
                         )
                     )
                 }
-            }
+            },
+            buttonColors = ButtonDefaults.buttonColors(
+                disabledContainerColor = LBLightGray,
+                containerColor = LBSkyBlue
+            ),
+            textColor = if (
+                nameState == NameInputValid.Valid
+                && birthdayState == BirthdayInputValid.Valid
+                && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
+                && privacyState == privacy
+            ) LBSoftGray else LBSkyBlue
         )
 
         Spacer(modifier = Modifier.height(32.dp))

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButtonDefaults
@@ -44,8 +45,11 @@ import com.loryblu.core.ui.components.LBRadioButton
 import com.loryblu.core.ui.components.LBTitle
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBErrorColor
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBShadowGray
+import com.loryblu.core.ui.theme.LBSkyBlue
+import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 
@@ -169,8 +173,18 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(top = 44.dp))
 
         LBButton(
+            areAllFieldsValid = uiState.emailState is EmailInputValid.Valid
+                    && uiState.passwordState is PasswordInputValid.Valid,
             textRes = R.string.sign_in,
-            onClick = { onLoginButtonClicked() }
+            onClick = { onLoginButtonClicked() },
+            buttonColors = ButtonDefaults.buttonColors(
+                disabledContainerColor = LBLightGray,
+                containerColor = LBSkyBlue
+            ),
+            textColor = if (
+                uiState.emailState is EmailInputValid.Valid
+                && uiState.passwordState is PasswordInputValid.Valid
+                ) LBSoftGray else LBSkyBlue
         )
 
         Spacer(modifier = Modifier.height(32.dp))
