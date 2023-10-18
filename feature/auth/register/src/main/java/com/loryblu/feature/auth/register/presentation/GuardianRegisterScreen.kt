@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +33,10 @@ import com.loryblu.core.ui.components.LBNameTextField
 import com.loryblu.core.ui.components.LBPasswordTextField
 import com.loryblu.core.ui.components.LBTitle
 import com.loryblu.core.ui.theme.LBErrorColor
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray
+import com.loryblu.core.ui.theme.LBSkyBlue
+import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.NameInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
@@ -259,6 +263,10 @@ fun GuardianRegisterScreen(
         Spacer(modifier = Modifier.height(44.dp))
 
         LBButton(
+            areAllFieldsValid = nameState is NameInputValid.Valid
+                    && emailState is EmailInputValid.Valid
+                    && passwordState is PasswordInputValid.Valid
+                    && confirmPasswordState is PasswordInputValid.Valid,
             textRes = R.string.next,
             onClick = {
                 nameState = nameStateValidation(name)
@@ -279,7 +287,17 @@ fun GuardianRegisterScreen(
                         )
                     )
                 }
-            }
+            },
+            buttonColors = ButtonDefaults.buttonColors(
+                disabledContainerColor = LBLightGray,
+                containerColor = LBSkyBlue
+            ),
+            textColor = if (
+                nameState is NameInputValid.Valid
+                && emailState is EmailInputValid.Valid
+                && passwordState is PasswordInputValid.Valid
+                && confirmPasswordState is PasswordInputValid.Valid
+            ) LBSoftGray else LBSkyBlue
         )
     }
 
