@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.feature.auth.login"
-    compileSdk = ProjectConfig.compileSdk
+    namespace = "com.loryblu.logbook"
+    compileSdk = 33
 
     defaultConfig {
-        minSdk = ProjectConfig.minSdk
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -31,27 +31,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
-    }
-    packaging {
-        resources {
-            excludes +=("/META-INF/{AL2.0,LGPL2.1}")
-        }
-    }
 }
 
 dependencies {
-    implementation(libs.material3)
-    implementation(libs.activity.compose)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.navigation.compose)
-    implementation(libs.lifecycle.runtime.compose)
-    implementation(project(mapOf("path" to ":data:logbook")))
 
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)

@@ -85,4 +85,36 @@
 
     <!-- API validation -->
     <string name="email_successful_send">E-mail enviado com sucesso</string>
+
+    <!-- Logbook routine-->
+    <string name="lory_routine">LoryRotina</string>
+    <string name="bath_time">Hora do banho</string>
+    <string name="brush_teeth">Escovar os dentes</string>
+    <string name="breakfast">Café da manhã</string>
+    <string name="lunch">Almoço</string>
+    <string name="snack_time">Hora do lanche</string>
+    <string name="dinner">Jantar</string>
+    <string name="drink_water">Beber água</string>
+    <string name="play_time">Hora de brincar</string>
+    <string name="tv_free">TV liberada</string>
+    <string name="video_game_free">Vídeo game liberado</string>
+
+    <!-- Logbook student-->
+    <string name="lory_student">LoryEstudioso</string>
+    <string name="school">Escola</string>
+    <string name="school_reinforcement">Reforço escolar</string>
+    <string name="language_class">Idiomas</string>
+    <string name="sport_practice">Esporte</string>
+    <string name="reading_time">Hora da leitura</string>
+    <string name="music_therapy">Musicoterapia</string>
+    <string name="psychologist">Psícologo</string>
+    <string name="audiologist">Fonoaudiologo</string>
+    <string name="pedagogue">Pedagoga</string>
+    <string name="occupational_therapy">Terapia ocupacional</string>
+
+    <!-- Shift-->
+    <string name="shift_morning">Manhã</string>
+    <string name="shift_afternoon">Tarde</string>
+    <string name="shift_night">Noite</string>
+
 </resources>
