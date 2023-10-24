@@ -9,7 +9,7 @@ data class Routine(
 ) : Item
 
 data class Student(
-    override val idImage: Int = 2,
+    override val idImage: Int = 1,
     override val imageText: Int = R.string.lory_student,
     override val imageDrawable: Int = R.drawable.lory_student
 ) : Item
