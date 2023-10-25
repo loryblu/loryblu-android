@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(project(mapOf("path" to ":data:logbook")))
+    implementation(project(":data:logbook"))
 
 
     debugImplementation(libs.ui.tooling)
