@@ -1,12 +1,13 @@
 package com.loryblu.feature.auth.login.navigation
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.loryblu.feature.auth.login.LoginScreen
 import com.loryblu.feature.auth.login.LoginViewModel
 import com.loryblu.core.util.Screen
+import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.loginRoute(
     navigateToHomeScreen: () -> Unit,
@@ -14,18 +15,22 @@ fun NavGraphBuilder.loginRoute(
     navigateToRegisterNow: () -> Unit,
 ) {
     composable(route = Screen.Login.route) {
-        val viewModel: LoginViewModel = viewModel()
-        val authenticated by viewModel.authenticated
+        val viewModel: LoginViewModel = koinViewModel()
+        val authenticated by viewModel.authenticated.collectAsState()
+        val signInResult by viewModel.signInResult.collectAsState()
 
         LoginScreen(
-            viewModel = viewModel,
             authenticated = authenticated,
             onLoginButtonClicked = {
-                viewModel.loginWithEmailAndPassword()
+                viewModel.loginWithEmailAndPassword(it)
             },
             navigateToHomeScreen = navigateToHomeScreen,
             navigateToRegisterNow = navigateToRegisterNow,
             navigateToForgotPassword = navigateToForgotPassword,
+            emailStateValidation = { viewModel.emailState(it) },
+            passwordStateValidation = { viewModel.passwordState(it) },
+            signInResult = signInResult,
+            rememberLogin = viewModel::rememberLogin
         )
     }
 }
