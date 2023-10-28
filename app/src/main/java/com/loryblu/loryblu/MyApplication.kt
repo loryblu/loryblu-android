@@ -5,6 +5,7 @@ import com.loryblu.core.network.di.networkModule
 import com.loryblu.data.auth.di.authModule
 import com.loryblu.feature.auth.create_password.di.createNewPasswordModule
 import com.loryblu.feature.auth.forgot_password.di.passwordRecoveryModule
+import com.loryblu.feature.auth.login.di.loginModule
 import com.loryblu.feature.auth.register.di.registerModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -16,7 +17,14 @@ class MyApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)
-            modules(authModule, registerModule, networkModule, passwordRecoveryModule, createNewPasswordModule)
+            modules(
+                authModule,
+                loginModule,
+                registerModule,
+                networkModule,
+                passwordRecoveryModule,
+                createNewPasswordModule
+            )
         }
     }
 }
