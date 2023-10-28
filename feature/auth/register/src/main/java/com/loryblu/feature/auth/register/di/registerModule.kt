@@ -7,10 +7,10 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val registerModule = module {
-    viewModel<RegisterViewModel>(qualifier = named("registerScope")) {
+    viewModel(qualifier = named("registerScope")) {
         RegisterViewModel(get(), get())
     }
-    single<FinalUserApi> {
+    single {
         FinalUserApi(
             email = "",
             password = "",
