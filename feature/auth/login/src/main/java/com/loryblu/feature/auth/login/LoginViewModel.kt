@@ -1,104 +1,74 @@
 package com.loryblu.feature.auth.login
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.loryblu.core.network.di.Session
 import com.loryblu.core.ui.R
 import com.loryblu.core.util.extensions.isEmailValid
 import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
-import kotlinx.coroutines.delay
+import com.loryblu.data.auth.api.LoginApi
+import com.loryblu.data.auth.model.LoginRequest
+import com.loryblu.data.auth.model.SignInResult
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-data class LoginUiState(
-    val email: String = "",
-    val emailState: EmailInputValid = EmailInputValid.Empty,
-    val password: String = "",
-    val passwordState: PasswordInputValid = PasswordInputValid.Empty,
-    // serve para salvar o estado para a proxima visita
-    val isLoginSaved: Boolean = false,
-    val enterTrigger: Boolean = false,
-    val showPassword: Boolean = true
-)
+class LoginViewModel(
+    private val loginApi: LoginApi,
+    private val session: Session
+) : ViewModel() {
+    private val _authenticated = MutableStateFlow(false)
+    val authenticated = _authenticated.asStateFlow()
 
-class LoginViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState = _uiState
+    private val _signInResult = MutableStateFlow<SignInResult>(SignInResult.Empty)
+    val signInResult = _signInResult.asStateFlow()
 
-    var authenticated = mutableStateOf(false)
-        private set
-
-    fun emailState() {
-        val email = uiState.value.email
-        when {
+    fun emailState(email: String): EmailInputValid {
+        return when {
             email.isEmpty() -> {
-                _uiState.update {
-                    it.copy(emailState = EmailInputValid.Error(R.string.empty_email))
-                }
+                EmailInputValid.Error(R.string.empty_email)
             }
+
             email.isEmailValid().not() -> {
-                _uiState.update {
-                    it.copy(emailState = EmailInputValid.Error(R.string.invalid_field))
-                }
+                EmailInputValid.Error(R.string.invalid_field)
             }
+
             else -> {
-                _uiState.update {
-                    it.copy(emailState = EmailInputValid.Valid)
-                }
+                EmailInputValid.Valid
             }
         }
     }
-    fun updateEmail(newEmail: String) {
-        _uiState.update {
-            it.copy(email = newEmail)
-        }
-    }
 
-    fun updatePassword(newPassword: String) {
-        _uiState.update {
-            it.copy(password = newPassword)
-        }
-    }
-
-    fun toggleIsLoginSaved() {
-        _uiState.update {
-            it.copy(isLoginSaved = it.isLoginSaved.not())
-        }
-    }
-
-    fun passwordState() {
-        val password = uiState.value.password
-        when {
+    fun passwordState(password: String): PasswordInputValid {
+        return when {
             password.isEmpty() -> {
-                _uiState.update {
-                    it.copy(passwordState = PasswordInputValid.Error(R.string.password_is_empty))
-                }
+                PasswordInputValid.Error(R.string.password_is_empty)
             }
+
             else -> {
-                _uiState.update {
-                    it.copy(passwordState = PasswordInputValid.Valid)
-                }
+                PasswordInputValid.Valid
             }
         }
     }
 
-    fun loginWithEmailAndPassword() {
+    fun loginWithEmailAndPassword(loginRequest: LoginRequest) {
         viewModelScope.launch {
-            emailState()
-            passwordState()
-
-            if(uiState.value.emailState !is EmailInputValid.Valid || uiState.value.passwordState !is PasswordInputValid.Valid) {
-                Log.d("LoginViewModel", "Password or email is not valid")
-                authenticated.value = false
-                return@launch
+            _signInResult.value = SignInResult.Loading
+            try {
+                _signInResult.value = loginApi.loginUser(loginRequest)
+            } catch (e: Exception) {
+                _signInResult.value = SignInResult.Error.stringMessage(
+                    e.localizedMessage ?: "Unknown error"
+                )
             }
-            // Verificação na db
+        }
+    }
 
-            delay(3000)
-            authenticated.value = true
+    fun rememberLogin(token: String, rememberLogin: Boolean) {
+        viewModelScope.launch {
+            session.saveToken(token)
+            if (rememberLogin) session.saveRememberLogin(true)
         }
     }
 }
