@@ -47,5 +47,4 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
 
     implementation(project(":core:ui"))
-    implementation(project(":core:util"))
 }

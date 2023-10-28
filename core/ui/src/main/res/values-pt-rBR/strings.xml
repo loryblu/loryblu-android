@@ -117,7 +117,10 @@
     <string name="shift_afternoon">Tarde</string>
     <string name="shift_night">Noite</string>
 
+    <!-- Home Screen-->
+    <string name="logbook_home">Diário de bordo</string>
+    <string name="game_track_home">Trilha de jogos</string>
+    <string name="story_track_home">Trilha de histórias</string>
     <string name="logout">SAIR</string>
     <string name="welcome">Bem-Vindo</string>
-
 </resources>
