@@ -6,7 +6,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val createNewPasswordModule = module {
-    viewModel<CreatePasswordViewModel> {
+    viewModel {
         CreatePasswordViewModel(get())
     }
 }
