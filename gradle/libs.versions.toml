@@ -5,22 +5,23 @@ androidx-test-junit = "1.1.5"
 com-android-library = "8.1.2"
 androidx-core = "1.12.0"
 org-jetbrains-kotlin = "1.9.10"
-androidx-navigation = "2.7.3"
-androidx-compose-material3 = "1.2.0-alpha08"
-androidx-compose = "2023.09.02"
+androidx-navigation = "2.7.4"
+androidx-compose-material3 = "1.2.0-alpha10"
+androidx-compose = "2023.10.01"
 com-android-application = "7.3.1"
-androidx-activity = "1.7.2"
+androidx-activity = "1.8.0"
 org-jetbrains-kotlin-android = "1.9.10"
-androidx-compose-ui = "1.6.0-alpha06"
+androidx-compose-ui = "1.6.0-alpha08"
 androidx-lifecycle = "2.6.2"
 appcompat = "1.6.1"
-material = "1.9.0"
+material = "1.10.0"
 koin_version = "3.5.0"
 ktor_version = "2.3.4"
 secrets-gradle = "2.0.1"
 deep_link = "2.4.0-alpha08"
 databinding_version = "8.1.2"
 parcelize = "1.9.10"
+datastore_version = "1.0.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -50,6 +51,7 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-serialization-kotlinx-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor_version"}
 ktor-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref = "ktor_version"}
 androidx-databinding-runtime = { group = "androidx.databinding", name = "databinding-runtime", version.ref = "databinding_version" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore_version" }
 
 
 [plugins]
