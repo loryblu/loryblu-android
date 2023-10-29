@@ -116,4 +116,7 @@
     <string name="shift_afternoon">Afternoon</string>
     <string name="shift_night">Night</string>
 
+    <string name="logout">LOGOUT</string>
+    <string name="welcome">Welcome</string>
+
 </resources>

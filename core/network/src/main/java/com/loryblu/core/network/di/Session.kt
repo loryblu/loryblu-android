@@ -41,4 +41,11 @@ class Session(
         }
     }
 
+    fun clearToken() {
+        runBlocking {
+            dataStore.edit {
+                it.remove(token)
+            }
+        }
+    }
 }

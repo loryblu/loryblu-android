@@ -60,7 +60,14 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                 navController.navigate(Screen.Home.route)
             }
         )
-        homeRoute()
+        homeRoute(
+            navigateToLogin = {
+                navController.navigate(Screen.Login.route) {
+                    launchSingleTop = true
+                    popUpTo(Screen.Home.route) { inclusive = true }
+                }
+            }
+        )
 
 
     }

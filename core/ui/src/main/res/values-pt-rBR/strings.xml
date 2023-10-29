@@ -117,4 +117,7 @@
     <string name="shift_afternoon">Tarde</string>
     <string name="shift_night">Noite</string>
 
+    <string name="logout">SAIR</string>
+    <string name="welcome">Bem-Vindo</string>
+
 </resources>

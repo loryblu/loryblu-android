@@ -7,6 +7,7 @@ import com.loryblu.feature.auth.create_password.di.createNewPasswordModule
 import com.loryblu.feature.auth.forgot_password.di.passwordRecoveryModule
 import com.loryblu.feature.auth.login.di.loginModule
 import com.loryblu.feature.auth.register.di.registerModule
+import com.loryblu.feature.home.di.homeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -23,7 +24,8 @@ class MyApplication : Application() {
                 registerModule,
                 networkModule,
                 passwordRecoveryModule,
-                createNewPasswordModule
+                createNewPasswordModule,
+                homeModule
             )
         }
     }
