@@ -50,8 +50,6 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(project(mapOf("path" to ":core:network")))
-    implementation(project(mapOf("path" to ":data:auth")))
     implementation(libs.koin.androidx.compose)
 
     implementation(libs.ktor.client.core)
@@ -62,4 +60,6 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
+    implementation(project(":core:network"))
+    implementation(project(":data:auth"))
 }

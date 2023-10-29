@@ -63,5 +63,5 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":core:network"))
     implementation(project(":data:logbook"))
-    implementation(project(mapOf("path" to ":data:auth")))
+    implementation(project(":data:auth"))
 }
