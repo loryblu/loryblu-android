@@ -64,8 +64,6 @@ class CreatePasswordViewModel(
     }
     data class PasswordRequest(val newPassword: Boolean, val message: String)
     private suspend fun passwordRecovery(token: String, password: String): PasswordRequest = withContext(Dispatchers.IO) {
-        Log.d("recoveryToken", "Token em base64: $token")
-        Log.d("password", "passwordRecovery: $password")
         val params = NewPasswordRequest(
             password = password,
             recoveryToken = token
