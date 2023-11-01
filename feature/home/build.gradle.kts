@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
 
     implementation(libs.ktor.client.core)
+    implementation(project(mapOf("path" to ":data:logbook")))
 
     debugImplementation(libs.ui.tooling)
     testImplementation(libs.junit)
