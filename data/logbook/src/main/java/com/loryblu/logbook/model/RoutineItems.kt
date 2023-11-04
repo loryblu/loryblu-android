@@ -1,65 +1,80 @@
 package com.loryblu.logbook.model
 
-import com.loryblu.core.ui.R
+import com.loryblu.logbook.R
 
-data class BathTime(
-    override val idImage: Int = 0,
-    override val imageText: Int = R.string.bath_time,
-    override val imageDrawable: Int = R.drawable.bathtime_routine
-) : Item
+class BathTime: Item(
+    idCard = 0,
+    text = R.string.bath_time,
+    drawable = R.drawable.bathtime_routine
+)
 
-data class BrushTeeth(
-    override val idImage: Int = 1,
-    override val imageText: Int = R.string.brush_teeth,
-    override val imageDrawable: Int = R.drawable.brushteeth_routine
-) : Item
+class BrushTeeth : Item(
+    idCard = 1,
+    text = R.string.brush_teeth,
+    drawable = R.drawable.brushteeth_routine
+)
 
-data class Breakfast(
-    override val idImage: Int = 2,
-    override val imageText: Int = R.string.breakfast,
-    override val imageDrawable: Int = R.drawable.breakfast_routine
-) : Item
+class Breakfast : Item(
+    idCard = 2,
+    text = R.string.breakfast,
+    drawable = R.drawable.breakfast_routine
+)
 
-data class Lunch(
-    override val idImage: Int = 3,
-    override val imageText: Int = R.string.lunch,
-    override val imageDrawable: Int = R.drawable.lunch_routine
-) : Item
+class Lunch : Item(
+    idCard = 3,
+    text = R.string.lunch,
+    drawable = R.drawable.lunch_routine
+)
 
-data class SnackTime(
-    override val idImage: Int = 4,
-    override val imageText: Int = R.string.snack_time,
-    override val imageDrawable: Int = R.drawable.snacktime_routine
-) : Item
+class SnackTime : Item(
+    idCard = 4,
+    text = R.string.snack_time,
+    drawable = R.drawable.snacktime_routine
+)
 
-data class Dinner(
-    override val idImage: Int = 5,
-    override val imageText: Int = R.string.dinner,
-    override val imageDrawable: Int = R.drawable.dinner_routine
-) : Item
+class Dinner : Item(
+    idCard = 5,
+    text = R.string.dinner,
+    drawable = R.drawable.dinner_routine
+)
 
-data class DrinkWater(
-    override val idImage: Int = 6,
-    override val imageText: Int = R.string.drink_water,
-    override val imageDrawable: Int = R.drawable.drinkwater_routine
-) : Item
+class DrinkWater : Item(
+    idCard = 6,
+    text = R.string.drink_water,
+    drawable = R.drawable.drinkwater_routine
+)
 
-data class PlayTime(
-    override val idImage: Int = 7,
-    override val imageText: Int = R.string.play_time,
-    override val imageDrawable: Int = R.drawable.playtime_routine
-) : Item
+class PlayTime : Item(
+    idCard = 7,
+    text = R.string.play_time,
+    drawable = R.drawable.playtime_routine
+)
 
-data class TVFree(
-    override val idImage: Int = 8,
-    override val imageText: Int = R.string.tv_free,
-    override val imageDrawable: Int = R.drawable.tvfree_routine
-) : Item
+class TVFree : Item(
+    idCard = 8,
+    text = R.string.tv_free,
+    drawable = R.drawable.tvfree_routine
+)
 
-data class VideoGameFree(
-    override val idImage: Int = 9,
-    override val imageText: Int = R.string.video_game_free,
-    override val imageDrawable: Int = R.drawable.videogame_routine
-) : Item
+class VideoGameFree : Item(
+    idCard = 9,
+    text = R.string.video_game_free,
+    drawable = R.drawable.videogame_routine
+)
+
+fun getAllRoutineItems(): List<Item>{
+    return listOf(
+        BathTime(),
+        BrushTeeth(),
+        Breakfast(),
+        Lunch(),
+        SnackTime(),
+        Dinner(),
+        DrinkWater(),
+        PlayTime(),
+        TVFree(),
+        VideoGameFree()
+    )
+}
 
 

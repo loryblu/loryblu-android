@@ -1,63 +1,78 @@
 package com.loryblu.logbook.model
 
-import com.loryblu.core.ui.R
+import com.loryblu.logbook.R
 
-data class School(
-    override val idImage: Int = 0,
-    override val imageText: Int = R.string.school,
-    override val imageDrawable: Int = R.drawable.school_student
-) : Item
+class School : Item(
+    idCard = 0,
+    text = R.string.school,
+    drawable = R.drawable.school_student
+)
 
-data class SchoolReinforcement(
-    override val idImage: Int = 1,
-    override val imageText: Int = R.string.school_reinforcement,
-    override val imageDrawable: Int = R.drawable.reinforcementclass_student
-) : Item
+class SchoolReinforcement : Item(
+    idCard = 1,
+    text = R.string.school_reinforcement,
+    drawable = R.drawable.reinforcementclass_student
+)
 
-data class LanguageClass(
-    override val idImage: Int = 2,
-    override val imageText: Int = R.string.language_class,
-    override val imageDrawable: Int = R.drawable.language_student
-) : Item
+class LanguageClass : Item(
+    idCard = 2,
+    text = R.string.language_class,
+    drawable = R.drawable.language_student
+)
 
-data class SportPractice(
-    override val idImage: Int = 3,
-    override val imageText: Int = R.string.sport_practice,
-    override val imageDrawable: Int = R.drawable.sportpractice_student
-) : Item
+class SportPractice : Item(
+    idCard = 3,
+    text = R.string.sport_practice,
+    drawable = R.drawable.sportpractice_student
+)
 
-data class ReadingTime(
-    override val idImage: Int = 4,
-    override val imageText: Int = R.string.reading_time,
-    override val imageDrawable: Int = R.drawable.readingtime_student
-) : Item
+class ReadingTime : Item(
+    idCard = 4,
+    text = R.string.reading_time,
+    drawable = R.drawable.readingtime_student
+)
 
-data class MusicTherapy(
-    override val idImage: Int = 5,
-    override val imageText: Int = R.string.music_therapy,
-    override val imageDrawable: Int = R.drawable.musictherapy_student
-) : Item
+class MusicTherapy : Item(
+    idCard = 5,
+    text = R.string.music_therapy,
+    drawable = R.drawable.musictherapy_student
+)
 
-data class Psychologist(
-    override val idImage: Int = 6,
-    override val imageText: Int = R.string.psychologist,
-    override val imageDrawable: Int = R.drawable.psychologist_student
-) : Item
+class Psychologist : Item(
+    idCard = 6,
+    text = R.string.psychologist,
+    drawable = R.drawable.psychologist_student
+)
 
-data class Audiologist(
-    override val idImage: Int = 7,
-    override val imageText: Int = R.string.audiologist,
-    override val imageDrawable: Int = R.drawable.audiologist_student
-) : Item
+class Audiologist : Item(
+    idCard = 7,
+    text = R.string.audiologist,
+    drawable = R.drawable.audiologist_student
+)
 
-data class Pedagogue(
-    override val idImage: Int = 8,
-    override val imageText: Int = R.string.pedagogue,
-    override val imageDrawable: Int = R.drawable.pedagogue_student
-) : Item
+class Pedagogue : Item(
+    idCard = 8,
+    text = R.string.pedagogue,
+    drawable = R.drawable.pedagogue_student
+)
 
-data class OccupationalTherapy(
-    override val idImage: Int = 9,
-    override val imageText: Int = R.string.occupational_therapy,
-    override val imageDrawable: Int = R.drawable.therapy_student
-) : Item
+class OccupationalTherapy : Item(
+    idCard = 9,
+    text = R.string.occupational_therapy,
+    drawable = R.drawable.therapy_student
+)
+
+fun getAllStudentItems(): List<Item>{
+    return listOf(
+        School(),
+        SchoolReinforcement(),
+        LanguageClass(),
+        SportPractice(),
+        ReadingTime(),
+        MusicTherapy(),
+        Psychologist(),
+        Audiologist(),
+        Pedagogue(),
+        OccupationalTherapy()
+    )
+}

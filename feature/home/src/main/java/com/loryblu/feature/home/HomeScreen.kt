@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,26 +22,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import com.loryblu.core.ui.R
 import com.loryblu.core.ui.components.LBCard
-import com.loryblu.logbook.model.GameTrackHome
-import com.loryblu.logbook.model.LogbookHome
-import com.loryblu.logbook.model.StoryTrackHome
+import com.loryblu.logbook.model.getAllHomeItems
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
 
-    val homeItems = arrayOf(
-        LogbookHome(),
-        StoryTrackHome(),
-        GameTrackHome()
-    )
+    val home = getAllHomeItems()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .zIndex(zIndex = 1f)
     ) {
         Row(
             modifier = Modifier
@@ -67,47 +60,15 @@ fun HomeScreen(viewModel: HomeViewModel) {
         ) {
             LazyColumn(
             ) {
-                item {
+                items(home){ item ->
                     LBCard(
-                        idImage = homeItems[0].idImage,
-                        text = homeItems[0].imageText,
-                        image = homeItems[0].imageDrawable,
+                        card = item,
                         modifier = Modifier
                             .weight(0.3f)
                             .fillMaxWidth()
                             .height(250.dp)
                             .padding(top = 12.dp, bottom = 12.dp, start = 24.dp, end = 24.dp),
-                        onclick = {
-                                  //should go to the next screen
-                        },
-                    )
-                }
-                item {
-                    LBCard(
-                        idImage = homeItems[1].idImage,
-                        text = homeItems[1].imageText,
-                        image = homeItems[1].imageDrawable,
-                        modifier = Modifier
-                            .weight(0.3f)
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .padding(top = 12.dp, bottom = 12.dp, start = 24.dp, end = 24.dp),
-                        onclick = {},
-                        isCardDisabled = true
-                    )
-                }
-                item {
-                    LBCard(
-                        idImage = homeItems[2].idImage,
-                        text = homeItems[2].imageText,
-                        image = homeItems[2].imageDrawable,
-                        modifier = Modifier
-                            .weight(0.5f)
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .padding(top = 12.dp, bottom = 12.dp, start = 24.dp, end = 24.dp),
-                        onclick = {},
-                        isCardDisabled = true
+                        onclick = { /*TODO*/ }
                     )
                 }
             }

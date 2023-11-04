@@ -1,21 +1,31 @@
 package com.loryblu.logbook.model
 
-import com.loryblu.core.ui.R
+import com.loryblu.logbook.R
 
-data class LogbookHome(
-    override val idImage: Int = 0,
-    override val imageText: Int = R.string.logbook_home,
-    override val imageDrawable: Int = R.drawable.home_logbook
-) : Item
+class LogbookHome: Item(
+    idCard = 0,
+    text = R.string.logbook_home,
+    drawable = R.drawable.home_logbook,
+)
 
-data class StoryTrackHome(
-    override val idImage: Int = 1,
-    override val imageText: Int = R.string.story_track_home,
-    override val imageDrawable: Int = R.drawable.home_story_track
-) : Item
+class StoryTrackHome: Item(
+    idCard = 1,
+    text = R.string.story_track_home,
+    drawable = R.drawable.home_story_track,
+    isEnabled = false
+)
 
-data class GameTrackHome(
-    override val idImage: Int = 2,
-    override val imageText: Int = R.string.game_track_home,
-    override val imageDrawable: Int = R.drawable.home_game_track
-) : Item
+class GameTrackHome: Item(
+    idCard = 2,
+    text = R.string.game_track_home,
+    drawable = R.drawable.home_game_track,
+    isEnabled = false
+)
+
+fun getAllHomeItems(): List<Item>{
+    return listOf(
+        LogbookHome(),
+        StoryTrackHome(),
+        GameTrackHome()
+    )
+}
