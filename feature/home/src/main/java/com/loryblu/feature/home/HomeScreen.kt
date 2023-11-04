@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
 import com.loryblu.core.ui.components.LBCard
-import com.loryblu.logbook.model.getAllHomeItems
+import com.loryblu.data.logbook.model.getAllHomeItems
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
