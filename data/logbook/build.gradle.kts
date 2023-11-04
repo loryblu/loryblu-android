@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.loryblu.logbook"
+    namespace = "com.loryblu.data.logbook"
     compileSdk = 33
 
     defaultConfig {
