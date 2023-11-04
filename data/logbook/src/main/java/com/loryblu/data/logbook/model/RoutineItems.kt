@@ -1,6 +1,6 @@
-package com.loryblu.logbook.model
+package com.loryblu.data.logbook.model
 
-import com.loryblu.logbook.R
+import com.loryblu.data.logbook.R
 
 class BathTime: Item(
     idCard = 0,
