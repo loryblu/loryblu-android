@@ -1,21 +1,29 @@
 package com.loryblu.logbook.model
 
-import com.loryblu.core.ui.R
+import com.loryblu.logbook.R
 
-data class Morning(
-    override val idImage: Int = 0,
-    override val imageText: Int = R.string.shift_morning,
-    override val imageDrawable: Int = R.drawable.shift_morning
-) : Item
+class Morning : Item(
+    idCard = 0,
+    text = R.string.shift_morning,
+    drawable = R.drawable.shift_morning
+)
 
-data class Afternoon(
-    override val idImage: Int = 1,
-    override val imageText: Int = R.string.shift_afternoon,
-    override val imageDrawable: Int = R.drawable.shift_afternoon
-) : Item
+class Afternoon : Item(
+    idCard = 1,
+    text = R.string.shift_afternoon,
+    drawable = R.drawable.shift_afternoon
+)
 
-data class Night(
-    override val idImage: Int = 2,
-    override val imageText: Int = R.string.shift_night,
-    override val imageDrawable: Int = R.drawable.shift_night
-) : Item
+class Night : Item(
+    idCard = 2,
+    text = R.string.shift_night,
+    drawable = R.drawable.shift_night
+)
+
+fun getAllShiftItems(): List<Item>{
+    return listOf(
+        Morning(),
+        Afternoon(),
+        Night()
+    )
+}

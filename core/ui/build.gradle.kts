@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.ui.tooling.preview)
     implementation(project(":core:util"))
+    implementation(project(":data:logbook"))
 
     debugImplementation(libs.ui.tooling)
 

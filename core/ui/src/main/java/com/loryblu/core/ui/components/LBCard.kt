@@ -46,13 +46,13 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
 import com.loryblu.core.ui.theme.LBNightBlue
 import com.loryblu.core.ui.theme.LoryBluTheme
+import com.loryblu.logbook.model.Item
+import com.loryblu.logbook.model.getAllHomeItems
 
 
 @Composable
 fun LBCard(
-    idImage: Int,
-    image: Int,
-    text: Int,
+    card: Item,
     modifier: Modifier,
     onclick: () -> Unit,
     isCardDisabled: Boolean = false
@@ -67,13 +67,13 @@ fun LBCard(
     var saturation: Float = 1f
     var rounded: Int = 5
 
-    val isShiftCard = text == R.string.shift_morning ||
-            text == R.string.shift_afternoon ||
-            text == R.string.shift_night
+    val isShiftCard = card.text == R.string.shift_morning ||
+            card.text == R.string.shift_afternoon ||
+            card.text == R.string.shift_night
 
-    val isHomeCard = text == R.string.logbook_home ||
-            text == R.string.game_track_home ||
-            text == R.string.story_track_home
+    val isHomeCard = card.text == R.string.logbook_home ||
+            card.text == R.string.game_track_home ||
+            card.text == R.string.story_track_home
 
     if (isHomeCard){
         contentColor = LBContentHome
@@ -86,7 +86,7 @@ fun LBCard(
         rounded = 10
 
     if(cardClicked){
-        when (text) {
+        when (card.text) {
             R.string.shift_morning -> {
                 contentColor = LBCardSoftBlue
                 bottomColor = LBBottomMorningColor
@@ -104,7 +104,7 @@ fun LBCard(
         saturation = 0.65f
         if(isHomeCard)
             saturation = 0.50f
-        when (text) {
+        when (card.text) {
             R.string.shift_morning -> {
                 saturation = 1f
                 contentColor = LBDisabledGray
@@ -156,8 +156,8 @@ fun LBCard(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(0.dp),
-                painter = painterResource(id = image),
-                contentDescription = stringResource(id = text),
+                painter = painterResource(id = card.drawable),
+                contentDescription = stringResource(id = card.text),
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.colorMatrix(
                     colorMatrix = ColorMatrix().apply {
@@ -175,7 +175,7 @@ fun LBCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(id = text),
+                text = stringResource(id = card.text),
                 style = TextStyle(
                     fontSize = 20.sp,
                     lineHeight = 24.sp,
@@ -194,9 +194,7 @@ fun LBCard(
 fun LBCardPreview() {
     LoryBluTheme {
         LBCard(
-            idImage = 0,
-            image = R.drawable.shift_morning,
-            text = R.string.shift_morning,
+            getAllHomeItems()[0],
             modifier = Modifier.size(250.dp),
             onclick = {},
             true

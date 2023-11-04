@@ -1,15 +1,22 @@
 package com.loryblu.logbook.model
 
-import com.loryblu.core.ui.R
+import com.loryblu.logbook.R
 
-data class Routine(
-    override val idImage: Int = 0,
-    override val imageText: Int = R.string.lory_routine,
-    override val imageDrawable: Int = R.drawable.lory_routine
-) : Item
+class Routine: Item(
+    idCard = 0,
+    text = R.string.lory_routine,
+    drawable = R.drawable.lory_routine
+)
 
-data class Student(
-    override val idImage: Int = 1,
-    override val imageText: Int = R.string.lory_student,
-    override val imageDrawable: Int = R.drawable.lory_student
-) : Item
+class Student: Item(
+    idCard = 1,
+    text = R.string.lory_student,
+    drawable = R.drawable.lory_student
+)
+
+fun getAllLogbookItems(): List<Item>{
+    return listOf(
+        Routine(),
+        Student(),
+    )
+}

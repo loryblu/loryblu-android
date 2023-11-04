@@ -61,7 +61,7 @@ dependencies {
 
     implementation(project(":data:logbook"))
     implementation(project(":core:ui"))
-    implementation(project(":core:util"))
+    implementation(project(":core:util")) //isso aqui ta com erro
     implementation(project(":core:network"))
     implementation(project(":data:auth"))
 }

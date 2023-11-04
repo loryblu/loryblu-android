@@ -1,7 +1,8 @@
 package com.loryblu.logbook.model
 
-interface Item {
-    val idImage: Int
-    val imageText: Int
-    val imageDrawable: Int
-}
+sealed class Item (
+    val idCard: Int,
+    val text: Int,
+    val drawable: Int,
+    val isEnabled: Boolean = true
+)
