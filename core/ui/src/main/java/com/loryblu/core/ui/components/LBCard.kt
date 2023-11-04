@@ -46,8 +46,8 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
 import com.loryblu.core.ui.theme.LBNightBlue
 import com.loryblu.core.ui.theme.LoryBluTheme
-import com.loryblu.logbook.model.Item
-import com.loryblu.logbook.model.getAllHomeItems
+import com.loryblu.data.logbook.model.Item
+import com.loryblu.data.logbook.model.getAllHomeItems
 
 
 @Composable
@@ -55,7 +55,6 @@ fun LBCard(
     card: Item,
     modifier: Modifier,
     onclick: () -> Unit,
-    isCardDisabled: Boolean = false
 ) {
     var cardClicked by rememberSaveable {
         mutableStateOf(false)
@@ -64,8 +63,9 @@ fun LBCard(
     var contentColor = LBCardSoftBlue
     var bottomColor = LBDarkBlue
     var borderColor = LBDarkBlue
-    var saturation: Float = 1f
-    var rounded: Int = 5
+    var saturation = 1f
+    var imgSaturation = 0.10f
+    var rounded = 5
 
     val isShiftCard = card.text == R.string.shift_morning ||
             card.text == R.string.shift_afternoon ||
@@ -101,15 +101,19 @@ fun LBCard(
             }
         }
     }else {
-        saturation = 0.65f
-        if(isHomeCard)
-            saturation = 0.50f
+        saturation = if((!card.isDisabled && isHomeCard) || card.isCardTask) {
+            1f
+        } else{
+            0.50f
+        }
+        if(card.isCardTask){
+            bottomColor = Color(0xFF6F9EB9)
+        }
         when (card.text) {
             R.string.shift_morning -> {
                 saturation = 1f
                 contentColor = LBDisabledGray
                 bottomColor = LBBottomDisabledColor
-
             }
             R.string.shift_afternoon -> {
                 saturation = 1f
@@ -136,7 +140,7 @@ fun LBCard(
         },
         modifier = modifier
             .clickable {
-                if(!isCardDisabled) {
+                if(!card.isDisabled) {
                     cardClicked = !cardClicked
                     onclick()
                 }
@@ -161,7 +165,13 @@ fun LBCard(
                 contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.colorMatrix(
                     colorMatrix = ColorMatrix().apply {
-                        if (isCardDisabled) { setToSaturation(0.20f) } else{ setToSaturation(1f) }
+                        setToSaturation(
+                            if(isHomeCard && card.isDisabled){
+                                imgSaturation
+                            }
+                            else{ saturation
+                            }
+                        )
                     }
                 )
             )
@@ -170,7 +180,9 @@ fun LBCard(
             modifier = Modifier
                 .weight(0.3f)
                 .fillMaxSize()
-                .background(color = bottomColor),
+                .background(color =
+                    bottomColor
+                ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -196,8 +208,7 @@ fun LBCardPreview() {
         LBCard(
             getAllHomeItems()[0],
             modifier = Modifier.size(250.dp),
-            onclick = {},
-            true
+            onclick = {}
         )
     }
 }
