@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.loryblu.core.ui.R
+import com.loryblu.data.logbook.R
 import com.loryblu.core.ui.components.LBCard
 import com.loryblu.data.logbook.model.getAllHomeItems
 

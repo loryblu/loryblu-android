@@ -85,41 +85,4 @@
     <!-- API validation -->
     <string name="email_successful_send">Email was sent successfully</string>
 
-    <!-- Logbook routine-->
-    <string name="lory_routine">LoryRoutine</string>
-    <string name="bath_time">Bath time</string>
-    <string name="brush_teeth">Brush your teeth</string>
-    <string name="breakfast">Breakfast</string>
-    <string name="lunch">Lunch</string>
-    <string name="snack_time">Snack time</string>
-    <string name="dinner">Dinner</string>
-    <string name="drink_water">Drink water</string>
-    <string name="play_time">Play time</string>
-    <string name="tv_free">Tv free</string>
-    <string name="video_game_free">Video-game free</string>
-
-    <!-- Logbook student-->
-    <string name="lory_student">LoryStudent</string>
-    <string name="school">School</string>
-    <string name="school_reinforcement">School reinforcement</string>
-    <string name="language_class">Language class</string>
-    <string name="sport_practice">Sport practice</string>
-    <string name="reading_time">Reading time</string>
-    <string name="music_therapy">Music therapy</string>
-    <string name="psychologist">Psychologist</string>
-    <string name="audiologist">Audiologist</string>
-    <string name="pedagogue">Pedagogue</string>
-    <string name="occupational_therapy">Occupational therapy</string>
-
-    <!-- Shift-->
-    <string name="shift_morning">Morning</string>
-    <string name="shift_afternoon">Afternoon</string>
-    <string name="shift_night">Night</string>
-
-    <!-- Home Screen-->
-    <string name="logbook_home">Logbook</string>
-    <string name="game_track_home">Game track</string>
-    <string name="story_track_home">Story track</string>
-    <string name="logout">LOGOUT</string>
-    <string name="welcome">Welcome</string>
 </resources>

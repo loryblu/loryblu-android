@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.loryblu.core.ui.R
 import com.loryblu.core.ui.theme.LBAfternoonBlue
 import com.loryblu.core.ui.theme.LBBottomAfternoon
 import com.loryblu.core.ui.theme.LBBottomDisabledColor
@@ -48,6 +47,7 @@ import com.loryblu.core.ui.theme.LBNightBlue
 import com.loryblu.core.ui.theme.LoryBluTheme
 import com.loryblu.data.logbook.model.Item
 import com.loryblu.data.logbook.model.getAllHomeItems
+import com.loryblu.data.logbook.R
 
 
 @Composable
