@@ -10,6 +10,7 @@ import com.loryblu.feature.auth.login.navigation.loginRoute
 import com.loryblu.feature.auth.register.navigation.registerChildRoute
 import com.loryblu.feature.auth.register.navigation.registerGuardianRoute
 import com.loryblu.feature.auth.register.navigation.registrationConfirmedRoute
+import com.loryblu.feature.home.navigation.homeLogbookRoute
 import com.loryblu.feature.home.navigation.homeRoute
 
 @Composable
@@ -61,14 +62,15 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             }
         )
         homeRoute(
-            navigateToLogin = {
-                navController.navigate(Screen.Login.route) {
+            navigateToHomeLogbook = {
+                navController.navigate(Screen.HomeLogbook.route) {
                     launchSingleTop = true
                     popUpTo(Screen.Home.route) { inclusive = true }
                 }
             }
         )
-
-
+        homeLogbookRoute(
+            //todo
+        )
     }
 }
