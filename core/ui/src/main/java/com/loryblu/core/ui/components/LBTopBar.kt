@@ -21,7 +21,8 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 fun LBTopAppBar(
     title: String,
     onBackClicked: () -> Unit,
-    onCloseClicked: () -> Unit
+    onCloseClicked: () -> Unit,
+    showCloseButton: Boolean
 ) {
     TopAppBar(
         modifier = Modifier
@@ -44,12 +45,14 @@ fun LBTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = { onCloseClicked() }) {
-                Icon(
-                    imageVector = Icons.Outlined.Clear,
-                    contentDescription = null,
-                    tint = LBDarkBlue,
-                )
+            if(showCloseButton) {
+                IconButton(onClick = { onCloseClicked() }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription = null,
+                        tint = LBDarkBlue,
+                    )
+                }
             }
         }
     )
