@@ -27,7 +27,9 @@ import com.loryblu.core.ui.components.LBCard
 import com.loryblu.data.logbook.model.getAllHomeItems
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(
+    navigateToHomeLogbook: () -> Unit
+) {
 
     val home = getAllHomeItems()
 
@@ -43,7 +45,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo_home),
-                contentDescription = "loryblu logo menu",
+                contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .size(62.dp)
@@ -68,7 +70,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                             .fillMaxWidth()
                             .height(250.dp)
                             .padding(top = 12.dp, bottom = 12.dp, start = 24.dp, end = 24.dp),
-                        onclick = { /*TODO*/ }
+                        onclick = { navigateToHomeLogbook() }
                     )
                 }
             }
