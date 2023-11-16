@@ -38,4 +38,10 @@
     <string name="story_track_home">Trilha de histórias</string>
     <string name="logout">SAIR</string>
     <string name="welcome">Bem-Vindo</string>
+
+    <!-- Button Labels -->
+    <string name="new_task">NOVA TAREFA</string>
+
+    <!-- Screen Labels -->
+    <string name="no_task_found">Hmm...nenhuma tarefa por aqui.</string>
 </resources>

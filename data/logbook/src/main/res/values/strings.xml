@@ -36,4 +36,10 @@
     <string name="story_track_home">Story track</string>
     <string name="logout">LOGOUT</string>
     <string name="welcome">Welcome</string>
+
+    <!-- Button Labels -->
+    <string name="new_task">ADD TASK</string>
+
+    <!-- Screen Labels -->
+    <string name="no_task_found">Hmm...no assignments here</string>
 </resources>
