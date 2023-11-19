@@ -39,7 +39,10 @@
 
     <!-- Button Labels -->
     <string name="new_task">ADD TASK</string>
+    <string name="next">NEXT</string>
 
     <!-- Screen Labels -->
     <string name="no_task_found">Hmm...no assignments here</string>
+    <string name="select_a_category">Select a category:</string>
+
 </resources>
