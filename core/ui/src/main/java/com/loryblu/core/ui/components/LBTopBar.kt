@@ -26,7 +26,7 @@ fun LBTopAppBar(
 ) {
     TopAppBar(
         modifier = Modifier
-            .padding(top = 5.dp, start = 5.dp, end = 5.dp, bottom = 10.dp),
+            .padding(top = 24.dp, start = 5.dp, end = 5.dp, bottom = 0.dp),
         title = {
             Text(
                 text = title,
