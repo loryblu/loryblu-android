@@ -4,7 +4,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,29 +24,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.loryblu.core.ui.theme.LBAfternoonBlue
+import com.loryblu.core.ui.theme.LBCardSoftBlue
 
 @Composable
-fun CustomProgressBar(currentStep: Int) {
+fun LBProgressBar(currentStep: Int) {
     val totalSteps = 4
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 20.dp),
+            .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
+
         ) {
             for (step in 1..totalSteps) {
-                val isCurrentStep = step == currentStep
-                ProgressCircle(step = step, isCurrentStep = isCurrentStep)
-
+                ProgressCircle(step = step, currentStep = currentStep)
                 if (step < totalSteps) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    val lineWidth = calculateLineWidth(currentStep, step)
-                    ProgressLine(isCurrentStep = isCurrentStep, lineWidth = lineWidth)
+                    ProgressLine(step = step, currentStep = currentStep, lineWidth = 55f)
                 }
             }
         }
@@ -55,19 +52,19 @@ fun CustomProgressBar(currentStep: Int) {
 }
 
 @Composable
-fun ProgressCircle(step: Int, isCurrentStep: Boolean) {
-    val circleColor = if (isCurrentStep) Color.Green else Color.Gray
-    val textColor = if (isCurrentStep) Color.White else Color.Black
-
+fun ProgressCircle(step: Int, currentStep: Int) {
+    val borderCircleColor = if (step <= currentStep) LBAfternoonBlue else LBCardSoftBlue
+    val textColor = if (step <= currentStep) Color.White else LBCardSoftBlue
+    val backgroundCircle = if (step > currentStep) Color.White else LBAfternoonBlue
     Box(
         modifier = Modifier
-            .size(40.dp)
-            .background(circleColor, CircleShape)
-            .border(2.dp, Color.Black, CircleShape)
+            .size(50.dp)
+            .background(backgroundCircle, CircleShape)
+            .border(2.dp, borderCircleColor, CircleShape)
             .clip(CircleShape),
         contentAlignment = Alignment.Center
     ) {
-        if (isCurrentStep) {
+        if (step < currentStep) {
             Icon(
                 imageVector = Icons.Outlined.Check,
                 contentDescription = null,
@@ -85,9 +82,12 @@ fun ProgressCircle(step: Int, isCurrentStep: Boolean) {
 }
 
 @Composable
-fun ProgressLine(isCurrentStep: Boolean, lineWidth: Float) {
-    val lineColor = if (isCurrentStep) Color.Green else Color.Gray
-
+fun ProgressLine(step: Int, currentStep: Int, lineWidth: Float) {
+    var lineColor:Color = if (step < currentStep) {
+        LBAfternoonBlue
+    }else {
+        LBCardSoftBlue
+    }
     Canvas(
         modifier = Modifier
             .height(2.dp)
@@ -97,17 +97,13 @@ fun ProgressLine(isCurrentStep: Boolean, lineWidth: Float) {
             color = lineColor,
             start = Offset(0f, size.height / 2),
             end = Offset(size.width, size.height / 2),
-            strokeWidth = 2.dp.toPx()
+            strokeWidth = 4.dp.toPx()
         )
     }
-}
-
-fun calculateLineWidth(currentStep: Int, step: Int): Float {
-    return 50f
 }
 
 @Preview
 @Composable
 fun CustomProgressBarPreview() {
-    CustomProgressBar(currentStep = 4)
+    LBProgressBar(currentStep = 4)
 }
