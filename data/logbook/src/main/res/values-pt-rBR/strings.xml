@@ -41,7 +41,9 @@
 
     <!-- Button Labels -->
     <string name="new_task">NOVA TAREFA</string>
+    <string name="next">PRÓXIMO</string>
 
     <!-- Screen Labels -->
     <string name="no_task_found">Hmm...nenhuma tarefa por aqui.</string>
+    <string name="select_a_category">Selecione uma categoria:</string>
 </resources>
