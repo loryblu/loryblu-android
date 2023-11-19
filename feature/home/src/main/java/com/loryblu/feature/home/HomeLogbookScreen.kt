@@ -66,7 +66,7 @@ fun HomeLogbookScreen() {
                         modifier = Modifier
                             .width(327.dp)
                             .height(302.dp)
-                            .align(Alignment.CenterHorizontally), // Alinha a imagem no centro
+                            .align(Alignment.CenterHorizontally),
                         contentScale = ContentScale.Crop
                     )
                     Text(
