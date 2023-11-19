@@ -9,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -19,12 +20,14 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LBTopAppBar(
+    scrollBehavior: TopAppBarScrollBehavior? = null,
     title: String,
     onBackClicked: () -> Unit,
     onCloseClicked: () -> Unit,
     showCloseButton: Boolean
 ) {
     TopAppBar(
+        scrollBehavior = scrollBehavior,
         modifier = Modifier
             .padding(top = 24.dp, start = 5.dp, end = 5.dp, bottom = 0.dp),
         title = {
