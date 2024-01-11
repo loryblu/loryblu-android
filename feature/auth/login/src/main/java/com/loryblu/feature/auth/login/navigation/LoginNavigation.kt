@@ -10,7 +10,7 @@ import com.loryblu.core.util.Screen
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.loginRoute(
-    navigateToHomeScreen: () -> Unit,
+    navigateToDashboard: () -> Unit,
     navigateToForgotPassword: () -> Unit,
     navigateToRegisterNow: () -> Unit,
 ) {
@@ -24,7 +24,7 @@ fun NavGraphBuilder.loginRoute(
             onLoginButtonClicked = {
                 viewModel.loginWithEmailAndPassword(it)
             },
-            navigateToHomeScreen = navigateToHomeScreen,
+            navigateToHomeScreen = navigateToDashboard,
             navigateToRegisterNow = navigateToRegisterNow,
             navigateToForgotPassword = navigateToForgotPassword,
             emailStateValidation = { viewModel.emailState(it) },

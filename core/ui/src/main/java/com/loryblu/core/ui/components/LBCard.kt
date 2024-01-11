@@ -45,14 +45,16 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
 import com.loryblu.core.ui.theme.LBNightBlue
 import com.loryblu.core.ui.theme.LoryBluTheme
-import com.loryblu.data.logbook.model.Item
-import com.loryblu.data.logbook.model.getAllHomeItems
+import com.loryblu.data.logbook.local.LogbookItem
 import com.loryblu.data.logbook.R
+import com.loryblu.data.logbook.local.getAllCategoryItems
+import com.odisby.data.dashboard.local.getAllDashboardItems
+import com.odisby.data.dashboard.local.DashboardItem
 
 
 @Composable
 fun LBCard(
-    card: Item,
+    card: LogbookItem,
     modifier: Modifier,
     onclick: () -> Unit,
 ) {
@@ -64,18 +66,18 @@ fun LBCard(
     var bottomColor = LBDarkBlue
     var borderColor = LBDarkBlue
     var saturation = 1f
-    var imgSaturation = 0.10f
+    val imgSaturation = 0.10f
     var rounded = 5
 
     val isShiftCard = card.text == R.string.shift_morning ||
             card.text == R.string.shift_afternoon ||
             card.text == R.string.shift_night
 
-    val isHomeCard = card.text == R.string.logbook_home ||
-            card.text == R.string.game_track_home ||
-            card.text == R.string.story_track_home
+    val isHomeCard = card.text == com.odisby.data.dashboard.R.string.logbook ||
+            card.text == com.odisby.data.dashboard.R.string.game_track ||
+            card.text == com.odisby.data.dashboard.R.string.story_track
 
-    if (isHomeCard){
+    if (isHomeCard) {
         contentColor = LBContentHome
         bottomColor = LBBottomHome
         borderColor = LBBottomHome
@@ -85,28 +87,30 @@ fun LBCard(
     if (isShiftCard)
         rounded = 10
 
-    if(cardClicked){
+    if (cardClicked) {
         when (card.text) {
             R.string.shift_morning -> {
                 contentColor = LBCardSoftBlue
                 bottomColor = LBBottomMorningColor
             }
+
             R.string.shift_afternoon -> {
                 contentColor = LBAfternoonBlue
                 bottomColor = LBBottomAfternoon
             }
+
             R.string.shift_night -> {
                 contentColor = LBNightBlue
                 bottomColor = LBDarkBlue
             }
         }
-    }else {
-        saturation = if((!card.isDisabled && isHomeCard) || card.isCardTask) {
+    } else {
+        saturation = if ((!card.isDisabled && isHomeCard) || card.isCardTask) {
             1f
-        } else{
+        } else {
             0.50f
         }
-        if(card.isCardTask){
+        if (card.isCardTask) {
             bottomColor = Color(0xFF6F9EB9)
         }
         when (card.text) {
@@ -115,11 +119,13 @@ fun LBCard(
                 contentColor = LBDisabledGray
                 bottomColor = LBBottomDisabledColor
             }
+
             R.string.shift_afternoon -> {
                 saturation = 1f
                 contentColor = LBDisabledGray
                 bottomColor = LBBottomDisabledColor
             }
+
             R.string.shift_night -> {
                 saturation = 1f
                 contentColor = LBDisabledGray
@@ -133,14 +139,14 @@ fun LBCard(
             containerColor = contentColor,
         ),
         border =
-        if(cardClicked){
+        if (cardClicked) {
             BorderStroke(4.dp, borderColor)
-        }else{
+        } else {
             BorderStroke(Dp.Unspecified, borderColor)
         },
         modifier = modifier
             .clickable {
-                if(!card.isDisabled) {
+                if (!card.isDisabled) {
                     cardClicked = !cardClicked
                     onclick()
                 }
@@ -166,10 +172,10 @@ fun LBCard(
                 colorFilter = ColorFilter.colorMatrix(
                     colorMatrix = ColorMatrix().apply {
                         setToSaturation(
-                            if(isHomeCard && card.isDisabled){
+                            if (isHomeCard && card.isDisabled) {
                                 imgSaturation
-                            }
-                            else{ saturation
+                            } else {
+                                saturation
                             }
                         )
                     }
@@ -180,9 +186,76 @@ fun LBCard(
             modifier = Modifier
                 .weight(0.3f)
                 .fillMaxSize()
-                .background(color =
+                .background(
+                    color =
                     bottomColor
                 ),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = card.text),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight(500),
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                ),
+            )
+        }
+    }
+}
+
+@Composable
+fun LBCardDashboard(
+    card: DashboardItem,
+    modifier: Modifier,
+    onclick: () -> Unit,
+) {
+    val contentColor = LBContentHome
+    val bottomColor = LBBottomHome
+    val borderColor = LBBottomHome
+    val rounded = 5
+    val saturation = if (card.isDisabled) .5f else 1f
+
+    OutlinedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = contentColor,
+        ),
+        border = BorderStroke(4.dp, borderColor),
+        modifier = modifier
+            .clickable {
+                if (!card.isDisabled) {
+                    onclick()
+                }
+            }
+            .alpha(saturation),
+        shape = RoundedCornerShape(rounded),
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(0.8f)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                alignment = Alignment.TopCenter,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp)
+                    .alpha(saturation),
+                painter = painterResource(id = card.drawable),
+                contentDescription = stringResource(id = card.text),
+                contentScale = ContentScale.Fit,
+            )
+        }
+        Column(
+            modifier = Modifier
+                .weight(0.3f)
+                .fillMaxSize()
+                .background(color = bottomColor),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -206,7 +279,19 @@ fun LBCard(
 fun LBCardPreview() {
     LoryBluTheme {
         LBCard(
-            getAllHomeItems()[0],
+            getAllCategoryItems()[0],
+            modifier = Modifier.size(250.dp),
+            onclick = {}
+        )
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun LBDashboardCardPreview() {
+    LoryBluTheme {
+        LBCardDashboard(
+            getAllDashboardItems()[0],
             modifier = Modifier.size(250.dp),
             onclick = {}
         )

@@ -6,7 +6,7 @@ sealed class Screen(val route: String) {
     data object RegisterChild: Screen(route = "register_child_screen")
     data object CreatePassword: Screen(route = "password_recovery/?r_token%3D{token}%26expires_in%3D{expires}")
     data object ForgotPassword: Screen(route = "forgot_password_screen")
-    data object Home: Screen(route = "home_screen")
-    data object HomeLogbook: Screen(route = "home_logbook_screen")
+    data object Dashboard: Screen(route = "dashboard_screen")
+    data object Logbook: Screen(route = "home_logbook_screen")
     data object RegistrationConfirmed: Screen(route = "registration_confirmed_screen")
 }
