@@ -65,7 +65,8 @@ dependencies {
     implementation(project(":feature:auth:register"))
     implementation(project(":feature:auth:forgot_password"))
     implementation(project(":feature:auth:create_password"))
-    implementation(project(":feature:home"))
+    implementation(project(":feature:logbook"))
+    implementation(project(":feature:dashboard"))
     implementation(project(":data:auth"))
     implementation(project(":core:network"))
 }

@@ -23,7 +23,7 @@ fun LBTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     title: String,
     onBackClicked: () -> Unit,
-    onCloseClicked: () -> Unit,
+    onCloseClicked: () -> Unit = { },
     showCloseButton: Boolean
 ) {
     TopAppBar(

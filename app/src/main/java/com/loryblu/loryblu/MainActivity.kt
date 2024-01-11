@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 SetupNavGraph(
                     startDestination = if(session.getRememberLogin()) {
-                        Screen.Home.route
+                        Screen.Dashboard.route
                     } else {
                         Screen.Login.route
                     },

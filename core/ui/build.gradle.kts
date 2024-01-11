@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(project(":core:util"))
     implementation(project(":data:logbook"))
+    implementation(project(":data:dashboard"))
 
     debugImplementation(libs.ui.tooling)
 

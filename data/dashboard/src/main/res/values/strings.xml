@@ -1,0 +1,7 @@
+<resources>
+    <string name="logbook">Logbook</string>
+    <string name="game_track">Game track</string>
+    <string name="story_track">Story track</string>
+    <string name="logout">LOGOUT</string>
+    <string name="welcome">Welcome</string>
+</resources>

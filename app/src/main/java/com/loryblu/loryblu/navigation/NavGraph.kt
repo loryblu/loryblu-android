@@ -10,8 +10,8 @@ import com.loryblu.feature.auth.login.navigation.loginRoute
 import com.loryblu.feature.auth.register.navigation.registerChildRoute
 import com.loryblu.feature.auth.register.navigation.registerGuardianRoute
 import com.loryblu.feature.auth.register.navigation.registrationConfirmedRoute
-import com.loryblu.feature.home.navigation.homeLogbookRoute
-import com.loryblu.feature.home.navigation.homeRoute
+import com.loryblu.feature.logbook.navigation.logbookRoute
+import com.odisby.feature.dashboard.navigation.dashboardRoute
 
 @Composable
 fun SetupNavGraph(startDestination: String, navController: NavHostController) {
@@ -20,9 +20,9 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         navController = navController
     ) {
         loginRoute(
-            navigateToHomeScreen = {
+            navigateToDashboard = {
                 navController.popBackStack()
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.Dashboard.route)
             },
             navigateToForgotPassword = {
                 navController.navigate(Screen.ForgotPassword.route)
@@ -56,21 +56,24 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             }
         )
         registrationConfirmedRoute(
-            navigateToHomeScreen = {
+            navigateToDashboard = {
                 navController.popBackStack(Screen.RegistrationConfirmed.route, true)
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.Dashboard.route)
             }
         )
-        homeRoute(
-            navigateToHomeLogbook = {
-                navController.navigate(Screen.HomeLogbook.route) {
+        dashboardRoute(
+            navigateToLogbook = {
+                navController.navigate(Screen.Logbook.route) {
                     launchSingleTop = true
-                    popUpTo(Screen.Home.route) { inclusive = true }
+                    popUpTo(Screen.Dashboard.route) { inclusive = true }
                 }
             }
         )
-        homeLogbookRoute(
-            //todo
+        logbookRoute(
+            onBackButtonClicked = {
+                navController.popBackStack()
+                navController.navigate(Screen.Dashboard.route)
+            }
         )
     }
 }

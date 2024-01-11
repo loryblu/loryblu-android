@@ -32,18 +32,5 @@
     <string name="shift_afternoon">Tarde</string>
     <string name="shift_night">Noite</string>
 
-    <!-- Home Screen-->
-    <string name="logbook_home">Diário de bordo</string>
-    <string name="game_track_home">Trilha de jogos</string>
-    <string name="story_track_home">Trilha de histórias</string>
-    <string name="logout">SAIR</string>
-    <string name="welcome">Bem-Vindo</string>
 
-    <!-- Button Labels -->
-    <string name="new_task">NOVA TAREFA</string>
-    <string name="next">PRÓXIMO</string>
-
-    <!-- Screen Labels -->
-    <string name="no_task_found">Hmm...nenhuma tarefa por aqui.</string>
-    <string name="select_a_category">Selecione uma categoria:</string>
 </resources>

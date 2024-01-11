@@ -30,19 +30,5 @@
     <string name="shift_afternoon">Afternoon</string>
     <string name="shift_night">Night</string>
 
-    <!-- Home Screen-->
-    <string name="logbook_home">Logbook</string>
-    <string name="game_track_home">Game track</string>
-    <string name="story_track_home">Story track</string>
-    <string name="logout">LOGOUT</string>
-    <string name="welcome">Welcome</string>
-
-    <!-- Button Labels -->
-    <string name="new_task">ADD TASK</string>
-    <string name="next">NEXT</string>
-
-    <!-- Screen Labels -->
-    <string name="no_task_found">Hmm...no assignments here</string>
-    <string name="select_a_category">Select a category:</string>
 
 </resources>
