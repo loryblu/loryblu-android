@@ -67,7 +67,7 @@ fun LoginScreen(
     emailStateValidation: (email: String) -> EmailInputValid,
     passwordStateValidation: (password: String) -> PasswordInputValid,
     signInResult: SignInResult,
-    rememberLogin: (token: String, rememberUser: Boolean) -> Unit,
+    rememberLogin: (rememberUser: Boolean, token: String, refreshToken: String?) -> Unit,
 ) {
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
@@ -381,8 +381,9 @@ fun LoginScreen(
             is SignInResult.Success -> {
                 showApiErrors = false
                 rememberLogin(
+                    rememberButtonChecked,
                     signInResult.token,
-                    rememberButtonChecked
+                    if(rememberButtonChecked) signInResult.refreshToken else null
                 )
                 navigateToHomeScreen()
             }
