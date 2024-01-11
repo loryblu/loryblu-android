@@ -65,10 +65,10 @@ class LoginViewModel(
         }
     }
 
-    fun rememberLogin(token: String, rememberLogin: Boolean) {
+    fun rememberLogin(rememberLogin: Boolean, token: String, refreshToken: String?) {
         viewModelScope.launch {
             session.saveToken(token)
-            if (rememberLogin) session.saveRememberLogin(true)
+            if (rememberLogin) session.saveRememberLogin(rememberLogin = true, refreshToken = refreshToken)
         }
     }
 }

@@ -12,7 +12,7 @@ suspend fun HttpResponse.toSignInResult() : SignInResult {
     val apiResponse = this.toApiResponse()
     return if (apiResponse.serverStatusCode == HttpStatusCode.OK) {
         val response = this.body<LoginResponse>()
-        SignInResult.Success(response.token.accessToken)
+        SignInResult.Success(response.data.accessToken, response.data.refreshToken)
     } else {
         SignInResult.Error(apiResponse.message)
     }
