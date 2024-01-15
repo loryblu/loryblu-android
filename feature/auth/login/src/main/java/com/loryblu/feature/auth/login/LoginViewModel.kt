@@ -9,6 +9,7 @@ import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.api.LoginApi
 import com.loryblu.data.auth.model.LoginRequest
+import com.loryblu.data.auth.model.LoginResponse
 import com.loryblu.data.auth.model.SignInResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,10 +66,18 @@ class LoginViewModel(
         }
     }
 
-    fun rememberLogin(rememberLogin: Boolean, token: String, refreshToken: String?) {
+    fun rememberLogin(rememberLogin: Boolean, loginResponse: LoginResponse) {
         viewModelScope.launch {
-            session.saveToken(token)
-            if (rememberLogin) session.saveRememberLogin(rememberLogin = true, refreshToken = refreshToken)
+            session.saveToken(loginResponse.data.accessToken)
+            session.saveChild(
+                loginResponse.data.user.childrens[0].id,
+                loginResponse.data.user.childrens[0].fullname
+            )
+            // Remove until task is up
+//            if (rememberLogin) session.saveRememberLogin(
+//                rememberLogin = true,
+//                refreshToken = loginResponse.data.refreshToken
+//            )
         }
     }
 }

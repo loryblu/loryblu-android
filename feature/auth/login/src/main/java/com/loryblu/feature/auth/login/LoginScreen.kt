@@ -54,6 +54,7 @@ import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.model.LoginRequest
+import com.loryblu.data.auth.model.LoginResponse
 import com.loryblu.data.auth.model.SignInResult
 import kotlinx.coroutines.launch
 
@@ -67,7 +68,7 @@ fun LoginScreen(
     emailStateValidation: (email: String) -> EmailInputValid,
     passwordStateValidation: (password: String) -> PasswordInputValid,
     signInResult: SignInResult,
-    rememberLogin: (rememberUser: Boolean, token: String, refreshToken: String?) -> Unit,
+    rememberLogin: (rememberUser: Boolean, loginResponse: LoginResponse) -> Unit,
 ) {
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
@@ -382,8 +383,7 @@ fun LoginScreen(
                 showApiErrors = false
                 rememberLogin(
                     rememberButtonChecked,
-                    signInResult.token,
-                    if(rememberButtonChecked) signInResult.refreshToken else null
+                    signInResult.response,
                 )
                 navigateToHomeScreen()
             }
