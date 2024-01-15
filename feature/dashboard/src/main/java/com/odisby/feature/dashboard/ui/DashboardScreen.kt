@@ -28,7 +28,8 @@ import com.odisby.feature.dashboard.R
 
 @Composable
 fun DashboardScreen(
-    navigateToLogbook: () -> Unit
+    navigateToLogbook: () -> Unit,
+    childName: String = "",
 ) {
 
     val dashboardItems = getAllDashboardItems()
@@ -53,7 +54,7 @@ fun DashboardScreen(
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 fontSize = 24.sp,
-                text = "Olá, Bia" //this resource will come from api
+                text = "Olá, $childName"
             )
         }
         Column(

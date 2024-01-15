@@ -22,6 +22,9 @@ class Session(
         val refreshTokenKey = stringPreferencesKey(REFRESH_TOKEN)
     }
 
+    private var childIdCache: Int = 0
+    private var childNameCache: String = ""
+
     suspend fun saveToken(loginToken: String) {
         dataStore.edit {
             it[tokenKey] = loginToken
@@ -53,5 +56,18 @@ class Session(
                 it.remove(refreshTokenKey)
             }
         }
+    }
+
+    fun saveChild(childId: Int, childName: String) {
+        childIdCache = childId
+        childNameCache = childName
+    }
+
+    fun getChildName(): String {
+        return childNameCache
+    }
+
+    fun getChildId(): Int {
+        return childIdCache
     }
 }
