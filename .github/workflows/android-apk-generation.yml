@@ -31,7 +31,7 @@ jobs:
 
       - name: Create local.properties
         run: |
-          echo "BASE_URL=${BASE_URL}" >> local.properties
+          echo "BASE_URL=${API_URL}" >> local.properties
           echo "BASE_SCHEME=${BASE_SCHEME}" >> local.properties
 
       - name: Build gradle project
