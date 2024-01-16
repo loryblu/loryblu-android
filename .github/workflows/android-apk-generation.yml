@@ -35,10 +35,10 @@ jobs:
           echo "BASE_SCHEME=${BASE_SCHEME}" >> local.properties
 
       - name: Build gradle project
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v3
