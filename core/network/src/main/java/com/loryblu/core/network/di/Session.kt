@@ -16,13 +16,18 @@ class Session(
         const val DATA = "Data"
         private const val TOKEN = "Token"
         private const val REMEMBER = "RememberLogin"
-        val token = stringPreferencesKey(TOKEN)
-        val remember = booleanPreferencesKey(REMEMBER)
+        private const val REFRESH_TOKEN = "RefreshToken"
+        val tokenKey = stringPreferencesKey(TOKEN)
+        val rememberKey = booleanPreferencesKey(REMEMBER)
+        val refreshTokenKey = stringPreferencesKey(REFRESH_TOKEN)
     }
+
+    private var childIdCache: Int = 0
+    private var childNameCache: String = ""
 
     suspend fun saveToken(loginToken: String) {
         dataStore.edit {
-            it[token] = loginToken
+            it[tokenKey] = loginToken
         }
     }
 
@@ -30,22 +35,39 @@ class Session(
         var response: Boolean
         runBlocking {
             val pref = dataStore.data.first()
-            response = pref[remember] ?: false
+            response = pref[rememberKey] ?: false
         }
         return response
     }
 
-    suspend fun saveRememberLogin(rememberLogin: Boolean) {
+    suspend fun saveRememberLogin(rememberLogin: Boolean, refreshToken: String?) {
         dataStore.edit {
-            it[remember] = rememberLogin
+            it[rememberKey] = rememberLogin
+            refreshToken?.let { token ->
+                it[refreshTokenKey] = token
+            }
         }
     }
 
     fun clearToken() {
         runBlocking {
             dataStore.edit {
-                it.remove(token)
+                it.remove(tokenKey)
+                it.remove(refreshTokenKey)
             }
         }
+    }
+
+    fun saveChild(childId: Int, childName: String) {
+        childIdCache = childId
+        childNameCache = childName
+    }
+
+    fun getChildName(): String {
+        return childNameCache
+    }
+
+    fun getChildId(): Int {
+        return childIdCache
     }
 }

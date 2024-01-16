@@ -13,7 +13,7 @@ class LogbookViewModel(
     fun logout() {
         viewModelScope.launch {
             session.clearToken()
-            session.saveRememberLogin(false)
+            session.saveRememberLogin(false, null)
             navigateToLogin()
         }
     }

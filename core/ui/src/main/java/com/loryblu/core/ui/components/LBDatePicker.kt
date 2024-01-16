@@ -43,6 +43,7 @@ import com.loryblu.core.util.extensions.toDateFormat
 import com.loryblu.core.util.extensions.toHeadLineDateFormat
 import com.loryblu.core.util.validators.BirthdayInputValid
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -66,7 +67,7 @@ fun LBDatePicker(
             Instant.now(),
             ZoneId.systemDefault()
         ).toInstant().toEpochMilli(),
-        yearRange = 2013..2023
+        yearRange = LocalDate.now().year - 10 .. LocalDate.now().year
     )
 
     var showDate by rememberSaveable {
