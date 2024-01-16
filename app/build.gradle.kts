@@ -26,6 +26,12 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+        getByName("debug") {
+            isDebuggable = true
+            applicationIdSuffix = ".debug"
+
+            resValue("string", "app_name", "LoryBlu - Debug")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
