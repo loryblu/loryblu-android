@@ -1,7 +1,6 @@
 package com.loryblu.feature.logbook.ui
 
 import LBProgressBar
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,9 +37,12 @@ import com.loryblu.data.logbook.local.getAllCategoryItems
 import com.loryblu.feature.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CategoryScreen() {
+fun CategoryScreen(
+    onBackButtonClicked: () -> Unit,
+    onNextScreenClicked: () -> Unit,
+    onCloseButtonClicked: () -> Unit,
+) {
 
     var cardClicked by rememberSaveable {
         mutableStateOf(-1)
@@ -51,8 +53,8 @@ fun CategoryScreen() {
         topBar = {
             LBTopAppBar(
                 title = stringResource(R.string.logbook_title),
-                onBackClicked = { },
-                onCloseClicked = { },
+                onBackClicked = { onBackButtonClicked() },
+                onCloseClicked = { onCloseButtonClicked() },
                 showCloseButton = true
             )
         },
@@ -62,13 +64,14 @@ fun CategoryScreen() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .padding(horizontal = 24.dp)
             ) {
                 LBProgressBar(modifier = Modifier.padding(vertical = 24.dp), currentStep = 1)
                 Box(
                     contentAlignment = Alignment.TopStart,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 24.dp, bottom = 12.dp)
+                        .padding(bottom = 12.dp)
                 ) {
                     Text(
                         color = LBDarkBlue,
@@ -79,7 +82,6 @@ fun CategoryScreen() {
                     )
                 }
                 LazyColumn(
-                    modifier = Modifier.padding(start = 24.dp, end = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp),
                 ) {
                     items(category) {
@@ -94,11 +96,11 @@ fun CategoryScreen() {
                     }
                 }
                 Column(
-                    modifier = Modifier.padding(24.dp)
+                    modifier = Modifier.padding(vertical = 24.dp)
                 ) {
                     LBButton(
                         textRes = com.loryblu.core.ui.R.string.next,
-                        onClick = { /*TODO*/ },
+                        onClick = { onNextScreenClicked() },
                         buttonColors = ButtonDefaults.buttonColors(
                             disabledContainerColor = LBSkyBlue,
                             containerColor = LBSkyBlue
@@ -115,5 +117,9 @@ fun CategoryScreen() {
 @Preview(showBackground = true)
 @Composable
 fun CategoryScreenPreview() {
-    CategoryScreen()
+    CategoryScreen(
+        onNextScreenClicked = {},
+        onBackButtonClicked = {},
+        onCloseButtonClicked = {}
+    )
 }

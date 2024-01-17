@@ -40,7 +40,11 @@ import com.loryblu.feature.logbook.ui.components.FrequencyBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShiftScreen() {
+fun ShiftScreen(
+    onBackButtonClicked: () -> Unit,
+    onNextScreenClicked: () -> Unit,
+    onCloseButtonClicked: () -> Unit,
+) {
 
     var cardClicked by rememberSaveable {
         mutableStateOf(-1)
@@ -52,8 +56,8 @@ fun ShiftScreen() {
         topBar = {
             LBTopAppBar(
                 title = stringResource(R.string.logbook_title),
-                onBackClicked = { },
-                onCloseClicked = { },
+                onBackClicked = { onBackButtonClicked() },
+                onCloseClicked = { onCloseButtonClicked() },
                 showCloseButton = true
             )
         },
@@ -121,12 +125,14 @@ fun ShiftScreen() {
                     FrequencyBar(modifier = Modifier.fillMaxWidth())
                 }
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(bottom = 110.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 110.dp),
                     verticalArrangement = Arrangement.Bottom,
                 ) {
                     LBButton(
                         textRes = R.string.confirm,
-                        onClick = { /*TODO*/ },
+                        onClick = { onNextScreenClicked() },
                         buttonColors = ButtonDefaults.buttonColors(
                             disabledContainerColor = LBSkyBlue,
                             containerColor = LBSkyBlue
@@ -143,5 +149,9 @@ fun ShiftScreen() {
 @Preview
 @Composable
 private fun ShiftScreenPreview() {
-    ShiftScreen()
+    ShiftScreen(
+        onBackButtonClicked = {},
+        onNextScreenClicked = {},
+        onCloseButtonClicked = {}
+    )
 }
