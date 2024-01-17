@@ -1,6 +1,7 @@
 package com.loryblu.feature.logbook.ui
 
 import LBProgressBar
+import androidx.collection.mutableIntListOf
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,6 +37,7 @@ import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBCardShift
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.getAllShiftItems
 import com.loryblu.feature.home.R
@@ -50,8 +55,8 @@ fun ShiftScreen(
         mutableStateOf(-1)
     }
 
-    var selectedDay by rememberSaveable {
-        mutableStateOf(0)
+    val selectedDay = remember {
+        mutableStateListOf<Int>()
     }
 
     val shiftItems = getAllShiftItems()
@@ -129,7 +134,13 @@ fun ShiftScreen(
                     FrequencyBar(
                         modifier = Modifier.fillMaxWidth(),
                         selectedDay = selectedDay,
-                        onClick = { selectedDay = it })
+                        onDayClicked = {
+                            if(selectedDay.contains(it)) {
+                                selectedDay.remove(it)
+                            } else {
+                                selectedDay.add(it)
+                            }
+                        })
                 }
                 Column(
                     modifier = Modifier
@@ -141,11 +152,11 @@ fun ShiftScreen(
                         textRes = R.string.confirm,
                         onClick = { onNextScreenClicked() },
                         buttonColors = ButtonDefaults.buttonColors(
-                            disabledContainerColor = LBSkyBlue,
+                            disabledContainerColor = LBLightGray,
                             containerColor = LBSkyBlue
                         ),
                         textColor = Color.White,
-                        areAllFieldsValid = true
+                        areAllFieldsValid = selectedDay.isNotEmpty() && cardClicked >= 0
                     )
                 }
             }

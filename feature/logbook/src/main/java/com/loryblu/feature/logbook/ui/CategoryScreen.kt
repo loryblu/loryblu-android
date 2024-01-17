@@ -32,6 +32,7 @@ import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBCategoryCard
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.getAllCategoryItems
 import com.loryblu.feature.home.R
@@ -102,11 +103,11 @@ fun CategoryScreen(
                         textRes = com.loryblu.core.ui.R.string.next,
                         onClick = { onNextScreenClicked() },
                         buttonColors = ButtonDefaults.buttonColors(
-                            disabledContainerColor = LBSkyBlue,
+                            disabledContainerColor = LBLightGray,
                             containerColor = LBSkyBlue
                         ),
                         textColor = Color.White,
-                        areAllFieldsValid = true
+                        areAllFieldsValid = cardClicked >= 0
                     )
                 }
             }

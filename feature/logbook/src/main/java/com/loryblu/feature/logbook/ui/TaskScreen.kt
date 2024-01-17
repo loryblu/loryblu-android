@@ -37,6 +37,7 @@ import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBTaskCard
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.getAllRoutineItems
 import com.loryblu.feature.home.R
@@ -126,11 +127,11 @@ fun TaskScreen(
                             onNextScreenClicked()
                         },
                         buttonColors = ButtonDefaults.buttonColors(
-                            disabledContainerColor = LBSkyBlue,
+                            disabledContainerColor = LBLightGray,
                             containerColor = LBSkyBlue
                         ),
                         textColor = Color.White,
-                        areAllFieldsValid = true,
+                        areAllFieldsValid = cardClicked >= 0,
                     )
                 }
             }
