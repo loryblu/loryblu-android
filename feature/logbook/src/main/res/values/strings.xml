@@ -4,8 +4,12 @@
     <!-- Screen Labels -->
     <string name="no_task_found">Hmm…no assignments here</string>
     <string name="select_a_category">Select a category:</string>
+    <string name="select_a_shift">Select a shift:</string>
+    <string name="select_a_frequency">Select a frequency:</string>
+    <string name="select_a_frequency_description">You can select more than one day.</string>
 
     <!-- Button Labels -->
     <string name="new_task">ADD TASK</string>
     <string name="next">NEXT</string>
+    <string name="confirm">CONFIRM</string>
 </resources>

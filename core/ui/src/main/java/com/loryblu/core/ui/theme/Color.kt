@@ -25,3 +25,6 @@ val LBBottomAfternoon = Color(0xFF1C6897)
 val LBBottomNight = Color(0xFF1C6897)
 val LBContentHome = Color(0xFF51BECF)
 val LBBottomHome = Color(0xFF3F8D9A)
+
+val LBFrequencyBackgroundBlue = Color(0xFF97D8FE)
+val LBFrequencyTextBlue = Color(0xFF004A98)

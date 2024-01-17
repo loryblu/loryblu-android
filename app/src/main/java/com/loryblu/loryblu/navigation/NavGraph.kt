@@ -10,7 +10,7 @@ import com.loryblu.feature.auth.login.navigation.loginRoute
 import com.loryblu.feature.auth.register.navigation.registerChildRoute
 import com.loryblu.feature.auth.register.navigation.registerGuardianRoute
 import com.loryblu.feature.auth.register.navigation.registrationConfirmedRoute
-import com.loryblu.feature.logbook.navigation.logbookRoute
+import com.loryblu.feature.logbook.navigation.logbookNavigation
 import com.odisby.feature.dashboard.navigation.dashboardRoute
 
 @Composable
@@ -69,11 +69,13 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                 }
             }
         )
-        logbookRoute(
+        logbookNavigation(
+            navController = navController,
             onBackButtonClicked = {
                 navController.popBackStack()
                 navController.navigate(Screen.Dashboard.route)
-            }
+            },
         )
+
     }
 }
