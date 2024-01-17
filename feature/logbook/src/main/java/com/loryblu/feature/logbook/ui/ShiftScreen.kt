@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -33,13 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBCard
 import com.loryblu.core.ui.components.LBCardShift
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBSkyBlue
-import com.loryblu.data.logbook.local.Morning
-import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.local.getAllShiftItems
 import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.ui.components.FrequencyBar

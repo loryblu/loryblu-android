@@ -21,6 +21,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBCard
+import com.loryblu.core.ui.components.LBTaskCard
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBSkyBlue
@@ -43,11 +47,14 @@ import com.loryblu.feature.home.R
 @Composable
 fun TaskScreen() {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    var cardClicked by rememberSaveable {
+        mutableStateOf(-1)
+    }
+
     val category = getAllRoutineItems()
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-            //.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LBTopAppBar(
                 scrollBehavior = scrollBehavior,
@@ -64,7 +71,7 @@ fun TaskScreen() {
                     .verticalScroll(rememberScrollState())
                     .padding(innerPadding)
             ) {
-                LBProgressBar(currentStep = 2)
+                LBProgressBar(modifier = Modifier.padding(vertical = 24.dp), currentStep = 2)
                 Column(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier
@@ -97,11 +104,12 @@ fun TaskScreen() {
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {
-                            LBCard(
+                            LBTaskCard(
                                 card = it,
                                 modifier = Modifier.height(163.dp),
+                                selected = cardClicked == it.idCard,
                                 onclick = {
-                                    // do something
+                                    cardClicked = it.idCard
                                 }
                             )
                         }
