@@ -63,10 +63,7 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         )
         dashboardRoute(
             navigateToLogbook = {
-                navController.navigate(Screen.Logbook.route) {
-                    launchSingleTop = true
-                    popUpTo(Screen.Dashboard.route) { inclusive = true }
-                }
+                navController.navigate(Screen.Logbook.route)
             }
         )
         logbookNavigation(

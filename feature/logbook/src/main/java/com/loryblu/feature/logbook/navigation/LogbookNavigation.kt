@@ -30,6 +30,7 @@ fun NavGraphBuilder.logbookNavigation(
             CategoryScreen(
                 onBackButtonClicked = { navController.popBackStack() },
                 onNextScreenClicked = {
+                    navController.popBackStack()
                     navController.navigate(Screen.TaskScreen.route)
                 },
                 onCloseButtonClicked = {
@@ -43,6 +44,7 @@ fun NavGraphBuilder.logbookNavigation(
             TaskScreen(
                 onBackButtonClicked = { navController.popBackStack() },
                 onNextScreenClicked = {
+                    navController.popBackStack()
                     navController.navigate(Screen.ShiftScreen.route)
                 },
                 onCloseButtonClicked = {
@@ -56,7 +58,10 @@ fun NavGraphBuilder.logbookNavigation(
             ShiftScreen(
                 onBackButtonClicked = { navController.popBackStack() },
                 onNextScreenClicked = {
-                    navController.navigate(Screen.Logbook.route)
+                    navController.navigate(Screen.Logbook.route) {
+                        launchSingleTop = true
+                        popUpTo(Screen.ShiftScreen.route) { inclusive = true }
+                    }
                 },
                 onCloseButtonClicked = {
                     navController.popBackStack()
