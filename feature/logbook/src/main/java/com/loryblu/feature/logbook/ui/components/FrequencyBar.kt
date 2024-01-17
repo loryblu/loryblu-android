@@ -28,20 +28,29 @@ import com.loryblu.core.ui.theme.LBFrequencyTextBlue
 import java.util.Locale
 
 @Composable
-fun FrequencyBar(modifier: Modifier = Modifier) {
+fun FrequencyBar(modifier: Modifier = Modifier, selectedDay: Int, onClick: (Int) -> Unit) {
     val daysOfWeek = getInitialDaysOfWeek()
-    Row(modifier = modifier
-        .background(LBFrequencyBackgroundBlue, shape = RoundedCornerShape(16))
-        .padding(horizontal = 4.dp, vertical = 8.dp),
+    Row(
+        modifier = modifier
+            .background(LBFrequencyBackgroundBlue, shape = RoundedCornerShape(16))
+            .padding(horizontal = 4.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        for (day in daysOfWeek) {
+        daysOfWeek.forEachIndexed { index, day ->
             TextButton(
                 modifier = Modifier
                     .defaultMinSize(minWidth = 50.dp, minHeight = 50.dp),
-                onClick = {},
+                onClick = { onClick(index + 1) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor =
+                    if (index + 1 == selectedDay) LBFrequencyTextBlue else Color.Transparent
+                )
             ) {
-                Text(text = day, color = LBFrequencyTextBlue, fontSize = 20.sp)
+                Text(
+                    text = day,
+                    color =
+                    if (index + 1 == selectedDay) LBFrequencyBackgroundBlue else LBFrequencyTextBlue,
+                    fontSize = 20.sp)
             }
         }
     }
@@ -57,7 +66,11 @@ fun getInitialDaysOfWeek(): List<String> {
 @Preview(showBackground = true)
 @Composable
 private fun FrequencyBarPreview() {
-    FrequencyBar(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp))
+    FrequencyBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        selectedDay = 1,
+        onClick = {},
+    )
 }

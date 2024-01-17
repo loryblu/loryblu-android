@@ -353,7 +353,7 @@ fun LBCardShift(
                     .height(imageHeight.dp),
                 painter = painterResource(id = card.drawable),
                 contentDescription = stringResource(id = card.text),
-                contentScale = ContentScale.Inside,
+                contentScale = ContentScale.Fit,
                 colorFilter = ColorFilter.colorMatrix(
                     colorMatrix = ColorMatrix().apply {
                         setToSaturation(
@@ -420,7 +420,7 @@ fun LBShiftCardPreview() {
         LBCardShift(
             getAllShiftItems()[0],
             modifier = Modifier.size(250.dp),
-            clicked = true,
+            clicked = false,
             onclick = {}
         )
     }

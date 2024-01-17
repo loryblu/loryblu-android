@@ -50,6 +50,10 @@ fun ShiftScreen(
         mutableStateOf(-1)
     }
 
+    var selectedDay by rememberSaveable {
+        mutableStateOf(0)
+    }
+
     val shiftItems = getAllShiftItems()
 
     Scaffold(
@@ -122,7 +126,10 @@ fun ShiftScreen(
                         textAlign = TextAlign.Start,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    FrequencyBar(modifier = Modifier.fillMaxWidth())
+                    FrequencyBar(
+                        modifier = Modifier.fillMaxWidth(),
+                        selectedDay = selectedDay,
+                        onClick = { selectedDay = it })
                 }
                 Column(
                     modifier = Modifier
