@@ -15,7 +15,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
     }
 
     buildTypes {
@@ -25,9 +24,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        debug {
-            buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
         }
     }
     compileOptions {

@@ -28,12 +28,11 @@ import com.loryblu.core.ui.theme.LBAfternoonBlue
 import com.loryblu.core.ui.theme.LBCardSoftBlue
 
 @Composable
-fun LBProgressBar(currentStep: Int) {
+fun LBProgressBar(modifier: Modifier = Modifier, currentStep: Int) {
     val totalSteps = 4
 
     Box(
-        modifier = Modifier
-            .padding(top = 24.dp, start = 24.dp, end = 24.dp, bottom = 24.dp),
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

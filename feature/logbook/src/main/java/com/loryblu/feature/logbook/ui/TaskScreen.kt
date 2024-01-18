@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +20,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,9 +34,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBCard
+import com.loryblu.core.ui.components.LBTaskCard
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
+import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.getAllRoutineItems
 import com.loryblu.feature.home.R
@@ -41,19 +45,26 @@ import com.loryblu.feature.home.R
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TaskScreen() {
+fun TaskScreen(
+    onBackButtonClicked: () -> Unit,
+    onNextScreenClicked: (categoryId: String) -> Unit,
+    onCloseButtonClicked: () -> Unit,
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    var cardClicked by rememberSaveable {
+        mutableStateOf(-1)
+    }
+
     val category = getAllRoutineItems()
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-            //.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LBTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = stringResource(R.string.logbook_title),
-                onBackClicked = { },
-                onCloseClicked = { },
+                onBackClicked = { onBackButtonClicked() },
+                onCloseClicked = { onCloseButtonClicked() },
                 showCloseButton = true
             )
         },
@@ -63,17 +74,17 @@ fun TaskScreen() {
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .padding(innerPadding)
+                    .padding(horizontal = 24.dp)
             ) {
-                LBProgressBar(currentStep = 2)
+                LBProgressBar(modifier = Modifier.padding(vertical = 24.dp), currentStep = 2)
                 Column(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 24.dp)
                 ) {
                     Text(
                         color = LBDarkBlue,
-                        text = stringResource(R.string.select_a_category),
+                        text = stringResource(R.string.select_a_task),
                         fontSize = 14.sp,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Bold
@@ -87,7 +98,6 @@ fun TaskScreen() {
                         .height(900.dp)
                         .fillMaxSize()
                         .padding(top = 24.dp),
-                    contentPadding = PaddingValues(horizontal = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
@@ -97,38 +107,46 @@ fun TaskScreen() {
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {
-                            LBCard(
+                            LBTaskCard(
                                 card = it,
                                 modifier = Modifier.height(163.dp),
+                                selected = cardClicked == it.idCard,
                                 onclick = {
-                                    // do something
+                                    cardClicked = it.idCard
                                 }
                             )
                         }
                     }
                 }
                 Box(
-                    modifier = Modifier.padding(24.dp)
+                    modifier = Modifier.padding(vertical = 24.dp)
                 ) {
                     LBButton(
                         textRes = R.string.next,
                         onClick = {
-                            //do something
-                },
-                buttonColors = ButtonDefaults.buttonColors(
-                    disabledContainerColor = LBSkyBlue,
-                    containerColor = LBSkyBlue
-                ),
-                textColor = Color.White,
-                areAllFieldsValid = true,
-                )
+                            onNextScreenClicked(
+                                category[cardClicked].taskId
+                            )
+                        },
+                        buttonColors = ButtonDefaults.buttonColors(
+                            disabledContainerColor = LBLightGray,
+                            containerColor = LBSkyBlue
+                        ),
+                        textColor = Color.White,
+                        areAllFieldsValid = cardClicked >= 0,
+                    )
+                }
             }
         }
+    )
 }
-)
-}
+
 @Preview(showBackground = true)
 @Composable
 fun TaskPreview() {
-    TaskScreen()
+    TaskScreen(
+        onBackButtonClicked = {},
+        onNextScreenClicked = {},
+        onCloseButtonClicked = {},
+    )
 }

@@ -39,6 +39,7 @@ import com.loryblu.feature.home.R
 @Composable
 fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
+    onNextScreenClicked: () -> Unit,
     ) {
     Scaffold(
         topBar = {
@@ -97,7 +98,9 @@ fun LogbookScreen(
                         modifier = Modifier
                             .padding(bottom = 0.dp, end = 20.dp),
                         containerColor = LBContentHome,
-                        onClick = { },
+                        onClick = {
+                                  onNextScreenClicked()
+                        },
                         shape = ShapeDefaults.ExtraLarge
                     ) {
                         Text(
@@ -119,6 +122,7 @@ fun LogbookScreen(
 @Composable
 fun HomeLogbookScreenPreview() {
     LogbookScreen(
-        onBackButtonClicked = {}
+        onBackButtonClicked = {},
+        onNextScreenClicked = {},
     )
 }

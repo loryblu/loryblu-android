@@ -74,5 +74,6 @@ dependencies {
     implementation(project(":feature:logbook"))
     implementation(project(":feature:dashboard"))
     implementation(project(":data:auth"))
+    implementation(project(":data:logbook"))
     implementation(project(":core:network"))
 }
