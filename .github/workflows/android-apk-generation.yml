@@ -1,7 +1,7 @@
 name: Upload Debug APK to GitHub
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
 
@@ -46,7 +46,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: Release
+          tag_name: v1.0.0
           release_name: Release
           draft: false
           prerelease: false
