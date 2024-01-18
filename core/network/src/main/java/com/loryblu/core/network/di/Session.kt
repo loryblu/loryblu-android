@@ -66,6 +66,14 @@ class Session(
     fun getChildName(): String {
         return childNameCache
     }
+    fun getToken(): String {
+        var response: String
+        runBlocking {
+            val pref = dataStore.data.first()
+            response = pref[tokenKey] ?: ""
+        }
+        return response
+    }
 
     fun getChildId(): Int {
         return childIdCache

@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBButton
@@ -45,7 +44,7 @@ import com.loryblu.feature.logbook.ui.components.FrequencyBar
 @Composable
 fun ShiftScreen(
     onBackButtonClicked: () -> Unit,
-    onNextScreenClicked: () -> Unit,
+    onNextScreenClicked: (shift: String, frequency: List<String>) -> Unit,
     onCloseButtonClicked: () -> Unit,
 ) {
 
@@ -56,6 +55,9 @@ fun ShiftScreen(
     val selectedDay = remember {
         mutableStateListOf<Int>()
     }
+
+    val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
+    val shiftName = arrayOf("morning", "afternoon", "night")
 
     val shiftItems = getAllShiftItems()
 
@@ -148,7 +150,10 @@ fun ShiftScreen(
                 ) {
                     LBButton(
                         textRes = R.string.confirm,
-                        onClick = { onNextScreenClicked() },
+                        onClick = { onNextScreenClicked(
+                            shiftName[cardClicked],
+                            selectedDay.map { nameOfWeekDays[it] }
+                        ) },
                         buttonColors = ButtonDefaults.buttonColors(
                             disabledContainerColor = LBLightGray,
                             containerColor = LBSkyBlue
@@ -162,12 +167,12 @@ fun ShiftScreen(
     )
 }
 
-@Preview
-@Composable
-private fun ShiftScreenPreview() {
-    ShiftScreen(
-        onBackButtonClicked = {},
-        onNextScreenClicked = {},
-        onCloseButtonClicked = {}
-    )
-}
+//@Preview
+//@Composable
+//private fun ShiftScreenPreview() {
+//    ShiftScreen(
+//        onBackButtonClicked = {},
+//        onNextScreenClicked = {},
+//        onCloseButtonClicked = {},
+//    )
+//}

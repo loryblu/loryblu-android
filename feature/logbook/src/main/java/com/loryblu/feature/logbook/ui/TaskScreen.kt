@@ -47,7 +47,7 @@ import com.loryblu.feature.home.R
 @Composable
 fun TaskScreen(
     onBackButtonClicked: () -> Unit,
-    onNextScreenClicked: () -> Unit,
+    onNextScreenClicked: (categoryId: String) -> Unit,
     onCloseButtonClicked: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -84,7 +84,7 @@ fun TaskScreen(
                 ) {
                     Text(
                         color = LBDarkBlue,
-                        text = stringResource(R.string.select_a_category),
+                        text = stringResource(R.string.select_a_task),
                         fontSize = 14.sp,
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.Bold
@@ -124,7 +124,9 @@ fun TaskScreen(
                     LBButton(
                         textRes = R.string.next,
                         onClick = {
-                            onNextScreenClicked()
+                            onNextScreenClicked(
+                                category[cardClicked].taskId
+                            )
                         },
                         buttonColors = ButtonDefaults.buttonColors(
                             disabledContainerColor = LBLightGray,

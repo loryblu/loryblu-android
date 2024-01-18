@@ -45,6 +45,7 @@ import com.loryblu.data.logbook.local.Afternoon
 import com.loryblu.data.logbook.local.LogbookItem
 import com.loryblu.data.logbook.local.Morning
 import com.loryblu.data.logbook.local.Night
+import com.loryblu.data.logbook.local.RoutineTaskItem
 import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.local.getAllCategoryItems
 import com.loryblu.data.logbook.local.getAllShiftItems
@@ -186,7 +187,7 @@ fun LBCategoryCard(
 
 @Composable
 fun LBTaskCard(
-    card: LogbookItem,
+    card: RoutineTaskItem,
     modifier: Modifier,
     selected: Boolean,
     onclick: () -> Unit,
@@ -203,9 +204,7 @@ fun LBTaskCard(
         border = if(selected) BorderStroke(4.dp, borderColor) else BorderStroke(4.dp, Color.Transparent),
         modifier = modifier
             .clickable {
-                if (!card.isDisabled) {
-                    onclick()
-                }
+                onclick()
             }
             .alpha(1f),
         shape = RoundedCornerShape(rounded),

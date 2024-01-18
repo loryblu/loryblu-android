@@ -3,6 +3,7 @@ package com.loryblu.loryblu
 import android.app.Application
 import com.loryblu.core.network.di.networkModule
 import com.loryblu.data.auth.di.authModule
+import com.loryblu.data.logbook.remote.di.logbookDataModule
 import com.loryblu.feature.auth.create_password.di.createNewPasswordModule
 import com.loryblu.feature.auth.forgot_password.di.passwordRecoveryModule
 import com.loryblu.feature.auth.login.di.loginModule
@@ -28,6 +29,7 @@ class MyApplication : Application() {
                 createNewPasswordModule,
                 logbookModule,
                 dashboardModule,
+                logbookDataModule,
             )
         }
     }

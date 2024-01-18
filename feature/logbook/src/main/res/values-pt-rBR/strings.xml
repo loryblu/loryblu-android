@@ -5,6 +5,7 @@
     <!-- Screen Labels -->
     <string name="no_task_found">Hmm…nenhuma tarefa por aqui.</string>
     <string name="select_a_category">Selecione uma categoria:</string>
+    <string name="select_a_task">Selecione uma tarefa:</string>
     <string name="select_a_shift">Selecione um turno:</string>
     <string name="select_a_frequency">Selecione uma frequência:</string>
     <string name="select_a_frequency_description">Você pode selecionar mais de um dia.</string>

@@ -36,12 +36,13 @@ import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.getAllCategoryItems
 import com.loryblu.feature.home.R
+import com.loryblu.feature.logbook.model.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(
     onBackButtonClicked: () -> Unit,
-    onNextScreenClicked: () -> Unit,
+    onNextScreenClicked: (category: Category) -> Unit,
     onCloseButtonClicked: () -> Unit,
 ) {
 
@@ -101,7 +102,13 @@ fun CategoryScreen(
                 ) {
                     LBButton(
                         textRes = com.loryblu.core.ui.R.string.next,
-                        onClick = { onNextScreenClicked() },
+                        onClick = { onNextScreenClicked(
+                            when(cardClicked){
+                                0 -> Category.ROUTINE
+                                1 -> Category.STUDIOUS
+                                else -> Category.ROUTINE
+                            }
+                        ) },
                         buttonColors = ButtonDefaults.buttonColors(
                             disabledContainerColor = LBLightGray,
                             containerColor = LBSkyBlue

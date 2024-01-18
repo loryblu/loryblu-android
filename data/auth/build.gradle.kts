@@ -15,7 +15,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
     }
 
     buildTypes {
@@ -25,9 +24,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        debug {
-            buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
         }
     }
     compileOptions {
@@ -51,10 +47,6 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.serialization)
     implementation(libs.ktor.gson)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
 
     implementation(project(":core:network"))
 }
