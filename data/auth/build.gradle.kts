@@ -48,5 +48,9 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.serialization)
     implementation(libs.ktor.gson)
 
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+
     implementation(project(":core:network"))
 }
