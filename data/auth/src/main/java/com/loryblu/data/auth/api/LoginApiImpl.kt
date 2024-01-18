@@ -1,6 +1,6 @@
 package com.loryblu.data.auth.api
 
-import com.loryblu.data.auth.HttpRoutes
+import com.loryblu.core.network.HttpRoutes
 import com.loryblu.data.auth.extensions.toSignInResult
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.SignInResult

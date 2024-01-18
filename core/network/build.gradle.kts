@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.secrets.gradle)
     kotlin("plugin.serialization") version "1.9.0"
 }
 
@@ -14,6 +15,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
     }
 
     buildTypes {
@@ -23,6 +25,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"${System.getenv("BASE_URL") ?: "https://default-base-url.com"}\"")
         }
     }
     compileOptions {

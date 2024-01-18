@@ -29,7 +29,7 @@ fun LBTopAppBar(
     TopAppBar(
         scrollBehavior = scrollBehavior,
         modifier = Modifier
-            .padding(top = 24.dp, start = 5.dp, end = 5.dp, bottom = 0.dp),
+            .padding(horizontal = 5.dp),
         title = {
             Text(
                 text = title,
