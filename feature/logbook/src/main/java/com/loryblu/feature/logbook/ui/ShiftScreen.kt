@@ -135,7 +135,7 @@ fun ShiftScreen(
                         modifier = Modifier.fillMaxWidth(),
                         selectedDay = selectedDay,
                         onDayClicked = {
-                            if(selectedDay.contains(it)) {
+                            if (selectedDay.contains(it)) {
                                 selectedDay.remove(it)
                             } else {
                                 selectedDay.add(it)
@@ -150,10 +150,12 @@ fun ShiftScreen(
                 ) {
                     LBButton(
                         textRes = R.string.confirm,
-                        onClick = { onNextScreenClicked(
-                            shiftName[cardClicked],
-                            selectedDay.map { nameOfWeekDays[it] }
-                        ) },
+                        onClick = {
+                            onNextScreenClicked(
+                                shiftName[cardClicked],
+                                selectedDay.map { nameOfWeekDays[it] }
+                            )
+                        },
                         buttonColors = ButtonDefaults.buttonColors(
                             disabledContainerColor = LBLightGray,
                             containerColor = LBSkyBlue
