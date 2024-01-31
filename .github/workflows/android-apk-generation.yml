@@ -2,8 +2,8 @@ name: Upload Debug APK to GitHub on Tag
 
 on:
   push:
-    branches:
-      - 'homolog'
+    tags:
+      - 'v*'
 
 jobs:
   apk:
