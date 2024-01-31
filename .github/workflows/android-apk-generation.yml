@@ -34,8 +34,8 @@ jobs:
           echo "BASE_URL=${API_URL}" >> local.properties
           echo "BASE_SCHEME=${BASE_SCHEME}" >> local.properties
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --stacktrace
 
       - name: Releasing using Hub
         uses: kyze8439690/action-release-releaseapk@1.0.0
