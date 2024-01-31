@@ -8,6 +8,12 @@ on:
 jobs:
   apk:
       runs-on: ubuntu-latest
+
+      env:
+         GITHUB_TOKEN: ${{ secrets.TOKEN }}
+         isCI: "true"
+         API_URL: ${{ secrets.API_URL }}
+         BASE_SCHEME: ${{ secrets.BASE_SCHEME }}
       
       steps:
       - name: checkout code
@@ -40,7 +46,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_RELEASE }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           tag_name: newtag
           release_name: Automatic Release
@@ -55,9 +61,3 @@ jobs:
           asset_path: ./app/build/outputs/apk/debug/app-debug.apk
           asset_name: app-debug.apk
           asset_content_type: application/zip
-        
-        env:
-         GITHUB_TOKEN: ${{ secrets.TOKEN }}
-         isCI: "true"
-         API_URL: ${{ secrets.API_URL }}
-         BASE_SCHEME: ${{ secrets.BASE_SCHEME }}
