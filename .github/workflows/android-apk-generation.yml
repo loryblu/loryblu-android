@@ -21,6 +21,11 @@ jobs:
           
       - name: Make Gradle executable
         run: chmod +x ./gradlew
+
+      - name: Create local.properties
+        run: |
+          echo "BASE_URL=${API_URL}" >> local.properties
+          echo "BASE_SCHEME=${BASE_SCHEME}" >> local.properties
         
       - name: Build Release APK
         run: ./gradlew assembleRelease
