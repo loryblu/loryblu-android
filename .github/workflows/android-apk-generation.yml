@@ -34,30 +34,11 @@ jobs:
           echo "BASE_URL=${API_URL}" >> local.properties
           echo "BASE_SCHEME=${BASE_SCHEME}" >> local.properties
 
-      - name: Build gradle project
-        run: ./gradlew build --stacktrace
-
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Releasing using Hub
+        uses: kyze8439690/action-release-releaseapk@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Debug APK to Release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/debug/app-debug.apk
-          asset_name: app-debug.apk
-          asset_content_type: application/vnd.android.package-archive
+         GITHUB_TOKEN: ${{ secrets.TOKEN }}
+         APP_FOLDER: app
