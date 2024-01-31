@@ -1,44 +1,36 @@
-name: Upload Debug APK to GitHub
+name: Upload Debug APK to GitHub on Tag
 
 on:
   push:
-    branches:
-      - develop
-
-  workflow_dispatch:
+    tags:
+      - '*'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    env:
-      isCI: "true"
-      API_URL: ${{ secrets.API_URL }}
-      BASE_SCHEME: ${{ secrets.BASE_SCHEME }}
-
-    steps:
-      - name: Checkout Repository
+  Gradle:
+      runs-on: ubuntu-latest
+      
+      steps:
+      - name: checkout code
         uses: actions/checkout@v2
-
+        
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '17'
-
-      - name: Change wrapper permissions
+          
+      - name: Make Gradle executable
         run: chmod +x ./gradlew
-
-      - name: Create local.properties
-        run: |
-          echo "BASE_URL=${API_URL}" >> local.properties
-          echo "BASE_SCHEME=${BASE_SCHEME}" >> local.properties
-
+        
       - name: Build Release APK
-        run: ./gradlew assembleRelease --stacktrace
-
+        run: ./gradlew assembleRelease
+        
       - name: Releasing using Hub
-        uses: kyze8439690/action-release-releaseapk@1.0.0
+        uses: kyze8439690/action-release-releaseapk@master
+        
         env:
          GITHUB_TOKEN: ${{ secrets.TOKEN }}
          APP_FOLDER: app
+         isCI: "true"
+         API_URL: ${{ secrets.API_URL }}
+         BASE_SCHEME: ${{ secrets.BASE_SCHEME }}
