@@ -1,4 +1,4 @@
-package com.loryblu.feature.logbook.ui
+package com.loryblu.feature.logbook.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -30,8 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBContentHome
+import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +42,8 @@ import com.loryblu.feature.home.R
 fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
+    userTasks: ApiResponseWithData<List<LogbookTask>>,
+    selectADayOfWeek: (Int) -> Unit,
     ) {
     Scaffold(
         topBar = {
@@ -124,5 +128,7 @@ fun HomeLogbookScreenPreview() {
     LogbookScreen(
         onBackButtonClicked = {},
         onNextScreenClicked = {},
+        userTasks = ApiResponseWithData.Default(),
+        selectADayOfWeek = {},
     )
 }

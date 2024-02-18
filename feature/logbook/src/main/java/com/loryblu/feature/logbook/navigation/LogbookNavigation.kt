@@ -1,5 +1,6 @@
 package com.loryblu.feature.logbook.navigation
 
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -7,9 +8,10 @@ import androidx.navigation.compose.navigation
 import com.loryblu.core.util.Screen
 import com.loryblu.feature.logbook.LogbookViewModel
 import com.loryblu.feature.logbook.ui.CategoryScreen
-import com.loryblu.feature.logbook.ui.LogbookScreen
+import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.ShiftScreen
 import com.loryblu.feature.logbook.ui.TaskScreen
+import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.logbookNavigation(
@@ -21,11 +23,18 @@ fun NavGraphBuilder.logbookNavigation(
         route = "logbook"
     ) {
         composable(route = Screen.Logbook.route) {
+            val viewModel: LogbookHomeViewModel = koinViewModel()
+
+            val userTasks = viewModel.userTasks.collectAsState()
+
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
                 onNextScreenClicked = {
                     navController.navigate(Screen.CategoryScreen.route)
-                })
+                },
+                userTasks = userTasks.value,
+                selectADayOfWeek = { viewModel.selectADayOfWeek(it) }
+            )
         }
 
         navigation(
