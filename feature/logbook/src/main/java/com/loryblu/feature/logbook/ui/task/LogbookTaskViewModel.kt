@@ -1,4 +1,4 @@
-package com.loryblu.feature.logbook
+package com.loryblu.feature.logbook.ui.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import com.loryblu.feature.logbook.model.Category
 import com.loryblu.feature.logbook.model.LogbookTaskModel
 import kotlinx.coroutines.launch
 
-class LogbookViewModel(
+class LogbookTaskViewModel(
     private val session: Session,
     private val logbookTaskModel: LogbookTaskModel,
     private val logbookApi: LogbookApi

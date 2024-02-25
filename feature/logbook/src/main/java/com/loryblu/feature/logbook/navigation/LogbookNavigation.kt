@@ -6,11 +6,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.loryblu.core.util.Screen
-import com.loryblu.feature.logbook.LogbookViewModel
-import com.loryblu.feature.logbook.ui.CategoryScreen
+import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
+import com.loryblu.feature.logbook.ui.task.CategoryScreen
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
-import com.loryblu.feature.logbook.ui.ShiftScreen
-import com.loryblu.feature.logbook.ui.TaskScreen
+import com.loryblu.feature.logbook.ui.task.ShiftScreen
+import com.loryblu.feature.logbook.ui.task.TaskScreen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -42,7 +42,7 @@ fun NavGraphBuilder.logbookNavigation(
             route = "register_logbook_task"
         ) {
             composable(route = Screen.CategoryScreen.route) {
-                val viewModel: LogbookViewModel = koinViewModel()
+                val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 CategoryScreen(
                     onBackButtonClicked = { navController.popBackStack() },
@@ -59,7 +59,7 @@ fun NavGraphBuilder.logbookNavigation(
             }
 
             composable(route = Screen.TaskScreen.route) {
-                val viewModel: LogbookViewModel = koinViewModel()
+                val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 TaskScreen(
                     onBackButtonClicked = { navController.popBackStack() },
@@ -76,7 +76,7 @@ fun NavGraphBuilder.logbookNavigation(
             }
 
             composable(route = Screen.ShiftScreen.route) {
-                val viewModel: LogbookViewModel = koinViewModel()
+                val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 ShiftScreen(
                     onBackButtonClicked = { navController.popBackStack() },
