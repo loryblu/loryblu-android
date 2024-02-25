@@ -1,4 +1,4 @@
-package com.loryblu.feature.logbook.ui
+package com.loryblu.feature.logbook.ui.task
 
 import LBProgressBar
 import androidx.compose.foundation.layout.Arrangement

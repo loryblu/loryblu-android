@@ -29,8 +29,8 @@ fun FrequencyBar(
     val daysOfWeek = getInitialDaysOfWeek()
     Row(
         modifier = modifier
-            .background(LBFrequencyBackgroundBlue, shape = RoundedCornerShape(16))
-            .padding(horizontal = 4.dp, vertical = 8.dp),
+            .padding(horizontal = 4.dp, vertical = 4.dp)
+            .background(LBFrequencyBackgroundBlue, shape = RoundedCornerShape(16)),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         daysOfWeek.forEachIndexed { index, day ->
