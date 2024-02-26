@@ -67,7 +67,7 @@ fun LogbookScreen(
                 title = stringResource(R.string.logbook_title),
                 onBackClicked = { onBackButtonClicked() },
                 onCloseClicked = { onBackButtonClicked() },
-                showCloseButton = true
+                showCloseButton = false
             )
         },
         content = { innerPadding ->
