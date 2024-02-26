@@ -17,4 +17,5 @@ sealed class Screen(val route: String) {
     data object CategoryScreen: Screen(route = "category_screen")
     data object TaskScreen: Screen(route = "task_screen")
     data object ShiftScreen: Screen(route = "shift_screen")
+    data object SummaryScreen: Screen(route = "summary_screen")
 }
