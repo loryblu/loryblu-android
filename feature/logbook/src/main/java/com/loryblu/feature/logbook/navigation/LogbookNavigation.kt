@@ -30,9 +30,7 @@ fun NavGraphBuilder.logbookNavigation(
 
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
-                onNextScreenClicked = {
-                    navController.navigate(Screen.CategoryScreen.route)
-                },
+                onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
                 userTasks = userTasks.value,
                 selectADayOfWeek = { viewModel.selectADayOfWeek(it) }
             )
@@ -46,15 +44,15 @@ fun NavGraphBuilder.logbookNavigation(
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 CategoryScreen(
-                    onBackButtonClicked = { navController.popBackStack() },
+                    onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedCategory(it)
-                        navController.popBackStack()
                         navController.navigate(Screen.TaskScreen.route)
                     },
                     onCloseButtonClicked = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.Logbook.route)
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Logbook.route) { inclusive = true }
+                        }
                     },
                 )
             }
@@ -63,15 +61,15 @@ fun NavGraphBuilder.logbookNavigation(
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 TaskScreen(
-                    onBackButtonClicked = { navController.popBackStack() },
+                    onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedTask(it)
-                        navController.popBackStack()
                         navController.navigate(Screen.ShiftScreen.route)
                     },
                     onCloseButtonClicked = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.Logbook.route)
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Logbook.route) { inclusive = true }
+                        }
                     },
                 )
             }
@@ -80,15 +78,14 @@ fun NavGraphBuilder.logbookNavigation(
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 ShiftScreen(
-                    onBackButtonClicked = { navController.popBackStack() },
+                    onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = { shift, frequency ->
                         viewModel.setShift(shift)
                         viewModel.setFrequency(frequency)
                         navController.navigate(Screen.SummaryScreen.route)
                     },
                     onCloseButtonClicked = {
-                        navController.navigate(Screen.Logbook.route) {
-                            launchSingleTop = true
+                        navController.navigate(Screen.Dashboard.route) {
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
                     },
@@ -99,8 +96,16 @@ fun NavGraphBuilder.logbookNavigation(
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 SummaryScreen(
-                    onBackButtonClicked = { /*TODO*/ },
-                    onCloseButtonClicked = { /*TODO*/ },
+                    onBackButtonClicked = {
+                        navController.navigate(Screen.Logbook.route) {
+                            popUpTo(Screen.Logbook.route) { inclusive = true }
+                        }
+                    },
+                    onCloseButtonClicked = {
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Logbook.route) { inclusive = true }
+                        }
+                    },
                     logbookTaskModel = viewModel.getLogbookTaskModel()
                 ) {
                 }
