@@ -3,9 +3,11 @@
 package com.loryblu.feature.logbook.ui.task
 
 import LBProgressBar
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,12 +21,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -40,12 +45,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -57,10 +64,12 @@ import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBTaskCard
 import com.loryblu.core.ui.components.LBTopAppBar
+import com.loryblu.core.ui.theme.LBCardSoftBlue
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray
 import com.loryblu.core.ui.theme.LBSkyBlue
+import com.loryblu.core.ui.theme.LBSoftBlue
 import com.loryblu.data.logbook.local.RoutineTaskItem
 import com.loryblu.data.logbook.local.getAllRoutineItems
 import com.loryblu.data.logbook.local.getAllShiftItems
@@ -106,20 +115,27 @@ fun SummaryScreen(
                 getTask(taskId = logbookTaskModel.task)?.let { taskItem ->
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .heightIn()
+                            .fillMaxWidth().padding(16.dp)
                     ) {
-                        val painter = painterResource(taskItem.drawable)
-                        Spacer(Modifier.weight(0.25f))
-                        LBTaskCard(
-                            card = taskItem,
-                            modifier = Modifier
-                                .size(150.dp)
-                                .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height)
-                                .fillMaxWidth(),
-                            selected = true,
-                            onclick = { })
-                        Spacer(Modifier.weight(0.25f))
+                        Spacer(Modifier.weight(1f))
+                        OutlinedCard(
+                            colors = CardDefaults.cardColors(
+                                containerColor = LBCardSoftBlue,
+                            ),
+                            border = BorderStroke(4.dp, LBDarkBlue),
+                            shape = RoundedCornerShape(5),
+                        ) {
+                            Image(
+                                alignment = Alignment.TopCenter,
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .alpha(1f),
+                                painter = painterResource(id = taskItem.drawable),
+                                contentDescription = stringResource(id = taskItem.text),
+                                contentScale = ContentScale.Fit,
+                            )
+                        }
+                        Spacer(Modifier.weight(1f))
                     }
                     Spacer(modifier = Modifier.size(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -146,7 +162,7 @@ fun SummaryScreen(
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .align(Alignment.Center),
-                                text = stringResource(id = taskItem.text),
+                                text = logbookTaskModel.category.action,
                                 style = TextStyle(
                                     fontSize = 20.sp,
                                     lineHeight = 24.sp,
@@ -181,7 +197,7 @@ fun SummaryScreen(
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .align(Alignment.Center),
-                                text = logbookTaskModel.category.action,
+                                text = stringResource(id = taskItem.text),
                                 style = TextStyle(
                                     fontSize = 20.sp,
                                     lineHeight = 16.sp,
@@ -252,6 +268,7 @@ fun SummaryScreen(
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 FrequencyBar(selectedDay = selectedDay, onDayClicked = { })
+                Spacer(Modifier.weight(1f))
             }
             Box(modifier = Modifier
                 .align(Alignment.BottomCenter)
