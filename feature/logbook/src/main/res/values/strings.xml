@@ -13,4 +13,9 @@
     <string name="new_task">ADD TASK</string>
     <string name="next">NEXT</string>
     <string name="confirm">CONFIRM</string>
+    <string name="registerTask">REGISTER</string>
+    <string name="categoryTitle">Category:</string>
+    <string name="taskTitle">Task:</string>
+    <string name="shiftTitle">Shift:</string>
+    <string name="frequencyTitle">Frequency:</string>
 </resources>
