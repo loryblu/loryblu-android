@@ -7,7 +7,7 @@ data class LogbookTaskModel(
     var frequency: List<String>
 )
 
-enum class Category{
-    ROUTINE,
-    STUDIOUS
+enum class Category(val action:String) {
+    ROUTINE("LoryRotina"),
+    STUDIOUS("LoryEstudioso")
 }
