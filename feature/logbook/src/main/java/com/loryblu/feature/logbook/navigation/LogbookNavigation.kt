@@ -14,6 +14,7 @@ import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.task.ShiftScreen
 import com.loryblu.feature.logbook.ui.task.TaskScreen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
+import com.loryblu.feature.logbook.ui.task.DoneScreen
 import com.loryblu.feature.logbook.ui.task.SummaryScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -119,6 +120,16 @@ fun NavGraphBuilder.logbookNavigation(
                         }
                     }
                 }
+            }
+
+            composable(route = Screen.DoneView.route) {
+                DoneScreen(
+                    onCloseButtonClicked = {
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Logbook.route) { inclusive = true }
+                        }
+                    }
+                )
             }
         }
     }
