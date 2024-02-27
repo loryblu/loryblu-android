@@ -6,24 +6,14 @@ import LBProgressBar
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -32,17 +22,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -62,14 +44,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBTaskCard
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBCardSoftBlue
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBLightGray
-import com.loryblu.core.ui.theme.LBShadowGray
 import com.loryblu.core.ui.theme.LBSkyBlue
-import com.loryblu.core.ui.theme.LBSoftBlue
 import com.loryblu.data.logbook.local.RoutineTaskItem
 import com.loryblu.data.logbook.local.getAllRoutineItems
 import com.loryblu.data.logbook.local.getAllShiftItems
@@ -84,7 +63,7 @@ fun SummaryScreen(
     onBackButtonClicked: () -> Unit,
     onCloseButtonClicked: () -> Unit,
     logbookTaskModel: LogbookTaskModel,
-    onNextScreenClicked: () -> Unit,
+    onRegisterTask: () -> Unit,
 ) {
 
     val shiftSelected = getShiftSelected(logbookTaskModel.shift)
@@ -275,8 +254,7 @@ fun SummaryScreen(
                 .padding(24.dp)) {
                 LBButton(
                     textRes = R.string.registerTask,
-                    onClick = {
-                    },
+                    onClick = onRegisterTask,
                     buttonColors = ButtonDefaults.buttonColors(
                         disabledContainerColor = LBLightGray,
                         containerColor = LBSkyBlue
@@ -339,6 +317,6 @@ fun SummaryPreview() {
             shift = "morning",
             frequency = listOf("sun", "mon")
         ),
-        onNextScreenClicked = { },
+        onRegisterTask = { },
     )
 }

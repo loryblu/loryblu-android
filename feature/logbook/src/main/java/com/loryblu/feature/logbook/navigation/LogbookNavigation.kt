@@ -1,6 +1,8 @@
 package com.loryblu.feature.logbook.navigation
 
+import android.widget.Toast
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -94,6 +96,7 @@ fun NavGraphBuilder.logbookNavigation(
 
             composable(route = Screen.SummaryScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
+                val context = LocalContext.current
 
                 SummaryScreen(
                     onBackButtonClicked = {
@@ -108,6 +111,13 @@ fun NavGraphBuilder.logbookNavigation(
                     },
                     logbookTaskModel = viewModel.getLogbookTaskModel()
                 ) {
+                    viewModel.createLogbookTask { msg, toDoneView ->
+                        if(toDoneView) {
+                            Toast.makeText(context, msg,Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, msg,Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
