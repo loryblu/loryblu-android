@@ -19,4 +19,5 @@
     <string name="taskTitle">Tarefa:</string>
     <string name="shiftTitle">Turno:</string>
     <string name="frequencyTitle">Frequência:</string>
+    <string name="registration_completed_successfully">cadastro efetuado com sucesso!</string>
 </resources>

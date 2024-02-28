@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,7 +34,9 @@ fun DoneScreen(
     Scaffold(
         topBar = {
            Box(Modifier.fillMaxWidth()) {
-               IconButton(modifier = Modifier.align(Alignment.BottomEnd).padding(top = 24.dp,end = 24.dp),onClick = onCloseButtonClicked) {
+               IconButton(modifier = Modifier
+                   .align(Alignment.BottomEnd)
+                   .padding(top = 24.dp, end = 24.dp),onClick = onCloseButtonClicked) {
                    Icon(modifier = Modifier.size(80.dp),imageVector = Icons.Default.Close, contentDescription = null, tint = LBDarkBlue)
                }
            }
@@ -41,8 +44,14 @@ fun DoneScreen(
         Box(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)) {
-            Column(verticalArrangement = Arrangement.Center, modifier = Modifier.align(Alignment.Center).fillMaxSize()) {
-                Text(fontSize = 20.sp, modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp),text = "cadastro efetuado com sucesso!", color = LBShadowGray)
+            Column(verticalArrangement = Arrangement.Center, modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxSize()) {
+                Text(fontSize = 20.sp, modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 16.dp),text = stringResource(
+                    R.string.registration_completed_successfully
+                ), color = LBShadowGray)
                 Spacer(modifier = Modifier.size(32.dp))
                 Image(modifier = Modifier.align(Alignment.CenterHorizontally), painter = painterResource(id = R.drawable.icone_cadastro_com_sucesso), contentDescription = null)
             }
