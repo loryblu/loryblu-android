@@ -114,7 +114,7 @@ fun NavGraphBuilder.logbookNavigation(
                 ) {
                     viewModel.createLogbookTask { msg, toDoneView ->
                         if(toDoneView) {
-                            Toast.makeText(context, msg,Toast.LENGTH_SHORT).show()
+                            navController.navigate(Screen.DoneView.route)
                         } else {
                             Toast.makeText(context, msg,Toast.LENGTH_SHORT).show()
                         }
