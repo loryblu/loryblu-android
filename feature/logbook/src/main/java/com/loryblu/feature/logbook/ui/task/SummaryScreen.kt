@@ -115,7 +115,7 @@ fun SummaryScreen(
                 getTask(taskId = logbookTaskModel.task)?.let { taskItem ->
                     Row(
                         Modifier
-                            .fillMaxWidth().padding(16.dp)
+                            .fillMaxWidth().heightIn().padding(16.dp)
                     ) {
                         Spacer(Modifier.weight(1f))
                         OutlinedCard(
