@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -43,7 +42,7 @@ fun LBProgressBar(modifier: Modifier = Modifier, currentStep: Int) {
             for (step in 1..totalSteps) {
                 ProgressCircle(step = step, currentStep = currentStep)
                 if (step < totalSteps) {
-                    ProgressLine(step = step, currentStep = currentStep, lineWidth = 55f)
+                    ProgressLine(step = step, currentStep = currentStep, lineWidth = 44f)
                 }
             }
         }

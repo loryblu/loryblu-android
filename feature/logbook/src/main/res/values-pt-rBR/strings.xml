@@ -14,4 +14,9 @@
     <string name="new_task">NOVA TAREFA</string>
     <string name="next">PRÓXIMO</string>
     <string name="confirm">CONFIRMAR</string>
+    <string name="registerTask">CADASTRAR</string>
+    <string name="categoryTitle">Categoria:</string>
+    <string name="taskTitle">Tarefa:</string>
+    <string name="shiftTitle">Turno:</string>
+    <string name="frequencyTitle">Frequência:</string>
 </resources>

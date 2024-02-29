@@ -12,6 +12,7 @@ import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.task.ShiftScreen
 import com.loryblu.feature.logbook.ui.task.TaskScreen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
+import com.loryblu.feature.logbook.ui.task.SummaryScreen
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.logbookNavigation(
@@ -83,11 +84,7 @@ fun NavGraphBuilder.logbookNavigation(
                     onNextScreenClicked = { shift, frequency ->
                         viewModel.setShift(shift)
                         viewModel.setFrequency(frequency)
-                        viewModel.createLogbookTask()
-                        navController.navigate(Screen.Logbook.route) {
-                            launchSingleTop = true
-                            popUpTo(Screen.Logbook.route) { inclusive = true }
-                        }
+                        navController.navigate(Screen.SummaryScreen.route)
                     },
                     onCloseButtonClicked = {
                         navController.navigate(Screen.Logbook.route) {
@@ -96,6 +93,17 @@ fun NavGraphBuilder.logbookNavigation(
                         }
                     },
                 )
+            }
+
+            composable(route = Screen.SummaryScreen.route) {
+                val viewModel: LogbookTaskViewModel = koinViewModel()
+
+                SummaryScreen(
+                    onBackButtonClicked = { /*TODO*/ },
+                    onCloseButtonClicked = { /*TODO*/ },
+                    logbookTaskModel = viewModel.getLogbookTaskModel()
+                ) {
+                }
             }
         }
     }

@@ -30,6 +30,8 @@ class LogbookTaskViewModel(
         logbookTaskModel.frequency = frequency
     }
 
+    fun getLogbookTaskModel() : LogbookTaskModel = logbookTaskModel
+
     fun createLogbookTask() = viewModelScope.launch {
         val childId = session.getChildId()
         val logbookRequest = LogbookTaskRequest(
