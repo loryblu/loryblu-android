@@ -55,7 +55,7 @@ fun checkNotificationPolicyAccess(
     notificationManager: NotificationManager,
     context: Context
 ): Boolean {
-    if (notificationManager.isNotificationPolicyAccessGranted || Build.VERSION.SDK_INT < 32) {
+    if (notificationManager.areNotificationsEnabled() || Build.VERSION.SDK_INT < 32) {
         return true
     } else {
         PermissionDialog(context)
@@ -81,7 +81,7 @@ fun PermissionDialog(context: Context) {
             dismissButton = {
                 Button(
                     onClick = {
-                        exitProcess(0)
+                        openDialog.value = false
                     },
                 ) {
                     Text(text = "Cancelar")
@@ -94,6 +94,7 @@ fun PermissionDialog(context: Context) {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         data = uri
                     }
+                    openDialog.value = false
                     startActivity(context, intent, null)
                 }) { Text(text = "Confirmar") }
             },

@@ -62,22 +62,20 @@ class CreatePasswordViewModel(
             PasswordInputValid.Valid
         }
     }
-    data class PasswordRequest(val newPassword: Boolean, val message: String)
+    data class PasswordRequest(val newPassword: Boolean, val message: String? = null)
     private suspend fun passwordRecovery(token: String, password: String): PasswordRequest = withContext(Dispatchers.IO) {
         val params = NewPasswordRequest(
             password = password,
             recoveryToken = token
         )
         val response : ApiResponse = newPassword.newPassword(params)
-        if (response.serverStatusCode.value < 300){
-
+        if (response == ApiResponse.Success){
             newPasswordSuccess.value = true
-            return@withContext PasswordRequest(newPasswordSuccess.value, response.message[0])
+            return@withContext PasswordRequest(newPasswordSuccess.value)
         }else{
-            Log.d("newPasswordErrorMessage", "passwordRecovery: " + response.message)
-
+            // todo ver se o token tá expirado e dar uma mensagem boa
             newPasswordSuccess.value = false
-            return@withContext PasswordRequest(newPasswordSuccess.value, response.message[0])
+            return@withContext PasswordRequest(newPasswordSuccess.value)
         }
     }
 

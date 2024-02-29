@@ -56,9 +56,9 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             }
         )
         registrationConfirmedRoute(
-            navigateToDashboard = {
+            navigateToHome = {
                 navController.popBackStack(Screen.RegistrationConfirmed.route, true)
-                navController.navigate(Screen.Dashboard.route)
+                navController.navigate(Screen.Login.route)
             }
         )
         dashboardRoute(

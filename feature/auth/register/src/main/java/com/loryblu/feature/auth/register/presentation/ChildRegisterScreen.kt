@@ -61,7 +61,7 @@ fun ChildRegisterScreen(
     birthdayStateValidation: (birthday: String) -> BirthdayInputValid,
     genderStateValidation: (gender: GenderInput) -> GenderInput,
     intentForPrivacy: Intent,
-    apiErrorMessage: List<String>?,
+    apiErrorMessage: String?,
 ) {
 
     var privacy by rememberSaveable { mutableStateOf(false) }
@@ -272,7 +272,7 @@ fun ChildRegisterScreen(
                     color = LBErrorColor
                 )
             }
-            apiErrorMessage?.forEach {
+            apiErrorMessage?.let {
                 Text(
                     fontSize = 14.sp,
                     text = it,

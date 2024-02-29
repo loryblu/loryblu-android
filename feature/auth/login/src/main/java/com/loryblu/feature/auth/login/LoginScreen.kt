@@ -55,6 +55,7 @@ import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.LoginResponse
+import com.loryblu.data.auth.model.SignInFields
 import com.loryblu.data.auth.model.SignInResult
 import kotlinx.coroutines.launch
 
@@ -80,8 +81,12 @@ fun LoginScreen(
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
     var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
     var showApiErrors by remember { mutableStateOf(false) }
-    var apiErrorMessage by rememberSaveable { mutableStateOf<List<String>>(listOf()) }
+    var apiErrorMessage by rememberSaveable { mutableStateOf<String>("") }
     var rememberButtonChecked by rememberSaveable { mutableStateOf(false) }
+
+    var showEmailApiError by remember { mutableStateOf(false) }
+    var showPasswordApiError by remember { mutableStateOf(false) }
+
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -106,6 +111,9 @@ fun LoginScreen(
             error = emailState,
             fieldFocus = { isEmailFieldFocused = it }
         )
+        if(showEmailApiError) {
+            LBErrorLabel(apiErrorMessage)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -121,6 +129,10 @@ fun LoginScreen(
             hidden = passwordHidden,
             fieldFocus = { isPasswordFieldFocused = it }
         )
+
+        if(showPasswordApiError) {
+            LBErrorLabel(apiErrorMessage)
+        }
 
         if (
             emailState is EmailInputValid.Error && isEmailFieldFocused
@@ -163,9 +175,7 @@ fun LoginScreen(
         }
 
         if (showApiErrors) {
-            apiErrorMessage.forEach {
-                LBErrorLabel(it)
-            }
+            LBErrorLabel(apiErrorMessage)
         }
 
         Row(
@@ -395,6 +405,30 @@ fun LoginScreen(
 
             is SignInResult.Loading -> {
                 showApiErrors = false
+            }
+
+            is SignInResult.ErrorWithField -> {
+                // If should show the exact error BTF
+//                apiErrorMessage = signInResult.message
+//                when (signInResult.field) {
+//                    SignInFields.Email -> {
+//                        showEmailApiError = true
+//                        showApiErrors = false
+//                        showPasswordApiError = false
+//                    }
+//                    SignInFields.Password -> {
+//                        showPasswordApiError = true
+//                        showApiErrors = false
+//                        showEmailApiError = false
+//                    }
+//                    else -> {
+//                        showApiErrors = true
+//                        showEmailApiError = false
+//                        showPasswordApiError = false
+//                    }
+//                }
+                showApiErrors = true
+                apiErrorMessage = signInResult.message
             }
 
             else -> {}

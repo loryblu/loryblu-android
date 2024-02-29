@@ -75,11 +75,11 @@ fun NavGraphBuilder.registerChildRoute(
 }
 
 fun NavGraphBuilder.registrationConfirmedRoute(
-    navigateToDashboard: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     composable(route = Screen.RegistrationConfirmed.route) {
         RegistrationConfirmedScreen(
-            navigateToHomeScreen = navigateToDashboard,
+            navigateToHomeScreen = navigateToHome,
             shouldGoToNextScreen = true //sempre será true
         )
     }

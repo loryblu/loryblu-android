@@ -29,7 +29,7 @@ class RegisterViewModel(
     var shouldGoToNextScreenGuardian = mutableStateOf(false)
     var shouldGoToNextScreenChildren = mutableStateOf(false)
 
-    private val _apiErrorMessage = MutableStateFlow(listOf<String>())
+    private val _apiErrorMessage = MutableStateFlow("")
     val apiErrorMessage = _apiErrorMessage.asStateFlow()
 
     private val passwordHas: Map<Int, Boolean> = mapOf(
@@ -79,14 +79,11 @@ class RegisterViewModel(
             name.isEmpty() -> {
                 NameInputValid.Error(R.string.empty_field)
             }
-            !name.matches(Regex("^[A-Z][a-zA-ZÀ-ÖØ-öø-ÿ ]+\$")) -> {
+            !name.matches(Regex("^[a-zA-ZÀ-ÿ]+(?: [a-zA-ZÀ-ÿ]+)+\$", RegexOption.IGNORE_CASE)) -> {
                 NameInputValid.Error(R.string.invalid_name)
             }
             name.count { it.isLetter() } < 5 -> {
                 NameInputValid.Error(R.string.at_least_five_letters)
-            }
-            name.contains("  ") -> {
-                NameInputValid.Error(R.string.invalid_name)
             }
             else -> {
                 NameInputValid.Valid
@@ -122,12 +119,16 @@ class RegisterViewModel(
                 policiesAccepted = children.policiesAccepted
             }
 
-            val response = registerUser(finalUserApi)
-
-            if(response.serverStatusCode.value < 300) {
-                shouldGoToNextScreenChildren.value = true
-            } else {
-                _apiErrorMessage.value = response.message
+            when(val response = registerUser(finalUserApi)) {
+                is ApiResponse.Success -> {
+                    shouldGoToNextScreenChildren.value = true
+                }
+                is ApiResponse.ErrorWithDetail -> {
+                    _apiErrorMessage.value = response.detail.details[0].message
+                }
+                is ApiResponse.ErrorDefault -> {
+                    _apiErrorMessage.value = "Estamos com alguns problemas. Tente novamente mais tarde!"
+                }
             }
         }
     }

@@ -39,6 +39,6 @@ internal class NewPasswordApiImpl(
 
     private fun handleErrorResponse(httpStatusCode: HttpStatusCode): ApiResponse {
         println("Error: ${httpStatusCode.description}")
-        return ApiResponse(listOf(), httpStatusCode)
+        return ApiResponse.ErrorDefault
     }
 }
