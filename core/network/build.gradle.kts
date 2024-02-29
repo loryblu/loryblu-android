@@ -53,4 +53,13 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.serialization)
     implementation(libs.ktor.gson)
     implementation(libs.androidx.datastore.preferences)
+
+    debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
+
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation("io.ktor:ktor-client-okhttp:2.3.4")
+
 }
