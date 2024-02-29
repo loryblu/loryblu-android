@@ -34,7 +34,7 @@ class ForgotPasswordViewModel(
 
     fun updateEmail(newEmail: String) {
         _uiState.update {
-            it.copy(email = newEmail)
+            it.copy(email = newEmail, emailMessage = "")
         }
     }
 
@@ -47,6 +47,7 @@ class ForgotPasswordViewModel(
                 }
             }
             email.isEmailValid().not() -> {
+                sendEmailSuccess.value = false
                 _uiState.update {
                     it.copy(emailState = EmailInputValid.Error(R.string.invalid_field))
                 }
@@ -67,14 +68,14 @@ class ForgotPasswordViewModel(
                     email = uiState.value.email.lowercase(),
                 )
                 val response : ApiResponse = passwordRecovery.passwordRecovery(passwordRecoveryRequest)
-                if (response.serverStatusCode.value < 300){
+                if (response != ApiResponse.ErrorDefault){
                     _uiState.update {
                         it.copy(emailMessage = "E-mail enviado com sucesso")
                     }
                     sendEmailSuccess.value = true
-                }else{
+                } else{
                     _uiState.update {
-                        it.copy(emailMessage = response.message[0])
+                        it.copy(emailMessage = "Estamos com alguns problemas. Tente novamente mais tarde!")
                     }
                     sendEmailSuccess.value = false
                 }

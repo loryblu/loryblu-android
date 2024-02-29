@@ -12,6 +12,7 @@ class DashboardViewModel(
     val childName = _childName.asStateFlow()
 
     fun getChildName() {
-        _childName.value = session.getChildName()
+        val name = session.getChildName()
+        _childName.value =  name.trim().split("\\s+".toRegex())[0]
     }
 }

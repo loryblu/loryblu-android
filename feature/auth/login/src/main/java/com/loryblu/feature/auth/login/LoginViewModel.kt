@@ -59,7 +59,7 @@ class LoginViewModel(
             try {
                 _signInResult.value = loginApi.loginUser(loginRequest)
             } catch (e: Exception) {
-                _signInResult.value = SignInResult.Error.stringMessage(
+                _signInResult.value = SignInResult.Error(
                     e.localizedMessage ?: "Unknown error"
                 )
             }
