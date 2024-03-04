@@ -1,18 +1,23 @@
 package com.loryblu.feature.logbook.navigation
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.loryblu.core.util.Screen
-import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
-import com.loryblu.feature.logbook.ui.task.CategoryScreen
-import com.loryblu.feature.logbook.ui.home.LogbookScreen
-import com.loryblu.feature.logbook.ui.task.ShiftScreen
-import com.loryblu.feature.logbook.ui.task.TaskScreen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
+import com.loryblu.feature.logbook.ui.home.LogbookScreen
+import com.loryblu.feature.logbook.ui.task.CategoryScreen
+import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
+import com.loryblu.feature.logbook.ui.task.ShiftScreen
 import com.loryblu.feature.logbook.ui.task.SummaryScreen
+import com.loryblu.feature.logbook.ui.task.TaskScreen
+import com.loryblu.feature.logbook.utils.getNameOfDaySelected
+import com.loryblu.feature.logbook.utils.intToShiftString
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.logbookNavigation(
@@ -23,7 +28,13 @@ fun NavGraphBuilder.logbookNavigation(
         startDestination = Screen.Logbook.route,
         route = "logbook"
     ) {
-        composable(route = Screen.Logbook.route) {
+        composable(
+            route = Screen.Logbook.route,
+            arguments = listOf(navArgument("ADDED_ANIMATION") {
+                defaultValue = false
+                type = NavType.BoolType
+            })
+        ) {
             val viewModel: LogbookHomeViewModel = koinViewModel()
 
             val userTasks = viewModel.userTasks.collectAsState()
@@ -32,7 +43,8 @@ fun NavGraphBuilder.logbookNavigation(
                 onBackButtonClicked = onBackButtonClicked,
                 onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
                 userTasks = userTasks.value,
-                selectADayOfWeek = { viewModel.selectADayOfWeek(it) }
+                selectADayOfWeek = { viewModel.selectADayOfWeek(it) },
+                shouldShowAddedSnack = it.arguments?.getBoolean("ADDED_ANIMATION") ?: false,
             )
         }
 
@@ -50,7 +62,7 @@ fun NavGraphBuilder.logbookNavigation(
                         navController.navigate(Screen.TaskScreen.route)
                     },
                     onCloseButtonClicked = {
-                        navController.navigate(Screen.Dashboard.route) {
+                        navController.navigate(Screen.Logbook.route) {
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
                     },
@@ -67,7 +79,7 @@ fun NavGraphBuilder.logbookNavigation(
                         navController.navigate(Screen.ShiftScreen.route)
                     },
                     onCloseButtonClicked = {
-                        navController.navigate(Screen.Dashboard.route) {
+                        navController.navigate(Screen.Logbook.route) {
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
                     },
@@ -85,7 +97,7 @@ fun NavGraphBuilder.logbookNavigation(
                         navController.navigate(Screen.SummaryScreen.route)
                     },
                     onCloseButtonClicked = {
-                        navController.navigate(Screen.Dashboard.route) {
+                        navController.navigate(Screen.Logbook.route) {
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
                     },
@@ -102,13 +114,30 @@ fun NavGraphBuilder.logbookNavigation(
                         }
                     },
                     onCloseButtonClicked = {
-                        navController.navigate(Screen.Dashboard.route) {
+                        navController.navigate(Screen.Logbook.route) {
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
                     },
-                    logbookTaskModel = viewModel.getLogbookTaskModel()
-                ) {
-                }
+                    logbookTaskModel = viewModel.getLogbookTaskModel(),
+                    onNextScreenClicked = {
+                        viewModel.createLogbookTask()
+                        navController.navigate(Screen.Logbook.withAddedToast()) {
+                            popUpTo(Screen.Logbook.route) { inclusive = true }
+                        }
+                    },
+                    onShiftChange = {
+                        viewModel.setShift(intToShiftString(it))
+                    },
+                    onTaskNavigate = {
+                        navController.navigate(Screen.TaskScreen.route)
+                    },
+                    onCategoryNavigate = {
+                        navController.navigate(Screen.CategoryScreen.route)
+                    },
+                    onFrequencyChange = {
+                        viewModel.setFrequency(getNameOfDaySelected(it))
+                    },
+                )
             }
         }
     }
