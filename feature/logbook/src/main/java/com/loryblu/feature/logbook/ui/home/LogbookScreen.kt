@@ -20,11 +20,16 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +48,7 @@ import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ShiftBar
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,7 +58,19 @@ fun LogbookScreen(
     onNextScreenClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADayOfWeek: (Int) -> Unit,
+    shouldShowAddedSnack: Boolean,
 ) {
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(shouldShowAddedSnack) {
+        if(shouldShowAddedSnack) {
+            scope.launch {
+                snackbarHostState.showSnackbar("Rotina cadastrada com Sucesso!")
+            }
+        }
+    }
 
     val selectedDay = remember {
         mutableStateListOf<Int>(1)
@@ -68,6 +86,18 @@ fun LogbookScreen(
                 onBackClicked = { onBackButtonClicked() },
                 onCloseClicked = { onBackButtonClicked() },
                 showCloseButton = false
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = {
+                    Snackbar(
+                        snackbarData = it,
+                        containerColor = Color.Green,
+                        contentColor = Color.White
+                    )
+                }
             )
         },
         content = { innerPadding ->
@@ -184,5 +214,6 @@ fun HomeLogbookScreenPreview() {
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
         selectADayOfWeek = {},
+        shouldShowAddedSnack = false,
     )
 }

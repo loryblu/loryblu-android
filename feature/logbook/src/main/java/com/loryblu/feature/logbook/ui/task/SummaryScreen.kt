@@ -23,6 +23,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,6 +69,7 @@ import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ShiftBar
 import com.loryblu.feature.logbook.utils.getDaySelected
 import com.loryblu.feature.logbook.utils.shiftToInt
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +83,6 @@ fun SummaryScreen(
     onCategoryNavigate: () -> Unit,
     onTaskNavigate: () -> Unit,
 ) {
-
     var shiftSelected by remember {
         mutableStateOf(shiftToInt(logbookTaskModel.shift))
     }
@@ -96,7 +99,7 @@ fun SummaryScreen(
                 onCloseClicked = onCloseButtonClicked,
                 showCloseButton = true
             )
-        }
+        },
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -302,6 +305,7 @@ fun SummaryScreen(
                 LBButton(
                     textRes = R.string.registerTask,
                     onClick = {
+                        onNextScreenClicked()
                     },
                     buttonColors = ButtonDefaults.buttonColors(
                         disabledContainerColor = LBLightGray,
