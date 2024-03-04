@@ -13,6 +13,9 @@ import com.loryblu.feature.logbook.ui.task.ShiftScreen
 import com.loryblu.feature.logbook.ui.task.TaskScreen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.task.SummaryScreen
+import com.loryblu.feature.logbook.utils.getDaySelected
+import com.loryblu.feature.logbook.utils.getNameOfDaySelected
+import com.loryblu.feature.logbook.utils.intToShiftString
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.logbookNavigation(
@@ -106,9 +109,21 @@ fun NavGraphBuilder.logbookNavigation(
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
                     },
-                    logbookTaskModel = viewModel.getLogbookTaskModel()
-                ) {
-                }
+                    logbookTaskModel = viewModel.getLogbookTaskModel(),
+                    onNextScreenClicked = { },
+                    onShiftChange = {
+                        viewModel.setShift(intToShiftString(it))
+                    },
+                    onTaskNavigate = {
+                        navController.navigate(Screen.TaskScreen.route)
+                    },
+                    onCategoryNavigate = {
+                        navController.navigate(Screen.CategoryScreen.route)
+                    },
+                    onFrequencyChange = {
+                        viewModel.setFrequency(getNameOfDaySelected(it))
+                    },
+                )
             }
         }
     }

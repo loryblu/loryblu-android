@@ -6,6 +6,7 @@ import LBProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,6 +43,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,17 +64,29 @@ import com.loryblu.feature.logbook.model.Category
 import com.loryblu.feature.logbook.model.LogbookTaskModel
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ShiftBar
+import com.loryblu.feature.logbook.utils.getDaySelected
+import com.loryblu.feature.logbook.utils.shiftToInt
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SummaryScreen(
     onBackButtonClicked: () -> Unit,
     onCloseButtonClicked: () -> Unit,
     logbookTaskModel: LogbookTaskModel,
     onNextScreenClicked: () -> Unit,
+    onFrequencyChange: (List<Int>) -> Unit,
+    onShiftChange: (Int) -> Unit,
+    onCategoryNavigate: () -> Unit,
+    onTaskNavigate: () -> Unit,
 ) {
 
-    val shiftSelected = getShiftSelected(logbookTaskModel.shift)
-    val selectedDay = getDaySelected(logbookTaskModel.frequency)
+    var shiftSelected by remember {
+        mutableStateOf(shiftToInt(logbookTaskModel.shift))
+    }
+
+    val selectedDay by remember {
+        mutableStateOf(getDaySelected(logbookTaskModel.frequency).toMutableStateList())
+    }
 
     Scaffold(
         topBar = {
@@ -135,7 +154,10 @@ fun SummaryScreen(
                                 modifier = Modifier
                                     .background(LBDarkBlue, RoundedCornerShape(8.dp))
                                     .width(140.dp)
-                                    .height(46.dp),
+                                    .height(46.dp)
+                                    .clickable {
+                                        onCategoryNavigate()
+                                    },
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
@@ -172,7 +194,10 @@ fun SummaryScreen(
                                 modifier = Modifier
                                     .background(LBDarkBlue, RoundedCornerShape(8.dp))
                                     .width(140.dp)
-                                    .height(46.dp),
+                                    .height(46.dp)
+                                    .clickable {
+                                        onTaskNavigate()
+                                    },
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
@@ -222,7 +247,10 @@ fun SummaryScreen(
                 ShiftBar(
                     modifier = Modifier.fillMaxWidth(),
                     shiftSelected = shiftSelected,
-                    onShiftChange = { },
+                    onShiftChange = {
+                        onShiftChange(it)
+                        shiftSelected = it
+                    },
                     options = getAllShiftItems()
                 )
 
@@ -252,7 +280,20 @@ fun SummaryScreen(
                     )
                 )
                 Spacer(modifier = Modifier.size(8.dp))
-                FrequencyBar(selectedDay = selectedDay, onDayClicked = { })
+
+                FrequencyBar(
+                    selectedDay = selectedDay,
+                    onDayClicked = {
+                        if (selectedDay.contains(it)) {
+                            selectedDay.remove(it)
+                        } else {
+                            selectedDay.add(it)
+                        }
+                        onFrequencyChange(selectedDay)
+                    }
+                )
+
+
                 Spacer(Modifier.weight(1f))
             }
             Box(modifier = Modifier
@@ -283,34 +324,6 @@ private fun getTask(taskId: String): RoutineTaskItem? {
     return task
 }
 
-@Composable
-private fun getShiftSelected(shift: String): Int {
-    return when (shift) {
-        "morning" -> {
-            0
-        }
-
-        "afternoon" -> {
-            1
-        }
-
-        else -> {
-            2
-        }
-    }
-}
-
-@Composable
-private fun getDaySelected(days: List<String>): List<Int> {
-    val selectedDays = remember { mutableStateListOf<Int>() }
-    val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
-    nameOfWeekDays.forEachIndexed { index, day ->
-        if (days.any { it.contains(day) }) {
-            selectedDays.add(index)
-        }
-    }
-    return selectedDays
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -325,5 +338,9 @@ fun SummaryPreview() {
             frequency = listOf("sun", "mon")
         ),
         onNextScreenClicked = { },
+        onShiftChange = { },
+        onCategoryNavigate = { },
+        onTaskNavigate = { },
+        onFrequencyChange = { }
     )
 }
