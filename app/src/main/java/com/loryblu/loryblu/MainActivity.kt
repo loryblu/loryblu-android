@@ -23,6 +23,7 @@ import com.loryblu.core.ui.theme.LoryBluTheme
 import com.loryblu.core.util.Screen
 import com.loryblu.loryblu.navigation.SetupNavGraph
 import org.koin.android.ext.android.inject
+import org.koin.compose.KoinContext
 import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
@@ -35,16 +36,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LoryBluTheme {
-                val navController = rememberNavController()
-                checkNotificationPolicyAccess(notificationManager, this)
-                SetupNavGraph(
-                    startDestination = if(session.getRememberLogin()) {
-                        Screen.Dashboard.route
-                    } else {
-                        Screen.Login.route
-                    },
-                    navController = navController
-                )
+                KoinContext {
+                    val navController = rememberNavController()
+                    checkNotificationPolicyAccess(notificationManager, this)
+                    SetupNavGraph(
+                        startDestination = if(session.getRememberLogin()) {
+                            Screen.Dashboard.route
+                        } else {
+                            Screen.Login.route
+                        },
+                        navController = navController
+                    )
+                }
             }
         }
     }

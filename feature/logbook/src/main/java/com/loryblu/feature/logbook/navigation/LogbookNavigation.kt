@@ -83,6 +83,7 @@ fun NavGraphBuilder.logbookNavigation(
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
                     },
+                    category = viewModel.getLogbookTaskModel().category,
                 )
             }
 
