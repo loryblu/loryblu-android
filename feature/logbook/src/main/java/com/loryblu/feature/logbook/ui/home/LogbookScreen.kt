@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -26,10 +27,13 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -58,7 +62,8 @@ fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
-    selectADayOfWeek: (Int) -> Unit,
+    selectAShift: (Int) -> Unit,
+    selectADay: (Int) -> Unit,
     shouldShowAddedSnack: Pair<Boolean, Boolean>,
 ) {
 
@@ -66,9 +71,9 @@ fun LogbookScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(shouldShowAddedSnack) {
-        if(shouldShowAddedSnack.first) {
+        if (shouldShowAddedSnack.first) {
             scope.launch {
-                if(shouldShowAddedSnack.second) {
+                if (shouldShowAddedSnack.second) {
                     snackbarHostState.showSnackbar("Rotina criada com Sucesso!")
                 } else {
                     snackbarHostState.showSnackbar("Não foi possível cadastrar nova rotina")
@@ -78,12 +83,14 @@ fun LogbookScreen(
         }
     }
 
-    val selectedDay = remember {
-        mutableStateListOf<Int>(1)
+    var selectedDay by remember {
+        mutableIntStateOf(0)
     }
-    val shiftSelected = remember {
-        mutableStateOf(0)
+
+    var shiftSelected by remember {
+        mutableIntStateOf(0)
     }
+
 
     Scaffold(
         topBar = {
@@ -100,7 +107,7 @@ fun LogbookScreen(
                 snackbar = {
                     Snackbar(
                         snackbarData = it,
-                        containerColor = if(shouldShowAddedSnack.second) Color.Green else Color.Red,
+                        containerColor = if (shouldShowAddedSnack.second) Color.Green else Color.Red,
                         contentColor = Color.White
                     )
                 }
@@ -117,8 +124,15 @@ fun LogbookScreen(
 
                 TasksSelector(
                     selectedDay = selectedDay,
-                    shiftSelected = shiftSelected.value,
-                    onShiftChange = selectADayOfWeek
+                    shiftSelected = shiftSelected,
+                    onShiftChange = {
+                        shiftSelected = it
+                        selectAShift(shiftSelected)
+                    },
+                    onSelectedDaysChange = {
+                        selectedDay = it
+                        selectADay(selectedDay)
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(50.dp))
@@ -128,10 +142,25 @@ fun LogbookScreen(
                         .fillMaxWidth()
                         .weight(0.85f)
                 ) {
-                    if(userTasks.data.isNullOrEmpty()) {
+                    if (userTasks.data.isNullOrEmpty()) {
                         NoAssignmentsLayout()
                     } else {
-                        TaskCardComponent(modifier = Modifier.fillMaxWidth().padding(16.dp), taskItem = userTasks.data!![0])
+                        LazyColumn {
+                            items(
+                                count = userTasks.data!!.size,
+                                key = {
+                                    userTasks.data!![it].id
+                                },
+                                itemContent = { index ->
+                                    TaskCardComponent(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        taskItem = userTasks.data!![index]
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
                 Box(
@@ -191,8 +220,9 @@ fun ColumnScope.NoAssignmentsLayout(modifier: Modifier = Modifier) {
 
 @Composable
 fun TasksSelector(
-    selectedDay: List<Int>,
+    selectedDay: Int,
     shiftSelected: Int,
+    onSelectedDaysChange: (Int) -> Unit,
     onShiftChange: (Int) -> Unit,
 ) {
     Column(
@@ -201,16 +231,22 @@ fun TasksSelector(
             .fillMaxWidth()
     ) {
         FrequencyBar(
-            selectedDay = selectedDay,
+            selectedDay = listOf(selectedDay),
             onDayClicked = {
-                onShiftChange(it)
+                if (selectedDay != it) {
+                    onSelectedDaysChange(it)
+                }
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
         ShiftBar(
             modifier = Modifier.padding(horizontal = 10.dp),
             shiftSelected = shiftSelected,
-            onShiftChange = {},
+            onShiftChange = {
+                if (shiftSelected != it) {
+                    onShiftChange(it)
+                }
+            },
             options = ShiftItem.getShiftItems()
         )
     }
@@ -223,7 +259,8 @@ fun HomeLogbookScreenPreview() {
         onBackButtonClicked = {},
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
-        selectADayOfWeek = {},
+        selectAShift = {},
         shouldShowAddedSnack = Pair(false, false),
+        selectADay = { }
     )
 }

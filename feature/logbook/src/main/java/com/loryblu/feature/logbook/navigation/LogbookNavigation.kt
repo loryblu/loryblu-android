@@ -50,7 +50,8 @@ fun NavGraphBuilder.logbookNavigation(
                 onBackButtonClicked = onBackButtonClicked,
                 onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
                 userTasks = userTasks.value,
-                selectADayOfWeek = { viewModel.selectADayOfWeek(it) },
+                selectAShift = { viewModel.selectAShift(it) },
+                selectADay = { viewModel.selectADayOfWeek(it) },
                 shouldShowAddedSnack =
                 Pair(
                     backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false,

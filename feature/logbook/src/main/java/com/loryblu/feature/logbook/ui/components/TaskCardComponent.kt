@@ -91,7 +91,6 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
         modifier
             .background(taskItem.shift.color)
             .fillMaxSize(),
-        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -100,15 +99,15 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
             contentDescription = "",
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(horizontal = 16.dp),
+                .padding(start = 48.dp, end = 32.dp, top = 12.dp, bottom = 12.dp),
             contentScale = ContentScale.FillHeight
         )
         Column(
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(end = 12.dp)
-                .width(110.dp),
+                .fillMaxWidth()
+                .padding(start = 32.dp, end = 12.dp),
             horizontalAlignment = Alignment.End,
         ) {
             Button(

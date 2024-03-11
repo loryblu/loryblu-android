@@ -16,6 +16,10 @@ class LogbookHomeViewModel(
     private val _userTasks = MutableStateFlow<ApiResponseWithData<List<LogbookTask>>>(ApiResponseWithData.Default())
     val userTasks: StateFlow<ApiResponseWithData<List<LogbookTask>>> = _userTasks
 
+    fun selectAShift(shift: Int) = viewModelScope.launch {
+
+    }
+
     fun selectADayOfWeek(dayOfWeekInt: Int) = viewModelScope.launch {
         val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
         val dayOfWeek = nameOfWeekDays[dayOfWeekInt + 1]
