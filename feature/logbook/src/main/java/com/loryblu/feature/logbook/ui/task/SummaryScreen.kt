@@ -80,9 +80,11 @@ fun SummaryScreen(
         mutableIntStateOf(shiftToInt(logbookTaskModel.shift))
     }
 
-    val selectedDay by remember {
-        mutableStateOf(getDaySelected(logbookTaskModel.frequency).toMutableStateList())
+    var selectedDay by remember {
+        mutableStateOf(emptyList<Int>())
     }
+
+    selectedDay = getDaySelected(logbookTaskModel.frequency)
 
     Scaffold(
         topBar = {
@@ -280,10 +282,10 @@ fun SummaryScreen(
                 FrequencyBar(
                     selectedDay = selectedDay,
                     onDayClicked = {
-                        if (selectedDay.contains(it)) {
-                            selectedDay.remove(it)
+                        selectedDay = if (it in selectedDay) {
+                            selectedDay - it
                         } else {
-                            selectedDay.add(it)
+                            selectedDay + it
                         }
                         onFrequencyChange(selectedDay)
                     }
@@ -305,7 +307,7 @@ fun SummaryScreen(
                         containerColor = LBSkyBlue
                     ),
                     textColor = Color.White,
-                    areAllFieldsValid = true
+                    areAllFieldsValid = selectedDay != emptyList<Int>()
                 )
             }
         }

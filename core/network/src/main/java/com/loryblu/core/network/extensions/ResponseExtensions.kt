@@ -20,7 +20,7 @@ import io.ktor.client.statement.HttpResponse
 //    }
 //}
 
-suspend fun HttpResponse.toApiResponse() : ApiResponse {
+suspend fun HttpResponse.toApiResponseWithDetail() : ApiResponse {
     /**
      * Success -> just message string
      * Error ->
@@ -38,6 +38,28 @@ suspend fun HttpResponse.toApiResponse() : ApiResponse {
         }
         else -> {
             ApiResponse.ErrorWithDetail(detail = this.body<ErrorDetail>())
+        }
+    }
+}
+
+suspend fun HttpResponse.toApiResponse() : ApiResponse {
+    /**
+     * Success -> just message string
+     * Error ->
+     * {
+     *   details: Array<{
+     *     property?: string;
+     *     message: string;
+     *   }>
+     * }
+     */
+
+    return when {
+        this.status.value in 200..299 -> {
+            ApiResponse.Success
+        }
+        else -> {
+            ApiResponse.ErrorDefault
         }
     }
 }

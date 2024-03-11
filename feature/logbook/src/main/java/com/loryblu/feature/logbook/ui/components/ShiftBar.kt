@@ -2,6 +2,7 @@ package com.loryblu.feature.logbook.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,6 +48,7 @@ fun ShiftBar(
                         activeContainerColor = shift.color,
                         inactiveContainerColor = Color(0XFFE8EAFD),
                         activeBorderColor = Color.Transparent,
+                        inactiveBorderColor = Color.Transparent
                     ),
                     icon = {
                         SegmentedButtonDefaults.Icon(
@@ -74,10 +76,11 @@ fun ShiftBar(
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 private fun ShiftBarPrev() {
     ShiftBar(
+        modifier = Modifier.padding(horizontal = 8.dp),
         shiftSelected = 1,
         onShiftChange = {},
         options = ShiftItem.getShiftItems()

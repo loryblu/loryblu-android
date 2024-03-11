@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.util.Screen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
@@ -30,11 +31,17 @@ fun NavGraphBuilder.logbookNavigation(
     ) {
         composable(
             route = Screen.Logbook.route,
-            arguments = listOf(navArgument("ADDED_ANIMATION") {
+            arguments = listOf(
+                navArgument("ADDED_ANIMATION") {
                 defaultValue = false
                 type = NavType.BoolType
-            })
-        ) {
+                },
+                navArgument("SUCCESS_ADD") {
+                    defaultValue = false
+                    type = NavType.BoolType
+                },
+            )
+        ) { backStack ->
             val viewModel: LogbookHomeViewModel = koinViewModel()
 
             val userTasks = viewModel.userTasks.collectAsState()
@@ -44,7 +51,11 @@ fun NavGraphBuilder.logbookNavigation(
                 onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
                 userTasks = userTasks.value,
                 selectADayOfWeek = { viewModel.selectADayOfWeek(it) },
-                shouldShowAddedSnack = it.arguments?.getBoolean("ADDED_ANIMATION") ?: false,
+                shouldShowAddedSnack =
+                Pair(
+                    backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false,
+                    backStack.arguments?.getBoolean("SUCCESS_ADD") ?: false
+                ),
             )
         }
 
@@ -108,6 +119,25 @@ fun NavGraphBuilder.logbookNavigation(
             composable(route = Screen.SummaryScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
+                val addTaskResult = viewModel.addTaskResult.collectAsState()
+
+                LaunchedEffect(key1 = addTaskResult.value) {
+                    when (addTaskResult.value) {
+                        is ApiResponse.Success -> {
+                            navController.navigate(Screen.Logbook.withAddedToast()) {
+                                popUpTo(Screen.Logbook.route) { inclusive = true }
+                            }
+                        }
+                        is ApiResponse.ErrorDefault -> {
+                            navController.navigate(Screen.Logbook.withAddedToast(success = false)) {
+                                popUpTo(Screen.Logbook.route) { inclusive = true }
+                            }
+                        }
+                        else -> { }
+                    }
+
+                }
+
                 SummaryScreen(
                     onBackButtonClicked = {
                         navController.navigate(Screen.Logbook.route) {
@@ -122,9 +152,6 @@ fun NavGraphBuilder.logbookNavigation(
                     logbookTaskModel = viewModel.getLogbookTaskModel(),
                     onNextScreenClicked = {
                         viewModel.createLogbookTask()
-                        navController.navigate(Screen.Logbook.withAddedToast()) {
-                            popUpTo(Screen.Logbook.route) { inclusive = true }
-                        }
                     },
                     onShiftChange = {
                         viewModel.setShift(intToShiftString(it))

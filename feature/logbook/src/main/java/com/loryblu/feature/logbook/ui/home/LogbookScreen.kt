@@ -59,17 +59,22 @@ fun LogbookScreen(
     onNextScreenClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADayOfWeek: (Int) -> Unit,
-    shouldShowAddedSnack: Boolean,
+    shouldShowAddedSnack: Pair<Boolean, Boolean>,
 ) {
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(shouldShowAddedSnack) {
-        if(shouldShowAddedSnack) {
+        if(shouldShowAddedSnack.first) {
             scope.launch {
-                snackbarHostState.showSnackbar("Rotina cadastrada com Sucesso!")
+                if(shouldShowAddedSnack.second) {
+                    snackbarHostState.showSnackbar("Rotina criada com Sucesso!")
+                } else {
+                    snackbarHostState.showSnackbar("Não foi possível cadastrar nova rotina")
+                }
             }
+
         }
     }
 
@@ -95,7 +100,7 @@ fun LogbookScreen(
                 snackbar = {
                     Snackbar(
                         snackbarData = it,
-                        containerColor = Color.Green,
+                        containerColor = if(shouldShowAddedSnack.second) Color.Green else Color.Red,
                         contentColor = Color.White
                     )
                 }
@@ -219,6 +224,6 @@ fun HomeLogbookScreenPreview() {
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
         selectADayOfWeek = {},
-        shouldShowAddedSnack = false,
+        shouldShowAddedSnack = Pair(false, false),
     )
 }

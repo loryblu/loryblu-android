@@ -2,6 +2,9 @@ package com.loryblu.data.logbook.remote.api
 
 import com.loryblu.core.network.HttpRoutes
 import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.extensions.toApiResponse
+import com.loryblu.core.network.extensions.toApiResponseWithDetail
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.data.logbook.remote.model.LogbookTaskRequest
@@ -21,16 +24,19 @@ class LogbookApiImpl(
     private val client: HttpClient,
     private val session: Session
 ): LogbookApi {
-    override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) {
+    override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) = flow {
+        emit(ApiResponse.Loading)
         try {
-            client.post(HttpRoutes.TASK) {
-                setBody(logbookTaskRequest)
-                contentType(ContentType.Application.Json)
-                bearerAuth(session.getToken())
-            }
-            return
+            emit(
+                client.post(HttpRoutes.TASK) {
+                    setBody(logbookTaskRequest)
+                    contentType(ContentType.Application.Json)
+                    bearerAuth(session.getToken())
+                }.toApiResponse()
+            )
         } catch (e: Exception) {
-            throw e
+            e.printStackTrace()
+            emit(ApiResponse.ErrorDefault)
         }
     }
 

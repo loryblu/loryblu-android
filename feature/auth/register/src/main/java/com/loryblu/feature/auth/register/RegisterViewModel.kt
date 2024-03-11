@@ -126,7 +126,7 @@ class RegisterViewModel(
                 is ApiResponse.ErrorWithDetail -> {
                     _apiErrorMessage.value = response.detail.details[0].message
                 }
-                is ApiResponse.ErrorDefault -> {
+                else -> {
                     _apiErrorMessage.value = "Estamos com alguns problemas. Tente novamente mais tarde!"
                 }
             }

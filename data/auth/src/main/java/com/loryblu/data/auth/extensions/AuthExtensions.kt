@@ -1,15 +1,14 @@
 package com.loryblu.data.auth.extensions
 
-import com.loryblu.core.network.extensions.toApiResponse
+import com.loryblu.core.network.extensions.toApiResponseWithDetail
 import com.loryblu.core.network.model.ApiResponse
-import com.loryblu.data.auth.model.SignInFields
 import com.loryblu.data.auth.model.SignInResult
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 
 
 suspend fun HttpResponse.toSignInResult() : SignInResult {
-    return when (val apiResponse = this.toApiResponse()) {
+    return when (val apiResponse = this.toApiResponseWithDetail()) {
         is ApiResponse.Success -> {
             SignInResult.Success(this.body())
         }
@@ -22,7 +21,7 @@ suspend fun HttpResponse.toSignInResult() : SignInResult {
 //            }
             return SignInResult.Error("Email e/ou senha inválidos")
         }
-        is ApiResponse.ErrorDefault -> {
+        else -> {
             SignInResult.Error("Unknown Error")
         }
     }
