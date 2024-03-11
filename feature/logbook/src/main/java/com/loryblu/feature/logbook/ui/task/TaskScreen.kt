@@ -39,11 +39,9 @@ import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
-import com.loryblu.data.logbook.local.ItemOfCategory
-import com.loryblu.data.logbook.local.getAllRoutineItems
-import com.loryblu.data.logbook.local.getAllStudentTaskItems
+import com.loryblu.data.logbook.local.CategoryItem
+import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.home.R
-import com.loryblu.feature.logbook.model.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,19 +50,14 @@ fun TaskScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: (categoryId: String) -> Unit,
     onCloseButtonClicked: () -> Unit,
-    category: Category,
+    category: CategoryItem,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var cardClicked by rememberSaveable {
         mutableStateOf(-1)
     }
 
-
-    val itemsOfCategory : List<ItemOfCategory> = when(category.action) {
-        "LoryRotina" -> getAllRoutineItems()
-        "LoryEstudioso" -> getAllStudentTaskItems()
-        else -> emptyList()
-    }
+    val taskItems = TaskItem.getAllTaskItems().filter { it.category == category }
 
     Scaffold(
         modifier = Modifier
@@ -111,7 +104,7 @@ fun TaskScreen(
                     verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
-                    items(itemsOfCategory) {
+                    items(taskItems) {
                         Box(
                             contentAlignment = Alignment.TopStart,
                             modifier = Modifier
@@ -135,7 +128,7 @@ fun TaskScreen(
                         textRes = R.string.next,
                         onClick = {
                             onNextScreenClicked(
-                                itemsOfCategory[cardClicked].taskId
+                                taskItems[cardClicked].taskId
                             )
                         },
                         buttonColors = ButtonDefaults.buttonColors(
@@ -158,6 +151,6 @@ fun TaskPreview() {
         onBackButtonClicked = {},
         onNextScreenClicked = {},
         onCloseButtonClicked = {},
-        category = Category.ROUTINE
+        category = CategoryItem.Routine
     )
 }

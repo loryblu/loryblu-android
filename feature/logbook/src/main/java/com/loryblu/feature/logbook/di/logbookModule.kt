@@ -1,7 +1,7 @@
 package com.loryblu.feature.logbook.di
 
+import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
-import com.loryblu.feature.logbook.model.Category
 import com.loryblu.feature.logbook.model.LogbookTaskModel
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.useCases.GetUserTaskByDayOfWeek
@@ -14,5 +14,5 @@ val logbookModule = module {
     viewModel { LogbookHomeViewModel(get())}
 
     single<GetUserTaskByDayOfWeek> { GetUserTaskByDayOfWeekImpl(get()) }
-    single<LogbookTaskModel> { LogbookTaskModel(Category.ROUTINE, "", "", listOf()) }
+    single<LogbookTaskModel> { LogbookTaskModel(CategoryItem.Routine, "", "", listOf()) }
 }

@@ -3,9 +3,9 @@ package com.loryblu.feature.logbook.ui.task
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.loryblu.core.network.di.Session
+import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.data.logbook.remote.api.LogbookApi
 import com.loryblu.data.logbook.remote.model.LogbookTaskRequest
-import com.loryblu.feature.logbook.model.Category
 import com.loryblu.feature.logbook.model.LogbookTaskModel
 import kotlinx.coroutines.launch
 
@@ -14,7 +14,7 @@ class LogbookTaskViewModel(
     private val logbookTaskModel: LogbookTaskModel,
     private val logbookApi: LogbookApi
 ) : ViewModel() {
-    fun setSelectedCategory(category: Category) {
+    fun setSelectedCategory(category: CategoryItem) {
         logbookTaskModel.category = category
     }
 

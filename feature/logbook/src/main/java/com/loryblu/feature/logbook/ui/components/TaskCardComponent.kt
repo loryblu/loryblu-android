@@ -29,26 +29,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.theme.LBCardSoftBlue
 import com.loryblu.core.ui.theme.LBSoftBlue
+import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 
 @Composable
-fun TaskCardComponent(modifier: Modifier = Modifier) {
+fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
     ElevatedCard(
         modifier
             .height(208.dp)
             .width(312.dp)
     ) {
-        Column(modifier = modifier.fillMaxSize()) {
-            TitleAndDragButton(categoryText = "LoryRotina")
-            TaskContent(modifier = Modifier.height(126.dp))
-            TaskName(modifier = Modifier.height(46.dp), taskName = "Tomar banho")
+        Column(modifier = Modifier.fillMaxSize()) {
+            TitleAndDragButton(categoryText = stringResource(id = taskItem.itemOfCategory.category.text))
+            TaskContent(modifier = Modifier.height(126.dp), taskItem)
+            TaskName(modifier = Modifier.height(46.dp), taskName = stringResource(id = taskItem.itemOfCategory.text))
         }
     }
 }
@@ -85,17 +86,17 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String) {
 }
 
 @Composable
-fun TaskContent(modifier: Modifier = Modifier) {
+fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
     Row(
         modifier
-            .background(LBCardSoftBlue)
+            .background(taskItem.shift.color)
             .fillMaxSize(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter =
-            painterResource(id = com.loryblu.data.logbook.R.drawable.bathtime_routine),
+            painterResource(id = taskItem.itemOfCategory.drawable),
             contentDescription = "",
             modifier = Modifier
                 .fillMaxHeight()
@@ -166,8 +167,8 @@ fun TaskName(modifier: Modifier = Modifier, taskName: String) {
     }
 }
 
-@Preview
-@Composable
-private fun TaskCardPreview() {
-    TaskCardComponent()
-}
+//@Preview
+//@Composable
+//private fun TaskCardPreview() {
+//    TaskCardComponent()
+//}

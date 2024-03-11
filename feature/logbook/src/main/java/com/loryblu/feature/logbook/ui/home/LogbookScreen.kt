@@ -43,11 +43,12 @@ import androidx.compose.ui.unit.sp
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBContentHome
-import com.loryblu.data.logbook.local.getAllShiftItems
+import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ShiftBar
+import com.loryblu.feature.logbook.ui.components.TaskCardComponent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,12 +118,16 @@ fun LogbookScreen(
 
                 Spacer(modifier = Modifier.height(50.dp))
                 Column(
-                    horizontalAlignment = Alignment.End,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(0.85f)
                 ) {
-                    NoAssignmentsLayout()
+                    if(userTasks.data.isNullOrEmpty()) {
+                        NoAssignmentsLayout()
+                    } else {
+                        TaskCardComponent(modifier = Modifier.fillMaxWidth().padding(16.dp), taskItem = userTasks.data!![0])
+                    }
                 }
                 Box(
                     contentAlignment = Alignment.BottomEnd,
@@ -201,7 +206,7 @@ fun TasksSelector(
             modifier = Modifier.padding(horizontal = 10.dp),
             shiftSelected = shiftSelected,
             onShiftChange = {},
-            options = getAllShiftItems()
+            options = ShiftItem.getShiftItems()
         )
     }
 }

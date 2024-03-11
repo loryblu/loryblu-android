@@ -1,16 +1,12 @@
 package com.loryblu.feature.logbook.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonBorder
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
@@ -24,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.data.logbook.local.ShiftItem
-import com.loryblu.data.logbook.local.getAllShiftItems
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,6 +80,6 @@ private fun ShiftBarPrev() {
     ShiftBar(
         shiftSelected = 1,
         onShiftChange = {},
-        options = getAllShiftItems()
+        options = ShiftItem.getShiftItems()
     )
 }

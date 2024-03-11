@@ -1,13 +1,10 @@
 package com.loryblu.feature.logbook.model
 
+import com.loryblu.data.logbook.local.CategoryItem
+
 data class LogbookTaskModel(
-    var category: Category,
+    var category: CategoryItem,
     var task: String,
     var shift: String,
     var frequency: List<String>
 )
-
-enum class Category(val action:String) {
-    ROUTINE("LoryRotina"),
-    STUDIOUS("LoryEstudioso")
-}

@@ -41,14 +41,9 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
 import com.loryblu.core.ui.theme.LBNightBlue
 import com.loryblu.core.ui.theme.LoryBluTheme
-import com.loryblu.data.logbook.local.Afternoon
-import com.loryblu.data.logbook.local.LogbookItem
-import com.loryblu.data.logbook.local.Morning
-import com.loryblu.data.logbook.local.Night
-import com.loryblu.data.logbook.local.ItemOfCategory
+import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.data.logbook.local.ShiftItem
-import com.loryblu.data.logbook.local.getAllCategoryItems
-import com.loryblu.data.logbook.local.getAllShiftItems
+import com.loryblu.data.logbook.local.TaskItem
 import com.odisby.data.dashboard.local.DashboardItem
 import com.odisby.data.dashboard.local.getAllDashboardItems
 
@@ -120,7 +115,7 @@ fun LBCardDashboard(
 
 @Composable
 fun LBCategoryCard(
-    card: LogbookItem,
+    card: CategoryItem,
     modifier: Modifier,
     selected: Boolean,
     onclick: () -> Unit,
@@ -187,7 +182,7 @@ fun LBCategoryCard(
 
 @Composable
 fun LBTaskCard(
-    card: ItemOfCategory,
+    card: TaskItem,
     modifier: Modifier,
     selected: Boolean,
     onclick: () -> Unit,
@@ -267,21 +262,21 @@ fun LBCardShift(
 
     if (clicked) {
         when (card) {
-            is Morning -> {
+            is ShiftItem.Morning -> {
                 contentColor = LBCardSoftBlue
                 bottomColor = LBDarkBlue
                 imageHeight = 102
                 imageWidth = 96
             }
 
-            is Afternoon -> {
+            is ShiftItem.Afternoon -> {
                 contentColor = LBAfternoonBlue
                 bottomColor = LBDarkBlue
                 imageHeight = 42
                 imageWidth = 54
             }
 
-            is Night -> {
+            is ShiftItem.Night -> {
                 contentColor = LBNightBlue
                 bottomColor = LBDarkBlue
                 imageHeight = 52
@@ -291,7 +286,7 @@ fun LBCardShift(
         }
     } else {
         when (card) {
-            is Morning -> {
+            is ShiftItem.Morning -> {
                 saturation = 1f
                 contentColor = LBDisabledGray
                 bottomColor = LBBottomDisabledColor
@@ -299,7 +294,7 @@ fun LBCardShift(
                 imageWidth = 96
             }
 
-            is Afternoon -> {
+            is ShiftItem.Afternoon -> {
                 saturation = 1f
                 contentColor = LBDisabledGray
                 bottomColor = LBBottomDisabledColor
@@ -307,7 +302,7 @@ fun LBCardShift(
                 imageWidth = 54
             }
 
-            is Night -> {
+            is ShiftItem.Night -> {
                 saturation = 1f
                 contentColor = LBDisabledGray
                 bottomColor = LBBottomDisabledColor
@@ -330,9 +325,7 @@ fun LBCardShift(
         },
         modifier = modifier
             .clickable {
-                if (!card.isDisabled) {
-                    onclick()
-                }
+                onclick()
             }
             .alpha(saturation),
         shape = RoundedCornerShape(rounded),
@@ -404,7 +397,7 @@ fun LBDashboardCardPreview() {
 fun LBLogbookCardPreview() {
     LoryBluTheme {
         LBCategoryCard(
-            getAllCategoryItems()[0],
+            CategoryItem.getAllCategory()[0],
             modifier = Modifier.size(250.dp),
             selected = true,
             onclick = {}
@@ -417,7 +410,7 @@ fun LBLogbookCardPreview() {
 fun LBShiftCardPreview() {
     LoryBluTheme {
         LBCardShift(
-            getAllShiftItems()[0],
+            ShiftItem.getShiftItems()[0],
             modifier = Modifier.size(250.dp),
             clicked = false,
             onclick = {}
