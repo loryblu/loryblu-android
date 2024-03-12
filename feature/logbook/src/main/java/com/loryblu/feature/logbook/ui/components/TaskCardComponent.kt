@@ -47,7 +47,10 @@ fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask, pare
             .width(312.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            TitleAndDragButton(categoryText = stringResource(id = taskItem.itemOfCategory.category.text))
+            TitleAndDragButton(
+                categoryText = stringResource(id = taskItem.itemOfCategory.category.text),
+                parentAccess = parentAccess
+            )
             TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess)
             TaskName(
                 modifier = Modifier.height(46.dp),
@@ -58,7 +61,7 @@ fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask, pare
 }
 
 @Composable
-fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String) {
+fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String, parentAccess: Boolean) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -72,17 +75,19 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String) {
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                )
+        if(parentAccess) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
             ) {
-                Image(painter = painterResource(id = R.drawable.drag_icon), contentDescription = "")
+                Button(
+                    onClick = { /*TODO*/ },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                    )
+                ) {
+                    Image(painter = painterResource(id = R.drawable.drag_icon), contentDescription = "")
+                }
             }
         }
     }
@@ -107,7 +112,7 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAcce
                 .weight(0.5f),
             contentScale = ContentScale.FillHeight
         )
-        if(parentAccess) {
+        if (parentAccess) {
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
