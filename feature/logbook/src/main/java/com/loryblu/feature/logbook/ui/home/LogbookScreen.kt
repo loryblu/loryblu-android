@@ -2,15 +2,16 @@ package com.loryblu.feature.logbook.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -26,10 +27,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,11 +46,13 @@ import androidx.compose.ui.unit.sp
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBContentHome
-import com.loryblu.data.logbook.local.getAllShiftItems
+import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
+import com.loryblu.feature.logbook.ui.components.ParentAccessSwitch
 import com.loryblu.feature.logbook.ui.components.ShiftBar
+import com.loryblu.feature.logbook.ui.components.TaskCardComponent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,27 +62,36 @@ fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
-    selectADayOfWeek: (Int) -> Unit,
-    shouldShowAddedSnack: Boolean,
+    selectADay: (Int, Int) -> Unit,
+    shouldShowAddedSnack: Pair<Boolean, Boolean>,
 ) {
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(shouldShowAddedSnack) {
-        if(shouldShowAddedSnack) {
+        if (shouldShowAddedSnack.first) {
             scope.launch {
-                snackbarHostState.showSnackbar("Rotina cadastrada com Sucesso!")
+                if (shouldShowAddedSnack.second) {
+                    snackbarHostState.showSnackbar("Rotina criada com Sucesso!")
+                } else {
+                    snackbarHostState.showSnackbar("Não foi possível cadastrar nova rotina")
+                }
             }
+
         }
     }
 
-    val selectedDay = remember {
-        mutableStateListOf<Int>(1)
+    var selectedDay by remember {
+        mutableIntStateOf(0)
     }
-    val shiftSelected = remember {
-        mutableStateOf(0)
+
+    var shiftSelected by remember {
+        mutableIntStateOf(0)
     }
+
+    var parentAccess by remember { mutableStateOf(true) }
+
 
     Scaffold(
         topBar = {
@@ -94,7 +108,7 @@ fun LogbookScreen(
                 snackbar = {
                     Snackbar(
                         snackbarData = it,
-                        containerColor = Color.Green,
+                        containerColor = if (shouldShowAddedSnack.second) Color.Green else Color.Red,
                         contentColor = Color.White
                     )
                 }
@@ -108,21 +122,57 @@ fun LogbookScreen(
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
             ) {
-
                 TasksSelector(
                     selectedDay = selectedDay,
-                    shiftSelected = shiftSelected.value,
-                    onShiftChange = selectADayOfWeek
+                    shiftSelected = shiftSelected,
+                    onShiftChange = {
+                        shiftSelected = it
+                        selectADay(selectedDay, shiftSelected)
+                    },
+                    onSelectedDaysChange = {
+                        selectedDay = it
+                        selectADay(selectedDay, shiftSelected)
+                    }
                 )
 
-                Spacer(modifier = Modifier.height(50.dp))
+                Spacer(modifier = Modifier.height(22.dp))
+
                 Column(
-                    horizontalAlignment = Alignment.End,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(0.85f)
                 ) {
-                    NoAssignmentsLayout()
+                    if (userTasks.data.isNullOrEmpty()) {
+                        NoAssignmentsLayout(modifier = Modifier.fillMaxSize())
+                    } else {
+                        ParentAccessSwitch(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 16.dp),
+                            checked = parentAccess,
+                            onCheckedClick = {
+                                parentAccess = it
+                            }
+                        )
+                        LazyColumn {
+                            items(
+                                count = userTasks.data!!.size,
+                                key = {
+                                    userTasks.data!![it].id
+                                },
+                                itemContent = { index ->
+                                    TaskCardComponent(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        taskItem = userTasks.data!![index],
+                                        parentAccess = parentAccess,
+                                    )
+                                }
+                            )
+                        }
+                    }
                 }
                 Box(
                     contentAlignment = Alignment.BottomEnd,
@@ -155,34 +205,41 @@ fun LogbookScreen(
 }
 
 @Composable
-fun ColumnScope.NoAssignmentsLayout(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(com.loryblu.data.logbook.R.drawable.screen_home_logbook),
-        contentDescription = null,
-        modifier = Modifier
-            .width(327.dp)
-            .height(302.dp)
-            .align(Alignment.CenterHorizontally),
-        contentScale = ContentScale.Crop
-    )
-    Text(
-        fontSize = 18.sp,
-        text = stringResource(R.string.no_task_found),
-        color = Color.Black,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .padding(
-                top = 28.dp,
-                end = 9.dp
-            )
-            .align(Alignment.CenterHorizontally)
-    )
+fun NoAssignmentsLayout(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(com.loryblu.data.logbook.R.drawable.screen_home_logbook),
+            contentDescription = null,
+            modifier = Modifier
+                .width(327.dp)
+                .height(302.dp)
+                .align(Alignment.CenterHorizontally),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            fontSize = 18.sp,
+            text = stringResource(R.string.no_task_found),
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(
+                    top = 28.dp,
+                    end = 9.dp
+                )
+                .align(Alignment.CenterHorizontally)
+        )
+    }
 }
 
 @Composable
 fun TasksSelector(
-    selectedDay: List<Int>,
+    selectedDay: Int,
     shiftSelected: Int,
+    onSelectedDaysChange: (Int) -> Unit,
     onShiftChange: (Int) -> Unit,
 ) {
     Column(
@@ -191,17 +248,24 @@ fun TasksSelector(
             .fillMaxWidth()
     ) {
         FrequencyBar(
-            selectedDay = selectedDay,
+            modifier = Modifier.padding(horizontal = 14.dp),
+            selectedDay = listOf(selectedDay),
             onDayClicked = {
-                onShiftChange(it)
+                if (selectedDay != it) {
+                    onSelectedDaysChange(it)
+                }
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
         ShiftBar(
             modifier = Modifier.padding(horizontal = 10.dp),
             shiftSelected = shiftSelected,
-            onShiftChange = {},
-            options = getAllShiftItems()
+            onShiftChange = {
+                if (shiftSelected != it) {
+                    onShiftChange(it)
+                }
+            },
+            options = ShiftItem.getShiftItems()
         )
     }
 }
@@ -213,7 +277,7 @@ fun HomeLogbookScreenPreview() {
         onBackButtonClicked = {},
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
-        selectADayOfWeek = {},
-        shouldShowAddedSnack = false,
+        shouldShowAddedSnack = Pair(false, false),
+        selectADay = { _, _ -> }
     )
 }

@@ -13,8 +13,8 @@ sealed class Screen(val route: String) {
     data object Dashboard: Screen(route = "dashboard_screen")
 
     // Logbook
-    data object Logbook: Screen(route = "logbook_screen?added={ADDED_ANIMATION}") {
-        fun withAddedToast() = "logbook_screen?added=true"
+    data object Logbook: Screen(route = "logbook_screen?added={ADDED_ANIMATION}?success={SUCCESS_ADD}") {
+        fun withAddedToast(success: Boolean = true) = "logbook_screen?added=true?success=$success"
     }
     data object CategoryScreen: Screen(route = "category_screen")
     data object TaskScreen: Screen(route = "task_screen")

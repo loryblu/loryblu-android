@@ -1,6 +1,8 @@
 package com.loryblu.data.logbook.util
 
 import com.loryblu.core.network.model.ApiResponseWithData
+import com.loryblu.data.logbook.local.ShiftItem
+import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.data.logbook.remote.model.LogbookTaskRemote
 import io.ktor.client.call.body
@@ -12,17 +14,7 @@ suspend fun HttpResponse.toListOfLogbookTask(): ApiResponseWithData<List<Logbook
         HttpStatusCode.OK -> {
             val remote = this.body<LogbookTaskRemote?>() ?: return ApiResponseWithData.EmptyData()
             return ApiResponseWithData.Success(
-                remote.data.routine.map {
-                    LogbookTask(
-                        categoryId = it.categoryId,
-                        categoryTitle = it.categoryTitle,
-                        frequency = it.frequency,
-                        id = it.id,
-                        order = it.order,
-                        shift = it.shift,
-                        updatedAt = it.updatedAt
-                    )
-                }
+                remote.toLogbookTask()
             )
         }
 
@@ -30,4 +22,36 @@ suspend fun HttpResponse.toListOfLogbookTask(): ApiResponseWithData<List<Logbook
             ApiResponseWithData.DefaultError()
         }
     }
+}
+
+fun LogbookTaskRemote.toLogbookTask(): List<LogbookTask> {
+    val idToCard = TaskItem.getAllTaskItems().associateBy { it.taskId }
+    val logbookItems = mutableListOf<LogbookTask>()
+
+    this.data.routine.map { remote ->
+        logbookItems.add(
+            LogbookTask(
+            itemOfCategory = idToCard[remote.categoryId]!!,
+            frequency = remote.frequency,
+            id = remote.id,
+            order = remote.order,
+            shift = ShiftItem.getShiftItem(remote.shift),
+            updatedAt = remote.updatedAt
+            )
+        )
+    }
+    this.data.study.map { remote ->
+        logbookItems.add(
+            LogbookTask(
+                itemOfCategory = idToCard[remote.categoryId]!!,
+                frequency = remote.frequency,
+                id = remote.id,
+                order = remote.order,
+                shift = ShiftItem.getShiftItem(remote.shift),
+                updatedAt = remote.updatedAt
+            )
+        )
+    }
+
+    return logbookItems
 }

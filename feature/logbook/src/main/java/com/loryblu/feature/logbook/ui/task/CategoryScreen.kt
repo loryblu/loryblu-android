@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -34,23 +35,22 @@ import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
-import com.loryblu.data.logbook.local.getAllCategoryItems
+import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.feature.home.R
-import com.loryblu.feature.logbook.model.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryScreen(
     onBackButtonClicked: () -> Unit,
-    onNextScreenClicked: (category: Category) -> Unit,
+    onNextScreenClicked: (category: CategoryItem) -> Unit,
     onCloseButtonClicked: () -> Unit,
 ) {
 
     var cardClicked by rememberSaveable {
-        mutableStateOf(-1)
+        mutableIntStateOf(-1)
     }
 
-    val category = getAllCategoryItems()
+    val category = CategoryItem.getAllCategory()
     Scaffold(
         topBar = {
             LBTopAppBar(
@@ -104,9 +104,9 @@ fun CategoryScreen(
                         textRes = com.loryblu.core.ui.R.string.next,
                         onClick = { onNextScreenClicked(
                             when(cardClicked){
-                                0 -> Category.ROUTINE
-                                1 -> Category.STUDIOUS
-                                else -> Category.ROUTINE
+                                0 -> CategoryItem.Routine
+                                1 -> CategoryItem.Student
+                                else -> CategoryItem.Routine
                             }
                         ) },
                         buttonColors = ButtonDefaults.buttonColors(

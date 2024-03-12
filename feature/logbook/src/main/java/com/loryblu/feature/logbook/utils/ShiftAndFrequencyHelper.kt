@@ -28,23 +28,57 @@ fun intToShiftString(shift: Int): String {
 }
 
 fun getDaySelected(days: List<String>): List<Int> {
-    val selectedDays = mutableListOf<Int>()
-    val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
-    nameOfWeekDays.forEachIndexed { index, day ->
-        if (days.any { it.contains(day) }) {
-            selectedDays.add(index)
-        }
-    }
-    return selectedDays
+    return days.map { dayOfWeekToInt(it) }
 }
 
-fun getNameOfDaySelected(days: List<Int>) : List<String> {
-    val selectedDays = mutableListOf<String>()
-    val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
-    nameOfWeekDays.forEachIndexed { index, day ->
-        if (days.contains(index)) {
-            selectedDays.add(day)
+fun getNameOfDaySelected(days: List<Int>): List<String> {
+    return days.map { intToDayOfWeek(it) }
+}
+
+fun dayOfWeekToInt(day: String): Int {
+    return when (day) {
+        "sun" -> {
+            0
+        }
+
+        "mon" -> {
+            1
+        }
+
+        "tue" -> {
+            2
+        }
+
+        "wed" -> {
+            3
+        }
+
+        "thu" -> {
+            4
+        }
+
+        "fri" -> {
+            5
+        }
+
+        "sat" -> {
+            6
+        }
+        else -> {
+            0
         }
     }
-    return selectedDays
+}
+
+fun intToDayOfWeek(day: Int): String {
+    return when (day) {
+        0 -> "sun"
+        1 -> "mon"
+        2 -> "tue"
+        3 -> "wed"
+        4 -> "thu"
+        5 -> "fri"
+        6 -> "sat"
+        else -> "sun"
+    }
 }

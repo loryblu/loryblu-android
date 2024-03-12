@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 
 sealed class ApiResponse {
     data object Success : ApiResponse()
+    data object Loading: ApiResponse()
     data object ErrorDefault : ApiResponse()
     data class ErrorWithDetail(val detail: ErrorDetail) : ApiResponse()
+    data object Default : ApiResponse()
 }

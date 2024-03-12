@@ -1,6 +1,6 @@
 package com.loryblu.data.auth.api
 
-import com.loryblu.core.network.extensions.toApiResponse
+import com.loryblu.core.network.extensions.toApiResponseWithDetail
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.HttpRoutes
 import com.loryblu.data.auth.model.RegisterRequest
@@ -22,7 +22,7 @@ internal class RegisterApiImpl(
             client.post(HttpRoutes.REGISTER) {
                 setBody(registerRequest)
                 contentType(ContentType.Application.Json)
-            }.toApiResponse()
+            }.toApiResponseWithDetail()
         } catch (e: RedirectResponseException) {
             // 3xx - responses
             handleErrorResponse(e.response.status)

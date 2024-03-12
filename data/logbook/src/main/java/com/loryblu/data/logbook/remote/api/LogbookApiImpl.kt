@@ -2,6 +2,9 @@ package com.loryblu.data.logbook.remote.api
 
 import com.loryblu.core.network.HttpRoutes
 import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.extensions.toApiResponse
+import com.loryblu.core.network.extensions.toApiResponseWithDetail
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.data.logbook.remote.model.LogbookTaskRequest
@@ -9,6 +12,7 @@ import com.loryblu.data.logbook.util.toListOfLogbookTask
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -21,16 +25,19 @@ class LogbookApiImpl(
     private val client: HttpClient,
     private val session: Session
 ): LogbookApi {
-    override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) {
+    override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) = flow {
+        emit(ApiResponse.Loading)
         try {
-            client.post(HttpRoutes.TASK) {
-                setBody(logbookTaskRequest)
-                contentType(ContentType.Application.Json)
-                bearerAuth(session.getToken())
-            }
-            return
+            emit(
+                client.post(HttpRoutes.TASK) {
+                    setBody(logbookTaskRequest)
+                    contentType(ContentType.Application.Json)
+                    bearerAuth(session.getToken())
+                }.toApiResponse()
+            )
         } catch (e: Exception) {
-            throw e
+            e.printStackTrace()
+            emit(ApiResponse.ErrorDefault)
         }
     }
 
@@ -42,10 +49,11 @@ class LogbookApiImpl(
             emit(
                 client.get(HttpRoutes.TASK) {
                     parameters {
-                        append("childrenId", session.getChildId().toString())
+                        parameter("childrenId", session.getChildId().toString())
                         nameOfWeekDays.forEach {
-                            append("frequency", it)
+                            parameter("frequency", it)
                         }
+                        parameter("perPage", 70)
                     }
                     contentType(ContentType.Application.Json)
                     bearerAuth(session.getToken())

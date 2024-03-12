@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,12 +54,10 @@ import com.loryblu.core.ui.theme.LBCardSoftBlue
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
-import com.loryblu.data.logbook.local.ItemOfCategory
-import com.loryblu.data.logbook.local.getAllCategoryTaskItems
-import com.loryblu.data.logbook.local.getAllRoutineItems
-import com.loryblu.data.logbook.local.getAllShiftItems
+import com.loryblu.data.logbook.local.CategoryItem
+import com.loryblu.data.logbook.local.ShiftItem
+import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.home.R
-import com.loryblu.feature.logbook.model.Category
 import com.loryblu.feature.logbook.model.LogbookTaskModel
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ShiftBar
@@ -78,12 +77,14 @@ fun SummaryScreen(
     onTaskNavigate: () -> Unit,
 ) {
     var shiftSelected by remember {
-        mutableStateOf(shiftToInt(logbookTaskModel.shift))
+        mutableIntStateOf(shiftToInt(logbookTaskModel.shift))
     }
 
-    val selectedDay by remember {
-        mutableStateOf(getDaySelected(logbookTaskModel.frequency).toMutableStateList())
+    var selectedDay by remember {
+        mutableStateOf(emptyList<Int>())
     }
+
+    selectedDay = getDaySelected(logbookTaskModel.frequency)
 
     Scaffold(
         topBar = {
@@ -159,7 +160,7 @@ fun SummaryScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = logbookTaskModel.category.action,
+                                    text = stringResource(id = logbookTaskModel.category.text),
                                     style = TextStyle(
                                         fontSize = 16.sp,
                                         lineHeight = 18.sp,
@@ -248,7 +249,7 @@ fun SummaryScreen(
                         onShiftChange(it)
                         shiftSelected = it
                     },
-                    options = getAllShiftItems()
+                    options = ShiftItem.getShiftItems()
                 )
 
                 Spacer(modifier = Modifier.size(20.dp))
@@ -281,10 +282,10 @@ fun SummaryScreen(
                 FrequencyBar(
                     selectedDay = selectedDay,
                     onDayClicked = {
-                        if (selectedDay.contains(it)) {
-                            selectedDay.remove(it)
+                        selectedDay = if (it in selectedDay) {
+                            selectedDay - it
                         } else {
-                            selectedDay.add(it)
+                            selectedDay + it
                         }
                         onFrequencyChange(selectedDay)
                     }
@@ -306,7 +307,7 @@ fun SummaryScreen(
                         containerColor = LBSkyBlue
                     ),
                     textColor = Color.White,
-                    areAllFieldsValid = true
+                    areAllFieldsValid = selectedDay != emptyList<Int>()
                 )
             }
         }
@@ -314,8 +315,8 @@ fun SummaryScreen(
 }
 
 @Composable
-private fun getTask(taskId: String): ItemOfCategory? {
-    val tasks = getAllCategoryTaskItems()
+private fun getTask(taskId: String): TaskItem? {
+    val tasks = TaskItem.getAllTaskItems()
     val task = tasks.find {
         it.taskId == taskId
     }
@@ -330,7 +331,7 @@ fun SummaryPreview() {
         onBackButtonClicked = { },
         onCloseButtonClicked = { },
         logbookTaskModel = LogbookTaskModel(
-            category = Category.ROUTINE,
+            category = CategoryItem.Routine,
             task = "6dfc15bb-f422-4c75-b2cc-bf3e9806c76a",
             shift = "morning",
             frequency = listOf("sun", "mon")

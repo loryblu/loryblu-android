@@ -36,7 +36,7 @@ import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue
-import com.loryblu.data.logbook.local.getAllShiftItems
+import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
 
@@ -59,7 +59,7 @@ fun ShiftScreen(
     val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
     val shiftName = arrayOf("morning", "afternoon", "night")
 
-    val shiftItems = getAllShiftItems()
+    val shiftItems = ShiftItem.getShiftItems()
 
     Scaffold(
         topBar = {
