@@ -20,6 +20,8 @@ import com.loryblu.feature.logbook.ui.task.TaskScreen
 import com.loryblu.feature.logbook.utils.getNameOfDaySelected
 import com.loryblu.feature.logbook.utils.intToShiftString
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
+import java.util.Calendar
 
 fun NavGraphBuilder.logbookNavigation(
     navController: NavController,
@@ -33,8 +35,8 @@ fun NavGraphBuilder.logbookNavigation(
             route = Screen.Logbook.route,
             arguments = listOf(
                 navArgument("ADDED_ANIMATION") {
-                defaultValue = false
-                type = NavType.BoolType
+                    defaultValue = false
+                    type = NavType.BoolType
                 },
                 navArgument("SUCCESS_ADD") {
                     defaultValue = false
@@ -46,15 +48,32 @@ fun NavGraphBuilder.logbookNavigation(
 
             val userTasks = viewModel.userTasks.collectAsState()
 
+            LaunchedEffect(key1 = Unit) {
+                val data = LocalDate.now()
+                val dayOfWeek = data.dayOfWeek.value
+                viewModel.selectADayOfWeek(dayOfWeek, 3)
+            }
+
+            val hasAddedANewTask = backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false
+
+            if (hasAddedANewTask) {
+                viewModel.selectADayOfWeek(
+                    viewModel.lastDayOfWeek,
+                    viewModel.lastShift,
+                    force = true
+                )
+            }
+
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
                 onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
                 userTasks = userTasks.value,
-                selectAShift = { viewModel.selectAShift(it) },
-                selectADay = { viewModel.selectADayOfWeek(it) },
+                selectADay = { day, shift ->
+                    viewModel.selectADayOfWeek(day, shift)
+                },
                 shouldShowAddedSnack =
                 Pair(
-                    backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false,
+                    hasAddedANewTask,
                     backStack.arguments?.getBoolean("SUCCESS_ADD") ?: false
                 ),
             )
@@ -129,12 +148,14 @@ fun NavGraphBuilder.logbookNavigation(
                                 popUpTo(Screen.Logbook.route) { inclusive = true }
                             }
                         }
+
                         is ApiResponse.ErrorDefault -> {
                             navController.navigate(Screen.Logbook.withAddedToast(success = false)) {
                                 popUpTo(Screen.Logbook.route) { inclusive = true }
                             }
                         }
-                        else -> { }
+
+                        else -> {}
                     }
 
                 }

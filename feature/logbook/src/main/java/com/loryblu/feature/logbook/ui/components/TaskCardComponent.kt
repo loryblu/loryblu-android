@@ -40,7 +40,7 @@ import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 
 @Composable
-fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
+fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAccess: Boolean) {
     ElevatedCard(
         modifier
             .height(208.dp)
@@ -48,8 +48,11 @@ fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             TitleAndDragButton(categoryText = stringResource(id = taskItem.itemOfCategory.category.text))
-            TaskContent(modifier = Modifier.height(126.dp), taskItem)
-            TaskName(modifier = Modifier.height(46.dp), taskName = stringResource(id = taskItem.itemOfCategory.text))
+            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess)
+            TaskName(
+                modifier = Modifier.height(46.dp),
+                taskName = stringResource(id = taskItem.itemOfCategory.text)
+            )
         }
     }
 }
@@ -86,7 +89,7 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String) {
 }
 
 @Composable
-fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
+fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAccess: Boolean) {
     Row(
         modifier
             .background(taskItem.shift.color)
@@ -98,51 +101,56 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask) {
             painterResource(id = taskItem.itemOfCategory.drawable),
             contentDescription = "",
             modifier = Modifier
-                .fillMaxHeight()
-                .padding(start = 48.dp, end = 32.dp, top = 12.dp, bottom = 12.dp),
+                .padding(vertical = 12.dp)
+                .height(107.dp)
+                .width(140.dp)
+                .weight(0.5f),
             contentScale = ContentScale.FillHeight
         )
-        Column(
-            verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .padding(start = 32.dp, end = 12.dp),
-            horizontalAlignment = Alignment.End,
-        ) {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LBSoftBlue,
-                    contentColor = Color.Black
-                ),
-                shape = ShapeDefaults.Small,
-                contentPadding = PaddingValues(0.dp)
+        if(parentAccess) {
+            Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .padding(start = 32.dp, end = 12.dp)
+                    .weight(0.5f),
+                horizontalAlignment = Alignment.End,
             ) {
-                Icon(imageVector = Icons.Filled.Edit, contentDescription = "as")
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "Editar",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp,
-                )
-            }
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LBSoftBlue,
-                    contentColor = Color.Black
-                ),
-                shape = ShapeDefaults.Small,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
-            ) {
-                Icon(imageVector = Icons.Outlined.Delete, contentDescription = "as")
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "Deletar",
-                )
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LBSoftBlue,
+                        contentColor = Color.Black
+                    ),
+                    shape = ShapeDefaults.Small,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Icon(imageVector = Icons.Filled.Edit, contentDescription = "as")
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "Editar",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                    )
+                }
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LBSoftBlue,
+                        contentColor = Color.Black
+                    ),
+                    shape = ShapeDefaults.Small,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+                ) {
+                    Icon(imageVector = Icons.Outlined.Delete, contentDescription = "as")
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "Deletar",
+                    )
+                }
             }
         }
     }

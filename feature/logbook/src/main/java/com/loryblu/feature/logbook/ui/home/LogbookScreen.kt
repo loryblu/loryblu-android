@@ -2,9 +2,9 @@ package com.loryblu.feature.logbook.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,7 +30,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -51,6 +50,7 @@ import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
+import com.loryblu.feature.logbook.ui.components.ParentAccessSwitch
 import com.loryblu.feature.logbook.ui.components.ShiftBar
 import com.loryblu.feature.logbook.ui.components.TaskCardComponent
 import kotlinx.coroutines.launch
@@ -62,8 +62,7 @@ fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
-    selectAShift: (Int) -> Unit,
-    selectADay: (Int) -> Unit,
+    selectADay: (Int, Int) -> Unit,
     shouldShowAddedSnack: Pair<Boolean, Boolean>,
 ) {
 
@@ -90,6 +89,8 @@ fun LogbookScreen(
     var shiftSelected by remember {
         mutableIntStateOf(0)
     }
+
+    var parentAccess by remember { mutableStateOf(true) }
 
 
     Scaffold(
@@ -121,21 +122,21 @@ fun LogbookScreen(
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
             ) {
-
                 TasksSelector(
                     selectedDay = selectedDay,
                     shiftSelected = shiftSelected,
                     onShiftChange = {
                         shiftSelected = it
-                        selectAShift(shiftSelected)
+                        selectADay(selectedDay, shiftSelected)
                     },
                     onSelectedDaysChange = {
                         selectedDay = it
-                        selectADay(selectedDay)
+                        selectADay(selectedDay, shiftSelected)
                     }
                 )
 
-                Spacer(modifier = Modifier.height(50.dp))
+                Spacer(modifier = Modifier.height(22.dp))
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -143,8 +144,17 @@ fun LogbookScreen(
                         .weight(0.85f)
                 ) {
                     if (userTasks.data.isNullOrEmpty()) {
-                        NoAssignmentsLayout()
+                        NoAssignmentsLayout(modifier = Modifier.fillMaxSize())
                     } else {
+                        ParentAccessSwitch(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 16.dp),
+                            checked = parentAccess,
+                            onCheckedClick = {
+                                parentAccess = it
+                            }
+                        )
                         LazyColumn {
                             items(
                                 count = userTasks.data!!.size,
@@ -156,7 +166,8 @@ fun LogbookScreen(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(16.dp),
-                                        taskItem = userTasks.data!![index]
+                                        taskItem = userTasks.data!![index],
+                                        parentAccess = parentAccess,
                                     )
                                 }
                             )
@@ -194,28 +205,34 @@ fun LogbookScreen(
 }
 
 @Composable
-fun ColumnScope.NoAssignmentsLayout(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(com.loryblu.data.logbook.R.drawable.screen_home_logbook),
-        contentDescription = null,
-        modifier = Modifier
-            .width(327.dp)
-            .height(302.dp)
-            .align(Alignment.CenterHorizontally),
-        contentScale = ContentScale.Crop
-    )
-    Text(
-        fontSize = 18.sp,
-        text = stringResource(R.string.no_task_found),
-        color = Color.Black,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .padding(
-                top = 28.dp,
-                end = 9.dp
-            )
-            .align(Alignment.CenterHorizontally)
-    )
+fun NoAssignmentsLayout(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(com.loryblu.data.logbook.R.drawable.screen_home_logbook),
+            contentDescription = null,
+            modifier = Modifier
+                .width(327.dp)
+                .height(302.dp)
+                .align(Alignment.CenterHorizontally),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            fontSize = 18.sp,
+            text = stringResource(R.string.no_task_found),
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(
+                    top = 28.dp,
+                    end = 9.dp
+                )
+                .align(Alignment.CenterHorizontally)
+        )
+    }
 }
 
 @Composable
@@ -231,6 +248,7 @@ fun TasksSelector(
             .fillMaxWidth()
     ) {
         FrequencyBar(
+            modifier = Modifier.padding(horizontal = 14.dp),
             selectedDay = listOf(selectedDay),
             onDayClicked = {
                 if (selectedDay != it) {
@@ -259,8 +277,7 @@ fun HomeLogbookScreenPreview() {
         onBackButtonClicked = {},
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
-        selectAShift = {},
         shouldShowAddedSnack = Pair(false, false),
-        selectADay = { }
+        selectADay = { _, _ -> }
     )
 }

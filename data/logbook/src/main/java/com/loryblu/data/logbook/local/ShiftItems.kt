@@ -43,6 +43,13 @@ sealed class ShiftItem(
             "night" -> Night
             else -> Morning
         }
+
+        fun getShiftItem(int: Int) : ShiftItem = when (int) {
+            0 -> Morning
+            1 -> Afternoon
+            2 -> Night
+            else -> Morning
+        }
     }
 
 }

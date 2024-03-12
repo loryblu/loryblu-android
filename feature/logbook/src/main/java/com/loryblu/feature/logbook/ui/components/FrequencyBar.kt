@@ -30,7 +30,8 @@ fun FrequencyBar(
     Row(
         modifier = modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .background(LBFrequencyBackgroundBlue, shape = RoundedCornerShape(16)),
+            .background(LBFrequencyBackgroundBlue, shape = RoundedCornerShape(16))
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         daysOfWeek.forEachIndexed { index, day ->

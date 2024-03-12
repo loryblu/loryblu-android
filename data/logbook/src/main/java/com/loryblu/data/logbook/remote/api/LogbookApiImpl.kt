@@ -53,6 +53,7 @@ class LogbookApiImpl(
                         nameOfWeekDays.forEach {
                             parameter("frequency", it)
                         }
+                        parameter("perPage", 70)
                     }
                     contentType(ContentType.Application.Json)
                     bearerAuth(session.getToken())
