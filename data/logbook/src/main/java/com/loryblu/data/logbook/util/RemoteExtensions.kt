@@ -26,15 +26,32 @@ suspend fun HttpResponse.toListOfLogbookTask(): ApiResponseWithData<List<Logbook
 
 fun LogbookTaskRemote.toLogbookTask(): List<LogbookTask> {
     val idToCard = TaskItem.getAllTaskItems().associateBy { it.taskId }
+    val logbookItems = mutableListOf<LogbookTask>()
 
-    return this.data.routine.map { remote ->
-        LogbookTask(
+    this.data.routine.map { remote ->
+        logbookItems.add(
+            LogbookTask(
             itemOfCategory = idToCard[remote.categoryId]!!,
             frequency = remote.frequency,
             id = remote.id,
             order = remote.order,
             shift = ShiftItem.getShiftItem(remote.shift),
             updatedAt = remote.updatedAt
+            )
         )
     }
+    this.data.study.map { remote ->
+        logbookItems.add(
+            LogbookTask(
+                itemOfCategory = idToCard[remote.categoryId]!!,
+                frequency = remote.frequency,
+                id = remote.id,
+                order = remote.order,
+                shift = ShiftItem.getShiftItem(remote.shift),
+                updatedAt = remote.updatedAt
+            )
+        )
+    }
+
+    return logbookItems
 }
