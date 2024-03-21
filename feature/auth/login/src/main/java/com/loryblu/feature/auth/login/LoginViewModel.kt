@@ -25,59 +25,38 @@ class LoginViewModel(
     private val _signInResult = MutableStateFlow<SignInResult>(SignInResult.Empty)
     val signInResult = _signInResult.asStateFlow()
 
-    fun emailState(email: String): EmailInputValid {
-        return when {
-            email.isEmpty() -> {
-                EmailInputValid.Error(R.string.empty_email)
-            }
-
-            email.isEmailValid().not() -> {
-                EmailInputValid.Error(R.string.invalid_field)
-            }
-
-            else -> {
-                EmailInputValid.Valid
-            }
-        }
+    fun emailState(email: String) = when {
+        email.isEmpty() -> EmailInputValid.Error(R.string.empty_email)
+        email.isEmailValid().not() -> EmailInputValid.Error(R.string.invalid_field)
+        else -> EmailInputValid.Valid
     }
 
-    fun passwordState(password: String): PasswordInputValid {
-        return when {
-            password.isEmpty() -> {
-                PasswordInputValid.Error(R.string.password_is_empty)
-            }
-
-            else -> {
-                PasswordInputValid.Valid
-            }
-        }
+    fun passwordState(password: String) = when {
+        password.isEmpty() -> PasswordInputValid.Error(R.string.password_is_empty)
+        else -> PasswordInputValid.Valid
     }
 
-    fun loginWithEmailAndPassword(loginRequest: LoginRequest) {
-        viewModelScope.launch {
-            _signInResult.value = SignInResult.Loading
-            try {
-                _signInResult.value = loginApi.loginUser(loginRequest)
-            } catch (e: Exception) {
-                _signInResult.value = SignInResult.Error(
-                    e.localizedMessage ?: "Unknown error"
-                )
-            }
+    fun loginWithEmailAndPassword(loginRequest: LoginRequest) = viewModelScope.launch {
+        _signInResult.value = SignInResult.Loading
+        _signInResult.value = try {
+             loginApi.loginUser(loginRequest)
+        } catch (e: Exception) {
+            SignInResult.Error(e.localizedMessage ?: "Unknown error")
         }
     }
 
     fun rememberLogin(rememberLogin: Boolean, loginResponse: LoginResponse) {
         viewModelScope.launch {
             session.saveToken(loginResponse.data.accessToken)
-            session.saveChild(
-                loginResponse.data.user.childrens[0].id,
-                loginResponse.data.user.childrens[0].fullname
+            val child = loginResponse.data.user.childrens.firstOrNull()
+            child?.apply { session.saveChild(id, fullname) }
+            // TODO: Remove until task is up
+            /*
+            if (rememberLogin) session.saveRememberLogin(
+                rememberLogin = true,
+                refreshToken = loginResponse.data.refreshToken
             )
-            // Remove until task is up
-//            if (rememberLogin) session.saveRememberLogin(
-//                rememberLogin = true,
-//                refreshToken = loginResponse.data.refreshToken
-//            )
+            */
         }
     }
 }
