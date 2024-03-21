@@ -15,6 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.compose.rememberNavController
@@ -75,10 +76,8 @@ fun PermissionDialog(context: Context) {
             properties = DialogProperties(
                 usePlatformDefaultWidth = true
             ),
-            title = { Text("Permissão necessária") },
-            text = {
-                Text("Para utilizar o Chucker no modo de Debug é necessário ativar as notificações do aplicativo no Android 13+")
-            },
+            title = { Text(stringResource(id = R.string.permission_required)) },
+            text = { Text(stringResource(id = R.string.notifications_required)) },
             onDismissRequest = { openDialog.value = true },
 
             dismissButton = {
@@ -87,7 +86,7 @@ fun PermissionDialog(context: Context) {
                         openDialog.value = false
                     },
                 ) {
-                    Text(text = "Cancelar")
+                    Text(text = stringResource(id = R.string.cancel_button))
                 }
             },
             confirmButton = {
@@ -99,7 +98,7 @@ fun PermissionDialog(context: Context) {
                     }
                     openDialog.value = false
                     startActivity(context, intent, null)
-                }) { Text(text = "Confirmar") }
+                }) { Text(text = stringResource(id = R.string.confirm_button)) }
             },
         )
     }
