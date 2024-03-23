@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -54,7 +55,7 @@ fun TaskScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var cardClicked by rememberSaveable {
-        mutableStateOf(-1)
+        mutableIntStateOf(-1)
     }
 
     val taskItems = TaskItem.getAllTaskItems().filter { it.category == category }

@@ -19,4 +19,16 @@
     <string name="taskTitle">Tarefa:</string>
     <string name="shiftTitle">Turno:</string>
     <string name="frequencyTitle">Frequência:</string>
+    <string name="edit_button">Editar</string>
+    <string name="delete_button">Deletar</string>
+
+    <!-- Content Descriptions -->
+    <string name="drag_icon">Ícone de Arrastar</string>
+    <string name="task_item_drawable">Desenho do Item de Tarefa</string>
+    <string name="edit_icon">Ícone de Editar</string>
+    <string name="outlined_delete_icon">Ícone de Deletar</string>
+
+    <!-- SnackBars -->
+    <string name="routine_created">Rotina criada com sucesso</string>
+    <string name="routine_not_created">Não foi possível cadastrar nova rotina</string>
 </resources>

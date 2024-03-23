@@ -18,4 +18,16 @@
     <string name="taskTitle">Task:</string>
     <string name="shiftTitle">Shift:</string>
     <string name="frequencyTitle">Frequency:</string>
+    <string name="edit_button">Edit</string>
+    <string name="delete_button">Delete</string>
+
+    <!-- Content Descriptions -->
+    <string name="drag_icon">Drag Icon</string>
+    <string name="task_item_drawable">Task Item Drawable</string>
+    <string name="edit_icon">Edit Icon</string>
+    <string name="outlined_delete_icon">Delete Icon</string>
+
+    <!-- SnackBars -->
+    <string name="routine_created">Routine successfully created</string>
+    <string name="routine_not_created">We could not create a new routine</string>
 </resources>

@@ -75,7 +75,7 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String, pare
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
-        if(parentAccess) {
+        if (parentAccess) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
@@ -86,7 +86,12 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String, pare
                         containerColor = Color.Transparent,
                     )
                 ) {
-                    Image(painter = painterResource(id = R.drawable.drag_icon), contentDescription = "")
+                    Image(
+                        painter = painterResource(id = R.drawable.drag_icon),
+                        contentDescription = stringResource(
+                            id = R.string.drag_icon
+                        )
+                    )
                 }
             }
         }
@@ -101,10 +106,10 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAcce
             .fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         Image(
-            painter =
-            painterResource(id = taskItem.itemOfCategory.drawable),
-            contentDescription = "",
+            painter = painterResource(id = taskItem.itemOfCategory.drawable),
+            contentDescription = stringResource(id = R.string.task_item_drawable),
             modifier = Modifier
                 .padding(vertical = 12.dp)
                 .height(107.dp)
@@ -112,6 +117,7 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAcce
                 .weight(0.5f),
             contentScale = ContentScale.FillHeight
         )
+
         if (parentAccess) {
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
@@ -132,10 +138,16 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAcce
                     shape = ShapeDefaults.Small,
                     contentPadding = PaddingValues(0.dp)
                 ) {
-                    Icon(imageVector = Icons.Filled.Edit, contentDescription = "as")
+
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = stringResource(id = R.string.edit_icon)
+                    )
+
                     Spacer(modifier = Modifier.width(12.dp))
+
                     Text(
-                        text = "Editar",
+                        text = stringResource(id = R.string.edit_button),
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                     )
@@ -150,10 +162,13 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAcce
                     shape = ShapeDefaults.Small,
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
                 ) {
-                    Icon(imageVector = Icons.Outlined.Delete, contentDescription = "as")
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        contentDescription = stringResource(id = R.string.outlined_delete_icon)
+                    )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Deletar",
+                        text = stringResource(id = R.string.delete_button),
                     )
                 }
             }

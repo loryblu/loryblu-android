@@ -55,7 +55,6 @@ import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.LoginResponse
-import com.loryblu.data.auth.model.SignInFields
 import com.loryblu.data.auth.model.SignInResult
 import kotlinx.coroutines.launch
 
@@ -81,11 +80,11 @@ fun LoginScreen(
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
     var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
     var showApiErrors by remember { mutableStateOf(false) }
-    var apiErrorMessage by rememberSaveable { mutableStateOf<String>("") }
+    var apiErrorMessage by rememberSaveable { mutableStateOf("") }
     var rememberButtonChecked by rememberSaveable { mutableStateOf(false) }
 
-    var showEmailApiError by remember { mutableStateOf(false) }
-    var showPasswordApiError by remember { mutableStateOf(false) }
+    val showEmailApiError by remember { mutableStateOf(false) }
+    val showPasswordApiError by remember { mutableStateOf(false) }
 
 
     val coroutineScope = rememberCoroutineScope()
