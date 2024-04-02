@@ -18,4 +18,5 @@
     <string name="taskTitle">Task:</string>
     <string name="shiftTitle">Shift:</string>
     <string name="frequencyTitle">Frequency:</string>
+    <string name="new_task_title">New task</string>
 </resources>

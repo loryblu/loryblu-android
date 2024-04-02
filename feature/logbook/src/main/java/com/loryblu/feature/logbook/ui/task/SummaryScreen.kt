@@ -89,7 +89,7 @@ fun SummaryScreen(
     Scaffold(
         topBar = {
             LBTopAppBar(
-                title = stringResource(R.string.logbook_title),
+                title = stringResource(R.string.new_task_title),
                 onBackClicked = onBackButtonClicked,
                 onCloseClicked = onCloseButtonClicked,
                 showCloseButton = true
