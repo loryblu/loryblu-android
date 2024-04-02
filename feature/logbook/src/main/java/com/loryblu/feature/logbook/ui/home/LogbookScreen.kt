@@ -1,6 +1,7 @@
 package com.loryblu.feature.logbook.ui.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,6 +56,7 @@ import com.loryblu.feature.logbook.ui.components.ParentAccessSwitch
 import com.loryblu.feature.logbook.ui.components.ShiftBar
 import com.loryblu.feature.logbook.ui.components.TaskCardComponent
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -66,21 +68,11 @@ fun LogbookScreen(
     selectADay: (Int, Int) -> Unit,
 ) {
 
-//    LaunchedEffect(shouldShowAddedSnack) {
-//        if (shouldShowAddedSnack.first) {
-//            scope.launch {
-//                if (shouldShowAddedSnack.second) {
-//                    snackbarHostState.showSnackbar("Rotina criada com Sucesso!")
-//                } else {
-//                    snackbarHostState.showSnackbar("Não foi possível cadastrar nova rotina")
-//                }
-//            }
-//
-//        }
-//    }
+    val data = LocalDate.now()
+    val dayOfWeek = data.dayOfWeek.value
 
     var selectedDay by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(dayOfWeek)
     }
 
     var shiftSelected by remember {

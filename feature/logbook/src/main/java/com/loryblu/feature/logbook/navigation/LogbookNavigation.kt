@@ -22,7 +22,6 @@ import com.loryblu.feature.logbook.utils.getNameOfDaySelected
 import com.loryblu.feature.logbook.utils.intToShiftString
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import java.util.Calendar
 
 fun NavGraphBuilder.logbookNavigation(
     navController: NavController,
@@ -53,12 +52,10 @@ fun NavGraphBuilder.logbookNavigation(
                 val data = LocalDate.now()
                 val dayOfWeek = data.dayOfWeek.value
                 viewModel.selectADayOfWeek(dayOfWeek, 3)
-                Log.d("Testing", "Navigation: called on launched effect")
 
                 val hasAddedANewTask = backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false
 
                 if (hasAddedANewTask) {
-                    Log.d("Testing", "Navigation: called on if")
                     viewModel.selectADayOfWeek(
                         viewModel.lastDayOfWeek,
                         viewModel.lastShift,
@@ -66,9 +63,6 @@ fun NavGraphBuilder.logbookNavigation(
                     )
                 }
             }
-
-
-
 
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
