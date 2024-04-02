@@ -14,22 +14,16 @@ internal class GetUserTaskByDayOfWeekImpl(
     private val userTasks: MutableList<LogbookTask> = mutableListOf()
 
     override suspend fun invoke(dayOfWeek: String, shift: Int, force: Boolean): Flow<ApiResponseWithData<List<LogbookTask>>> = flow {
-        Log.d("Testing", "Call on invoke GetUserTaskByDayOfWeekImpl: $dayOfWeek - $shift - $force")
         if(userTasks.isNotEmpty() && !force) {
-            Log.d("Testing", "GetUserTaskByDayOfWeekImpl: userTasks is not empty")
             emit(
                 ApiResponseWithData.Success(
                     getTasksByDayOfWeekAndShift(userTasks, dayOfWeek, shift)
                 )
             )
         } else {
-            Log.d("Testing", "GetUserTaskByDayOfWeekImpl: userTasks is empty")
-
             logbookRepository.getUserTasks().collect {
                 if(it::class == ApiResponseWithData.Success::class) {
                     userTasks.addAll(it.data!!)
-                    Log.d("Testing", "GetUserTaskByDayOfWeekImpl: getUserTasks emit userTasks")
-
                     emit(
                         ApiResponseWithData.Success(
                             getTasksByDayOfWeekAndShift(userTasks, dayOfWeek, shift)

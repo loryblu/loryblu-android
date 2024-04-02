@@ -33,7 +33,6 @@ class LogbookHomeViewModel(
                 shift = shift,
                 force = force
             ).collect {
-                Log.d("Testing", "Call on collect in selectADayOfWeek: $dayOfWeekInt - $shift - $force")
                 _userTasks.value = it
             }
         }
