@@ -64,24 +64,20 @@ fun LogbookScreen(
     onNextScreenClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADay: (Int, Int) -> Unit,
-    shouldShowAddedSnack: Pair<Boolean, Boolean>,
 ) {
 
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(shouldShowAddedSnack) {
-        if (shouldShowAddedSnack.first) {
-            scope.launch {
-                if (shouldShowAddedSnack.second) {
-                    snackbarHostState.showSnackbar("Rotina criada com Sucesso!")
-                } else {
-                    snackbarHostState.showSnackbar("Não foi possível cadastrar nova rotina")
-                }
-            }
-
-        }
-    }
+//    LaunchedEffect(shouldShowAddedSnack) {
+//        if (shouldShowAddedSnack.first) {
+//            scope.launch {
+//                if (shouldShowAddedSnack.second) {
+//                    snackbarHostState.showSnackbar("Rotina criada com Sucesso!")
+//                } else {
+//                    snackbarHostState.showSnackbar("Não foi possível cadastrar nova rotina")
+//                }
+//            }
+//
+//        }
+//    }
 
     var selectedDay by remember {
         mutableIntStateOf(0)
@@ -101,18 +97,6 @@ fun LogbookScreen(
                 onBackClicked = { onBackButtonClicked() },
                 onCloseClicked = { onBackButtonClicked() },
                 showCloseButton = false
-            )
-        },
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState,
-                snackbar = {
-                    Snackbar(
-                        snackbarData = it,
-                        containerColor = if (shouldShowAddedSnack.second) Color.Green else Color.Red,
-                        contentColor = Color.White
-                    )
-                }
             )
         },
         content = { innerPadding ->
@@ -288,7 +272,6 @@ fun HomeLogbookScreenPreview() {
         onBackButtonClicked = {},
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
-        shouldShowAddedSnack = Pair(false, false),
         selectADay = { _, _ -> }
     )
 }

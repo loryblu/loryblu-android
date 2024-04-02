@@ -1,5 +1,6 @@
 package com.loryblu.feature.logbook.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.loryblu.core.network.model.ApiResponseWithData
@@ -32,6 +33,7 @@ class LogbookHomeViewModel(
                 shift = shift,
                 force = force
             ).collect {
+                Log.d("Testing", "Call on collect in selectADayOfWeek: $dayOfWeekInt - $shift - $force")
                 _userTasks.value = it
             }
         }

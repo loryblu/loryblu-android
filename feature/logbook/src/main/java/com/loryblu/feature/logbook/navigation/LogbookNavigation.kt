@@ -1,5 +1,6 @@
 package com.loryblu.feature.logbook.navigation
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
@@ -52,17 +53,22 @@ fun NavGraphBuilder.logbookNavigation(
                 val data = LocalDate.now()
                 val dayOfWeek = data.dayOfWeek.value
                 viewModel.selectADayOfWeek(dayOfWeek, 3)
+                Log.d("Testing", "Navigation: called on launched effect")
+
+                val hasAddedANewTask = backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false
+
+                if (hasAddedANewTask) {
+                    Log.d("Testing", "Navigation: called on if")
+                    viewModel.selectADayOfWeek(
+                        viewModel.lastDayOfWeek,
+                        viewModel.lastShift,
+                        force = true
+                    )
+                }
             }
 
-            val hasAddedANewTask = backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false
 
-            if (hasAddedANewTask) {
-                viewModel.selectADayOfWeek(
-                    viewModel.lastDayOfWeek,
-                    viewModel.lastShift,
-                    force = true
-                )
-            }
+
 
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
@@ -71,11 +77,6 @@ fun NavGraphBuilder.logbookNavigation(
                 selectADay = { day, shift ->
                     viewModel.selectADayOfWeek(day, shift)
                 },
-                shouldShowAddedSnack =
-                Pair(
-                    hasAddedANewTask,
-                    backStack.arguments?.getBoolean("SUCCESS_ADD") ?: false
-                ),
             )
         }
 
