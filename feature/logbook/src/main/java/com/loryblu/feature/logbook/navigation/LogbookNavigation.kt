@@ -13,6 +13,7 @@ import com.loryblu.core.util.Screen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.task.CategoryScreen
+import com.loryblu.feature.logbook.ui.task.EditTaskScreen
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
 import com.loryblu.feature.logbook.ui.task.ShiftScreen
 import com.loryblu.feature.logbook.ui.task.SummaryScreen
@@ -21,7 +22,6 @@ import com.loryblu.feature.logbook.utils.getNameOfDaySelected
 import com.loryblu.feature.logbook.utils.intToShiftString
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import java.util.Calendar
 
 fun NavGraphBuilder.logbookNavigation(
     navController: NavController,
@@ -67,6 +67,7 @@ fun NavGraphBuilder.logbookNavigation(
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
                 onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
+                onEditTaskClicked = { navController.navigate(Screen.EditTaskScreen.route) },
                 userTasks = userTasks.value,
                 selectADay = { day, shift ->
                     viewModel.selectADayOfWeek(day, shift)
@@ -116,6 +117,10 @@ fun NavGraphBuilder.logbookNavigation(
                     },
                     category = viewModel.getLogbookTaskModel().category,
                 )
+            }
+
+            composable(route = Screen.EditTaskScreen.route) {
+                EditTaskScreen()
             }
 
             composable(route = Screen.ShiftScreen.route) {

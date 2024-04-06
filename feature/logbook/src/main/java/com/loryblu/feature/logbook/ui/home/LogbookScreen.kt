@@ -61,6 +61,7 @@ import kotlinx.coroutines.launch
 fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
+    onEditTaskClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADay: (Int, Int) -> Unit,
     shouldShowAddedSnack: Pair<Boolean, Boolean>,
@@ -168,6 +169,7 @@ fun LogbookScreen(
                                             .padding(16.dp),
                                         taskItem = userTasks.data!![index],
                                         parentAccess = parentAccess,
+                                        onEdit = onEditTaskClicked,
                                     )
                                 }
                             )
@@ -278,6 +280,7 @@ fun HomeLogbookScreenPreview() {
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
         shouldShowAddedSnack = Pair(false, false),
-        selectADay = { _, _ -> }
+        selectADay = { _, _ -> },
+        onEditTaskClicked = {},
     )
 }
