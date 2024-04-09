@@ -21,17 +21,12 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +48,7 @@ import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ParentAccessSwitch
 import com.loryblu.feature.logbook.ui.components.ShiftBar
 import com.loryblu.feature.logbook.ui.components.TaskCardComponent
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -64,27 +59,13 @@ fun LogbookScreen(
     onEditTaskClicked: () -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADay: (Int, Int) -> Unit,
-    shouldShowAddedSnack: Pair<Boolean, Boolean>,
 ) {
 
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(shouldShowAddedSnack) {
-        if (shouldShowAddedSnack.first) {
-            scope.launch {
-                if (shouldShowAddedSnack.second) {
-                    snackbarHostState.showSnackbar("Rotina criada com Sucesso!")
-                } else {
-                    snackbarHostState.showSnackbar("Não foi possível cadastrar nova rotina")
-                }
-            }
-
-        }
-    }
+    val data = LocalDate.now()
+    val dayOfWeek = data.dayOfWeek.value
 
     var selectedDay by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(dayOfWeek)
     }
 
     var shiftSelected by remember {
@@ -101,18 +82,6 @@ fun LogbookScreen(
                 onBackClicked = { onBackButtonClicked() },
                 onCloseClicked = { onBackButtonClicked() },
                 showCloseButton = false
-            )
-        },
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState,
-                snackbar = {
-                    Snackbar(
-                        snackbarData = it,
-                        containerColor = if (shouldShowAddedSnack.second) Color.Green else Color.Red,
-                        contentColor = Color.White
-                    )
-                }
             )
         },
         content = { innerPadding ->
@@ -157,22 +126,32 @@ fun LogbookScreen(
                             }
                         )
                         LazyColumn {
-                            items(
-                                count = userTasks.data!!.size,
-                                key = {
-                                    userTasks.data!![it].id
-                                },
-                                itemContent = { index ->
-                                    TaskCardComponent(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp),
-                                        taskItem = userTasks.data!![index],
-                                        parentAccess = parentAccess,
-                                        onEdit = onEditTaskClicked,
-                                    )
-                                }
-                            )
+                            // Find fix later, but it has tge same id in userTasks?
+//                            items(
+//                                count = userTasks.data!!.size,
+//                                key = {
+//                                    userTasks.data!![it].id
+//                                },
+//                                itemContent = { index ->
+//                                    TaskCardComponent(
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .padding(16.dp),
+//                                        taskItem = userTasks.data!![index],
+//                                        parentAccess = parentAccess,
+//                                    )
+//                                }
+//                            )
+                            items(userTasks.data!!.size) {
+                                TaskCardComponent(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    taskItem = userTasks.data!![it],
+                                    parentAccess = parentAccess,
+                                    onEdit = onEditTaskClicked,
+                                )
+                            }
                         }
                     }
                 }
@@ -279,7 +258,6 @@ fun HomeLogbookScreenPreview() {
         onBackButtonClicked = {},
         onNextScreenClicked = {},
         userTasks = ApiResponseWithData.Default(),
-        shouldShowAddedSnack = Pair(false, false),
         selectADay = { _, _ -> },
         onEditTaskClicked = {},
     )

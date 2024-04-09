@@ -1,5 +1,6 @@
 package com.loryblu.feature.logbook.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.loryblu.core.network.model.ApiResponseWithData

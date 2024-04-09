@@ -1,5 +1,6 @@
 package com.loryblu.feature.logbook.useCases
 
+import android.util.Log
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.remote.api.LogbookApi
