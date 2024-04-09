@@ -20,4 +20,5 @@
     <string name="shiftTitle">Turno:</string>
     <string name="frequencyTitle">Frequência:</string>
     <string name="new_task_title">Nova tarefa</string>
+    <string name="edit_task_title">Editar tarefa</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.loryblu.feature.logbook.navigation
 
-import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
@@ -14,11 +13,12 @@ import com.loryblu.core.util.Screen
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.task.CategoryScreen
-import com.loryblu.feature.logbook.ui.task.EditTaskScreen
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
 import com.loryblu.feature.logbook.ui.task.ShiftScreen
 import com.loryblu.feature.logbook.ui.task.SummaryScreen
 import com.loryblu.feature.logbook.ui.task.TaskScreen
+import com.loryblu.feature.logbook.ui.task.edit.EditSummaryScreen
+import com.loryblu.feature.logbook.ui.task.edit.LogbookEditTaskViewModel
 import com.loryblu.feature.logbook.utils.getNameOfDaySelected
 import com.loryblu.feature.logbook.utils.intToShiftString
 import org.koin.androidx.compose.koinViewModel
@@ -116,7 +116,15 @@ fun NavGraphBuilder.logbookNavigation(
             }
 
             composable(route = Screen.EditTaskScreen.route) {
-                EditTaskScreen()
+                val viewModel: LogbookEditTaskViewModel = koinViewModel()
+                EditSummaryScreen(
+                    logbookTaskModel = viewModel.getLogbookTaskModel(),
+                    onBackButtonClicked = {
+                        navController.navigate(Screen.Logbook.route) {
+                            popUpTo(Screen.Logbook.route) { inclusive = true }
+                        }
+                    },
+                )
             }
 
             composable(route = Screen.ShiftScreen.route) {
