@@ -21,4 +21,6 @@
     <string name="frequencyTitle">Frequência:</string>
     <string name="new_task_title">Nova tarefa</string>
     <string name="edit_task_title">Editar tarefa</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Salvar</string>
 </resources>
