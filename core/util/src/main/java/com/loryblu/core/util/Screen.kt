@@ -17,8 +17,10 @@ sealed class Screen(val route: String) {
         fun withAddedToast(success: Boolean = true) = "logbook_screen?added=true?success=$success"
     }
     data object CategoryScreen: Screen(route = "category_screen")
+    data object EditCategoryScreen: Screen(route = "edit_category_screen")
     data object TaskScreen: Screen(route = "task_screen")
+    data object EditTaskScreen: Screen(route = "edit_task_screen")
     data object ShiftScreen: Screen(route = "shift_screen")
     data object SummaryScreen: Screen(route = "summary_screen")
-    data object EditTaskScreen: Screen(route = "edit_task_screen")
+    data object EditTaskSummaryScreen: Screen(route = "edit_task_summary_screen")
 }

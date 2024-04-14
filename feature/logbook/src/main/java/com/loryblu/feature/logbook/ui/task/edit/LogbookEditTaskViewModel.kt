@@ -14,4 +14,12 @@ class LogbookEditTaskViewModel(
         shift = "morning",
         frequency = listOf("sun", "mon")
     )
+
+    fun setShift(intToShiftString: String) {
+
+    }
+
+    fun setFrequency(nameOfDaySelected: List<String>) {
+
+    }
 }

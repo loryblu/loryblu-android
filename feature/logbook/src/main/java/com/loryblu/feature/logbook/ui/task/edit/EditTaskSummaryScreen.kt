@@ -28,9 +28,13 @@ import com.loryblu.feature.logbook.ui.task.TaskSummaryContent
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun EditSummaryScreen(
+fun EditTaskSummaryScreen(
     logbookTaskModel: LogbookTaskModel,
-    onBackButtonClicked: () -> Unit
+    onBackButtonClicked: () -> Unit,
+    onFrequencyChange: (List<Int>) -> Unit,
+    onShiftChange: (Int) -> Unit,
+    onCategoryNavigate: () -> Unit,
+    onTaskNavigate: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -48,10 +52,10 @@ fun EditSummaryScreen(
             TaskSummaryContent(
                 logbookTaskModel = logbookTaskModel,
                 innerPadding = innerPadding,
-                onCategoryNavigate = {},
-                onTaskNavigate = {},
-                onShiftChange = {},
-                onFrequencyChange = {}
+                onShiftChange = onShiftChange,
+                onFrequencyChange = onFrequencyChange,
+                onCategoryNavigate = onCategoryNavigate,
+                onTaskNavigate = onTaskNavigate,
             ) {
                 EditSummaryButtons(
                     onCancel = { onBackButtonClicked() },
@@ -92,7 +96,7 @@ fun EditSummaryButtons(onCancel: () -> Unit, onSave: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun EditSummaryPreview() {
-    EditSummaryScreen(
+    EditTaskSummaryScreen(
         logbookTaskModel = LogbookTaskModel(
             category = CategoryItem.Routine,
             task = "6dfc15bb-f422-4c75-b2cc-bf3e9806c76a",
@@ -100,6 +104,10 @@ fun EditSummaryPreview() {
             frequency = listOf("sun", "mon")
         ),
         onBackButtonClicked = {},
+        onFrequencyChange = {},
+        onShiftChange = {},
+        onCategoryNavigate = {},
+        onTaskNavigate = {},
     )
 }
 

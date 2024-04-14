@@ -50,10 +50,10 @@ import com.loryblu.feature.logbook.ui.components.ShiftBar
 fun TaskSummaryContent(
     logbookTaskModel: LogbookTaskModel,
     innerPadding: PaddingValues,
+    onFrequencyChange: (List<Int>) -> Unit,
+    onShiftChange: (Int) -> Unit,
     onCategoryNavigate: () -> Unit,
     onTaskNavigate: () -> Unit,
-    onShiftChange: (Int) -> Unit,
-    onFrequencyChange: (List<Int>) -> Unit,
     topContent: @Composable () -> Unit = {},
     buttons: @Composable () -> Unit,
 ) {
