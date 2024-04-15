@@ -3,7 +3,6 @@ package com.loryblu.data.logbook.remote.api
 import com.loryblu.core.network.HttpRoutes
 import com.loryblu.core.network.di.Session
 import com.loryblu.core.network.extensions.toApiResponse
-import com.loryblu.core.network.extensions.toApiResponseWithDetail
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.data.logbook.remote.model.LogbookTask
@@ -39,6 +38,10 @@ class LogbookApiImpl(
             e.printStackTrace()
             emit(ApiResponse.ErrorDefault)
         }
+    }
+
+    override suspend fun editTask(logbookTaskRequest: LogbookTaskRequest): Flow<ApiResponse> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun getUserTasks(): Flow<ApiResponseWithData<List<LogbookTask>>> = flow {

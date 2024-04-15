@@ -214,11 +214,20 @@ fun NavGraphBuilder.logbookNavigation(
             }
 
             composable(route = Screen.EditTaskScreen.route) {
-                EditTaskScreen()
+                val viewModel: LogbookEditTaskViewModel = koinViewModel()
+                EditTaskScreen(
+                    onBackButtonClicked = { navController.navigateUp() },
+                    category = viewModel.getLogbookTaskModel().category,
+                    onNextScreenClicked = {}
+                )
             }
 
             composable(route = Screen.EditCategoryScreen.route) {
-                EditCategoryScreen()
+                val viewModel: LogbookEditTaskViewModel = koinViewModel()
+                EditCategoryScreen(
+                    onBackButtonClicked = { navController.navigateUp() },
+                    onNextScreenClicked = {}
+                )
             }
         }
     }

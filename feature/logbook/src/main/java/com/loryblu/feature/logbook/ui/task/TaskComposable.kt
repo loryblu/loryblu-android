@@ -16,7 +16,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,9 +44,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.loryblu.core.ui.components.LBButton
+import com.loryblu.core.ui.components.LBCategoryCard
+import com.loryblu.core.ui.components.LBTaskCard
 import com.loryblu.core.ui.theme.LBCardSoftBlue
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBLightGray
+import com.loryblu.core.ui.theme.LBSkyBlue
+import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.home.R
@@ -261,6 +274,151 @@ fun TaskSummaryContent(
             .align(Alignment.BottomCenter)
             .padding(24.dp)) {
             buttons.invoke()
+        }
+    }
+}
+
+@Composable
+fun TaskContent(
+    innerPadding: PaddingValues,
+    category: CategoryItem,
+    cardClicked: Int,
+    onCardClick: () -> Unit,
+    onNextScreenClicked: (categoryId: String) -> Unit,
+    topContent: @Composable () -> Unit = {},
+) {
+    val taskItems = TaskItem.getAllTaskItems().filter { it.category == category }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(innerPadding)
+            .padding(horizontal = 24.dp)
+    ) {
+        topContent.invoke()
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                color = LBDarkBlue,
+                text = stringResource(R.string.select_a_task),
+                fontSize = 14.sp,
+                textAlign = TextAlign.Start,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        LazyVerticalGrid(
+            userScrollEnabled = true,
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .height(900.dp)
+                .fillMaxSize()
+                .padding(top = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            items(taskItems) {
+                Box(
+                    contentAlignment = Alignment.TopStart,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    LBTaskCard(
+                        card = it,
+                        modifier = Modifier.height(163.dp),
+                        selected = cardClicked == it.idCard,
+                        onclick = onCardClick
+                    )
+                }
+            }
+        }
+        Box(
+            modifier = Modifier.padding(vertical = 24.dp)
+        ) {
+            LBButton(
+                textRes = R.string.next,
+                onClick = {
+                    onNextScreenClicked(
+                        taskItems[cardClicked].taskId
+                    )
+                },
+                buttonColors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = LBLightGray,
+                    containerColor = LBSkyBlue
+                ),
+                textColor = Color.White,
+                areAllFieldsValid = cardClicked >= 0,
+            )
+        }
+    }
+}
+
+@Composable
+fun CategoryContent(
+    innerPadding: PaddingValues,
+    cardClicked: Int,
+    onCardClick: () -> Unit,
+    onNextScreenClicked: (category: CategoryItem) -> Unit,
+    topContent: @Composable () -> Unit = {},
+) {
+    val category = CategoryItem.getAllCategory()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .padding(horizontal = 24.dp)
+    ) {
+        topContent.invoke()
+        Box(
+            contentAlignment = Alignment.TopStart,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp)
+        ) {
+            Text(
+                color = LBDarkBlue,
+                text = stringResource(R.string.select_a_category),
+                fontSize = 14.sp,
+                textAlign = TextAlign.Start,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+        ) {
+            items(category) {
+                LBCategoryCard(
+                    card = it,
+                    modifier = Modifier.height(228.dp),
+                    selected = cardClicked == it.idCard,
+                    onclick = onCardClick
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.padding(vertical = 24.dp)
+        ) {
+            LBButton(
+                textRes = com.loryblu.core.ui.R.string.next,
+                onClick = { onNextScreenClicked(
+                    when(cardClicked){
+                        0 -> CategoryItem.Routine
+                        1 -> CategoryItem.Student
+                        else -> CategoryItem.Routine
+                    }
+                ) },
+                buttonColors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = LBLightGray,
+                    containerColor = LBSkyBlue
+                ),
+                textColor = Color.White,
+                areAllFieldsValid = cardClicked >= 0
+            )
         }
     }
 }

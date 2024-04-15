@@ -9,5 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface LogbookApi {
     suspend fun createTask(logbookTaskRequest: LogbookTaskRequest): Flow<ApiResponse>
 
+    suspend fun editTask(logbookTaskRequest: LogbookTaskRequest): Flow<ApiResponse>
+
     suspend fun getUserTasks(): Flow<ApiResponseWithData<List<LogbookTask>>>
 }

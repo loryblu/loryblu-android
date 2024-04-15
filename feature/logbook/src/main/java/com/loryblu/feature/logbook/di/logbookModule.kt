@@ -13,7 +13,7 @@ import org.koin.dsl.module
 val logbookModule = module {
     viewModel { LogbookTaskViewModel(get(), get(), get()) }
     viewModel { LogbookHomeViewModel(get())}
-    viewModel { LogbookEditTaskViewModel(get()) }
+    viewModel { LogbookEditTaskViewModel(get(), get(), get()) }
 
     single<GetUserTaskByDayOfWeek> { GetUserTaskByDayOfWeekImpl(get()) }
     single<LogbookTaskModel> { LogbookTaskModel(CategoryItem.Routine, "", "", listOf()) }
