@@ -56,7 +56,7 @@ import java.time.LocalDate
 fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
-    onEditTaskClicked: () -> Unit,
+    onEditTaskClicked: (taskId: Int) -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADay: (Int, Int) -> Unit,
 ) {
@@ -149,7 +149,7 @@ fun LogbookScreen(
                                         .padding(16.dp),
                                     taskItem = userTasks.data!![it],
                                     parentAccess = parentAccess,
-                                    onEdit = onEditTaskClicked,
+                                    onEditTask = onEditTaskClicked,
                                 )
                             }
                         }

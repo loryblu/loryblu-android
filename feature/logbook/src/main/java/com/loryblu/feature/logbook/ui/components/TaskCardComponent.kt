@@ -1,6 +1,5 @@
 package com.loryblu.feature.logbook.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.loryblu.core.ui.theme.LBCardSoftBlue
 import com.loryblu.core.ui.theme.LBSoftBlue
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
@@ -45,7 +43,7 @@ fun TaskCardComponent(
     modifier: Modifier = Modifier,
     taskItem: LogbookTask,
     parentAccess: Boolean,
-    onEdit: () -> Unit,
+    onEditTask: (taskId: Int) -> Unit,
 ) {
     ElevatedCard(
         modifier
@@ -57,7 +55,7 @@ fun TaskCardComponent(
                 categoryText = stringResource(id = taskItem.itemOfCategory.category.text),
                 parentAccess = parentAccess
             )
-            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess, onEdit)
+            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess, onEditTask)
             TaskName(
                 modifier = Modifier.height(46.dp),
                 taskName = stringResource(id = taskItem.itemOfCategory.text)
@@ -104,7 +102,7 @@ fun TaskContent(
     modifier: Modifier = Modifier,
     taskItem: LogbookTask,
     parentAccess: Boolean,
-    onEdit: () -> Unit
+    onEditTask: (taskId: Int) -> Unit
 ) {
     Row(
         modifier
@@ -135,7 +133,7 @@ fun TaskContent(
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = onEdit,
+                    onClick = { onEditTask.invoke(taskItem.id) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = LBSoftBlue,
                         contentColor = Color.Black

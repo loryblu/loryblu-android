@@ -1,5 +1,6 @@
 package com.loryblu.feature.logbook.navigation
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
@@ -70,7 +71,9 @@ fun NavGraphBuilder.logbookNavigation(
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
                 onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
-                onEditTaskClicked = { navController.navigate(Screen.EditTaskSummaryScreen.route) },
+                onEditTaskClicked = { taskId ->
+                    navController.navigate(Screen.EditTaskSummaryScreen.editRoute(taskId))
+                },
                 userTasks = userTasks.value,
                 selectADay = { day, shift ->
                     viewModel.selectADayOfWeek(day, shift)
@@ -189,8 +192,13 @@ fun NavGraphBuilder.logbookNavigation(
                 )
             }
 
-            composable(route = Screen.EditTaskSummaryScreen.route) {
+            composable(
+                route = Screen.EditTaskSummaryScreen.route,
+                arguments = listOf(navArgument(name = "TASK_ID") { type = NavType.IntType }),
+            ) { backStack ->
                 val viewModel: LogbookEditTaskViewModel = koinViewModel()
+                val taskId = backStack.arguments?.getInt("TASK_ID")
+                Log.i("task_id", "value = $taskId")
                 EditTaskSummaryScreen(
                     logbookTaskModel = viewModel.getLogbookTaskModel(),
                     onBackButtonClicked = {
