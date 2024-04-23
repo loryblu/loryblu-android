@@ -44,6 +44,12 @@ sealed class ShiftItem(
             else -> Morning
         }
 
+        fun getShiftItem(name: ShiftItem): String = when (name) {
+            Morning -> "morning"
+            Afternoon -> "afternoon"
+            Night -> "night"
+        }
+
         fun getShiftItem(int: Int) : ShiftItem = when (int) {
             0 -> Morning
             1 -> Afternoon

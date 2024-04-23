@@ -28,6 +28,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -58,6 +63,8 @@ import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.model.LogbookTaskModel
 import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ShiftBar
+import com.loryblu.feature.logbook.utils.getDaySelected
+import com.loryblu.feature.logbook.utils.shiftToInt
 
 @Composable
 fun TaskSummaryContent(
@@ -71,8 +78,15 @@ fun TaskSummaryContent(
     buttons: @Composable () -> Unit,
 ) {
 
-    var shiftSelected = 0
-    var selectedDay = listOf<Int>()
+    var shiftSelected by remember {
+        mutableIntStateOf(shiftToInt(logbookTaskModel.shift))
+    }
+
+    var selectedDay by remember {
+        mutableStateOf(emptyList<Int>())
+    }
+
+    selectedDay = getDaySelected(logbookTaskModel.frequency)
 
     Box(
         modifier = Modifier
@@ -281,14 +295,12 @@ fun TaskSummaryContent(
 @Composable
 fun TaskContent(
     innerPadding: PaddingValues,
-    category: CategoryItem,
+    taskItems: List<TaskItem>,
     cardClicked: Int,
-    onCardClick: () -> Unit,
+    onCardClick: (cardClicked: Int) -> Unit,
     onNextScreenClicked: (categoryId: String) -> Unit,
     topContent: @Composable () -> Unit = {},
 ) {
-    val taskItems = TaskItem.getAllTaskItems().filter { it.category == category }
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -331,7 +343,7 @@ fun TaskContent(
                         card = it,
                         modifier = Modifier.height(163.dp),
                         selected = cardClicked == it.idCard,
-                        onclick = onCardClick
+                        onclick = { onCardClick.invoke(it.idCard) }
                     )
                 }
             }
@@ -361,7 +373,7 @@ fun TaskContent(
 fun CategoryContent(
     innerPadding: PaddingValues,
     cardClicked: Int,
-    onCardClick: () -> Unit,
+    onCardClick: (cardClicked: Int) -> Unit,
     onNextScreenClicked: (category: CategoryItem) -> Unit,
     topContent: @Composable () -> Unit = {},
 ) {
@@ -396,7 +408,7 @@ fun CategoryContent(
                     card = it,
                     modifier = Modifier.height(228.dp),
                     selected = cardClicked == it.idCard,
-                    onclick = onCardClick
+                    onclick = { onCardClick.invoke(it.idCard) }
                 )
             }
         }

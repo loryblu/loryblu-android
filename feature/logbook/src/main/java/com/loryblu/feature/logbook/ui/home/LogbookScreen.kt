@@ -149,7 +149,7 @@ fun LogbookScreen(
                                         .padding(16.dp),
                                     taskItem = userTasks.data!![it],
                                     parentAccess = parentAccess,
-                                    onEditTask = onEditTaskClicked,
+                                    onEditTaskClicked = onEditTaskClicked,
                                 )
                             }
                         }

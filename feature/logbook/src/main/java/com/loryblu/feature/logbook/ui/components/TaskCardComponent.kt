@@ -43,7 +43,7 @@ fun TaskCardComponent(
     modifier: Modifier = Modifier,
     taskItem: LogbookTask,
     parentAccess: Boolean,
-    onEditTask: (taskId: Int) -> Unit,
+    onEditTaskClicked: (taskId: Int) -> Unit,
 ) {
     ElevatedCard(
         modifier
@@ -55,7 +55,7 @@ fun TaskCardComponent(
                 categoryText = stringResource(id = taskItem.itemOfCategory.category.text),
                 parentAccess = parentAccess
             )
-            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess, onEditTask)
+            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess, onEditTaskClicked)
             TaskName(
                 modifier = Modifier.height(46.dp),
                 taskName = stringResource(id = taskItem.itemOfCategory.text)

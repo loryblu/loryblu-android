@@ -8,16 +8,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.loryblu.core.ui.components.LBTopAppBar
-import com.loryblu.data.logbook.local.CategoryItem
+import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.home.R
 import com.loryblu.feature.logbook.ui.task.TaskContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditTaskScreen(
+    cardClicked: Int,
+    taskItems: List<TaskItem>,
     onBackButtonClicked: () -> Unit,
-    onNextScreenClicked: (categoryId: String) -> Unit,
-    category: CategoryItem,
+    onCardClick: (cardClicked: Int) -> Unit,
+    onNextScreenClicked: (categoryId: String) -> Unit
 ) {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -36,10 +38,9 @@ fun EditTaskScreen(
         content = { innerPadding ->
             TaskContent(
                 innerPadding = innerPadding,
-                category = category,
-                cardClicked = 0,
-                onCardClick = {},
-                topContent = {},
+                taskItems = taskItems,
+                cardClicked = cardClicked,
+                onCardClick = onCardClick,
                 onNextScreenClicked = onNextScreenClicked
             )
         }

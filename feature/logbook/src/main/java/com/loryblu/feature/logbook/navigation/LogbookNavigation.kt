@@ -1,8 +1,11 @@
 package com.loryblu.feature.logbook.navigation
 
-import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -11,6 +14,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.util.Screen
+import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.task.CategoryScreen
@@ -24,6 +28,7 @@ import com.loryblu.feature.logbook.ui.task.edit.EditTaskSummaryScreen
 import com.loryblu.feature.logbook.ui.task.edit.LogbookEditTaskViewModel
 import com.loryblu.feature.logbook.utils.getNameOfDaySelected
 import com.loryblu.feature.logbook.utils.intToShiftString
+import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
@@ -196,9 +201,9 @@ fun NavGraphBuilder.logbookNavigation(
                 route = Screen.EditTaskSummaryScreen.route,
                 arguments = listOf(navArgument(name = "TASK_ID") { type = NavType.IntType }),
             ) { backStack ->
-                val viewModel: LogbookEditTaskViewModel = koinViewModel()
-                val taskId = backStack.arguments?.getInt("TASK_ID")
-                Log.i("task_id", "value = $taskId")
+                val viewModel: LogbookEditTaskViewModel = getViewModel()
+                val taskId = backStack.arguments?.getInt("TASK_ID") ?: 0
+                viewModel.getUseTask(taskId)
                 EditTaskSummaryScreen(
                     logbookTaskModel = viewModel.getLogbookTaskModel(),
                     onBackButtonClicked = {
@@ -221,20 +226,47 @@ fun NavGraphBuilder.logbookNavigation(
                 )
             }
 
-            composable(route = Screen.EditTaskScreen.route) {
+            composable(route = Screen.EditCategoryScreen.route) {
                 val viewModel: LogbookEditTaskViewModel = koinViewModel()
-                EditTaskScreen(
+
+
+                var cardClicked by rememberSaveable {
+                    mutableIntStateOf(viewModel.getLogbookTaskModel().category.idCard)
+                }
+
+                EditCategoryScreen(
+                    cardClicked = cardClicked,
+                    onCardClick = { categoryId ->
+                        cardClicked = categoryId
+                    },
                     onBackButtonClicked = { navController.navigateUp() },
-                    category = viewModel.getLogbookTaskModel().category,
-                    onNextScreenClicked = {}
+                    onNextScreenClicked = {
+                        viewModel.setSelectedCategory(it)
+                        navController.navigate(Screen.EditTaskScreen.route)
+                    }
                 )
             }
 
-            composable(route = Screen.EditCategoryScreen.route) {
+            composable(route = Screen.EditTaskScreen.route) {
                 val viewModel: LogbookEditTaskViewModel = koinViewModel()
-                EditCategoryScreen(
+
+                val category = viewModel.getLogbookTaskModel().category
+                val taskItems = TaskItem.getAllTaskItems().filter { it.category == category }
+                val taskId = viewModel.getLogbookTaskModel().task
+
+                var cardClicked by rememberSaveable {
+                    mutableIntStateOf(taskItems.find { it.taskId == taskId }?.idCard ?: -1)
+                }
+
+                EditTaskScreen(
+                    taskItems = taskItems,
+                    cardClicked = cardClicked,
+                    onCardClick = { cardClicked = it  },
                     onBackButtonClicked = { navController.navigateUp() },
-                    onNextScreenClicked = {}
+                    onNextScreenClicked = {
+                        viewModel.setSelectedTask(it)
+                        navController.navigate(Screen.EditTaskSummaryScreen.editRoute(viewModel.taskId.value))
+                    }
                 )
             }
         }
