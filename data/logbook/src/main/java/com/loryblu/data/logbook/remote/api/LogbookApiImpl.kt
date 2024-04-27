@@ -12,6 +12,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -24,6 +25,7 @@ class LogbookApiImpl(
     private val client: HttpClient,
     private val session: Session
 ): LogbookApi {
+
     override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) = flow {
         emit(ApiResponse.Loading)
         try {
@@ -40,8 +42,24 @@ class LogbookApiImpl(
         }
     }
 
-    override suspend fun editTask(logbookTaskRequest: LogbookTaskRequest): Flow<ApiResponse> {
-        TODO("Not yet implemented")
+    override suspend fun editTask(
+        logbookTaskRequest: LogbookTaskRequest,
+        taskId: Int
+    ) = flow {
+        emit(ApiResponse.Loading)
+        try {
+            emit(
+                client.patch(HttpRoutes.TASK) {
+                    parameter("id_task", taskId)
+                    setBody(logbookTaskRequest)
+                    contentType(ContentType.Application.Json)
+                    bearerAuth(session.getToken())
+                }.toApiResponse()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(ApiResponse.ErrorDefault)
+        }
     }
 
     override suspend fun getUserTasks(): Flow<ApiResponseWithData<List<LogbookTask>>> = flow {
