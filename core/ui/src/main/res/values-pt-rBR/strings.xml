@@ -16,6 +16,7 @@
     <string name="guardian_registration">Cadastro do responsável</string>
     <string name="child_registration">Cadastro da criança</string>
     <string name="registration_ok">Cadastro efetuado com sucesso</string>
+    <string name="edition_ok">Tarefa editada com sucesso!</string>
     <string name="select_the_date">Selecione a data</string>
 
     <!-- Informação geral das telas -->
@@ -34,7 +35,7 @@
     <string name="birthday_icon">Ícone de data de nascimento</string>
     <string name="boy_icon">Ícone do botão menino</string>
     <string name="girl_icon">Ícone do botão da menina</string>
-    <string name="registration_ok_icon">Ícone de registro completo</string>
+    <string name="success_icon">Ícone de registro completo</string>
 
     <!-- Títulos dos TextFields -->
     <string name="email">Email</string>

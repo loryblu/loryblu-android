@@ -25,6 +25,7 @@ import com.loryblu.feature.logbook.ui.task.TaskScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditCategoryScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditTaskScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditTaskSummaryScreen
+import com.loryblu.feature.logbook.ui.task.edit.EditionConfirmedScreen
 import com.loryblu.feature.logbook.ui.task.edit.LogbookEditTaskViewModel
 import com.loryblu.feature.logbook.utils.getNameOfDaySelected
 import com.loryblu.feature.logbook.utils.intToShiftString
@@ -223,6 +224,11 @@ fun NavGraphBuilder.logbookNavigation(
                     onFrequencyChange = {
                         viewModel.setFrequency(getNameOfDaySelected(it))
                     },
+                    onTaskSaveClicked = {
+                        viewModel.editLogbookTask {
+                            navController.navigate(Screen.EditionConfirmedScreen.route)
+                        }
+                    }
                 )
             }
 
@@ -252,10 +258,10 @@ fun NavGraphBuilder.logbookNavigation(
 
                 val category = viewModel.getLogbookTaskModel().category
                 val taskItems = TaskItem.getAllTaskItems().filter { it.category == category }
-                val taskId = viewModel.getLogbookTaskModel().task
+                val task = viewModel.getLogbookTaskModel().task
 
                 var cardClicked by rememberSaveable {
-                    mutableIntStateOf(taskItems.find { it.taskId == taskId }?.idCard ?: -1)
+                    mutableIntStateOf(taskItems.find { it.taskId == task }?.idCard ?: -1)
                 }
 
                 EditTaskScreen(
@@ -265,10 +271,21 @@ fun NavGraphBuilder.logbookNavigation(
                     onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedTask(it)
-                        navController.navigate(Screen.EditTaskSummaryScreen.editRoute(viewModel.taskId.value))
+                        val taskId = viewModel.getLogbookTaskModel().taskId
+                        navController.navigate(Screen.EditTaskSummaryScreen.editRoute(taskId))
                     }
                 )
             }
+        }
+
+        composable(route = Screen.EditionConfirmedScreen.route) {
+            EditionConfirmedScreen(
+                navigateToHomeScreen = {
+                    navController.popBackStack(Screen.EditionConfirmedScreen.route, true)
+                    navController.navigate(Screen.Logbook.route)
+                },
+                shouldGoToNextScreen = true //sempre será true
+            )
         }
     }
 }

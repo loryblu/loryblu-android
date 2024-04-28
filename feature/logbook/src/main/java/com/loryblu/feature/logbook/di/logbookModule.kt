@@ -5,6 +5,8 @@ import com.loryblu.feature.logbook.model.LogbookTaskModel
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
 import com.loryblu.feature.logbook.ui.task.edit.LogbookEditTaskViewModel
+import com.loryblu.feature.logbook.useCases.EditTaskUseCase
+import com.loryblu.feature.logbook.useCases.EditTaskUseCaseImpl
 import com.loryblu.feature.logbook.useCases.GetUserTaskByDayOfWeek
 import com.loryblu.feature.logbook.useCases.GetUserTaskByDayOfWeekImpl
 import com.loryblu.feature.logbook.useCases.GetUserTaskById
@@ -19,5 +21,6 @@ val logbookModule = module {
 
     single<GetUserTaskByDayOfWeek> { GetUserTaskByDayOfWeekImpl(get()) }
     single<GetUserTaskById> { GetUserTaskByIdImpl(get())}
+    single<EditTaskUseCase> { EditTaskUseCaseImpl(get()) }
     single<LogbookTaskModel> { LogbookTaskModel(CategoryItem.Routine, "", "", listOf()) }
 }

@@ -35,6 +35,7 @@ fun EditTaskSummaryScreen(
     onShiftChange: (Int) -> Unit,
     onCategoryNavigate: () -> Unit,
     onTaskNavigate: () -> Unit,
+    onTaskSaveClicked: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -44,7 +45,7 @@ fun EditTaskSummaryScreen(
             LBTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = stringResource(R.string.edit_task_title),
-                onBackClicked = { onBackButtonClicked() },
+                onBackClicked = onBackButtonClicked,
                 showCloseButton = false
             )
         },
@@ -58,8 +59,8 @@ fun EditTaskSummaryScreen(
                 onTaskNavigate = onTaskNavigate,
             ) {
                 EditSummaryButtons(
-                    onCancel = { onBackButtonClicked() },
-                    onSave = {},
+                    onCancel = onBackButtonClicked,
+                    onSave = onTaskSaveClicked,
                 )
             }
         }
@@ -108,6 +109,7 @@ fun EditSummaryPreview() {
         onShiftChange = {},
         onCategoryNavigate = {},
         onTaskNavigate = {},
+        onTaskSaveClicked = {},
     )
 }
 

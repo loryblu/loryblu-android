@@ -25,4 +25,5 @@ sealed class Screen(val route: String) {
     data object EditTaskSummaryScreen: Screen(route = "edit_task_summary_screen/{TASK_ID}") {
         fun editRoute(taskId: Int) = "edit_task_summary_screen/$taskId"
     }
+    data object EditionConfirmedScreen: Screen(route = "edition_confirmed_screen")
 }

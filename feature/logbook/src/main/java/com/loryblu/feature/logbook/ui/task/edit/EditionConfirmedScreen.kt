@@ -1,4 +1,4 @@
-package com.loryblu.feature.auth.register.presentation
+package com.loryblu.feature.logbook.ui.task.edit
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
@@ -25,7 +26,7 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 import kotlinx.coroutines.delay
 
 @Composable
-fun RegistrationConfirmedScreen(
+fun EditionConfirmedScreen(
     navigateToHomeScreen: () -> Unit,
     shouldGoToNextScreen: Boolean,
 ) {
@@ -42,9 +43,9 @@ fun RegistrationConfirmedScreen(
             Text(
                 modifier = Modifier
                     .padding(end = 23.dp)
-                    .clickable(enabled = true, onClick = {
+                    .clickable {
                         navigateToHomeScreen()
-                    }),
+                    },
                 fontSize = 20.sp,
                 text = "X",
                 color = LBDarkBlue
@@ -58,7 +59,7 @@ fun RegistrationConfirmedScreen(
         ){
             Text(
                 fontSize = 20.sp,
-                text = stringResource(id = R.string.registration_ok),
+                text = stringResource(id = R.string.edition_ok),
                 color = Color.Black,
             )
             Image(
@@ -76,4 +77,13 @@ fun RegistrationConfirmedScreen(
             navigateToHomeScreen()
         }
     }
+}
+
+@Preview
+@Composable
+fun EditionConfirmedScreenPreview() {
+    EditionConfirmedScreen(
+        navigateToHomeScreen = {},
+        shouldGoToNextScreen = false
+    )
 }
