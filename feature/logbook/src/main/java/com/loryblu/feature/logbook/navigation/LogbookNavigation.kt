@@ -204,10 +204,15 @@ fun NavGraphBuilder.logbookNavigation(
             ) { backStack ->
                 val viewModel: LogbookEditTaskViewModel = getViewModel()
                 val taskId = backStack.arguments?.getInt("TASK_ID") ?: 0
-                viewModel.getUseTask(taskId)
+                LaunchedEffect(key1 = Unit) {
+                    viewModel.getUseTask(taskId)
+                }
+                val editResult by viewModel.editResult.collectAsState()
                 EditTaskSummaryScreen(
                     logbookTaskModel = viewModel.getLogbookTaskModel(),
+                    editResult = editResult,
                     onBackButtonClicked = {
+                        viewModel.resetLogbookTaskModel()
                         navController.navigate(Screen.Logbook.route) {
                             popUpTo(Screen.Logbook.route) { inclusive = true }
                         }
@@ -281,7 +286,7 @@ fun NavGraphBuilder.logbookNavigation(
         composable(route = Screen.EditionConfirmedScreen.route) {
             EditionConfirmedScreen(
                 navigateToHomeScreen = {
-                    navController.popBackStack(Screen.EditionConfirmedScreen.route, true)
+                    navController.popBackStack()
                     navController.navigate(Screen.Logbook.route)
                 },
                 shouldGoToNextScreen = true //sempre será true

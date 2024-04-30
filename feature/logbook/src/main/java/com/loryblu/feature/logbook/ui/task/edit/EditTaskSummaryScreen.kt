@@ -22,7 +22,9 @@ import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.feature.home.R
+import com.loryblu.feature.logbook.model.EditResult
 import com.loryblu.feature.logbook.model.LogbookTaskModel
+import com.loryblu.feature.logbook.ui.task.LoadingScreen
 import com.loryblu.feature.logbook.ui.task.TaskSummaryContent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,6 +38,7 @@ fun EditTaskSummaryScreen(
     onCategoryNavigate: () -> Unit,
     onTaskNavigate: () -> Unit,
     onTaskSaveClicked: () -> Unit,
+    editResult: EditResult,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -50,18 +53,22 @@ fun EditTaskSummaryScreen(
             )
         },
         content = { innerPadding ->
-            TaskSummaryContent(
-                logbookTaskModel = logbookTaskModel,
-                innerPadding = innerPadding,
-                onShiftChange = onShiftChange,
-                onFrequencyChange = onFrequencyChange,
-                onCategoryNavigate = onCategoryNavigate,
-                onTaskNavigate = onTaskNavigate,
-            ) {
-                EditSummaryButtons(
-                    onCancel = onBackButtonClicked,
-                    onSave = onTaskSaveClicked,
-                )
+            if (editResult is EditResult.Success) {
+                TaskSummaryContent(
+                    logbookTaskModel = logbookTaskModel,
+                    innerPadding = innerPadding,
+                    onShiftChange = onShiftChange,
+                    onFrequencyChange = onFrequencyChange,
+                    onCategoryNavigate = onCategoryNavigate,
+                    onTaskNavigate = onTaskNavigate,
+                ) {
+                    EditSummaryButtons(
+                        onCancel = onBackButtonClicked,
+                        onSave = onTaskSaveClicked,
+                    )
+                }
+            } else {
+                LoadingScreen()
             }
         }
     )
@@ -110,6 +117,7 @@ fun EditSummaryPreview() {
         onCategoryNavigate = {},
         onTaskNavigate = {},
         onTaskSaveClicked = {},
+        editResult = EditResult.Success
     )
 }
 
