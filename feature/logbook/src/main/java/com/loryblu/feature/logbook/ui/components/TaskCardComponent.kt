@@ -34,13 +34,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.loryblu.core.ui.theme.LBCardSoftBlue
 import com.loryblu.core.ui.theme.LBSoftBlue
 import com.loryblu.data.logbook.remote.model.LogbookTask
 import com.loryblu.feature.home.R
 
 @Composable
-fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAccess: Boolean) {
+fun TaskCardComponent(
+    modifier: Modifier = Modifier,
+    taskItem: LogbookTask,
+    parentAccess: Boolean,
+    onEditTaskClicked: (taskId: Int) -> Unit,
+) {
     ElevatedCard(
         modifier
             .height(208.dp)
@@ -51,7 +55,7 @@ fun TaskCardComponent(modifier: Modifier = Modifier, taskItem: LogbookTask, pare
                 categoryText = stringResource(id = taskItem.itemOfCategory.category.text),
                 parentAccess = parentAccess
             )
-            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess)
+            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess, onEditTaskClicked)
             TaskName(
                 modifier = Modifier.height(46.dp),
                 taskName = stringResource(id = taskItem.itemOfCategory.text)
@@ -94,7 +98,12 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String, pare
 }
 
 @Composable
-fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAccess: Boolean) {
+fun TaskContent(
+    modifier: Modifier = Modifier,
+    taskItem: LogbookTask,
+    parentAccess: Boolean,
+    onEditTask: (taskId: Int) -> Unit
+) {
     Row(
         modifier
             .background(taskItem.shift.color)
@@ -124,7 +133,7 @@ fun TaskContent(modifier: Modifier = Modifier, taskItem: LogbookTask, parentAcce
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {},
+                    onClick = { onEditTask.invoke(taskItem.id) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = LBSoftBlue,
                         contentColor = Color.Black

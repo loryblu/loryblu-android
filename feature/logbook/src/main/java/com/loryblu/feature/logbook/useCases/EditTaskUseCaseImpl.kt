@@ -11,13 +11,13 @@ internal class EditTaskUseCaseImpl(
     private val logbookRepository: LogbookApi
 ): EditTaskUseCase {
 
-    override suspend fun invoke(logbookTask: LogbookTask): Flow<ApiResponse> {
+    override suspend fun invoke(childrenId: Int, logbookTask: LogbookTask): Flow<ApiResponse> {
         val taskId = logbookTask.id
 
         val taskRequest = logbookTask.run {
             LogbookTaskRequest(
-                childrenId = 1,
-                categoryId = itemOfCategory.category.idCard.toString(),
+                childrenId = childrenId,
+                categoryId = itemOfCategory.taskId,
                 shift = intToShiftString(shift.idCard),
                 frequency = frequency,
                 order = order

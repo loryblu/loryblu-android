@@ -1,0 +1,48 @@
+package com.loryblu.feature.logbook.ui.task.edit
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.loryblu.core.ui.components.LBTopAppBar
+import com.loryblu.data.logbook.local.TaskItem
+import com.loryblu.feature.home.R
+import com.loryblu.feature.logbook.ui.task.TaskContent
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EditTaskScreen(
+    cardClicked: Int,
+    taskItems: List<TaskItem>,
+    onBackButtonClicked: () -> Unit,
+    onCardClick: (cardClicked: Int) -> Unit,
+    onNextScreenClicked: (categoryId: String) -> Unit
+) {
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        topBar = {
+            LBTopAppBar(
+                scrollBehavior = scrollBehavior,
+                title = stringResource(R.string.edit_task_title),
+                onBackClicked = { onBackButtonClicked() },
+                showCloseButton = false
+            )
+        },
+        content = { innerPadding ->
+            TaskContent(
+                innerPadding = innerPadding,
+                taskItems = taskItems,
+                cardClicked = cardClicked,
+                onCardClick = onCardClick,
+                onNextScreenClicked = onNextScreenClicked
+            )
+        }
+    )
+}

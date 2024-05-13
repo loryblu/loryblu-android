@@ -19,4 +19,7 @@
     <string name="shiftTitle">Shift:</string>
     <string name="frequencyTitle">Frequency:</string>
     <string name="new_task_title">New task</string>
+    <string name="edit_task_title">Edit task</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>
