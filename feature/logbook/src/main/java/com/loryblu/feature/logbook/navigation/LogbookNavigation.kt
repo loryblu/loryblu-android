@@ -44,7 +44,7 @@ fun NavGraphBuilder.logbookNavigation(
         composable(
             route = Screen.Logbook.route,
             arguments = listOf(
-                navArgument("ADDED_ANIMATION") {
+                navArgument("UPDATE_ANIMATION") {
                     defaultValue = false
                     type = NavType.BoolType
                 },
@@ -63,9 +63,9 @@ fun NavGraphBuilder.logbookNavigation(
                 val dayOfWeek = data.dayOfWeek.value
                 viewModel.selectADayOfWeek(dayOfWeek, 3)
 
-                val hasAddedANewTask = backStack.arguments?.getBoolean("ADDED_ANIMATION") ?: false
+                val hasUpdateInTaskList = backStack.arguments?.getBoolean("UPDATE_ANIMATION") ?: false
 
-                if (hasAddedANewTask) {
+                if (hasUpdateInTaskList) {
                     viewModel.selectADayOfWeek(
                         viewModel.lastDayOfWeek,
                         viewModel.lastShift,
@@ -152,13 +152,13 @@ fun NavGraphBuilder.logbookNavigation(
                 LaunchedEffect(key1 = addTaskResult.value) {
                     when (addTaskResult.value) {
                         is ApiResponse.Success -> {
-                            navController.navigate(Screen.Logbook.withAddedToast()) {
+                            navController.navigate(Screen.Logbook.withUpdateToast()) {
                                 popUpTo(Screen.Logbook.route) { inclusive = true }
                             }
                         }
 
                         is ApiResponse.ErrorDefault -> {
-                            navController.navigate(Screen.Logbook.withAddedToast(success = false)) {
+                            navController.navigate(Screen.Logbook.withUpdateToast(success = false)) {
                                 popUpTo(Screen.Logbook.route) { inclusive = true }
                             }
                         }
@@ -287,9 +287,9 @@ fun NavGraphBuilder.logbookNavigation(
             EditionConfirmedScreen(
                 navigateToHomeScreen = {
                     navController.popBackStack()
-                    navController.navigate(Screen.Logbook.route)
+                    navController.navigate(Screen.Logbook.withUpdateToast())
                 },
-                shouldGoToNextScreen = true //sempre será true
+                shouldGoToNextScreen = true
             )
         }
     }
