@@ -1,6 +1,5 @@
 package com.loryblu.feature.logbook.useCases
 
-import android.util.Log
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.remote.api.LogbookApi
@@ -23,7 +22,9 @@ internal class GetUserTaskByDayOfWeekImpl(
         } else {
             logbookRepository.getUserTasks().collect {
                 if(it::class == ApiResponseWithData.Success::class) {
-                    userTasks.addAll(it.data!!)
+                    it.data?.apply {
+                        updateUserTasks(newTaskList = this)
+                    }
                     emit(
                         ApiResponseWithData.Success(
                             getTasksByDayOfWeekAndShift(userTasks, dayOfWeek, shift)
@@ -36,6 +37,11 @@ internal class GetUserTaskByDayOfWeekImpl(
         }
     }
 
+    private fun updateUserTasks(newTaskList: List<LogbookTask>) {
+        userTasks.clear()
+        userTasks.addAll(newTaskList)
+    }
+
     private fun getTasksByDayOfWeekAndShift(list: List<LogbookTask>, dayOfWeek: String, shift: Int): List<LogbookTask> {
         val result = mutableListOf<LogbookTask>()
         val shiftItem = ShiftItem.getShiftItem(shift)
@@ -45,8 +51,6 @@ internal class GetUserTaskByDayOfWeekImpl(
                 result.add(it)
             }
         }
-
         return result
     }
-
 }

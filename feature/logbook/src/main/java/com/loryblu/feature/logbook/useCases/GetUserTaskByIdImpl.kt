@@ -14,18 +14,21 @@ class GetUserTaskByIdImpl(
     private val userTasks: MutableList<LogbookTask> = mutableListOf()
 
     override suspend fun invoke(taskId: Int): Flow<ApiResponseWithData<LogbookTask?>> = flow {
-        if(userTasks.isNotEmpty()) {
-            emitResult(taskId)
-        } else {
-            logbookRepository.getUserTasks().collect {
-                if(it::class == ApiResponseWithData.Success::class) {
-                    it.data?.let { d -> userTasks.addAll(d) }
-                    emitResult(taskId)
-                } else {
-                    emit(ApiResponseWithData.Error())
+        logbookRepository.getUserTasks().collect {
+            if(it::class == ApiResponseWithData.Success::class) {
+                it.data?.apply {
+                    updateUserTasks(newTaskList = this)
                 }
+                emitResult(taskId)
+            } else {
+                emit(ApiResponseWithData.Error())
             }
         }
+    }
+
+    private fun updateUserTasks(newTaskList: List<LogbookTask>) {
+        userTasks.clear()
+        userTasks.addAll(newTaskList)
     }
 
     private suspend fun FlowCollector<ApiResponseWithData<LogbookTask?>>.emitResult(taskId: Int) {
