@@ -17,12 +17,15 @@ sealed class Screen(val route: String) {
         fun withUpdateToast(success: Boolean = true) = "logbook_screen?update=true&success=$success"
     }
 
-    data object CategoryScreen: Screen(route = "category_screen")
+    // Create task
+    data object CreateCategoryScreen: Screen(route = "create_category_screen")
+    data object CreateTaskScreen: Screen(route = "create_task_screen")
+    data object CreateSummaryScreen: Screen(route = "create_summary_screen")
+    data object CreateShiftScreen: Screen(route = "create_shift_screen")
+
+    // Edit task
     data object EditCategoryScreen: Screen(route = "edit_category_screen")
-    data object TaskScreen: Screen(route = "task_screen")
     data object EditTaskScreen: Screen(route = "edit_task_screen")
-    data object ShiftScreen: Screen(route = "shift_screen")
-    data object SummaryScreen: Screen(route = "summary_screen")
     data object EditTaskSummaryScreen: Screen(route = "edit_task_summary_screen/{TASK_ID}") {
         fun editRoute(taskId: Int) = "edit_task_summary_screen/$taskId"
     }
