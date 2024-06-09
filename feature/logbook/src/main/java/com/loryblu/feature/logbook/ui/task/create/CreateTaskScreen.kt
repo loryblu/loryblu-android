@@ -1,4 +1,4 @@
-package com.loryblu.feature.logbook.ui.task
+package com.loryblu.feature.logbook.ui.task.create
 
 import LBProgressBar
 import android.annotation.SuppressLint
@@ -46,7 +46,7 @@ import com.loryblu.feature.home.R
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TaskScreen(
+fun CreateTaskScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: (categoryId: String) -> Unit,
     onCloseButtonClicked: () -> Unit,
@@ -147,7 +147,7 @@ fun TaskScreen(
 @Preview(showBackground = true)
 @Composable
 fun TaskPreview() {
-    TaskScreen(
+    CreateTaskScreen(
         onBackButtonClicked = {},
         onNextScreenClicked = {},
         onCloseButtonClicked = {},

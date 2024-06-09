@@ -17,11 +17,11 @@ import com.loryblu.core.util.Screen
 import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
-import com.loryblu.feature.logbook.ui.task.CategoryScreen
+import com.loryblu.feature.logbook.ui.task.create.CreateTaskCategoryScreen
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
-import com.loryblu.feature.logbook.ui.task.ShiftScreen
-import com.loryblu.feature.logbook.ui.task.SummaryScreen
-import com.loryblu.feature.logbook.ui.task.TaskScreen
+import com.loryblu.feature.logbook.ui.task.create.ShiftScreen
+import com.loryblu.feature.logbook.ui.task.create.SummaryScreen
+import com.loryblu.feature.logbook.ui.task.create.CreateTaskScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditCategoryScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditTaskScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditTaskSummaryScreen
@@ -94,7 +94,7 @@ fun NavGraphBuilder.logbookNavigation(
             composable(route = Screen.CategoryScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
-                CategoryScreen(
+                CreateTaskCategoryScreen(
                     onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedCategory(it)
@@ -111,7 +111,7 @@ fun NavGraphBuilder.logbookNavigation(
             composable(route = Screen.TaskScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
-                TaskScreen(
+                CreateTaskScreen(
                     onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedTask(it)

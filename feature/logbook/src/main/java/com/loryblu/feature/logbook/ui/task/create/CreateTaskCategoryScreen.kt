@@ -1,4 +1,4 @@
-package com.loryblu.feature.logbook.ui.task
+package com.loryblu.feature.logbook.ui.task.create
 
 import LBProgressBar
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,7 +39,7 @@ import com.loryblu.feature.home.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryScreen(
+fun CreateTaskCategoryScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: (category: CategoryItem) -> Unit,
     onCloseButtonClicked: () -> Unit,
@@ -125,7 +124,7 @@ fun CategoryScreen(
 @Preview(showBackground = true)
 @Composable
 fun CategoryScreenPreview() {
-    CategoryScreen(
+    CreateTaskCategoryScreen(
         onNextScreenClicked = {},
         onBackButtonClicked = {},
         onCloseButtonClicked = {}
