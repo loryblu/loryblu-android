@@ -42,7 +42,7 @@ import com.loryblu.feature.logbook.ui.components.FrequencyBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShiftScreen(
+fun CreateShiftScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: (shift: String, frequency: List<String>) -> Unit,
     onCloseButtonClicked: () -> Unit,

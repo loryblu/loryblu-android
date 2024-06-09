@@ -65,7 +65,7 @@ import com.loryblu.feature.logbook.utils.shiftToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SummaryScreen(
+fun CreateTaskSummaryScreen(
     onBackButtonClicked: () -> Unit,
     onCloseButtonClicked: () -> Unit,
     logbookTaskModel: LogbookTaskModel,
@@ -326,7 +326,7 @@ private fun getTask(taskId: String): TaskItem? {
 @Preview(showBackground = true)
 @Composable
 fun SummaryPreview() {
-    SummaryScreen(
+    CreateTaskSummaryScreen(
         onBackButtonClicked = { },
         onCloseButtonClicked = { },
         logbookTaskModel = LogbookTaskModel(

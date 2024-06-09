@@ -19,8 +19,8 @@ import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.task.create.CreateTaskCategoryScreen
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
-import com.loryblu.feature.logbook.ui.task.create.ShiftScreen
-import com.loryblu.feature.logbook.ui.task.create.SummaryScreen
+import com.loryblu.feature.logbook.ui.task.create.CreateShiftScreen
+import com.loryblu.feature.logbook.ui.task.create.CreateTaskSummaryScreen
 import com.loryblu.feature.logbook.ui.task.create.CreateTaskScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditCategoryScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditTaskScreen
@@ -76,7 +76,7 @@ fun NavGraphBuilder.logbookNavigation(
 
             LogbookScreen(
                 onBackButtonClicked = onBackButtonClicked,
-                onNextScreenClicked = { navController.navigate(Screen.CategoryScreen.route) },
+                onNextScreenClicked = { navController.navigate(Screen.CreateCategoryScreen.route) },
                 onEditTaskClicked = { taskId ->
                     navController.navigate(Screen.EditTaskSummaryScreen.editRoute(taskId))
                 },
@@ -88,17 +88,17 @@ fun NavGraphBuilder.logbookNavigation(
         }
 
         navigation(
-            startDestination = Screen.CategoryScreen.route,
+            startDestination = Screen.CreateCategoryScreen.route,
             route = "register_logbook_task"
         ) {
-            composable(route = Screen.CategoryScreen.route) {
+            composable(route = Screen.CreateCategoryScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 CreateTaskCategoryScreen(
                     onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedCategory(it)
-                        navController.navigate(Screen.TaskScreen.route)
+                        navController.navigate(Screen.CreateTaskScreen.route)
                     },
                     onCloseButtonClicked = {
                         navController.navigate(Screen.Logbook.route) {
@@ -108,14 +108,14 @@ fun NavGraphBuilder.logbookNavigation(
                 )
             }
 
-            composable(route = Screen.TaskScreen.route) {
+            composable(route = Screen.CreateTaskScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 CreateTaskScreen(
                     onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedTask(it)
-                        navController.navigate(Screen.ShiftScreen.route)
+                        navController.navigate(Screen.CreateShiftScreen.route)
                     },
                     onCloseButtonClicked = {
                         navController.navigate(Screen.Logbook.route) {
@@ -126,15 +126,15 @@ fun NavGraphBuilder.logbookNavigation(
                 )
             }
 
-            composable(route = Screen.ShiftScreen.route) {
+            composable(route = Screen.CreateShiftScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
-                ShiftScreen(
+                CreateShiftScreen(
                     onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = { shift, frequency ->
                         viewModel.setShift(shift)
                         viewModel.setFrequency(frequency)
-                        navController.navigate(Screen.SummaryScreen.route)
+                        navController.navigate(Screen.CreateSummaryScreen.route)
                     },
                     onCloseButtonClicked = {
                         navController.navigate(Screen.Logbook.route) {
@@ -144,7 +144,7 @@ fun NavGraphBuilder.logbookNavigation(
                 )
             }
 
-            composable(route = Screen.SummaryScreen.route) {
+            composable(route = Screen.CreateSummaryScreen.route) {
                 val viewModel: LogbookTaskViewModel = koinViewModel()
 
                 val addTaskResult = viewModel.addTaskResult.collectAsState()
@@ -168,7 +168,7 @@ fun NavGraphBuilder.logbookNavigation(
 
                 }
 
-                SummaryScreen(
+                CreateTaskSummaryScreen(
                     onBackButtonClicked = {
                         navController.navigate(Screen.Logbook.route) {
                             popUpTo(Screen.Logbook.route) { inclusive = true }
@@ -187,10 +187,10 @@ fun NavGraphBuilder.logbookNavigation(
                         viewModel.setShift(intToShiftString(it))
                     },
                     onTaskNavigate = {
-                        navController.navigate(Screen.TaskScreen.route)
+                        navController.navigate(Screen.CreateTaskScreen.route)
                     },
                     onCategoryNavigate = {
-                        navController.navigate(Screen.CategoryScreen.route)
+                        navController.navigate(Screen.CreateCategoryScreen.route)
                     },
                     onFrequencyChange = {
                         viewModel.setFrequency(getNameOfDaySelected(it))
