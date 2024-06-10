@@ -1,41 +1,23 @@
 package com.loryblu.feature.logbook.ui.task.create
 
 import LBProgressBar
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBCategoryCard
 import com.loryblu.core.ui.components.LBTopAppBar
-import com.loryblu.core.ui.theme.LBDarkBlue
-import com.loryblu.core.ui.theme.LBLightGray
-import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.feature.home.R
+import com.loryblu.feature.logbook.ui.task.CategoryContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,12 +27,12 @@ fun CreateTaskCategoryScreen(
     onCloseButtonClicked: () -> Unit,
 ) {
 
-    var cardClicked by rememberSaveable {
+    var cardClicked: Int by rememberSaveable {
         mutableIntStateOf(-1)
     }
 
-    val category = CategoryItem.getAllCategory()
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             LBTopAppBar(
                 title = stringResource(R.string.new_task_title),
@@ -60,63 +42,17 @@ fun CreateTaskCategoryScreen(
             )
         },
         content = { innerPadding ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 24.dp)
-            ) {
-                LBProgressBar(modifier = Modifier.padding(vertical = 24.dp), currentStep = 1)
-                Box(
-                    contentAlignment = Alignment.TopStart,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp)
-                ) {
-                    Text(
-                        color = LBDarkBlue,
-                        text = stringResource(R.string.select_a_category),
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
-                ) {
-                    items(category) {
-                        LBCategoryCard(
-                            card = it,
-                            modifier = Modifier.height(228.dp),
-                            selected = cardClicked == it.idCard,
-                            onclick = {
-                                cardClicked = it.idCard
-                            }
-                        )
-                    }
-                }
-                Column(
-                    modifier = Modifier.padding(vertical = 24.dp)
-                ) {
-                    LBButton(
-                        textRes = com.loryblu.core.ui.R.string.next,
-                        onClick = { onNextScreenClicked(
-                            when(cardClicked){
-                                0 -> CategoryItem.Routine
-                                1 -> CategoryItem.Student
-                                else -> CategoryItem.Routine
-                            }
-                        ) },
-                        buttonColors = ButtonDefaults.buttonColors(
-                            disabledContainerColor = LBLightGray,
-                            containerColor = LBSkyBlue
-                        ),
-                        textColor = Color.White,
-                        areAllFieldsValid = cardClicked >= 0
-                    )
-                }
-            }
+            CategoryContent(
+                topContent = {
+                    LBProgressBar(modifier = Modifier.padding(vertical = 24.dp), currentStep = 1)
+                },
+                innerPadding = innerPadding,
+                cardClicked = cardClicked,
+                onCardClick = { idCard ->
+                    cardClicked = idCard
+                },
+                onNextScreenClicked = onNextScreenClicked,
+            )
         }
     )
 }
