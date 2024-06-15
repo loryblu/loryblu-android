@@ -10,6 +10,7 @@ import com.loryblu.data.logbook.remote.model.LogbookTaskRequest
 import com.loryblu.data.logbook.util.toListOfLogbookTask
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.flow
 class LogbookApiImpl(
     private val client: HttpClient,
     private val session: Session
-): LogbookApi {
+) : LogbookApi {
 
     override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) = flow {
         emit(ApiResponse.Loading)
@@ -62,11 +63,29 @@ class LogbookApiImpl(
         }
     }
 
+    override fun deleteTask(
+        taskId: Int
+    ): Flow<ApiResponse> = flow {
+        emit(ApiResponse.Loading)
+        try {
+            emit(
+                client.delete(HttpRoutes.TASK) {
+                    parameter("id_task", taskId)
+                    parameter("childrenId", session.getChildId().toString())
+                    bearerAuth(session.getToken())
+                }.toApiResponse()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(ApiResponse.ErrorDefault)
+        }
+    }
+
     override suspend fun getUserTasks(): Flow<ApiResponseWithData<List<LogbookTask>>> = flow {
         val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
 
         emit(ApiResponseWithData.Loading())
-        try{
+        try {
             emit(
                 client.get(HttpRoutes.TASK) {
                     parameters {
