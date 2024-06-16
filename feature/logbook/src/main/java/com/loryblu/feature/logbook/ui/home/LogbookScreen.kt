@@ -48,6 +48,12 @@ import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ParentAccessSwitch
 import com.loryblu.feature.logbook.ui.components.ShiftBar
 import com.loryblu.feature.logbook.ui.components.TaskCardComponent
+import com.loryblu.feature.logbook.ui.task.delete.DeleteOption
+import com.loryblu.feature.logbook.ui.task.delete.DeleteTaskDialog
+import com.loryblu.feature.logbook.ui.task.delete.MutableDialogState
+import com.loryblu.feature.logbook.ui.task.delete.DeletedTaskDialog
+import com.loryblu.feature.logbook.ui.task.delete.rememberMutableDialogState
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,6 +63,7 @@ fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
     onEditTaskClicked: (taskId: Int) -> Unit,
+    onDeleteTaskConfirmed: (logbookTask: LogbookTask, deleteOption: DeleteOption) -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADay: (Int, Int) -> Unit,
 ) {
@@ -74,6 +81,13 @@ fun LogbookScreen(
 
     var parentAccess by remember { mutableStateOf(true) }
 
+    val deleteTaskDialogState: MutableDialogState<LogbookTask?> =
+        rememberMutableDialogState(initialData = null)
+
+//    val taskDeletedDialogState: MutableDialogState<Pair<LogbookTask, DeleteOption>?> =
+//        rememberMutableDialogState(initialData = null)
+
+    val viewModel: LogbookHomeViewModel = koinViewModel()
 
     Scaffold(
         topBar = {
@@ -142,14 +156,17 @@ fun LogbookScreen(
 //                                    )
 //                                }
 //                            )
-                            items(userTasks.data!!.size) {
+                            items(userTasks.data!!.size) { index ->
                                 TaskCardComponent(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(16.dp),
-                                    taskItem = userTasks.data!![it],
+                                    taskItem = userTasks.data!![index],
                                     parentAccess = parentAccess,
                                     onEditTaskClicked = onEditTaskClicked,
+                                    onDeleteTaskClicked = { taskId ->
+                                        deleteTaskDialogState.showDialog(userTasks.data!!.find { it.id == taskId })
+                                    },
                                 )
                             }
                         }
@@ -179,6 +196,29 @@ fun LogbookScreen(
                             tint = Color.White
                         )
                     }
+                }
+            }
+            if (deleteTaskDialogState.isVisible.value) {
+                deleteTaskDialogState.dialogData.value?.let { logbookTask ->
+                    DeleteTaskDialog(
+                        task = logbookTask,
+                        selectedDay = selectedDay,
+                        onDismissRequest = { deleteTaskDialogState.hideDialog() },
+                        onConfirmRequest = { deleteOption ->
+                            deleteTaskDialogState.hideDialog()
+                            onDeleteTaskConfirmed(logbookTask, deleteOption)
+//                            viewModel.deletedTaskDialogState.showDialog(Pair(logbookTask, deleteOption))
+                        },
+                    )
+                }
+            }
+
+            if (viewModel.deletedTaskDialogState.isVisible.value) {
+                viewModel.deletedTaskDialogState.dialogData.value?.let { pair ->
+                    DeletedTaskDialog(
+                        task = pair.first,
+                        deleteOption = pair.second,
+                        onDismissRequest = { viewModel.deletedTaskDialogState.hideDialog() })
                 }
             }
         }
@@ -260,5 +300,6 @@ fun HomeLogbookScreenPreview() {
         userTasks = ApiResponseWithData.Default(),
         selectADay = { _, _ -> },
         onEditTaskClicked = {},
+        onDeleteTaskConfirmed = { _, _ -> },
     )
 }

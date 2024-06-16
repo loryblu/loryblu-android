@@ -44,6 +44,7 @@ fun TaskCardComponent(
     taskItem: LogbookTask,
     parentAccess: Boolean,
     onEditTaskClicked: (taskId: Int) -> Unit,
+    onDeleteTaskClicked: (taskId: Int) -> Unit,
 ) {
     ElevatedCard(
         modifier
@@ -55,7 +56,13 @@ fun TaskCardComponent(
                 categoryText = stringResource(id = taskItem.itemOfCategory.category.text),
                 parentAccess = parentAccess
             )
-            TaskContent(modifier = Modifier.height(126.dp), taskItem, parentAccess, onEditTaskClicked)
+            TaskContent(
+                modifier = Modifier.height(126.dp),
+                taskItem = taskItem,
+                parentAccess = parentAccess,
+                onEditTask = onEditTaskClicked,
+                onDeleteTask = onDeleteTaskClicked
+            )
             TaskName(
                 modifier = Modifier.height(46.dp),
                 taskName = stringResource(id = taskItem.itemOfCategory.text)
@@ -79,7 +86,7 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String, pare
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
-        if(parentAccess) {
+        if (parentAccess) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
@@ -90,7 +97,10 @@ fun TitleAndDragButton(modifier: Modifier = Modifier, categoryText: String, pare
                         containerColor = Color.Transparent,
                     )
                 ) {
-                    Image(painter = painterResource(id = R.drawable.drag_icon), contentDescription = "")
+                    Image(
+                        painter = painterResource(id = R.drawable.drag_icon),
+                        contentDescription = ""
+                    )
                 }
             }
         }
@@ -102,7 +112,8 @@ fun TaskContent(
     modifier: Modifier = Modifier,
     taskItem: LogbookTask,
     parentAccess: Boolean,
-    onEditTask: (taskId: Int) -> Unit
+    onEditTask: (taskId: Int) -> Unit,
+    onDeleteTask: (taskId: Int) -> Unit,
 ) {
     Row(
         modifier
@@ -151,7 +162,7 @@ fun TaskContent(
                 }
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {},
+                    onClick = { onDeleteTask(taskItem.id) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = LBSoftBlue,
                         contentColor = Color.Black
