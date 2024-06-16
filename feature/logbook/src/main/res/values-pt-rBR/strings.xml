@@ -23,4 +23,16 @@
     <string name="edit_task_title">Editar tarefa</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
+    <string name="exclude">Excluir</string>
+    <string name="close">Fechar</string>
+
+    <!--    Delete Task Dialog -->
+    <string name="want_to_exclude">Deseja excluir a tarefa</string>
+    <string name="content_permanently_deleted">Este conteúdo será deletado de forma permanente.</string>
+    <string name="only_on">Apenas de</string>
+    <string name="everyday">Todos os dias</string>
+
+    <!--    task Deleted Dialog -->
+    <string name="task_deleted">Tarefa deletada:</string>
+    <string name="successfully_deleted">Excluída com sucesso de</string>
 </resources>

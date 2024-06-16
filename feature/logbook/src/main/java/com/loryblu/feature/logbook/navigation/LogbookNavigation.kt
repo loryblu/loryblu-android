@@ -63,7 +63,8 @@ fun NavGraphBuilder.logbookNavigation(
                 val dayOfWeek = data.dayOfWeek.value
                 viewModel.selectADayOfWeek(dayOfWeek, 3)
 
-                val hasUpdateInTaskList = backStack.arguments?.getBoolean("UPDATE_ANIMATION") ?: false
+                val hasUpdateInTaskList =
+                    backStack.arguments?.getBoolean("UPDATE_ANIMATION") ?: false
 
                 if (hasUpdateInTaskList) {
                     viewModel.selectADayOfWeek(
@@ -83,6 +84,12 @@ fun NavGraphBuilder.logbookNavigation(
                 userTasks = userTasks.value,
                 selectADay = { day, shift ->
                     viewModel.selectADayOfWeek(day, shift)
+                },
+                onDeleteTaskConfirmed = { logbookTask, deleteOption ->
+                    viewModel.deleteTask(
+                        logbookTask = logbookTask,
+                        deleteOption = deleteOption
+                    )
                 },
             )
         }
@@ -272,7 +279,7 @@ fun NavGraphBuilder.logbookNavigation(
                 EditTaskScreen(
                     taskItems = taskItems,
                     cardClicked = cardClicked,
-                    onCardClick = { cardClicked = it  },
+                    onCardClick = { cardClicked = it },
                     onBackButtonClicked = { navController.navigateUp() },
                     onNextScreenClicked = {
                         viewModel.setSelectedTask(it)

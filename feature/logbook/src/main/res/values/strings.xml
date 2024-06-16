@@ -22,4 +22,16 @@
     <string name="edit_task_title">Edit task</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="exclude">Exclude</string>
+    <string name="close">Close</string>
+
+    <!--    Delete Task Dialog -->
+    <string name="want_to_exclude">Do you want to exclude the task</string>
+    <string name="content_permanently_deleted">This content will be permanently deleted.</string>
+    <string name="only_on">Only on</string>
+    <string name="everyday">Everyday</string>
+
+    <!--    task Deleted Dialog -->
+    <string name="task_deleted">Task deleted:</string>
+    <string name="successfully_deleted">Successfully deleted on</string>
 </resources>

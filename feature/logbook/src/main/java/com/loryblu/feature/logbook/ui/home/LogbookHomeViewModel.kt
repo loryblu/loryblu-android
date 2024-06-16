@@ -1,11 +1,14 @@
 package com.loryblu.feature.logbook.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
-import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.remote.model.LogbookTask
+import com.loryblu.feature.logbook.ui.task.delete.DeleteOption
+import com.loryblu.feature.logbook.ui.task.delete.mutableDialogStateOf
+import com.loryblu.feature.logbook.useCases.DeleteTaskUseCase
 import com.loryblu.feature.logbook.useCases.GetUserTaskByDayOfWeek
 import com.loryblu.feature.logbook.utils.intToDayOfWeek
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +16,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class LogbookHomeViewModel(
-    private val getUserTaskByDayOfWeek: GetUserTaskByDayOfWeek
+    private val getUserTaskByDayOfWeek: GetUserTaskByDayOfWeek,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val session: Session
 ) : ViewModel() {
 
     private val _userTasks =
@@ -22,6 +27,8 @@ class LogbookHomeViewModel(
 
     var lastDayOfWeek = 0
     var lastShift = 0
+
+    val deletedTaskDialogState = mutableDialogStateOf<Pair<LogbookTask, DeleteOption>?>(null)
 
     fun selectADayOfWeek(dayOfWeekInt: Int, shift: Int, force: Boolean = false) =
         viewModelScope.launch {
@@ -36,4 +43,23 @@ class LogbookHomeViewModel(
                 _userTasks.value = it
             }
         }
+
+    fun deleteTask(
+        logbookTask: LogbookTask,
+        deleteOption: DeleteOption,
+    ) = viewModelScope.launch {
+        deleteTaskUseCase
+            .invoke(
+                logbookTask = logbookTask,
+                deleteOption = deleteOption,
+                childrenId = session.getChildId()
+            )
+            .collect() { response ->
+                if (response is ApiResponse.Success) {
+                    deletedTaskDialogState.showDialog(
+                        Pair(logbookTask, deleteOption)
+                    )
+                }
+            }
+    }
 }
