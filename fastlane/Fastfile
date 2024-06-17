@@ -1,0 +1,229 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+QA = "QA"
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    # Function:
+    #   This lane creates local properties and run the tests
+    begin
+      create_local_properties(
+          base_api: ENV['BASE_URL'],
+          base_scheme: ENV[BASE_SCHEME],
+          version_name: "1.0.0",
+          version_code: 1
+      )
+
+      gradle(
+          task: "test",
+          print_command: false,
+      )
+    rescue => e
+      error_handler('test', e)
+    end
+  end
+
+  desc "Build and Deploy QA version on Firebase App Distribution"
+  lane :qa do
+    # Function:
+    #   This lane builds the QA version of the app and deploys it to Firebase App Distribution.
+    begin
+      environment = QA
+      version_code = ENV['GITHUB_RUNNER_NUMBER']
+      base_api = ENV['BASE_URL']
+
+      version_name, changelog = generate_changelog(
+          tag_match: "#{environment}/*",
+      )
+
+      build(
+          environment: environment,
+          version_name: version_name,
+          version_code: version_code,
+          base_api: base_api,
+          base_scheme: base_scheme
+      )
+
+      publish_on_firebase(
+          environment: environment,
+          changelog: changelog
+      )
+
+      pos_deploy(tag: "qa/#{version_name}")
+    rescue => e
+      error_handler('qa', e)
+    end
+  end
+
+  desc "Create local properties"
+  private_lane :create_local_properties do |options|
+    # Parameters:
+    #   :version_name (String): The version name of the app.
+    #   :version_code (String): The version code of the app.
+    #   :base_api (String): The base API URL.
+    # Function:
+    #   This lane creates the local properties based on the provided options and writes them to local.properties.
+    begin
+      version_name = options[:version_name]
+      version_code = options[:version_code]
+      base_api = options[:base_api]
+      base_scheme = options[:base_scheme]
+
+      local_properties = {
+          'BASE_URL' => base_api,
+          'BASE_SCHEME' => base_scheme,
+          'CI_VERSION_NAME' => version_name,
+          'CI_VERSION_CODE' => version_code,
+      }
+
+      Dir.chdir("..") do
+          File.open("local.properties", "w") do |file|
+            local_properties.each do |key, value|
+              file.puts("#{key}=#{value}")
+            end
+          end
+      end
+    rescue => e
+      error_handler('create_local_properties', e)
+    end
+  end
+
+  desc "Build android project"
+  private_lane :build do |options|
+    # Parameters:
+    #   :environment (String): The build environment (e.g., QA).
+    #   :version_name (String): The version name of the app.
+    #   :version_code (String): The version code of the app.
+    #   :base_api (String): The base API URL.
+    # Function:
+    #   This lane builds the Android project using the provided options.
+    begin
+      environment = options[:environment]
+      version_name = options[:version_name]
+      version_code = options[:version_code]
+      base_api = options[:base_api]
+      base_scheme = options[:base_scheme]
+
+      create_local_properties(
+          version_name: version_name,
+          version_code: version_code,
+          base_api: base_api,
+          base_scheme: base_scheme
+      )
+
+      case environment
+      when QA
+          gradle_task = 'clean assemble'
+          gradle_build_type = 'Debug'
+      end
+
+      gradle(
+          task: gradle_task,
+          build_type: gradle_build_type,
+          print_command: false
+      )
+    rescue => e
+      error_handler('build', e)
+    end
+  end
+
+  desc "Publish version on Firebase App Distribution"
+  private_lane :publish_on_firebase do |options|
+    # Parameters:
+    #   :environment (String): The build environment (e.g., QA).
+    #   :changelog (String): The changelog for this release.
+    # Function:
+    #   This lane publishes the built app version on Firebase App Distribution using the provided options.
+    begin
+      environment = options[:environment]
+      changelog = options[:changelog]
+
+      case environment
+      when QA
+          groups = "loryblu---qa"
+      end
+
+      firebase_app_distribution(
+          app: ENV['FIREBASE_APP_ID'],
+          groups: groups,
+          release_notes: changelog,
+          service_credentials_file: "credential_file_content.json"
+      )
+    rescue => e
+      error_handler('publish_on_firebase', "")
+    end
+  end
+
+  desc "Generate tag and changelog by semantic versioning 2.0.0"
+  private_lane :generate_changelog do |options|
+    # Parameters:
+    #   :tag_match (String): The pattern to match tags.
+    # Output:
+    #   [String, String]: The next version and the changelog.
+    # Function:
+    #   This lane generates the next version and changelog based on semantic versioning.
+    begin
+      match = options[:tag_match]
+      git_pull(only_tags: true)
+
+      analyze_commits(
+          match: match,
+      )
+
+      next_version = lane_context[SharedValues::RELEASE_NEXT_VERSION]
+
+      changelog = conventional_changelog(
+          format: 'slack',
+          title: 'Android Alpha',
+          display_author: false,
+          display_links: false,
+          debug: false
+      )
+
+      [next_version, changelog]
+    rescue => e
+      error_handler('generate_changelog', e)
+    end
+  end
+
+  desc "Lane to be executed after each deploy lane"
+  private_lane :pos_deploy do |options|
+    # Parameters:
+    #   :tag (String): The tag to be created.
+    #   :changelog (String): The changelog for the tag.
+    # Function:
+    #   This lane is executed after each deploy lane, creating and pushing a git tag.
+    begin
+      tag = options[:tag]
+      changelog = options[:changelog]
+
+      add_git_tag(tag: tag, message: changelog)
+      push_git_tags
+    rescue => e
+      error_handler('pos_deploy', e)
+    end
+  end
+end
+
+# Define an error handler method to capture and log errors
+def error_handler(lane_name, exception)
+  UI.error("Lane '#{lane_name}' failed with error: #{exception.message}")
+  UI.error(exception.backtrace.join("\n"))
+  raise exception
+end
