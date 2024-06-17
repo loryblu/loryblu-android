@@ -25,7 +25,7 @@ platform :android do
     begin
       create_local_properties(
           base_api: ENV['BASE_URL'],
-          base_scheme: ENV[BASE_SCHEME],
+          base_scheme: ENV['BASE_SCHEME'],
           version_name: "1.0.0",
           version_code: 1
       )
