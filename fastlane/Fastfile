@@ -47,6 +47,7 @@ platform :android do
       environment = QA
       version_code = ENV['GITHUB_RUNNER_NUMBER']
       base_api = ENV['BASE_URL']
+      base_scheme = ENV['BASE_SCHEME']
 
       version_name, changelog = generate_changelog(
           tag_match: "#{environment}/*",
