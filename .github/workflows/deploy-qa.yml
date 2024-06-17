@@ -58,5 +58,6 @@ jobs:
         run: bundle exec fastlane qa
         env:
           BASE_URL: ${{ secrets.BASE_URL_DEBUG }}
+          BASE_SCHEME: ${{ secrets.BASE_SCHEME }}
           GITHUB_RUNNER_NUMBER: ${{ github.run_number }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
