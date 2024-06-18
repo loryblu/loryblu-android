@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -12,8 +14,15 @@ android {
         applicationId = "com.loryblu.loryblu"
         minSdk = ProjectConfig.minSdk
         targetSdk = ProjectConfig.targetSdk
-        versionCode = 1
-        versionName = "1.0"
+
+        val properties = Properties().apply {
+            load(project.rootProject.file("local.properties").inputStream())
+        }
+        val versionNameValue: String = properties.getProperty("CI_VERSION_NAME") ?: "1.0"
+        val versionCodeValue: Int = properties.getProperty("CI_VERSION_CODE")?.toInt() ?: 1
+
+        versionName = versionNameValue
+        versionCode = versionCodeValue
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
