@@ -224,7 +224,7 @@ end
 
 # Define an error handler method to capture and log errors
 def error_handler(lane_name, exception)
-  UI.error("Lane '#{lane_name}' failed with error: #{exception.message}")
+  UI.error("Lane '#{lane_name}' failed with error: #{exception}")
   UI.error(exception.backtrace.join("\n"))
   raise exception
 end
