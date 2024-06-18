@@ -3,7 +3,7 @@ name: Build and test
 on:
   pull_request:
     branches:
-      - 'asasas*'
+      - '*'
       
 jobs:
   android_test:

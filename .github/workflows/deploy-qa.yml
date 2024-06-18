@@ -1,14 +1,9 @@
 name: Deploy QA
 
-#on:
-#  push:
-#    branches:
-#      - homolog
-
 on:
-  pull_request:
+  push:
     branches:
-      - '*'
+      - homolog
 
 jobs:
   build_and_deploy:
