@@ -62,6 +62,10 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.navigation.compose)
     implementation(libs.material3)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.ui.test.junit4)

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "171458109296",
+    "project_id": "loryblu-5cd1d",
+    "storage_bucket": "loryblu-5cd1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171458109296:android:83cab0d2f472903bc9b9b5",
+        "android_client_info": {
+          "package_name": "com.loryblu.loryblu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFsga9jfwOV6JrUcfE5jANQK1nXGt4i9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171458109296:android:2258fadaece369dac9b9b5",
+        "android_client_info": {
+          "package_name": "com.loryblu.loryblu.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFsga9jfwOV6JrUcfE5jANQK1nXGt4i9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
