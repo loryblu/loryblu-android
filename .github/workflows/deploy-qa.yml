@@ -1,0 +1,58 @@
+name: Deploy QA
+
+on:
+  push:
+    branches:
+      - homolog
+
+jobs:
+  build_and_deploy:
+    name: Deploy QA
+    runs-on: ubuntu-22.04
+    concurrency: ci-${{ github.ref }}
+    permissions:
+      contents: write
+
+    env:
+      isCI: "true"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Adding git config to push tag
+        run: |
+          git config --global user.email "ruliam.oliveira@gmail.com"
+          git config --global user.name "Ruliam Oliveira"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: "17"
+
+      - name: Adding Firebase Credentials Json File
+        run: echo "${{ secrets.CREDENTIAL_FILE_CONTENT }}" | base64 -d > credential_file_content.json
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.3
+
+      - name: Add current platform to Bundler lockfile
+        run: |
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-linux
+
+      - name: Install Gems
+        run: bundle install
+
+      - name: Build and Deploy QA
+        run: bundle exec fastlane qa
+        env:
+          BASE_URL: ${{ secrets.BASE_URL_DEBUG }}
+          BASE_SCHEME: ${{ secrets.BASE_SCHEME }}
+          GITHUB_RUNNER_NUMBER: ${{ github.run_number }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
