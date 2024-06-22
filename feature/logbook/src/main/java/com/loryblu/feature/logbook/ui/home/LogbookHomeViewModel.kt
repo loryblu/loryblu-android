@@ -35,18 +35,16 @@ class LogbookHomeViewModel(
             lastDayOfWeek = dayOfWeekInt
             lastShift = shift
 
-            getUserTaskByDayOfWeek.invoke(
-                dayOfWeek = intToDayOfWeek(dayOfWeekInt),
-                shift = shift,
-                force = force
-            ).collect {
-                _userTasks.value = it
-            }
+            forceGetUserTaskByDayOfWeek(
+                dayOfWeekInt = dayOfWeekInt, shift = shift
+            )
         }
 
     fun deleteTask(
         logbookTask: LogbookTask,
         deleteOption: DeleteOption,
+        dayOfWeekInt: Int,
+        shift: Int,
     ) = viewModelScope.launch {
         deleteTaskUseCase
             .invoke(
@@ -61,5 +59,22 @@ class LogbookHomeViewModel(
                     )
                 }
             }
+
+        forceGetUserTaskByDayOfWeek(
+            dayOfWeekInt = dayOfWeekInt, shift = shift
+        )
+    }
+
+    private suspend fun forceGetUserTaskByDayOfWeek(
+        dayOfWeekInt: Int,
+        shift: Int,
+    ) {
+        getUserTaskByDayOfWeek.invoke(
+            dayOfWeek = intToDayOfWeek(dayOfWeekInt),
+            shift = shift,
+            force = true
+        ).collect {
+            _userTasks.value = it
+        }
     }
 }
