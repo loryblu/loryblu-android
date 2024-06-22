@@ -85,10 +85,12 @@ fun NavGraphBuilder.logbookNavigation(
                 selectADay = { day, shift ->
                     viewModel.selectADayOfWeek(day, shift)
                 },
-                onDeleteTaskConfirmed = { logbookTask, deleteOption ->
+                onDeleteTaskConfirmed = { logbookTask, deleteOption, selectedDay, shiftSelected ->
                     viewModel.deleteTask(
                         logbookTask = logbookTask,
-                        deleteOption = deleteOption
+                        deleteOption = deleteOption,
+                        dayOfWeekInt = selectedDay,
+                        shift = shiftSelected,
                     )
                 },
             )

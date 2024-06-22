@@ -63,7 +63,12 @@ fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
     onEditTaskClicked: (taskId: Int) -> Unit,
-    onDeleteTaskConfirmed: (logbookTask: LogbookTask, deleteOption: DeleteOption) -> Unit,
+    onDeleteTaskConfirmed: (
+        logbookTask: LogbookTask,
+        deleteOption: DeleteOption,
+        selectedDay: Int,
+        shiftSelected: Int,
+    ) -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADay: (Int, Int) -> Unit,
 ) {
@@ -83,9 +88,6 @@ fun LogbookScreen(
 
     val deleteTaskDialogState: MutableDialogState<LogbookTask?> =
         rememberMutableDialogState(initialData = null)
-
-//    val taskDeletedDialogState: MutableDialogState<Pair<LogbookTask, DeleteOption>?> =
-//        rememberMutableDialogState(initialData = null)
 
     val viewModel: LogbookHomeViewModel = koinViewModel()
 
@@ -206,8 +208,12 @@ fun LogbookScreen(
                         onDismissRequest = { deleteTaskDialogState.hideDialog() },
                         onConfirmRequest = { deleteOption ->
                             deleteTaskDialogState.hideDialog()
-                            onDeleteTaskConfirmed(logbookTask, deleteOption)
-//                            viewModel.deletedTaskDialogState.showDialog(Pair(logbookTask, deleteOption))
+                            onDeleteTaskConfirmed(
+                                logbookTask,
+                                deleteOption,
+                                selectedDay,
+                                shiftSelected
+                            )
                         },
                     )
                 }
@@ -300,6 +306,6 @@ fun HomeLogbookScreenPreview() {
         userTasks = ApiResponseWithData.Default(),
         selectADay = { _, _ -> },
         onEditTaskClicked = {},
-        onDeleteTaskConfirmed = { _, _ -> },
+        onDeleteTaskConfirmed = { _, _, _, _ -> },
     )
 }
