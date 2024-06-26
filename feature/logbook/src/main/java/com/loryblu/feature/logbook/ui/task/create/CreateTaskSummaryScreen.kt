@@ -39,8 +39,9 @@ fun CreateTaskSummaryScreen(
     onCategoryNavigate: () -> Unit,
     onTaskNavigate: () -> Unit,
 ) {
-    var selectedDay by remember { mutableStateOf(emptyList<Int>()) }
-    selectedDay = getDaySelected(logbookTaskModel.frequency)
+    var selectedFrequency by remember { mutableStateOf(
+        getDaySelected(logbookTaskModel.frequency)
+    ) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -60,7 +61,10 @@ fun CreateTaskSummaryScreen(
                 logbookTaskModel = logbookTaskModel,
                 innerPadding = innerPadding,
                 onShiftChange = onShiftChange,
-                onFrequencyChange = onFrequencyChange,
+                onFrequencyChange = { frequency ->
+                    onFrequencyChange.invoke(frequency)
+                    selectedFrequency = frequency
+                },
                 onCategoryNavigate = onCategoryNavigate,
                 onTaskNavigate = onTaskNavigate,
             ) {
@@ -72,7 +76,7 @@ fun CreateTaskSummaryScreen(
                         containerColor = LBSkyBlue
                     ),
                     textColor = Color.White,
-                    areAllFieldsValid = selectedDay != emptyList<Int>()
+                    areAllFieldsValid = selectedFrequency.isNotEmpty()
                 )
             }
         }
