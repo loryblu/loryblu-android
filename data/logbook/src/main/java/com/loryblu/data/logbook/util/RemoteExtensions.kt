@@ -28,7 +28,7 @@ fun LogbookTaskRemote.toLogbookTask(): List<LogbookTask> {
     val idToCard = TaskItem.getAllTaskItems().associateBy { it.taskId }
     val logbookItems = mutableListOf<LogbookTask>()
 
-    this.data.routine.map { remote ->
+    this.data.routine?.map { remote ->
         logbookItems.add(
             LogbookTask(
             itemOfCategory = idToCard[remote.categoryId]!!,
@@ -40,7 +40,7 @@ fun LogbookTaskRemote.toLogbookTask(): List<LogbookTask> {
             )
         )
     }
-    this.data.study.map { remote ->
+    this.data.study?.map { remote ->
         logbookItems.add(
             LogbookTask(
                 itemOfCategory = idToCard[remote.categoryId]!!,
