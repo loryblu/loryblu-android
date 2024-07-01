@@ -7,8 +7,8 @@ data class LogbookTaskRemote(
 
 data class Data(
     val count: Int,
-    val routine: List<LogbookRemoteItem>,
-    val study: List<LogbookRemoteItem>
+    val routine: List<LogbookRemoteItem>?,
+    val study: List<LogbookRemoteItem>?,
 )
 
 data class LogbookRemoteItem(
