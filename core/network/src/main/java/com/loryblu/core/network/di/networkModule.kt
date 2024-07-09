@@ -1,5 +1,6 @@
 package com.loryblu.core.network.di
 
+import android.content.Context
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.emptyPreferences
@@ -13,6 +14,8 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -25,39 +28,13 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val networkModule = module {
+
     single {
-        HttpClient(get<HttpClientEngine>()) {
-
-            install(ContentNegotiation){
-                gson {
-                    serializeNulls()
-                    setPrettyPrinting()
-                }
-            }
-            install(DefaultRequest) {
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-            }
-            if (BuildConfig.DEBUG) {
-                install(Logging) {
-                    logger = Logger.DEFAULT
-                    level = LogLevel.ALL
-                }
-            }
-        }
-
+        provideHttpClient(get(), get())
     }
 
     single<ChuckerInterceptor> {
-        ChuckerInterceptor.Builder(get())
-            .collector(ChuckerCollector(
-                context = get(),
-                showNotification = true,
-                retentionPeriod = RetentionManager.Period.ONE_HOUR
-            ))
-            .maxContentLength(250000L)
-            .redactHeaders(emptySet())
-            .alwaysReadResponseBody(false)
-            .build()
+        provideChuckerInterceptor(get())
     }
 
     single<HttpClientEngine> {
@@ -75,3 +52,38 @@ val networkModule = module {
         Session(get())
     }
 }
+
+private fun provideHttpClient(httpClientEngine: HttpClientEngine, session: Session) = HttpClient(httpClientEngine) {
+    defaultRequest {
+        url(BuildConfig.BASE_URL)
+        header(HttpHeaders.ContentType, ContentType.Application.Json)
+    }
+
+    install(ContentNegotiation) {
+        gson {
+            serializeNulls()
+            setPrettyPrinting()
+        }
+    }
+
+    if (BuildConfig.DEBUG) {
+        install(Logging) {
+            logger = Logger.ANDROID
+            level = LogLevel.ALL
+        }
+    }
+
+}
+
+private fun provideChuckerInterceptor(context: Context) = ChuckerInterceptor.Builder(context)
+    .collector(
+        ChuckerCollector(
+            context = context,
+            showNotification = true,
+            retentionPeriod = RetentionManager.Period.ONE_HOUR
+        )
+    )
+    .maxContentLength(250000L)
+    .redactHeaders(emptySet())
+    .alwaysReadResponseBody(false)
+    .build()
