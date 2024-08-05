@@ -70,7 +70,7 @@ class LogbookApiImpl(
         try {
             emit(
                 client.delete(HttpRoutes.TASK) {
-                    parameter("id_task", taskId)
+                    parameter("taskId", taskId)
                     parameter("childrenId", session.getChildId().toString())
                     bearerAuth(session.getToken())
                 }.toApiResponse()
