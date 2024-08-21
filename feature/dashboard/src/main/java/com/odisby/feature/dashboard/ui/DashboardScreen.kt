@@ -20,9 +20,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -38,10 +40,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBCardDashboard
+import com.loryblu.core.ui.theme.LBMediumGray
+import com.loryblu.core.ui.theme.LBShadowGray
 import com.odisby.data.dashboard.local.getAllDashboardItems
 import com.odisby.feature.dashboard.R
 
@@ -51,16 +57,13 @@ fun DashboardScreen(
     navigateToLogbook: () -> Unit,
     childName: String = "",
 ) {
-    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var menuIsOpen by rememberSaveable { mutableStateOf(false) }
 
     val dashboardItems = getAllDashboardItems()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        MenuContent(
-            menuIsOpen = openBottomSheet,
-            onClose = { openBottomSheet = false }
-        )
-        AppBar(childName = childName, onMenuClick = { openBottomSheet = true })
+        MenuContent(isOpen = menuIsOpen, onCloseClick = { menuIsOpen = false })
+        AppBar(childName = childName, onMenuClick = { menuIsOpen = true })
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -94,15 +97,14 @@ fun AppBar(childName: String, onMenuClick: () -> Unit) {
         Row {
             Image(
                 painter = painterResource(id = R.drawable.logo_home),
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.logo_home),
                 contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .size(62.dp)
+                modifier = Modifier.size(62.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 fontSize = 24.sp,
-                text = "Olá, $childName"
+                text = stringResource(id = R.string.hello, childName)
             )
         }
         MenuIcon(onClick = onMenuClick)
@@ -126,7 +128,7 @@ fun MenuIcon(onClick: () -> Unit) {
     ) {
         Icon(
             Icons.Filled.Menu,
-            contentDescription = "",
+            contentDescription = stringResource(id = R.string.menu),
             tint = Color.Gray,
             modifier = Modifier.size(22.dp)
         )
@@ -142,17 +144,49 @@ fun AppBarPreview() {
 
 @ExperimentalMaterial3Api
 @Composable
-fun MenuContent(menuIsOpen: Boolean, onClose: () -> Unit) {
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    if (menuIsOpen) {
+fun MenuContent(isOpen: Boolean, onCloseClick: () -> Unit) {
+    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    if (isOpen) {
         ModalBottomSheet(
-            sheetState = bottomSheetState,
-            onDismissRequest = onClose,
+            sheetState = state,
+            onDismissRequest = onCloseClick,
             modifier = Modifier.fillMaxSize(),
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-
+            Column(
+                modifier = Modifier.fillMaxSize().padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                MenuHeader(onCloseClick = onCloseClick)
             }
         }
     }
+}
+
+@Composable
+fun MenuHeader(onCloseClick: () -> Unit) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(id = R.string.menu),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Medium,
+            color = LBShadowGray,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        Icon(
+            Icons.Filled.Close,
+            contentDescription = stringResource(id = R.string.close_menu),
+            tint = LBMediumGray,
+            modifier = Modifier
+                .size(30.dp)
+                .align(Alignment.CenterEnd)
+                .clickable { onCloseClick.invoke() },
+        )
+    }
+}
+
+@ExperimentalMaterial3Api
+@Preview
+@Composable
+fun MenuContentPreview() {
+    MenuContent(isOpen = true, onCloseClick = {})
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu">Menu</string>
+    <string name="logo_home">Logo LoryBlu</string>
+    <string name="hello">Olá, %s</string>
+    <string name="close_menu">Fechar Menu</string>
+</resources>
+
