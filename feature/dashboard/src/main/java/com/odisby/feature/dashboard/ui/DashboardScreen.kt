@@ -29,8 +29,10 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -50,6 +52,8 @@ import com.loryblu.core.ui.theme.LBMediumGray
 import com.loryblu.core.ui.theme.LBShadowGray
 import com.odisby.data.dashboard.local.getAllDashboardItems
 import com.odisby.feature.dashboard.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
@@ -62,7 +66,7 @@ fun DashboardScreen(
     val dashboardItems = getAllDashboardItems()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        MenuContent(isOpen = menuIsOpen, onCloseClick = { menuIsOpen = false })
+        MenuContent(isOpen = menuIsOpen, onClose = { menuIsOpen = false })
         AppBar(childName = childName, onMenuClick = { menuIsOpen = true })
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -144,8 +148,22 @@ fun AppBarPreview() {
 
 @ExperimentalMaterial3Api
 @Composable
-fun MenuContent(isOpen: Boolean, onCloseClick: () -> Unit) {
+fun MenuContent(isOpen: Boolean, onClose: () -> Unit) {
+    val scope = rememberCoroutineScope()
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    LaunchedEffect(isOpen) {
+        if (isOpen) state.show() 
+    }
+
+    val onCloseClick: () -> Unit = {
+        scope.launch {
+            state.hide()
+            delay(300) // to await close animation
+            onClose.invoke()
+        }
+    }
+
     if (isOpen) {
         ModalBottomSheet(
             sheetState = state,
@@ -188,5 +206,5 @@ fun MenuHeader(onCloseClick: () -> Unit) {
 @Preview
 @Composable
 fun MenuContentPreview() {
-    MenuContent(isOpen = true, onCloseClick = {})
+    MenuContent(isOpen = true, onClose = {})
 }
