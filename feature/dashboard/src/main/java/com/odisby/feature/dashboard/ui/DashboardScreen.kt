@@ -1,5 +1,6 @@
 package com.odisby.feature.dashboard.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,8 +19,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,29 +49,43 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.components.LBCardDashboard
+import com.loryblu.core.ui.theme.LBLightGray
+import com.loryblu.core.ui.theme.LBLightPink
 import com.loryblu.core.ui.theme.LBMediumGray
 import com.loryblu.core.ui.theme.LBShadowGray
+import com.loryblu.core.ui.theme.LBSilverGray
+import com.loryblu.core.ui.theme.LBSoftBlue
 import com.odisby.data.dashboard.local.getAllDashboardItems
 import com.odisby.feature.dashboard.R
+import com.odisby.feature.dashboard.model.UsesData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
 fun DashboardScreen(
+    usesData: UsesData,
     navigateToLogbook: () -> Unit,
-    childName: String = "",
 ) {
     var menuIsOpen by rememberSaveable { mutableStateOf(false) }
 
     val dashboardItems = getAllDashboardItems()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        MenuContent(isOpen = menuIsOpen, onClose = { menuIsOpen = false })
-        AppBar(childName = childName, onMenuClick = { menuIsOpen = true })
+        MenuContent(
+            isOpen = menuIsOpen,
+            childFullName = usesData.childFullName,
+            parentFullName = usesData.parentFullName,
+            onClose = { menuIsOpen = false }
+        )
+        AppBar(
+            childFirstName = usesData.childFirstName,
+            onMenuClick = { menuIsOpen = true },
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -90,7 +108,7 @@ fun DashboardScreen(
 }
 
 @Composable
-fun AppBar(childName: String, onMenuClick: () -> Unit) {
+fun AppBar(childFirstName: String, onMenuClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +126,7 @@ fun AppBar(childName: String, onMenuClick: () -> Unit) {
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 fontSize = 24.sp,
-                text = stringResource(id = R.string.hello, childName)
+                text = stringResource(id = R.string.hello, childFirstName)
             )
         }
         MenuIcon(onClick = onMenuClick)
@@ -140,15 +158,14 @@ fun MenuIcon(onClick: () -> Unit) {
 
 }
 
-@Preview
-@Composable
-fun AppBarPreview() {
-    AppBar(childName = "Sara") {}
-}
-
 @ExperimentalMaterial3Api
 @Composable
-fun MenuContent(isOpen: Boolean, onClose: () -> Unit) {
+fun MenuContent(
+    isOpen: Boolean,
+    childFullName: String,
+    parentFullName: String,
+    onClose: () -> Unit
+) {
     val scope = rememberCoroutineScope()
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -165,16 +182,54 @@ fun MenuContent(isOpen: Boolean, onClose: () -> Unit) {
     }
 
     if (isOpen) {
+        val scrollState = rememberScrollState()
         ModalBottomSheet(
             sheetState = state,
             onDismissRequest = onCloseClick,
-            modifier = Modifier.fillMaxSize(),
         ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp)
             ) {
                 MenuHeader(onCloseClick = onCloseClick)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+
+                    MenuSection(R.string.profile) {
+                        MenuItem(
+                            smallText = stringResource(id = R.string.child_name),
+                            mediumText = childFullName,
+                        )
+                        MenuItem(
+                            smallText = stringResource(id = R.string.parent_name),
+                            mediumText = parentFullName,
+                        )
+                    }
+                    MenuSection(R.string.configurations) {
+                        MenuItem(
+                            smallText = stringResource(id = R.string.access_control),
+                            mediumText = stringResource(id = R.string.security),
+                            isReverseTextOrder = true,
+                        )
+                        MenuItem(
+                            mediumText = stringResource(id = R.string.faq),
+                        )
+                        MenuItem(
+                            mediumText = stringResource(id = R.string.privacy_term),
+                        )
+                        MenuItem(
+                            mediumText = stringResource(id = R.string.exit_app),
+                            backgroundColor = LBLightPink,
+                            paddingTop = 24.dp,
+                            hasArrowRight = false,
+                        )
+                    }
+                }
             }
         }
     }
@@ -202,9 +257,103 @@ fun MenuHeader(onCloseClick: () -> Unit) {
     }
 }
 
-@ExperimentalMaterial3Api
+@Composable
+fun MenuSection(@StringRes titleId: Int, content: @Composable () -> Unit) {
+    Column(modifier = Modifier.padding(top = 24.dp, bottom = 0.dp)) {
+        Text(
+            text = stringResource(id = titleId),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Medium,
+            color = LBMediumGray,
+        )
+        Column {
+            content.invoke()
+        }
+    }
+}
+
+@Composable
+fun MenuItem(
+    smallText: String = "",
+    mediumText: String,
+    isReverseTextOrder: Boolean = false,
+    backgroundColor: Color = LBSoftBlue,
+    paddingTop: Dp = 16.dp,
+    hasArrowRight: Boolean = true,
+) {
+    Spacer(modifier = Modifier.padding(top = paddingTop))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+            .background(backgroundColor, shape = RoundedCornerShape(12.dp))
+            .border(1.dp, LBLightGray, shape = RoundedCornerShape(12.dp))
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                modifier = Modifier.size(45.dp), painter =
+                painterResource(id = R.drawable.logo_home),
+                contentDescription = ""
+            )
+            Column(
+                Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(horizontal = 20.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                if (isReverseTextOrder) {
+                    MenuMediumText(mediumText)
+                    MenuSmallText(smallText)
+                } else {
+                    MenuSmallText(smallText)
+                    MenuMediumText(mediumText)
+                }
+            }
+
+        }
+        if (hasArrowRight) {
+            Icon(
+                Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "",
+                modifier = Modifier.size(30.dp),
+                tint = LBSilverGray,
+            )
+        }
+    }
+}
+
+
+@Composable
+fun MenuSmallText(text: String, modifier: Modifier = Modifier) {
+    if (text.isNotEmpty()) {
+        Text(
+            text = text,
+            color = Color.Gray,
+            style = MaterialTheme.typography.labelLarge,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+fun MenuMediumText(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Medium,
+        color = LBShadowGray,
+        modifier = modifier
+    )
+}
+
 @Preview
 @Composable
-fun MenuContentPreview() {
-    MenuContent(isOpen = true, onClose = {})
+fun MenuItemPreview() {
+    MenuItem("Nome da criança", "Maria da Silva")
+
 }

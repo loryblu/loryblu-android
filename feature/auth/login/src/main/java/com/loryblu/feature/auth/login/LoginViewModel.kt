@@ -69,10 +69,14 @@ class LoginViewModel(
     fun rememberLogin(rememberLogin: Boolean, loginResponse: LoginResponse) {
         viewModelScope.launch {
             session.saveToken(loginResponse.data.accessToken)
-            session.saveChild(
-                loginResponse.data.user.childrens[0].id,
-                loginResponse.data.user.childrens[0].fullname
-            )
+            with(loginResponse.data.user) {
+                val child = childrens.first()
+                session.saveChild(
+                    child.id,
+                    child.fullname,
+                    parentName,
+                )
+            }
             // Remove until task is up
 //            if (rememberLogin) session.saveRememberLogin(
 //                rememberLogin = true,

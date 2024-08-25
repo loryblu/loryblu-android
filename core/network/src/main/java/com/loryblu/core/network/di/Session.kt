@@ -24,6 +24,7 @@ class Session(
 
     private var childIdCache: Int = 0
     private var childNameCache: String = ""
+    private var parentNameCache: String = ""
 
     suspend fun saveToken(loginToken: String) {
         dataStore.edit {
@@ -58,14 +59,20 @@ class Session(
         }
     }
 
-    fun saveChild(childId: Int, childName: String) {
+    fun saveChild(childId: Int, childName: String, parentName: String) {
         childIdCache = childId
         childNameCache = childName
+        parentNameCache = parentName
     }
 
     fun getChildName(): String {
         return childNameCache
     }
+
+    fun getParentName(): String {
+        return parentNameCache
+    }
+
     fun getToken(): String {
         var response: String
         runBlocking {

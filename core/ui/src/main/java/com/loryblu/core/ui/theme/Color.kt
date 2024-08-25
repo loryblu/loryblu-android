@@ -13,6 +13,7 @@ val LBShadowGray = Color(0xff0F1326)
 val LBMediumGray = Color(0xff616161)
 val LBSmokeGray = Color(0xff49454F)
 val LBErrorColor = Color(0xffD62C2C)
+val LBLightPink = Color(0xffffD3D3)
 
 // Card Colors
 val LBCardSoftBlue = Color(0xFF97D8FE)

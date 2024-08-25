@@ -1,5 +1,6 @@
 package com.odisby.feature.dashboard.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
@@ -9,17 +10,18 @@ import com.odisby.feature.dashboard.ui.DashboardScreen
 import com.odisby.feature.dashboard.ui.DashboardViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.dashboardRoute(
     navigateToLogbook: () -> Unit
 ) {
     composable(route = Screen.Dashboard.route) {
         val viewModel: DashboardViewModel = koinViewModel()
-        val childName by viewModel.childName.collectAsState()
-        viewModel.getChildName()
+        val usersData by viewModel.usesData.collectAsState()
+        viewModel.getUsesData()
 
         DashboardScreen(
+            usesData = usersData,
             navigateToLogbook = navigateToLogbook,
-            childName = childName
         )
     }
 }
