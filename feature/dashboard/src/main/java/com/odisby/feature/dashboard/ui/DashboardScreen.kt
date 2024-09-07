@@ -1,5 +1,6 @@
 package com.odisby.feature.dashboard.ui
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -30,6 +32,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -204,10 +207,12 @@ fun MenuContent(
                         MenuItem(
                             smallText = stringResource(id = R.string.child_name),
                             mediumText = childFullName,
+                            imageId = R.drawable.seedling,
                         )
                         MenuItem(
                             smallText = stringResource(id = R.string.parent_name),
                             mediumText = parentFullName,
+                            imageId = R.drawable.tree,
                         )
                     }
                     MenuSection(R.string.configurations) {
@@ -215,18 +220,22 @@ fun MenuContent(
                             smallText = stringResource(id = R.string.access_control),
                             mediumText = stringResource(id = R.string.security),
                             isReverseTextOrder = true,
+                            imageId = R.drawable.shield,
                         )
                         MenuItem(
                             mediumText = stringResource(id = R.string.faq),
+                            imageId = R.drawable.question_mark,
                         )
                         MenuItem(
                             mediumText = stringResource(id = R.string.privacy_term),
+                            imageId = R.drawable.clipboard,
                         )
                         MenuItem(
                             mediumText = stringResource(id = R.string.exit_app),
                             backgroundColor = LBLightPink,
                             paddingTop = 24.dp,
                             hasArrowRight = false,
+                            imageId = R.drawable.exit_door,
                         )
                     }
                 }
@@ -276,6 +285,7 @@ fun MenuSection(@StringRes titleId: Int, content: @Composable () -> Unit) {
 fun MenuItem(
     smallText: String = "",
     mediumText: String,
+    @DrawableRes imageId: Int,
     isReverseTextOrder: Boolean = false,
     backgroundColor: Color = LBSoftBlue,
     paddingTop: Dp = 16.dp,
@@ -295,11 +305,7 @@ fun MenuItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Image(
-                modifier = Modifier.size(45.dp), painter =
-                painterResource(id = R.drawable.logo_home),
-                contentDescription = ""
-            )
+            MenuImage(imageId, smallText)
             Column(
                 Modifier
                     .fillMaxWidth(0.8f)
@@ -322,6 +328,26 @@ fun MenuItem(
                 contentDescription = "",
                 modifier = Modifier.size(30.dp),
                 tint = LBSilverGray,
+            )
+        }
+    }
+}
+
+@Composable
+fun MenuImage(@DrawableRes imageId: Int, contentDescription: String) {
+    Surface(
+        modifier = Modifier
+            .size(45.dp)
+            .clip(CircleShape)
+            .background(Color.White),
+        shape = CircleShape
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Icon(
+                painter = painterResource(id = imageId),
+                contentDescription = contentDescription,
+                tint = Color.Unspecified,
+                modifier = Modifier.size(24.dp)
             )
         }
     }
@@ -354,6 +380,6 @@ fun MenuMediumText(text: String, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun MenuItemPreview() {
-    MenuItem("Nome da criança", "Maria da Silva")
+    MenuItem("Nome da criança", "Maria da Silva", imageId = R.drawable.seedling)
 
 }
