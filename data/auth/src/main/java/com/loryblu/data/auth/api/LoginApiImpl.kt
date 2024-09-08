@@ -35,6 +35,7 @@ internal class LoginApiImpl(
 
     private fun handleErrorResponse(httpStatusCode: HttpStatusCode): SignInResult {
         println("Error: ${httpStatusCode.description}")
-        return SignInResult.Error("Estamos com alguns problemas. Tente novamente mais tarde!")
+        // TODO: pass it to a string resources
+        return SignInResult.Error("Servidor indisponível. Tente novamente mais tarde.")
     }
 }
