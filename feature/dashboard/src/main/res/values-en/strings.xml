@@ -2,11 +2,12 @@
 <resources>
     <string name="menu">Menu</string>
     <string name="logo_home">Logo LoryBlu</string>
-    <string name="hello">Olá, %s!</string>
-    <string name="close_menu">Fechar Menu</string>
+    <string name="hello">Hello, %s!</string>
+    <string name="how_are_you">How are you?</string>
+    <string name="close_menu">Close menu</string>
     <string name="profile">Profile</string>
     <string name="child_name">Child\'s Name</string>
-    <string name="parent_name">Nome da pessoa responsável</string>
+    <string name="parent_name">Name of responsible person</string>
     <string name="configurations">Settings</string>
     <string name="security">Security</string>
     <string name="access_control">Control access and manage the app\'s functionalities</string>
@@ -14,4 +15,3 @@
     <string name="term_and_privacy">Privacy Policy</string>
     <string name="exit_app">Exit App</string>
 </resources>
-

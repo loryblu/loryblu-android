@@ -17,24 +17,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.theme.LBDarkBlue
+import com.loryblu.core.ui.theme.LBDisabledGray
 import com.odisby.feature.dashboard.R
 
 @Composable
@@ -57,7 +59,7 @@ fun AppBar(childFirstName: String, onMenuClick: () -> Unit) {
             Column {
                 TextBalloon(stringResource(id = R.string.hello, childFirstName))
                 Spacer(modifier = Modifier.height(8.dp))
-                TextBalloon("Como você está?")
+                TextBalloon(stringResource(id = R.string.how_are_you))
             }
         }
         MenuIcon(onClick = onMenuClick)
@@ -94,25 +96,56 @@ fun TextBalloon(text: String) {
 
 @Composable
 fun MenuIcon(onClick: () -> Unit) {
+    val cornerShape = RoundedCornerShape(25)
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(32.dp)
-            .clip(RoundedCornerShape(20))
-            .border(
-                BorderStroke(1.dp, Color.Gray),
-                shape = RoundedCornerShape(20)
+            .size(40.dp)
+            .shadow(
+                offsetX = 1.dp,
+                offsetY = 1.dp,
+                cornerRadius = 8.dp,
             )
+            .clip(cornerShape)
+            .border(border = BorderStroke(1.dp, LBDisabledGray), shape = cornerShape)
             .clickable { onClick.invoke() }
-            .shadow(1.dp, shape = RoundedCornerShape(20))
-            .background(Color.White)
+            .background(Color.White, shape = cornerShape)
     ) {
         Icon(
-            Icons.Filled.Menu,
+            painter = painterResource(id = R.drawable.menu_icon),
             contentDescription = stringResource(id = R.string.menu),
-            tint = Color.Gray,
-            modifier = Modifier.size(22.dp)
+            tint = LBDisabledGray,
+            modifier = Modifier.size(17.dp)
         )
     }
+}
 
+fun Modifier.shadow(
+    offsetX: Dp = 0.dp,
+    offsetY: Dp = 0.dp,
+    shadowColor: Color = Color.Black.copy(alpha = 0.2f),
+    cornerRadius: Dp = 0.dp,
+    alpha: Float = 0.7f,
+): Modifier {
+    return this.drawBehind {
+        drawRoundRect(
+            color = shadowColor,
+            topLeft = Offset(x = offsetX.toPx(), y = offsetY.toPx()),
+            size = size,
+            cornerRadius = CornerRadius(cornerRadius.toPx(), cornerRadius.toPx()),
+            alpha = alpha,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun MenuIconPreview() {
+    MenuIcon {}
+}
+
+@Composable
+@Preview(showBackground = true)
+fun AppBarPreview() {
+    AppBar("Leonardo") {}
 }

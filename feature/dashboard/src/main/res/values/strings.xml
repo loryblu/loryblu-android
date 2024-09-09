@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="menu">Menu</string>
-    <string name="logo_home">Logo LoryBlu</string>
-    <string name="hello">Olá, %s!</string>
-    <string name="close_menu">Close Menu</string>
-    <string name="profile">Perfil</string>
-    <string name="child_name">Nome da criança</string>
-    <string name="parent_name">Nome da pessoa responsável</string>
-    <string name="configurations">Configurações</string>
-    <string name="security">Segurança</string>
-    <string name="access_control">Controle os acessos e gerencie as funcionalidades do app</string>
-    <string name="faq">Perguntas Frequentes</string>
-    <string name="term_and_privacy">Termo e Privacidade</string>
-    <string name="exit_app">Sair do App</string>
+    <string name="menu" translatable="false">Menu</string>
+    <string name="logo_home" translatable="false">Logo LoryBlu</string>
+    <string name="hello" translatable="false">Olá, %s!</string>
+    <string name="how_are_you" translatable="false">Como você está?</string>
+    <string name="close_menu" translatable="false">fechar menu</string>
+    <string name="profile" translatable="false">Perfil</string>
+    <string name="child_name" translatable="false">Nome da criança</string>
+    <string name="parent_name" translatable="false">Nome da pessoa responsável</string>
+    <string name="configurations" translatable="false">Configurações</string>
+    <string name="security" translatable="false">Segurança</string>
+    <string name="access_control" translatable="false">Controle os acessos e gerencie as funcionalidades do app</string>
+    <string name="faq" translatable="false">Perguntas Frequentes</string>
+    <string name="term_and_privacy" translatable="false">Termo e Privacidade</string>
+    <string name="exit_app" translatable="false">Sair do App</string>
 </resources>
