@@ -23,21 +23,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
 import com.odisby.feature.dashboard.R
+import com.odisby.feature.dashboard.extensions.loryShadow
 
 @Composable
 fun AppBar(childFirstName: String, onMenuClick: () -> Unit) {
@@ -72,7 +70,7 @@ fun TextBalloon(text: String) {
     Box(
         modifier = Modifier
             .height(40.dp)
-            .widthIn(min = 50.dp)
+            .widthIn(min = 50.dp, max = 170.dp)
             .clip(
                 RoundedCornerShape(
                     topStart = corner,
@@ -90,6 +88,8 @@ fun TextBalloon(text: String) {
             text = text,
             textAlign = TextAlign.Center,
             color = Color.White,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
@@ -101,7 +101,7 @@ fun MenuIcon(onClick: () -> Unit) {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(40.dp)
-            .shadow(
+            .loryShadow(
                 offsetX = 1.dp,
                 offsetY = 1.dp,
                 cornerRadius = 8.dp,
@@ -118,34 +118,4 @@ fun MenuIcon(onClick: () -> Unit) {
             modifier = Modifier.size(17.dp)
         )
     }
-}
-
-fun Modifier.shadow(
-    offsetX: Dp = 0.dp,
-    offsetY: Dp = 0.dp,
-    shadowColor: Color = Color.Black.copy(alpha = 0.2f),
-    cornerRadius: Dp = 0.dp,
-    alpha: Float = 0.7f,
-): Modifier {
-    return this.drawBehind {
-        drawRoundRect(
-            color = shadowColor,
-            topLeft = Offset(x = offsetX.toPx(), y = offsetY.toPx()),
-            size = size,
-            cornerRadius = CornerRadius(cornerRadius.toPx(), cornerRadius.toPx()),
-            alpha = alpha,
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun MenuIconPreview() {
-    MenuIcon {}
-}
-
-@Composable
-@Preview(showBackground = true)
-fun AppBarPreview() {
-    AppBar("Leonardo") {}
 }
