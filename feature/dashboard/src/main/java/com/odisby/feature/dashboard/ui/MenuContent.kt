@@ -55,27 +55,28 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterial3Api
 @Composable
 fun MenuContent(
-    isOpen: Boolean,
+    menuIsOpen: Boolean,
     childFullName: String,
     parentFullName: String,
-    onClose: () -> Unit
+    onCloseMenu: () -> Unit,
+    onExitApp: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    LaunchedEffect(isOpen) {
-        if (isOpen) state.show()
+    LaunchedEffect(menuIsOpen) {
+        if (menuIsOpen) state.show()
     }
 
     val onCloseClick: () -> Unit = {
         scope.launch {
             state.hide()
             delay(300) // to await close animation
-            onClose.invoke()
+            onCloseMenu.invoke()
         }
     }
 
-    if (isOpen) {
+    if (menuIsOpen) {
         val scrollState = rememberScrollState()
         ModalBottomSheet(
             sheetState = state,
@@ -132,7 +133,7 @@ fun MenuContent(
                             paddingTop = 24.dp,
                             hasArrowRight = false,
                             imageId = R.drawable.exit_door,
-                            onClick = {},
+                            onClick = onExitApp,
                         )
                     }
                 }

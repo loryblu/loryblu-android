@@ -64,6 +64,10 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
         dashboardRoute(
             navigateToLogbook = {
                 navController.navigate(Screen.Logbook.route)
+            },
+            navigateToLogin = {
+                navController.popBackStack()
+                navController.navigate(Screen.Login.route)
             }
         )
         logbookNavigation(

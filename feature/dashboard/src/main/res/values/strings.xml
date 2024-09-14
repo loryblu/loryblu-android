@@ -14,4 +14,10 @@
     <string name="faq" translatable="false">Perguntas Frequentes</string>
     <string name="term_and_privacy" translatable="false">Termo e Privacidade</string>
     <string name="exit_app" translatable="false">Sair do App</string>
+
+    <!-- Exit App Dialog -->
+    <string name="are_you_sure" translatable="false">Tem certeza que quer</string>
+    <string name="exit_app_question" translatable="false">Sair do App?</string>
+    <string name="cancel">Cancelar</string>
+    <string name="exit" translatable="false">Sair</string>
 </resources>
