@@ -49,7 +49,8 @@ internal class DeleteTaskUseCaseImpl(
 
                 return logbookRepository.editTask(
                     logbookTaskRequest = taskRequest,
-                    taskId = logbookTask.id
+                    taskId = logbookTask.id,
+                    childrenId = childrenId,
                 )
             }
         }

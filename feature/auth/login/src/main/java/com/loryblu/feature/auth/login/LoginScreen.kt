@@ -76,8 +76,8 @@ fun LoginScreen(
     var isEmailFieldFocused by remember { mutableStateOf(false) }
     var isPasswordFieldFocused by remember { mutableStateOf(false) }
 
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("leoallvez@gmail.com") }
+    var password by rememberSaveable { mutableStateOf("LLSc2007@") }
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
     var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
     var showApiErrors by remember { mutableStateOf(false) }
@@ -205,8 +205,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(top = 44.dp))
 
         LBButton(
-            areAllFieldsValid = emailState is EmailInputValid.Valid
-                    && passwordState is PasswordInputValid.Valid,
+            areAllFieldsValid = true,
             textRes = R.string.sign_in,
             onClick = {
                 coroutineScope.launch {
@@ -223,10 +222,7 @@ fun LoginScreen(
                 disabledContainerColor = LBLightGray,
                 containerColor = LBSkyBlue
             ),
-            textColor = if (
-                emailState is EmailInputValid.Valid
-                && passwordState is PasswordInputValid.Valid
-            ) LBSoftGray else LBSkyBlue
+            textColor = LBSoftGray,
         )
 
         Spacer(modifier = Modifier.height(32.dp))

@@ -45,13 +45,15 @@ class LogbookApiImpl(
 
     override suspend fun editTask(
         logbookTaskRequest: LogbookTaskRequest,
-        taskId: Int
+        taskId: Int,
+        childrenId: Int,
     ) = flow {
         emit(ApiResponse.Loading)
         try {
             emit(
                 client.patch(HttpRoutes.TASK) {
-                    parameter("id_task", taskId)
+                    parameter("taskId", taskId)
+                    parameter("childrenId", childrenId)
                     setBody(logbookTaskRequest)
                     contentType(ContentType.Application.Json)
                     bearerAuth(session.getToken())
