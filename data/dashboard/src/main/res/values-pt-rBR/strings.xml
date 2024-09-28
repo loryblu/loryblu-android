@@ -3,6 +3,7 @@
     <string name="logbook">Diário de bordo</string>
     <string name="game_track">Trilha de jogos</string>
     <string name="story_track">Trilha de histórias</string>
+    <string name="music_track">Trilha de música</string>
     <string name="logout">SAIR</string>
     <string name="welcome">Bem-Vindo</string>
 </resources>
