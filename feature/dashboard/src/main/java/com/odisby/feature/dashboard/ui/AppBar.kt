@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
 import com.odisby.feature.dashboard.R
-import com.odisby.feature.dashboard.extensions.loryShadow
+import com.loryblu.core.ui.components.extensions.loryShadow
 
 @Composable
 fun AppBar(childFirstName: String, onMenuClick: () -> Unit) {

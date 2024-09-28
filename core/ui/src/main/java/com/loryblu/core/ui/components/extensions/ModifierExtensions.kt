@@ -1,4 +1,4 @@
-package com.odisby.feature.dashboard.extensions
+package com.loryblu.core.ui.components.extensions
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
