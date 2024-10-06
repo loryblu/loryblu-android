@@ -39,9 +39,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBLightPink
 import com.loryblu.core.ui.theme.LBMediumGray
@@ -100,12 +103,18 @@ fun MenuContent(
                             smallText = stringResource(id = R.string.child_name),
                             mediumText = childFullName,
                             imageId = R.drawable.seedling,
+                            mediumTextMaxLines = 1,
+                            mediumTextSize = 20.sp,
+                            mediumTextOverflow = TextOverflow.Ellipsis,
                             onClick = {},
                         )
                         MenuItem(
                             smallText = stringResource(id = R.string.parent_name),
                             mediumText = parentFullName,
                             imageId = R.drawable.tree,
+                            mediumTextMaxLines = 1,
+                            mediumTextSize = 20.sp,
+                            mediumTextOverflow = TextOverflow.Ellipsis,
                             onClick = {},
                         )
                     }
@@ -188,6 +197,9 @@ fun MenuItem(
     backgroundColor: Color = LBSoftBlue,
     paddingTop: Dp = 16.dp,
     hasArrowRight: Boolean = true,
+    mediumTextSize: TextUnit = 22.sp,
+    mediumTextMaxLines: Int = Int.MAX_VALUE,
+    mediumTextOverflow: TextOverflow = TextOverflow.Clip,
     onClick: () -> Unit,
 ) {
     Spacer(modifier = Modifier.padding(top = paddingTop))
@@ -213,11 +225,21 @@ fun MenuItem(
                 verticalArrangement = Arrangement.Center
             ) {
                 if (isReverseTextOrder) {
-                    MenuMediumText(mediumText)
+                    MenuMediumText(
+                        text = mediumText,
+                        maxLines = mediumTextMaxLines,
+                        fontSize = mediumTextSize,
+                        overflow = mediumTextOverflow
+                    )
                     MenuSmallText(smallText)
                 } else {
                     MenuSmallText(smallText)
-                    MenuMediumText(mediumText)
+                    MenuMediumText(
+                        text = mediumText,
+                        maxLines = mediumTextMaxLines,
+                        fontSize = mediumTextSize,
+                        overflow = mediumTextOverflow
+                    )
                 }
             }
 
@@ -267,12 +289,21 @@ fun MenuSmallText(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MenuMediumText(text: String, modifier: Modifier = Modifier) {
+fun MenuMediumText(
+    text: String,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 22.sp,
+    maxLines: Int,
+    overflow: TextOverflow
+) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Medium,
+        fontSize = fontSize,
         color = LBShadowGray,
+        maxLines = maxLines,
+        overflow = overflow,
         modifier = modifier
     )
 }
