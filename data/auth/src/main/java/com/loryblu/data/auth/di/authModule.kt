@@ -1,5 +1,6 @@
 package com.loryblu.data.auth.di
 
+import com.loryblu.data.auth.UserAuthentication
 import com.loryblu.data.auth.api.LoginApi
 import com.loryblu.data.auth.api.LoginApiImpl
 import com.loryblu.data.auth.api.NewPasswordApi
@@ -26,4 +27,9 @@ val authModule = module {
     single<LoginApi> {
         LoginApiImpl(get())
     }
+
+    single {
+        UserAuthentication(get(), get(), get())
+    }
+
 }
