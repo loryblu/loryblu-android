@@ -2,7 +2,7 @@ package com.loryblu.feature.logbook.ui.task.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.di.UserSession
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.data.logbook.local.CategoryItem
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LogbookEditTaskViewModel(
-    private val session: Session,
+    private val userSession: UserSession,
     private val editTaskUseCase: EditTaskUseCase,
     private val getUserTaskById: GetUserTaskById,
     private var logbookTaskModel: LogbookTaskModel
@@ -90,7 +90,7 @@ class LogbookEditTaskViewModel(
 
     fun editLogbookTask(onSuccess: () -> Unit) = viewModelScope.launch {
         _editResult.value = EditResult.Loading
-        val childId = session.getChildId()
+        val childId = userSession.getChildId()
         editTaskUseCase.invoke(childId, logbookTaskModel.toLogbookTask()).collect { response ->
             if (response is ApiResponse.Success) {
                 _editResult.value = EditResult.Success

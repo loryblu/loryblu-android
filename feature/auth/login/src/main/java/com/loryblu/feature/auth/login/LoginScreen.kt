@@ -55,9 +55,7 @@ import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.LoginResponse
-import com.loryblu.data.auth.model.SignInFields
 import com.loryblu.data.auth.model.SignInResult
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -69,7 +67,7 @@ fun LoginScreen(
     emailStateValidation: (email: String) -> EmailInputValid,
     passwordStateValidation: (password: String) -> PasswordInputValid,
     signInResult: SignInResult,
-    rememberLogin: (rememberUser: Boolean, loginResponse: LoginResponse) -> Unit,
+    rememberLogin: (rememberUser: Boolean, loginResponse: LoginResponse, loginRequest: LoginRequest) -> Unit,
 ) {
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
@@ -84,11 +82,8 @@ fun LoginScreen(
     var apiErrorMessage by rememberSaveable { mutableStateOf<String>("") }
     var rememberButtonChecked by rememberSaveable { mutableStateOf(false) }
 
-    var showEmailApiError by remember { mutableStateOf(false) }
-    var showPasswordApiError by remember { mutableStateOf(false) }
-
-
-    val coroutineScope = rememberCoroutineScope()
+    val showEmailApiError by remember { mutableStateOf(false) }
+    val showPasswordApiError by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -209,15 +204,13 @@ fun LoginScreen(
                     && passwordState is PasswordInputValid.Valid,
             textRes = R.string.sign_in,
             onClick = {
-                coroutineScope.launch {
-                    onLoginButtonClicked(
-                        LoginRequest(
-                            email = email,
-                            password = password,
-                            remember = false
-                        )
+                onLoginButtonClicked(
+                    LoginRequest(
+                        email = email,
+                        password = password,
+                        remember = rememberButtonChecked
                     )
-                }
+                )
             },
             buttonColors = ButtonDefaults.buttonColors(
                 disabledContainerColor = LBLightGray,
@@ -394,6 +387,7 @@ fun LoginScreen(
                 rememberLogin(
                     rememberButtonChecked,
                     signInResult.response,
+                    LoginRequest(email, password)
                 )
                 navigateToHomeScreen()
             }

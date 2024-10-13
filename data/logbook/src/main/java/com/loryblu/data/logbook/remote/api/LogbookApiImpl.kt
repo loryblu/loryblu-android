@@ -1,7 +1,7 @@
 package com.loryblu.data.logbook.remote.api
 
 import com.loryblu.core.network.HttpRoutes
-import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.di.UserSession
 import com.loryblu.core.network.extensions.toApiResponse
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.flow
 
 class LogbookApiImpl(
     private val client: HttpClient,
-    private val session: Session
+    private val userSession: UserSession
 ) : LogbookApi {
 
     override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) = flow {
@@ -34,7 +34,7 @@ class LogbookApiImpl(
                 client.post(HttpRoutes.TASK) {
                     setBody(logbookTaskRequest)
                     contentType(ContentType.Application.Json)
-                    bearerAuth(session.getToken())
+                    bearerAuth(userSession.getToken())
                 }.toApiResponse()
             )
         } catch (e: Exception) {
@@ -56,7 +56,7 @@ class LogbookApiImpl(
                     parameter("childrenId", childrenId)
                     setBody(logbookTaskRequest)
                     contentType(ContentType.Application.Json)
-                    bearerAuth(session.getToken())
+                    bearerAuth(userSession.getToken())
                 }.toApiResponse()
             )
         } catch (e: Exception) {
@@ -73,8 +73,8 @@ class LogbookApiImpl(
             emit(
                 client.delete(HttpRoutes.TASK) {
                     parameter("taskId", taskId)
-                    parameter("childrenId", session.getChildId().toString())
-                    bearerAuth(session.getToken())
+                    parameter("childrenId", userSession.getChildId().toString())
+                    bearerAuth(userSession.getToken())
                 }.toApiResponse()
             )
         } catch (e: Exception) {
@@ -91,14 +91,14 @@ class LogbookApiImpl(
             emit(
                 client.get(HttpRoutes.TASK) {
                     parameters {
-                        parameter("childrenId", session.getChildId().toString())
+                        parameter("childrenId", userSession.getChildId().toString())
                         nameOfWeekDays.forEach {
                             parameter("frequency", it)
                         }
                         parameter("perPage", 70)
                     }
                     contentType(ContentType.Application.Json)
-                    bearerAuth(session.getToken())
+                    bearerAuth(userSession.getToken())
                 }.toListOfLogbookTask()
             )
         } catch (e: Exception) {

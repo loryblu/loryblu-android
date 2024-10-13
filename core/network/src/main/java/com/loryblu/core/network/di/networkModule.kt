@@ -12,11 +12,9 @@ import com.loryblu.core.network.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.ANDROID
-import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -30,7 +28,7 @@ import org.koin.dsl.module
 val networkModule = module {
 
     single {
-        provideHttpClient(get(), get())
+        provideHttpClient(get())
     }
 
     single<ChuckerInterceptor> {
@@ -46,14 +44,14 @@ val networkModule = module {
     single {
         PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(produceNewData = { emptyPreferences() }),
-            produceFile = { androidContext().preferencesDataStoreFile(Session.DATA) })
+            produceFile = { androidContext().preferencesDataStoreFile(UserSession.DATA) })
     }
     single {
-        Session(get())
+        UserSession(get())
     }
 }
 
-private fun provideHttpClient(httpClientEngine: HttpClientEngine, session: Session) = HttpClient(httpClientEngine) {
+private fun provideHttpClient(httpClientEngine: HttpClientEngine) = HttpClient(httpClientEngine) {
     defaultRequest {
         url(BuildConfig.BASE_URL)
         header(HttpHeaders.ContentType, ContentType.Application.Json)
