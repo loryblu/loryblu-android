@@ -2,23 +2,20 @@ package com.loryblu.core.network.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-class Session(
+class UserSession(
     private val dataStore: DataStore<Preferences>
 ) {
 
     companion object {
         const val DATA = "Data"
         private const val TOKEN = "Token"
-        private const val REMEMBER = "RememberLogin"
         private const val REFRESH_TOKEN = "RefreshToken"
         val tokenKey = stringPreferencesKey(TOKEN)
-        val rememberKey = booleanPreferencesKey(REMEMBER)
         val refreshTokenKey = stringPreferencesKey(REFRESH_TOKEN)
     }
 
@@ -28,24 +25,6 @@ class Session(
     suspend fun saveToken(loginToken: String) {
         dataStore.edit {
             it[tokenKey] = loginToken
-        }
-    }
-
-    fun getRememberLogin(): Boolean {
-        var response: Boolean
-        runBlocking {
-            val pref = dataStore.data.first()
-            response = pref[rememberKey] ?: false
-        }
-        return response
-    }
-
-    suspend fun saveRememberLogin(rememberLogin: Boolean, refreshToken: String?) {
-        dataStore.edit {
-            it[rememberKey] = rememberLogin
-            refreshToken?.let { token ->
-                it[refreshTokenKey] = token
-            }
         }
     }
 
@@ -66,6 +45,7 @@ class Session(
     fun getChildName(): String {
         return childNameCache
     }
+
     fun getToken(): String {
         var response: String
         runBlocking {

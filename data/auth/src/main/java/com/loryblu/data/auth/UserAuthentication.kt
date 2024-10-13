@@ -4,16 +4,19 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.loryblu.core.network.di.UserSession
 import com.loryblu.data.auth.api.LoginApi
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.SignInResult
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class UserAuthentication(
     context: Context,
     private val loginApi: LoginApi,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val userSession: UserSession,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     companion object {
         private const val PREFS_NAME = "authentication_data"
@@ -57,20 +60,24 @@ class UserAuthentication(
         val email = getEmail()
         val password = getPassword()
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            SignInResult.Error("Usuário não encontrado")
+            return@withContext SignInResult.Error("Usuário não está conectado")
         }
 
         loginApi.loginUser(
             LoginRequest(
-                email = email!!,
-                password = password!!,
+                email = email,
+                password = password,
                 remember = true
             )
         )
     }
 
+    /**
+     * Clear user data from UserAuthentication
+     */
     fun clearUserCredentials() {
         editor.clear()
         editor.apply()
+        userSession.clearToken()
     }
 }
