@@ -2,11 +2,12 @@ package com.loryblu.feature.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.di.UserSession
 import com.loryblu.core.ui.R
 import com.loryblu.core.util.extensions.isEmailValid
 import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
+import com.loryblu.data.auth.UserAuthentication
 import com.loryblu.data.auth.api.LoginApi
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.LoginResponse
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val loginApi: LoginApi,
-    private val session: Session
+    private val userSession: UserSession,
+    private val userAuthentication: UserAuthentication
 ) : ViewModel() {
     private val _authenticated = MutableStateFlow(false)
     val authenticated = _authenticated.asStateFlow()
@@ -66,22 +68,26 @@ class LoginViewModel(
         }
     }
 
-    fun rememberLogin(rememberLogin: Boolean, loginResponse: LoginResponse) {
+    /*
+     * Temporary passing the loginRequest to rememberLogin function.
+     * This will change when refresh Token Api is available, so there will be no need to save email and password.
+     */
+    fun rememberLogin(rememberLogin: Boolean, loginResponse: LoginResponse, loginRequest: LoginRequest) {
         viewModelScope.launch {
-            session.saveToken(loginResponse.data.accessToken)
+            userSession.saveToken(loginResponse.data.accessToken)
             with(loginResponse.data.user) {
                 val child = childrens.first()
-                session.saveChild(
+                userSession.saveChild(
                     child.id,
                     child.fullname,
                     parentName,
                 )
             }
-            // Remove until task is up
-//            if (rememberLogin) session.saveRememberLogin(
-//                rememberLogin = true,
-//                refreshToken = loginResponse.data.refreshToken
-//            )
+
+            if(rememberLogin) userAuthentication.saveUserCredentials(
+                email = loginRequest.email,
+                password = loginRequest.password
+            )
         }
     }
 }

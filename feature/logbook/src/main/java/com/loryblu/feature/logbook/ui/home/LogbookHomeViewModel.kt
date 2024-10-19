@@ -2,7 +2,7 @@ package com.loryblu.feature.logbook.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.di.UserSession
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
 import com.loryblu.data.logbook.remote.model.LogbookTask
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class LogbookHomeViewModel(
     private val getUserTaskByDayOfWeek: GetUserTaskByDayOfWeek,
     private val deleteTaskUseCase: DeleteTaskUseCase,
-    private val session: Session
+    private val userSession: UserSession
 ) : ViewModel() {
 
     private val _userTasks =
@@ -50,7 +50,7 @@ class LogbookHomeViewModel(
             .invoke(
                 logbookTask = logbookTask,
                 deleteOption = deleteOption,
-                childrenId = session.getChildId()
+                childrenId = userSession.getChildId()
             )
             .collect() { response ->
                 if (response is ApiResponse.Success) {
