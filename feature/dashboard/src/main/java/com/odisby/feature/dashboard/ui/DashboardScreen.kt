@@ -26,7 +26,9 @@ import com.odisby.feature.dashboard.model.UsesData
 fun DashboardScreen(
     usesData: UsesData,
     navigateToLogbook: () -> Unit,
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToFaq: () -> Unit,
+    navigateToTerms: () -> Unit,
 ) {
     var menuIsOpen by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
@@ -39,6 +41,8 @@ fun DashboardScreen(
             parentFullName = usesData.parentFullName,
             onCloseMenu = { menuIsOpen = false },
             onExitApp = { showExitDialog = true },
+            navigateToFaq = navigateToFaq,
+            navigateToTerms = navigateToTerms,
         )
         AppBar(
             childFirstName = usesData.childFirstName,

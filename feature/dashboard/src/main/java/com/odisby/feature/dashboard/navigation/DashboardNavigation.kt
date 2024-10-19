@@ -13,7 +13,9 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.dashboardRoute(
     navigateToLogbook: () -> Unit,
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToFaq: () -> Unit,
+    navigateToTerms: () -> Unit,
 ) {
     composable(route = Screen.Dashboard.route) {
         val viewModel: DashboardViewModel = koinViewModel()
@@ -24,6 +26,8 @@ fun NavGraphBuilder.dashboardRoute(
             usesData = usersData,
             navigateToLogbook = navigateToLogbook,
             navigateToLogin = navigateToLogin,
+            navigateToFaq = navigateToFaq,
+            navigateToTerms = navigateToTerms,
         )
     }
 }

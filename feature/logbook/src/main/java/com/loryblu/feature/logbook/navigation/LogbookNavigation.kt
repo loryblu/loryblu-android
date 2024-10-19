@@ -27,6 +27,7 @@ import com.loryblu.feature.logbook.ui.task.edit.EditTaskScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditTaskSummaryScreen
 import com.loryblu.feature.logbook.ui.task.edit.EditionConfirmedScreen
 import com.loryblu.feature.logbook.ui.task.edit.LogbookEditTaskViewModel
+import com.loryblu.feature.logbook.ui.webview.WebViewScreen
 import com.loryblu.feature.logbook.utils.getNameOfDaySelected
 import com.loryblu.feature.logbook.utils.intToShiftString
 import org.koin.androidx.compose.getViewModel
@@ -300,6 +301,17 @@ fun NavGraphBuilder.logbookNavigation(
                 },
                 shouldGoToNextScreen = true
             )
+        }
+
+        composable(
+            route = Screen.WebViewScreen.route,
+            arguments = listOf(
+                navArgument("URL") {
+                    type = NavType.StringType
+                },
+            )
+        ) { backStack ->
+            WebViewScreen(url = backStack.arguments?.getString("URL") ?: "")
         }
     }
 }

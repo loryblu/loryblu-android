@@ -63,6 +63,8 @@ fun MenuContent(
     parentFullName: String,
     onCloseMenu: () -> Unit,
     onExitApp: () -> Unit,
+    navigateToFaq: () -> Unit,
+    navigateToTerms: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -129,12 +131,12 @@ fun MenuContent(
                         MenuItem(
                             mediumText = stringResource(id = R.string.faq),
                             imageId = R.drawable.question_mark,
-                            onClick = {},
+                            onClick = navigateToFaq,
                         )
                         MenuItem(
                             mediumText = stringResource(id = R.string.term_and_privacy),
                             imageId = R.drawable.clipboard,
-                            onClick = {},
+                            onClick = navigateToTerms,
                         )
                         MenuItem(
                             mediumText = stringResource(id = R.string.exit_app),

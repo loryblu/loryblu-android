@@ -68,6 +68,20 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             navigateToLogin = {
                 navController.popBackStack()
                 navController.navigate(Screen.Login.route)
+            },
+            navigateToFaq = {
+                navController.navigate(
+                    Screen.WebViewScreen.editRoute(
+                        "https://online.fliphtml5.com/ibqqn/mtvs/#p=1"
+                    )
+                )
+            },
+            navigateToTerms = {
+                navController.navigate(
+                    Screen.WebViewScreen.editRoute(
+                    "https://online.fliphtml5.com/ibqqn/mtvs/#p=1"
+                    )
+                )
             }
         )
         logbookNavigation(
