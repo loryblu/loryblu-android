@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +40,7 @@ import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBEmailTextField
 import com.loryblu.core.ui.components.LBErrorLabel
 import com.loryblu.core.ui.components.LBIconButton
+import com.loryblu.core.ui.components.LBLoading
 import com.loryblu.core.ui.components.LBPasswordTextField
 import com.loryblu.core.ui.components.LBRadioButton
 import com.loryblu.core.ui.components.LBTitle
@@ -106,7 +106,7 @@ fun LoginScreen(
             error = emailState,
             fieldFocus = { isEmailFieldFocused = it }
         )
-        if(showEmailApiError) {
+        if (showEmailApiError) {
             LBErrorLabel(apiErrorMessage)
         }
 
@@ -125,7 +125,7 @@ fun LoginScreen(
             fieldFocus = { isPasswordFieldFocused = it }
         )
 
-        if(showPasswordApiError) {
+        if (showPasswordApiError) {
             LBErrorLabel(apiErrorMessage)
         }
 
@@ -372,6 +372,10 @@ fun LoginScreen(
             )
         }
 
+    }
+
+    if (signInResult == SignInResult.Loading) {
+        LBLoading()
     }
 
     LaunchedEffect(key1 = authenticated) {
