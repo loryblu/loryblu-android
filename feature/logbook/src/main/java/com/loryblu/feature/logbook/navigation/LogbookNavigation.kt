@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.loryblu.core.network.model.ApiResponse
+import com.loryblu.core.ui.components.LBLoading
 import com.loryblu.core.util.Screen
 import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
@@ -205,6 +206,10 @@ fun NavGraphBuilder.logbookNavigation(
                         viewModel.setFrequency(getNameOfDaySelected(it))
                     },
                 )
+
+                if(addTaskResult.value == ApiResponse.Loading) {
+                    LBLoading()
+                }
             }
 
             composable(
