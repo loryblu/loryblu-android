@@ -43,7 +43,6 @@ class LogbookTaskViewModel(
 
     fun createLogbookTask() = viewModelScope.launch {
         _addTaskResult.update { ApiResponse.Loading }
-        delay(3000) //todo(): remove this line
 
         val childId = userSession.getChildId()
         val logbookRequest = LogbookTaskRequest(

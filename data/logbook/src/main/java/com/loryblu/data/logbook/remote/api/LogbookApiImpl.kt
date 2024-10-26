@@ -47,39 +47,34 @@ class LogbookApiImpl(
         logbookTaskRequest: LogbookTaskRequest,
         taskId: Int,
         childrenId: Int,
-    ) = flow {
-        emit(ApiResponse.Loading)
+    ): ApiResponse {
         try {
-            emit(
-                client.patch(HttpRoutes.TASK) {
-                    parameter("taskId", taskId)
-                    parameter("childrenId", childrenId)
-                    setBody(logbookTaskRequest)
-                    contentType(ContentType.Application.Json)
-                    bearerAuth(userSession.getToken())
-                }.toApiResponse()
-            )
+            return client.patch(HttpRoutes.TASK) {
+                parameter("taskId", taskId)
+                parameter("childrenId", childrenId)
+                setBody(logbookTaskRequest)
+                contentType(ContentType.Application.Json)
+                bearerAuth(userSession.getToken())
+            }.toApiResponse()
+
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(ApiResponse.ErrorDefault)
+            return ApiResponse.ErrorDefault
         }
     }
 
-    override fun deleteTask(
+    override suspend fun deleteTask(
         taskId: Int
-    ): Flow<ApiResponse> = flow {
-        emit(ApiResponse.Loading)
+    ): ApiResponse {
         try {
-            emit(
-                client.delete(HttpRoutes.TASK) {
-                    parameter("taskId", taskId)
-                    parameter("childrenId", userSession.getChildId().toString())
-                    bearerAuth(userSession.getToken())
-                }.toApiResponse()
-            )
+            return client.delete(HttpRoutes.TASK) {
+                parameter("taskId", taskId)
+                parameter("childrenId", userSession.getChildId().toString())
+                bearerAuth(userSession.getToken())
+            }.toApiResponse()
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(ApiResponse.ErrorDefault)
+            return ApiResponse.ErrorDefault
         }
     }
 

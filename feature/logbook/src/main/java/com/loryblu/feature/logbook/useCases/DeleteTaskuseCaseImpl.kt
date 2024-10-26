@@ -16,7 +16,7 @@ internal class DeleteTaskUseCaseImpl(
         logbookTask: LogbookTask,
         deleteOption: DeleteOption,
         childrenId: Int
-    ): Flow<ApiResponse> {
+    ): ApiResponse {
         return when (deleteOption) {
             DeleteOption.Everyday ->
                 logbookRepository.deleteTask(taskId =  logbookTask.id)
