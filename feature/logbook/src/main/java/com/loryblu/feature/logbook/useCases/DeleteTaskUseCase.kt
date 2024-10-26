@@ -11,5 +11,5 @@ interface DeleteTaskUseCase {
         logbookTask: LogbookTask,
         deleteOption: DeleteOption,
         childrenId: Int
-    ): Flow<ApiResponse>
+    ): ApiResponse
 }

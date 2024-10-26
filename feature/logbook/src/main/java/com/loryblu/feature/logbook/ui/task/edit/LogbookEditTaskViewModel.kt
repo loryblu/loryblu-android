@@ -57,7 +57,7 @@ class LogbookEditTaskViewModel(
 
     fun getUseTask(taskApiId: Int) = viewModelScope.launch {
         _editResult.value = EditResult.Loading
-        if(logbookTaskModel.taskId == 0) {
+        if (logbookTaskModel.taskId == 0) {
             loadTask(taskApiId)
         } else {
             _editResult.value = EditResult.Success
@@ -88,10 +88,12 @@ class LogbookEditTaskViewModel(
         }
     }
 
-    fun editLogbookTask(onSuccess: () -> Unit) = viewModelScope.launch {
-        _editResult.value = EditResult.Loading
-        val childId = userSession.getChildId()
-        editTaskUseCase.invoke(childId, logbookTaskModel.toLogbookTask()).collect { response ->
+    fun editLogbookTask(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            _editResult.value = EditResult.Loading
+            val childId = userSession.getChildId()
+            val response = editTaskUseCase.invoke(childId, logbookTaskModel.toLogbookTask())
+
             if (response is ApiResponse.Success) {
                 _editResult.value = EditResult.Success
                 resetLogbookTaskModel()

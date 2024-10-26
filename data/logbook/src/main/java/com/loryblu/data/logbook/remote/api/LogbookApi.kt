@@ -13,9 +13,9 @@ interface LogbookApi {
         logbookTaskRequest: LogbookTaskRequest,
         taskId: Int,
         childrenId: Int,
-    ): Flow<ApiResponse>
+    ): ApiResponse
 
-    fun deleteTask(taskId: Int) : Flow<ApiResponse>
+    suspend fun deleteTask(taskId: Int) : ApiResponse
 
     suspend fun getUserTasks(): Flow<ApiResponseWithData<List<LogbookTask>>>
 }
