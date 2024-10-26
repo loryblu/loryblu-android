@@ -22,7 +22,7 @@ fun LBLoading() {
             .background(LBLoadingBackground),
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.size(100.dp),
+            modifier = Modifier.size(72.dp),
             strokeWidth = 6.dp,
             color = LBDarkBlue,
         )

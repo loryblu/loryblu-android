@@ -16,6 +16,7 @@ import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.ui.components.LBLoading
 import com.loryblu.core.util.Screen
 import com.loryblu.data.logbook.local.TaskItem
+import com.loryblu.feature.logbook.model.EditResult
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.task.create.CreateTaskCategoryScreen
@@ -249,6 +250,10 @@ fun NavGraphBuilder.logbookNavigation(
                         }
                     }
                 )
+
+                if(editResult == EditResult.Loading) {
+                    LBLoading()
+                }
             }
 
             composable(route = Screen.EditCategoryScreen.route) {
