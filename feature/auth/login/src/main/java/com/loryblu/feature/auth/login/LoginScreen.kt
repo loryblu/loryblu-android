@@ -54,12 +54,10 @@ import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.model.LoginRequest
-import com.loryblu.data.auth.model.LoginResponse
 import com.loryblu.data.auth.model.SignInResult
 
 @Composable
 fun LoginScreen(
-    authenticated: Boolean,
     onLoginButtonClicked: (loginRequest: LoginRequest) -> Unit,
     navigateToHomeScreen: () -> Unit,
     navigateToForgotPassword: () -> Unit,
@@ -67,7 +65,6 @@ fun LoginScreen(
     emailStateValidation: (email: String) -> EmailInputValid,
     passwordStateValidation: (password: String) -> PasswordInputValid,
     signInResult: SignInResult,
-    rememberLogin: (rememberUser: Boolean, loginResponse: LoginResponse, loginRequest: LoginRequest) -> Unit,
 ) {
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
@@ -378,21 +375,10 @@ fun LoginScreen(
         LBLoading()
     }
 
-    LaunchedEffect(key1 = authenticated) {
-        if (authenticated) {
-            navigateToHomeScreen()
-        }
-    }
-
     LaunchedEffect(key1 = signInResult) {
         when (signInResult) {
             is SignInResult.Success -> {
                 showApiErrors = false
-                rememberLogin(
-                    rememberButtonChecked,
-                    signInResult.response,
-                    LoginRequest(email, password)
-                )
                 navigateToHomeScreen()
             }
 
@@ -433,4 +419,3 @@ fun LoginScreen(
         }
     }
 }
-

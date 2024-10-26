@@ -21,13 +21,13 @@ import androidx.navigation.compose.rememberNavController
 import com.loryblu.core.ui.theme.LoryBluTheme
 import com.loryblu.core.util.Screen
 import com.loryblu.loryblu.navigation.SetupNavGraph
-import com.loryblu.loryblu.usecases.IsUserLogged
+import com.loryblu.loryblu.usecases.UserLoginChecker
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.compose.KoinContext
 
 class MainActivity : ComponentActivity() {
-    private val isUserLogged: IsUserLogged by inject()
+    private val userLoginChecker: UserLoginChecker by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,8 +37,9 @@ class MainActivity : ComponentActivity() {
         val userLogged: Boolean
 
         // While this is being executed the splash screen is shown to user. No problem with NRA
+        // It could be better handled in the future with UI/UX help.
         runBlocking {
-            userLogged = isUserLogged()
+            userLogged = userLoginChecker()
         }
 
         setContent {
