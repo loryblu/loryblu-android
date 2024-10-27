@@ -72,14 +72,14 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             navigateToFaq = {
                 navController.navigate(
                     Screen.WebViewScreen.editRoute(
-                        "https://online.fliphtml5.com/ibqqn/mtvs/#p=1"
+                        "https://drive.google.com/file/d/1AZMx5-b1mLGPs041Zok6X2blpjIkZ2vs/view"
                     )
                 )
             },
             navigateToTerms = {
                 navController.navigate(
                     Screen.WebViewScreen.editRoute(
-                    "https://online.fliphtml5.com/ibqqn/mtvs/#p=1"
+                    "https://drive.google.com/file/d/1A1WIDpEiSVI9Ep5oA9YMSA-JWC2O8q4M/view"
                     )
                 )
             }

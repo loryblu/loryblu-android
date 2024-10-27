@@ -9,7 +9,7 @@
     <string name="child_name">Child\'s Name</string>
     <string name="parent_name">Name of responsible person</string>
     <string name="configurations">Settings</string>
-    <string name="security">Security</string>
+    <string name="security">Access Control</string>
     <string name="access_control">Control access and manage the app\'s functionalities</string>
     <string name="faq">Frequently Asked Questions</string>
     <string name="term_and_privacy">Privacy Policy</string>
@@ -17,7 +17,7 @@
 
     <!-- Exit App Dialog -->
     <string name="are_you_sure">Are you sure you want to</string>
-    <string name="exit_app_question">Exit the app?</string>
+    <string name="exit_app_question">Exit the app</string>
     <string name="cancel">Cancel</string>
     <string name="exit">Exit</string>
 </resources>

@@ -36,6 +36,7 @@ import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
 import com.odisby.feature.dashboard.R
 import com.loryblu.core.ui.components.extensions.loryShadow
+import com.loryblu.core.ui.theme.inter
 
 @Composable
 fun AppBar(childFirstName: String, onMenuClick: () -> Unit) {
@@ -51,12 +52,12 @@ fun AppBar(childFirstName: String, onMenuClick: () -> Unit) {
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(id = R.string.logo_home),
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.size(95.dp)
+                modifier = Modifier.size(84.dp)
             )
             Spacer(modifier = Modifier.width(24.dp))
             Column {
                 TextBalloon(stringResource(id = R.string.hello, childFirstName))
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(5.dp))
                 TextBalloon(stringResource(id = R.string.how_are_you))
             }
         }
@@ -69,7 +70,7 @@ fun TextBalloon(text: String) {
     val corner: Dp = 13.dp
     Box(
         modifier = Modifier
-            .height(40.dp)
+            .height(32.dp)
             .widthIn(min = 50.dp, max = 170.dp)
             .clip(
                 RoundedCornerShape(
@@ -84,12 +85,13 @@ fun TextBalloon(text: String) {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            fontSize = 17.sp,
+            fontSize = 14.sp,
             text = text,
             textAlign = TextAlign.Center,
             color = Color.White,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            fontFamily = inter,
         )
     }
 }
@@ -100,7 +102,7 @@ fun MenuIcon(onClick: () -> Unit) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(40.dp)
+            .size(32.dp)
             .loryShadow(
                 offsetX = 1.dp,
                 offsetY = 1.dp,

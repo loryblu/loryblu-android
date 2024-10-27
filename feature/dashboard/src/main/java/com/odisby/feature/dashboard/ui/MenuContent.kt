@@ -24,7 +24,6 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,6 +50,7 @@ import com.loryblu.core.ui.theme.LBMediumGray
 import com.loryblu.core.ui.theme.LBShadowGray
 import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBSoftBlue
+import com.loryblu.core.ui.theme.inter
 import com.odisby.feature.dashboard.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -106,7 +106,7 @@ fun MenuContent(
                             mediumText = childFullName,
                             imageId = R.drawable.seedling,
                             mediumTextMaxLines = 1,
-                            mediumTextSize = 20.sp,
+                            mediumTextSize = 16.sp,
                             mediumTextOverflow = TextOverflow.Ellipsis,
                             onClick = {},
                         )
@@ -115,7 +115,7 @@ fun MenuContent(
                             mediumText = parentFullName,
                             imageId = R.drawable.tree,
                             mediumTextMaxLines = 1,
-                            mediumTextSize = 20.sp,
+                            mediumTextSize = 16.sp,
                             mediumTextOverflow = TextOverflow.Ellipsis,
                             onClick = {},
                         )
@@ -158,10 +158,11 @@ fun MenuHeader(onCloseClick: () -> Unit) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = R.string.menu),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Bold,
             color = LBShadowGray,
-            modifier = Modifier.align(Alignment.Center)
+            fontSize = 20.sp,
+            modifier = Modifier.align(Alignment.Center),
+            fontFamily = inter,
         )
         Icon(
             Icons.Filled.Close,
@@ -180,9 +181,10 @@ fun MenuSection(@StringRes titleId: Int, content: @Composable () -> Unit) {
     Column(modifier = Modifier.padding(top = 24.dp, bottom = 0.dp)) {
         Text(
             text = stringResource(id = titleId),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
             color = LBMediumGray,
+            fontFamily = inter
         )
         Column {
             content.invoke()
@@ -199,7 +201,7 @@ fun MenuItem(
     backgroundColor: Color = LBSoftBlue,
     paddingTop: Dp = 16.dp,
     hasArrowRight: Boolean = true,
-    mediumTextSize: TextUnit = 22.sp,
+    mediumTextSize: TextUnit = 18.sp,
     mediumTextMaxLines: Int = Int.MAX_VALUE,
     mediumTextOverflow: TextOverflow = TextOverflow.Clip,
     onClick: () -> Unit,
@@ -223,7 +225,7 @@ fun MenuItem(
             Column(
                 Modifier
                     .fillMaxWidth(0.8f)
-                    .padding(horizontal = 20.dp),
+                    .padding(start = 20.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 if (isReverseTextOrder) {
@@ -279,13 +281,14 @@ fun MenuImage(@DrawableRes imageId: Int, contentDescription: String) {
 
 
 @Composable
-fun MenuSmallText(text: String, modifier: Modifier = Modifier) {
+fun MenuSmallText(text: String) {
     if (text.isNotEmpty()) {
         Text(
             text = text,
             color = Color.Gray,
-            style = MaterialTheme.typography.labelLarge,
-            modifier = modifier,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(vertical = 3.dp),
+            fontFamily = inter,
         )
     }
 }
@@ -300,13 +303,13 @@ fun MenuMediumText(
 ) {
     Text(
         text = text,
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = fontSize,
         color = LBShadowGray,
         maxLines = maxLines,
         overflow = overflow,
-        modifier = modifier
+        modifier = modifier,
+        fontFamily = inter
     )
 }
 
