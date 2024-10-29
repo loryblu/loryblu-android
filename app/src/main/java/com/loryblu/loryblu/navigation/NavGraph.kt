@@ -1,6 +1,7 @@
 package com.loryblu.loryblu.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.loryblu.core.util.Screen
@@ -11,10 +12,12 @@ import com.loryblu.feature.auth.register.navigation.registerChildRoute
 import com.loryblu.feature.auth.register.navigation.registerGuardianRoute
 import com.loryblu.feature.auth.register.navigation.registrationConfirmedRoute
 import com.loryblu.feature.logbook.navigation.logbookNavigation
+import com.loryblu.loryblu.R
 import com.odisby.feature.dashboard.navigation.dashboardRoute
 
 @Composable
 fun SetupNavGraph(startDestination: String, navController: NavHostController) {
+    val context = LocalContext.current
     NavHost(
         startDestination = startDestination,
         navController = navController
@@ -72,14 +75,16 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
             navigateToFaq = {
                 navController.navigate(
                     Screen.WebViewScreen.editRoute(
-                        "https://drive.google.com/file/d/1AZMx5-b1mLGPs041Zok6X2blpjIkZ2vs/view"
+                        url = " https://drive.google.com/file/d/1AZMx5-b1mLGPs041Zok6X2blpjIkZ2vs/view",
+                        title = context.getString(R.string.faq_title),
                     )
                 )
             },
             navigateToTerms = {
                 navController.navigate(
                     Screen.WebViewScreen.editRoute(
-                    "https://drive.google.com/file/d/1A1WIDpEiSVI9Ep5oA9YMSA-JWC2O8q4M/view"
+                        url = "https://drive.google.com/file/d/1A1WIDpEiSVI9Ep5oA9YMSA-JWC2O8q4M/view",
+                        title = context.getString(R.string.terms_title),
                     )
                 )
             }

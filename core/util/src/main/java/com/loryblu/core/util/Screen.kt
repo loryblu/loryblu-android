@@ -31,8 +31,8 @@ sealed class Screen(val route: String) {
     }
 
     // WebView
-    data object WebViewScreen: Screen(route = "web_view_screen?url={URL}") {
-        fun editRoute(url: String) = "web_view_screen?url=$url"
+    data object WebViewScreen: Screen(route = "web_view_screen?url={URL}&title={TITLE}") {
+        fun editRoute(url: String, title: String) = "web_view_screen?url=$url&title=$title"
     }
 
     data object EditionConfirmedScreen: Screen(route = "edition_confirmed_screen")

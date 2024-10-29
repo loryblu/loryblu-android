@@ -309,9 +309,16 @@ fun NavGraphBuilder.logbookNavigation(
                 navArgument("URL") {
                     type = NavType.StringType
                 },
+                navArgument("TITLE") {
+                    type = NavType.StringType
+                },
             )
         ) { backStack ->
-            WebViewScreen(url = backStack.arguments?.getString("URL") ?: "")
+            WebViewScreen(
+                url = backStack.arguments?.getString("URL") ?: "",
+                title = backStack.arguments?.getString("TITLE") ?: "",
+                onCloseClick = { navController.popBackStack() }
+            )
         }
     }
 }

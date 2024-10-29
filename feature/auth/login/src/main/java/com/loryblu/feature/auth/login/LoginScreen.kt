@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -74,12 +73,12 @@ fun LoginScreen(
     var isEmailFieldFocused by remember { mutableStateOf(false) }
     var isPasswordFieldFocused by remember { mutableStateOf(false) }
 
-    var email by rememberSaveable { mutableStateOf("leoallvez@gmail.com") }
-    var password by rememberSaveable { mutableStateOf("LLSc2007@") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
     var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
     var showApiErrors by remember { mutableStateOf(false) }
-    var apiErrorMessage by rememberSaveable { mutableStateOf<String>("") }
+    var apiErrorMessage by rememberSaveable { mutableStateOf("") }
     var rememberButtonChecked by rememberSaveable { mutableStateOf(false) }
 
     val showEmailApiError by remember { mutableStateOf(false) }
@@ -200,7 +199,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(top = 44.dp))
 
         LBButton(
-            areAllFieldsValid = true,
+            areAllFieldsValid = emailState is EmailInputValid.Valid
+                    && passwordState is PasswordInputValid.Valid,
             textRes = R.string.sign_in,
             onClick = {
                 onLoginButtonClicked(
@@ -215,7 +215,10 @@ fun LoginScreen(
                 disabledContainerColor = LBLightGray,
                 containerColor = LBSkyBlue
             ),
-            textColor = LBSoftGray
+            textColor = if (
+                emailState is EmailInputValid.Valid
+                && passwordState is PasswordInputValid.Valid
+            ) LBSoftGray else LBSkyBlue
         )
 
         Spacer(modifier = Modifier.height(32.dp))
