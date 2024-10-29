@@ -57,7 +57,7 @@ fun WebViewScreen(url: String, title: String, onCloseClick: () -> Unit) {
 @Composable
 fun TopBar(title: String, onCloseClick: () -> Unit) {
     Column {
-        Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+        Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)) {
             Text(
                 text = title,
                 fontWeight = FontWeight.Bold,
