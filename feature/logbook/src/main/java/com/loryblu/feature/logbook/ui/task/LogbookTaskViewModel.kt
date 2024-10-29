@@ -8,8 +8,10 @@ import com.loryblu.data.logbook.local.CategoryItem
 import com.loryblu.data.logbook.remote.api.LogbookApi
 import com.loryblu.data.logbook.remote.model.LogbookTaskRequest
 import com.loryblu.feature.logbook.model.LogbookTaskModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LogbookTaskViewModel(
@@ -40,6 +42,8 @@ class LogbookTaskViewModel(
     fun getLogbookTaskModel() : LogbookTaskModel = logbookTaskModel
 
     fun createLogbookTask() = viewModelScope.launch {
+        _addTaskResult.update { ApiResponse.Loading }
+
         val childId = userSession.getChildId()
         val logbookRequest = LogbookTaskRequest(
             childrenId = childId,

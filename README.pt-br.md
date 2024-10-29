@@ -80,6 +80,8 @@ Distribuído sob a Licença MIT. Leia [LICENSE](https://github.com/loryblu/loryb
 
 ## Autores
 
-* **André Moraes Filho** - *Desenvolvedor Android* - [André Moraes Filho](https://github.com/softdevandre)
-* **Jean Patrick Hartmann** - *Desenvolvedor Android* - [Jean Patrick Hartmann](https://github.com/hartmannjean)
+* **André Moraes Filho** - *Ex Desenvolvedor Android* - [André Moraes Filho](https://github.com/softdevandre)
+* **Eduardo Scaranari** - *Desenvolvedor Android* - [Eduardo Scaranari](https://github.com/duhdoesk)
+* **Jean Patrick Hartmann** - *Ex Desenvolvedor Android* - [Jean Patrick Hartmann](https://github.com/hartmannjean)
+* **Leonardo Pereira Alves** - *Desenvolvedor Android* - [Leonardo Pereira Alves](https://github.com/leoallvez)
 * **Ruliam Santos Oliveira** - *Desenvolvedor Android* - [Ruliam Santos Oliveira](https://github.com/OdisBy)

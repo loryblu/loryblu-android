@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.network.model.ApiResponseWithData
+import com.loryblu.core.ui.components.LBLoading
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBContentHome
 import com.loryblu.data.logbook.local.ShiftItem
@@ -90,6 +92,8 @@ fun LogbookScreen(
         rememberMutableDialogState(initialData = null)
 
     val viewModel: LogbookHomeViewModel = koinViewModel()
+
+    val isLoading by viewModel.isLoading.collectAsState()
 
     Scaffold(
         topBar = {
@@ -226,6 +230,10 @@ fun LogbookScreen(
                         deleteOption = pair.second,
                         onDismissRequest = { viewModel.deletedTaskDialogState.hideDialog() })
                 }
+            }
+
+            if (isLoading) {
+                LBLoading()
             }
         }
     )
