@@ -29,5 +29,11 @@ sealed class Screen(val route: String) {
     data object EditTaskSummaryScreen: Screen(route = "edit_task_summary_screen/{TASK_ID}") {
         fun editRoute(taskId: Int) = "edit_task_summary_screen/$taskId"
     }
+
+    // WebView
+    data object WebViewScreen: Screen(route = "web_view_screen?url={URL}&title={TITLE}") {
+        fun editRoute(url: String, title: String) = "web_view_screen?url=$url&title=$title"
+    }
+
     data object EditionConfirmedScreen: Screen(route = "edition_confirmed_screen")
 }

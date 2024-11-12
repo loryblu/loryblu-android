@@ -79,7 +79,7 @@ fun LoginScreen(
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
     var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
     var showApiErrors by remember { mutableStateOf(false) }
-    var apiErrorMessage by rememberSaveable { mutableStateOf<String>("") }
+    var apiErrorMessage by rememberSaveable { mutableStateOf("") }
     var rememberButtonChecked by rememberSaveable { mutableStateOf(false) }
 
     val showEmailApiError by remember { mutableStateOf(false) }

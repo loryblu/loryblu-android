@@ -22,10 +22,18 @@ class GameTrack: DashboardItem(
     isDisabled = true
 )
 
+class MusicTrack: DashboardItem(
+    idCard = 3,
+    text = R.string.music_track,
+    drawable = R.drawable.music_track,
+    isDisabled = true
+)
+
 fun getAllDashboardItems(): List<DashboardItem>{
     return listOf(
         Logbook(),
         StoryTrack(),
-        GameTrack()
+        GameTrack(),
+        MusicTrack(),
     )
 }

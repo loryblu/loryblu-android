@@ -75,10 +75,14 @@ class LoginViewModel(
     fun rememberLogin(rememberLogin: Boolean, loginResponse: LoginResponse, loginRequest: LoginRequest) {
         viewModelScope.launch {
             userSession.saveToken(loginResponse.data.accessToken)
-            userSession.saveChild(
-                loginResponse.data.user.childrens[0].id,
-                loginResponse.data.user.childrens[0].fullname
-            )
+            with(loginResponse.data.user) {
+                val child = childrens.first()
+                userSession.saveChild(
+                    child.id,
+                    child.fullname,
+                    parentName,
+                )
+            }
 
             if(rememberLogin) userAuthentication.saveUserCredentials(
                 email = loginRequest.email,
