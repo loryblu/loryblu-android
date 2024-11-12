@@ -18,21 +18,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.compose.rememberNavController
-import com.loryblu.core.network.di.Session
 import com.loryblu.core.ui.theme.LoryBluTheme
 import com.loryblu.core.util.Screen
 import com.loryblu.loryblu.navigation.SetupNavGraph
+import com.loryblu.loryblu.usecases.IsUserLogged
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.compose.KoinContext
-import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
-    private val session: Session by inject()
+    private val isUserLogged: IsUserLogged by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val userLogged: Boolean
+
+        // While this is being executed the splash screen is shown to user. No problem with NRA
+        runBlocking {
+            userLogged = isUserLogged()
+        }
 
         setContent {
             LoryBluTheme {
@@ -40,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     checkNotificationPolicyAccess(notificationManager, this)
                     SetupNavGraph(
-                        startDestination = if(session.getRememberLogin()) {
+                        startDestination = if (userLogged) {
                             Screen.Dashboard.route
                         } else {
                             Screen.Login.route
@@ -93,10 +100,11 @@ fun PermissionDialog(context: Context) {
             confirmButton = {
                 TextButton(onClick = {
                     val uri: Uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
-                    val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        data = uri
-                    }
+                    val intent =
+                        Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            data = uri
+                        }
                     openDialog.value = false
                     startActivity(context, intent, null)
                 }) { Text(text = "Confirmar") }

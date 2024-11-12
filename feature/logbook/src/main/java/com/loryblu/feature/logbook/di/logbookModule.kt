@@ -5,6 +5,8 @@ import com.loryblu.feature.logbook.model.LogbookTaskModel
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
 import com.loryblu.feature.logbook.ui.task.edit.LogbookEditTaskViewModel
+import com.loryblu.feature.logbook.useCases.DeleteTaskUseCase
+import com.loryblu.feature.logbook.useCases.DeleteTaskUseCaseImpl
 import com.loryblu.feature.logbook.useCases.EditTaskUseCase
 import com.loryblu.feature.logbook.useCases.EditTaskUseCaseImpl
 import com.loryblu.feature.logbook.useCases.GetUserTaskByDayOfWeek
@@ -16,11 +18,12 @@ import org.koin.dsl.module
 
 val logbookModule = module {
     viewModel { LogbookTaskViewModel(get(), get(), get()) }
-    viewModel { LogbookHomeViewModel(get())}
+    viewModel { LogbookHomeViewModel(get(), get(), get())}
     viewModel { LogbookEditTaskViewModel(get(), get(), get(), get()) }
 
     single<GetUserTaskByDayOfWeek> { GetUserTaskByDayOfWeekImpl(get()) }
     single<GetUserTaskById> { GetUserTaskByIdImpl(get())}
     single<EditTaskUseCase> { EditTaskUseCaseImpl(get()) }
     single<LogbookTaskModel> { LogbookTaskModel(CategoryItem.Routine, "", "", listOf()) }
+    single<DeleteTaskUseCase> { DeleteTaskUseCaseImpl(get()) }
 }

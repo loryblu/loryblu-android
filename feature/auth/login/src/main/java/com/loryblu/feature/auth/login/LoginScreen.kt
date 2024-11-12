@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +40,7 @@ import com.loryblu.core.ui.components.LBButton
 import com.loryblu.core.ui.components.LBEmailTextField
 import com.loryblu.core.ui.components.LBErrorLabel
 import com.loryblu.core.ui.components.LBIconButton
+import com.loryblu.core.ui.components.LBLoading
 import com.loryblu.core.ui.components.LBPasswordTextField
 import com.loryblu.core.ui.components.LBRadioButton
 import com.loryblu.core.ui.components.LBTitle
@@ -55,9 +55,7 @@ import com.loryblu.core.util.validators.EmailInputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.LoginResponse
-import com.loryblu.data.auth.model.SignInFields
 import com.loryblu.data.auth.model.SignInResult
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -69,7 +67,7 @@ fun LoginScreen(
     emailStateValidation: (email: String) -> EmailInputValid,
     passwordStateValidation: (password: String) -> PasswordInputValid,
     signInResult: SignInResult,
-    rememberLogin: (rememberUser: Boolean, loginResponse: LoginResponse) -> Unit,
+    rememberLogin: (rememberUser: Boolean, loginResponse: LoginResponse, loginRequest: LoginRequest) -> Unit,
 ) {
 
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
@@ -81,14 +79,11 @@ fun LoginScreen(
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
     var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
     var showApiErrors by remember { mutableStateOf(false) }
-    var apiErrorMessage by rememberSaveable { mutableStateOf<String>("") }
+    var apiErrorMessage by rememberSaveable { mutableStateOf("") }
     var rememberButtonChecked by rememberSaveable { mutableStateOf(false) }
 
-    var showEmailApiError by remember { mutableStateOf(false) }
-    var showPasswordApiError by remember { mutableStateOf(false) }
-
-
-    val coroutineScope = rememberCoroutineScope()
+    val showEmailApiError by remember { mutableStateOf(false) }
+    val showPasswordApiError by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,7 +106,7 @@ fun LoginScreen(
             error = emailState,
             fieldFocus = { isEmailFieldFocused = it }
         )
-        if(showEmailApiError) {
+        if (showEmailApiError) {
             LBErrorLabel(apiErrorMessage)
         }
 
@@ -130,7 +125,7 @@ fun LoginScreen(
             fieldFocus = { isPasswordFieldFocused = it }
         )
 
-        if(showPasswordApiError) {
+        if (showPasswordApiError) {
             LBErrorLabel(apiErrorMessage)
         }
 
@@ -209,15 +204,13 @@ fun LoginScreen(
                     && passwordState is PasswordInputValid.Valid,
             textRes = R.string.sign_in,
             onClick = {
-                coroutineScope.launch {
-                    onLoginButtonClicked(
-                        LoginRequest(
-                            email = email,
-                            password = password,
-                            remember = false
-                        )
+                onLoginButtonClicked(
+                    LoginRequest(
+                        email = email,
+                        password = password,
+                        remember = rememberButtonChecked
                     )
-                }
+                )
             },
             buttonColors = ButtonDefaults.buttonColors(
                 disabledContainerColor = LBLightGray,
@@ -381,6 +374,10 @@ fun LoginScreen(
 
     }
 
+    if (signInResult == SignInResult.Loading) {
+        LBLoading()
+    }
+
     LaunchedEffect(key1 = authenticated) {
         if (authenticated) {
             navigateToHomeScreen()
@@ -394,6 +391,7 @@ fun LoginScreen(
                 rememberLogin(
                     rememberButtonChecked,
                     signInResult.response,
+                    LoginRequest(email, password)
                 )
                 navigateToHomeScreen()
             }

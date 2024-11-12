@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.network.model.ApiResponseWithData
+import com.loryblu.core.ui.components.LBLoading
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBContentHome
 import com.loryblu.data.logbook.local.ShiftItem
@@ -48,6 +50,12 @@ import com.loryblu.feature.logbook.ui.components.FrequencyBar
 import com.loryblu.feature.logbook.ui.components.ParentAccessSwitch
 import com.loryblu.feature.logbook.ui.components.ShiftBar
 import com.loryblu.feature.logbook.ui.components.TaskCardComponent
+import com.loryblu.feature.logbook.ui.task.delete.DeleteOption
+import com.loryblu.feature.logbook.ui.task.delete.DeleteTaskDialog
+import com.loryblu.feature.logbook.ui.task.delete.MutableDialogState
+import com.loryblu.feature.logbook.ui.task.delete.DeletedTaskDialog
+import com.loryblu.feature.logbook.ui.task.delete.rememberMutableDialogState
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,6 +65,12 @@ fun LogbookScreen(
     onBackButtonClicked: () -> Unit,
     onNextScreenClicked: () -> Unit,
     onEditTaskClicked: (taskId: Int) -> Unit,
+    onDeleteTaskConfirmed: (
+        logbookTask: LogbookTask,
+        deleteOption: DeleteOption,
+        selectedDay: Int,
+        shiftSelected: Int,
+    ) -> Unit,
     userTasks: ApiResponseWithData<List<LogbookTask>>,
     selectADay: (Int, Int) -> Unit,
 ) {
@@ -74,6 +88,12 @@ fun LogbookScreen(
 
     var parentAccess by remember { mutableStateOf(true) }
 
+    val deleteTaskDialogState: MutableDialogState<LogbookTask?> =
+        rememberMutableDialogState(initialData = null)
+
+    val viewModel: LogbookHomeViewModel = koinViewModel()
+
+    val isLoading by viewModel.isLoading.collectAsState()
 
     Scaffold(
         topBar = {
@@ -142,14 +162,17 @@ fun LogbookScreen(
 //                                    )
 //                                }
 //                            )
-                            items(userTasks.data!!.size) {
+                            items(userTasks.data!!.size) { index ->
                                 TaskCardComponent(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(16.dp),
-                                    taskItem = userTasks.data!![it],
+                                    taskItem = userTasks.data!![index],
                                     parentAccess = parentAccess,
                                     onEditTaskClicked = onEditTaskClicked,
+                                    onDeleteTaskClicked = { taskId ->
+                                        deleteTaskDialogState.showDialog(userTasks.data!!.find { it.id == taskId })
+                                    },
                                 )
                             }
                         }
@@ -180,6 +203,37 @@ fun LogbookScreen(
                         )
                     }
                 }
+            }
+            if (deleteTaskDialogState.isVisible.value) {
+                deleteTaskDialogState.dialogData.value?.let { logbookTask ->
+                    DeleteTaskDialog(
+                        task = logbookTask,
+                        selectedDay = selectedDay,
+                        onDismissRequest = { deleteTaskDialogState.hideDialog() },
+                        onConfirmRequest = { deleteOption ->
+                            deleteTaskDialogState.hideDialog()
+                            onDeleteTaskConfirmed(
+                                logbookTask,
+                                deleteOption,
+                                selectedDay,
+                                shiftSelected
+                            )
+                        },
+                    )
+                }
+            }
+
+            if (viewModel.deletedTaskDialogState.isVisible.value) {
+                viewModel.deletedTaskDialogState.dialogData.value?.let { pair ->
+                    DeletedTaskDialog(
+                        task = pair.first,
+                        deleteOption = pair.second,
+                        onDismissRequest = { viewModel.deletedTaskDialogState.hideDialog() })
+                }
+            }
+
+            if (isLoading) {
+                LBLoading()
             }
         }
     )
@@ -260,5 +314,6 @@ fun HomeLogbookScreenPreview() {
         userTasks = ApiResponseWithData.Default(),
         selectADay = { _, _ -> },
         onEditTaskClicked = {},
+        onDeleteTaskConfirmed = { _, _, _, _ -> },
     )
 }

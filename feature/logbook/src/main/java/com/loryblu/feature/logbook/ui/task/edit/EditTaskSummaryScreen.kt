@@ -11,6 +11,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +30,7 @@ import com.loryblu.feature.logbook.model.EditResult
 import com.loryblu.feature.logbook.model.LogbookTaskModel
 import com.loryblu.feature.logbook.ui.task.LoadingScreen
 import com.loryblu.feature.logbook.ui.task.TaskSummaryContent
+import com.loryblu.feature.logbook.utils.getDaySelected
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,6 +46,8 @@ fun EditTaskSummaryScreen(
     editResult: EditResult,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    var selectedFrequency by remember { mutableStateOf(getDaySelected(logbookTaskModel.frequency)) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -58,13 +65,17 @@ fun EditTaskSummaryScreen(
                     logbookTaskModel = logbookTaskModel,
                     innerPadding = innerPadding,
                     onShiftChange = onShiftChange,
-                    onFrequencyChange = onFrequencyChange,
+                    onFrequencyChange = { frequency ->
+                        onFrequencyChange.invoke(frequency)
+                        selectedFrequency = frequency
+                    },
                     onCategoryNavigate = onCategoryNavigate,
                     onTaskNavigate = onTaskNavigate,
                 ) {
                     EditSummaryButtons(
                         onCancel = onBackButtonClicked,
                         onSave = onTaskSaveClicked,
+                        saveIsEnabled = selectedFrequency.isNotEmpty()
                     )
                 }
             } else {
@@ -75,7 +86,7 @@ fun EditTaskSummaryScreen(
 }
 
 @Composable
-fun EditSummaryButtons(onCancel: () -> Unit, onSave: () -> Unit) {
+fun EditSummaryButtons(onCancel: () -> Unit, onSave: () -> Unit, saveIsEnabled: Boolean) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -96,7 +107,8 @@ fun EditSummaryButtons(onCancel: () -> Unit, onSave: () -> Unit) {
             textRes = R.string.save,
             backgroundColor = LBSkyBlue,
             borderColor = LBSkyBlue,
-            textColor = Color.White
+            textColor = Color.White,
+            enabled = saveIsEnabled
         )
     }
 }

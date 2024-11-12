@@ -1,7 +1,7 @@
 package com.loryblu.data.logbook.remote.api
 
 import com.loryblu.core.network.HttpRoutes
-import com.loryblu.core.network.di.Session
+import com.loryblu.core.network.di.UserSession
 import com.loryblu.core.network.extensions.toApiResponse
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
@@ -10,6 +10,7 @@ import com.loryblu.data.logbook.remote.model.LogbookTaskRequest
 import com.loryblu.data.logbook.util.toListOfLogbookTask
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
@@ -23,8 +24,8 @@ import kotlinx.coroutines.flow.flow
 
 class LogbookApiImpl(
     private val client: HttpClient,
-    private val session: Session
-): LogbookApi {
+    private val userSession: UserSession
+) : LogbookApi {
 
     override suspend fun createTask(logbookTaskRequest: LogbookTaskRequest) = flow {
         emit(ApiResponse.Loading)
@@ -33,7 +34,7 @@ class LogbookApiImpl(
                 client.post(HttpRoutes.TASK) {
                     setBody(logbookTaskRequest)
                     contentType(ContentType.Application.Json)
-                    bearerAuth(session.getToken())
+                    bearerAuth(userSession.getToken())
                 }.toApiResponse()
             )
         } catch (e: Exception) {
@@ -44,21 +45,36 @@ class LogbookApiImpl(
 
     override suspend fun editTask(
         logbookTaskRequest: LogbookTaskRequest,
-        taskId: Int
-    ) = flow {
-        emit(ApiResponse.Loading)
+        taskId: Int,
+        childrenId: Int,
+    ): ApiResponse {
         try {
-            emit(
-                client.patch(HttpRoutes.TASK) {
-                    parameter("id_task", taskId)
-                    setBody(logbookTaskRequest)
-                    contentType(ContentType.Application.Json)
-                    bearerAuth(session.getToken())
-                }.toApiResponse()
-            )
+            return client.patch(HttpRoutes.TASK) {
+                parameter("taskId", taskId)
+                parameter("childrenId", childrenId)
+                setBody(logbookTaskRequest)
+                contentType(ContentType.Application.Json)
+                bearerAuth(userSession.getToken())
+            }.toApiResponse()
+
         } catch (e: Exception) {
             e.printStackTrace()
-            emit(ApiResponse.ErrorDefault)
+            return ApiResponse.ErrorDefault
+        }
+    }
+
+    override suspend fun deleteTask(
+        taskId: Int
+    ): ApiResponse {
+        try {
+            return client.delete(HttpRoutes.TASK) {
+                parameter("taskId", taskId)
+                parameter("childrenId", userSession.getChildId().toString())
+                bearerAuth(userSession.getToken())
+            }.toApiResponse()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return ApiResponse.ErrorDefault
         }
     }
 
@@ -66,18 +82,18 @@ class LogbookApiImpl(
         val nameOfWeekDays = arrayOf("sun", "mon", "tue", "wed", "thu", "fri", "sat")
 
         emit(ApiResponseWithData.Loading())
-        try{
+        try {
             emit(
                 client.get(HttpRoutes.TASK) {
                     parameters {
-                        parameter("childrenId", session.getChildId().toString())
+                        parameter("childrenId", userSession.getChildId().toString())
                         nameOfWeekDays.forEach {
                             parameter("frequency", it)
                         }
                         parameter("perPage", 70)
                     }
                     contentType(ContentType.Application.Json)
-                    bearerAuth(session.getToken())
+                    bearerAuth(userSession.getToken())
                 }.toListOfLogbookTask()
             )
         } catch (e: Exception) {

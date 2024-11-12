@@ -1,19 +1,28 @@
 package com.loryblu.feature.logbook.ui.home
 
-import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.loryblu.core.network.di.UserSession
+import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.network.model.ApiResponseWithData
-import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.remote.model.LogbookTask
+import com.loryblu.feature.logbook.ui.task.delete.DeleteOption
+import com.loryblu.feature.logbook.ui.task.delete.mutableDialogStateOf
+import com.loryblu.feature.logbook.useCases.DeleteTaskUseCase
 import com.loryblu.feature.logbook.useCases.GetUserTaskByDayOfWeek
 import com.loryblu.feature.logbook.utils.intToDayOfWeek
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.fold
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LogbookHomeViewModel(
-    private val getUserTaskByDayOfWeek: GetUserTaskByDayOfWeek
+    private val getUserTaskByDayOfWeek: GetUserTaskByDayOfWeek,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val userSession: UserSession
 ) : ViewModel() {
 
     private val _userTasks =
@@ -23,17 +32,61 @@ class LogbookHomeViewModel(
     var lastDayOfWeek = 0
     var lastShift = 0
 
+    val deletedTaskDialogState = mutableDialogStateOf<Pair<LogbookTask, DeleteOption>?>(null)
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+
     fun selectADayOfWeek(dayOfWeekInt: Int, shift: Int, force: Boolean = false) =
         viewModelScope.launch {
             lastDayOfWeek = dayOfWeekInt
             lastShift = shift
 
-            getUserTaskByDayOfWeek.invoke(
-                dayOfWeek = intToDayOfWeek(dayOfWeekInt),
-                shift = shift,
-                force = force
-            ).collect {
-                _userTasks.value = it
-            }
+            forceGetUserTaskByDayOfWeek(
+                dayOfWeekInt = dayOfWeekInt, shift = shift
+            )
         }
+
+    fun deleteTask(
+        logbookTask: LogbookTask,
+        deleteOption: DeleteOption,
+        dayOfWeekInt: Int,
+        shift: Int,
+    ) {
+        viewModelScope.launch {
+            _isLoading.update { true }
+
+            val response = deleteTaskUseCase.invoke(
+                logbookTask = logbookTask,
+                deleteOption = deleteOption,
+                childrenId = userSession.getChildId()
+            )
+
+            if (response == ApiResponse.Success) {
+                deletedTaskDialogState.showDialog(
+                    Pair(logbookTask, deleteOption)
+                )
+            }
+
+            forceGetUserTaskByDayOfWeek(
+                dayOfWeekInt = dayOfWeekInt, shift = shift
+            )
+
+            _isLoading.update { false }
+        }
+    }
+
+    private suspend fun forceGetUserTaskByDayOfWeek(
+        dayOfWeekInt: Int,
+        shift: Int,
+    ) {
+        getUserTaskByDayOfWeek.invoke(
+            dayOfWeek = intToDayOfWeek(dayOfWeekInt),
+            shift = shift,
+            force = true
+        ).collect {
+            _userTasks.value = it
+        }
+    }
 }

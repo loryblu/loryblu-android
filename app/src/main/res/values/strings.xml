@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="faq_title" translatable="false">Perguntas Frequentes</string>
+    <string name="terms_title" translatable="false">Termo e Privacidade</string>
+</resources>

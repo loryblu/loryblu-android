@@ -24,6 +24,7 @@ parcelize = "1.9.10"
 datastore_version = "1.0.0"
 google-services = "4.4.2"
 firebase-bom = "33.1.0"
+security-crypto = "1.1.0-alpha06"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -56,6 +57,7 @@ androidx-databinding-runtime = { group = "androidx.databinding", name = "databin
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore_version" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics"}
+security-crypto = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "security-crypto"}
 
 
 [plugins]

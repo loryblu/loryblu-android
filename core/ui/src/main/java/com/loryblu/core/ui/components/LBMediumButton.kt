@@ -24,6 +24,7 @@ fun LBMediumButton(
     backgroundColor: Color,
     borderColor: Color,
     textColor: Color,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = { onClick() },
@@ -32,7 +33,8 @@ fun LBMediumButton(
             .fillMaxWidth()
             .height(50.dp),
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(1.dp, borderColor)
+        border = BorderStroke(1.dp, borderColor),
+        enabled = enabled
     ) {
         Text(
             text = stringResource(textRes),
