@@ -36,5 +36,7 @@ android {
 
 dependencies {
     testImplementation(libs.junit)
+    implementation(libs.security.crypto)
+
     androidTestImplementation(libs.androidx.test.ext.junit)
 }

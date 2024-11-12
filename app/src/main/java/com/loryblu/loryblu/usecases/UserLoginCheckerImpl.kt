@@ -3,11 +3,11 @@ package com.loryblu.loryblu.usecases
 import com.loryblu.data.auth.UserAuthentication
 import com.loryblu.data.auth.model.SignInResult
 
-internal class IsUserLoggedImpl(
+internal class UserLoginCheckerImpl(
     private val userAuthentication: UserAuthentication
-) : IsUserLogged {
+) : UserLoginChecker {
     override suspend fun invoke(): Boolean {
-        return when(userAuthentication.loginUserAndReturnToken()) {
+        return when(userAuthentication.loginWithSavedCredentials()) {
             is SignInResult.Success -> true
             else -> false
         }

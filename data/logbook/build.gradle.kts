@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.loryblu.data.logbook"
-    compileSdk = 33
+    compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
-        minSdk = 26
+        minSdk = ProjectConfig.minSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
