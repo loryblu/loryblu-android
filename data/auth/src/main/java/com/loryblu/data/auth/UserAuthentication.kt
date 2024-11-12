@@ -89,11 +89,16 @@ class UserAuthentication(
         }
     }
 
+    fun logoutUser() {
+        clearUserCredentials()
+    }
+
     private suspend fun saveUserData(loginResponse: LoginResponse) {
         userSession.saveToken(loginResponse.data.accessToken)
         userSession.saveChild(
             loginResponse.data.user.childrens[0].id,
-            loginResponse.data.user.childrens[0].fullname
+            loginResponse.data.user.childrens[0].fullname,
+            loginResponse.data.user.parentName,
         )
     }
 
@@ -120,7 +125,7 @@ class UserAuthentication(
     /**
      * Clear user data from UserAuthentication
      */
-    fun clearUserCredentials() {
+    private fun clearUserCredentials() {
         editor.clear()
         editor.apply()
         userSession.clearToken()

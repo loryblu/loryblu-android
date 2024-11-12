@@ -26,7 +26,7 @@ import com.odisby.feature.dashboard.model.UsesData
 fun DashboardScreen(
     usesData: UsesData,
     navigateToLogbook: () -> Unit,
-    navigateToLogin: () -> Unit,
+    logoutUser: () -> Unit,
     navigateToFaq: () -> Unit,
     navigateToTerms: () -> Unit,
 ) {
@@ -69,7 +69,7 @@ fun DashboardScreen(
         if (showExitDialog) {
             ExitAppDialog(
                 onCancel = { showExitDialog = false },
-                onConfirm = navigateToLogin,
+                onConfirm = logoutUser,
             )
         }
     }
