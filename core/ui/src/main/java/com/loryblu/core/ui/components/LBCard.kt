@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.loryblu.core.ui.components.extensions.loryShadow
 import com.loryblu.core.ui.theme.LBAfternoonBlue
 import com.loryblu.core.ui.theme.LBBottomDisabledColor
 import com.loryblu.core.ui.theme.LBBottomHome
@@ -63,14 +64,25 @@ fun LBCardDashboard(
         colors = CardDefaults.cardColors(
             containerColor = contentColor,
         ),
-        border = BorderStroke(4.dp, borderColor),
+        border = if(card.isDisabled) {
+            CardDefaults.outlinedCardBorder()
+        } else {
+            BorderStroke(4.dp, borderColor)
+        },
         modifier = modifier
             .clickable {
                 if (!card.isDisabled) {
                     onclick()
                 }
-            }
-            .alpha(saturation),
+            }.then(if (card.isDisabled.not()) {
+                Modifier.loryShadow(
+                    offsetX = 1.dp,
+                    offsetY = 5.dp,
+                    cornerRadius = 8.dp,
+                )
+            } else {
+                Modifier
+            }).alpha(saturation),
         shape = RoundedCornerShape(rounded),
     ) {
         Column(
@@ -102,7 +114,7 @@ fun LBCardDashboard(
             Text(
                 text = stringResource(id = card.text),
                 style = TextStyle(
-                    fontSize = 20.sp,
+                    fontSize = 26.sp,
                     lineHeight = 24.sp,
                     fontWeight = FontWeight(500),
                     color = Color.White,
@@ -169,7 +181,7 @@ fun LBCategoryCard(
             Text(
                 text = stringResource(id = card.text),
                 style = TextStyle(
-                    fontSize = 20.sp,
+                    fontSize = 26.sp,
                     lineHeight = 24.sp,
                     fontWeight = FontWeight(500),
                     color = Color.White,
@@ -385,7 +397,7 @@ fun LBCardShift(
 fun LBDashboardCardPreview() {
     LoryBluTheme {
         LBCardDashboard(
-            getAllDashboardItems()[0],
+            getAllDashboardItems().first(),
             modifier = Modifier.size(250.dp),
             onclick = {}
         )
@@ -397,7 +409,7 @@ fun LBDashboardCardPreview() {
 fun LBLogbookCardPreview() {
     LoryBluTheme {
         LBCategoryCard(
-            CategoryItem.getAllCategory()[0],
+            CategoryItem.getAllCategory().first(),
             modifier = Modifier.size(250.dp),
             selected = true,
             onclick = {}
@@ -410,7 +422,7 @@ fun LBLogbookCardPreview() {
 fun LBShiftCardPreview() {
     LoryBluTheme {
         LBCardShift(
-            ShiftItem.getShiftItems()[0],
+            ShiftItem.getShiftItems().first(),
             modifier = Modifier.size(250.dp),
             clicked = false,
             onclick = {}

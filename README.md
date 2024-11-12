@@ -76,6 +76,8 @@ Distributed under the MIT License. See [LICENSE](https://github.com/loryblu/lory
 
 ## Authors
 
-* **André Moraes Filho** - *Android Developer* - [André Moraes Filho](https://github.com/softdevandre)
-* **Jean Patrick Hartmann** - *Android Developer* - [Jean Patrick Hartmann](https://github.com/hartmannjean)
+* **André Moraes Filho** - *Ex Android Developer* - [André Moraes Filho](https://github.com/softdevandre)
+* **Eduardo Scaranari** - *Android Developer* - [Eduardo Scaranari](https://github.com/duhdoesk)
+* **Jean Patrick Hartmann** - *Ex Android Developer* - [Jean Patrick Hartmann](https://github.com/hartmannjean)
+* **Leonardo Pereira Alves** - *Android Developer* - [Leonardo Pereira Alves](https://github.com/leoallvez)
 * **Ruliam Santos Oliveira** - *Android Developer* - [Ruliam Santos Oliveira](https://github.com/OdisBy)
