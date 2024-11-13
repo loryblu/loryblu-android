@@ -60,4 +60,5 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":core:network"))
     implementation(project(":data:dashboard"))
+    implementation(project(":data:auth"))
 }

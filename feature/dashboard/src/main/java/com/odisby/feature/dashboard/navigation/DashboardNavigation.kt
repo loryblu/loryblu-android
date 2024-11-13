@@ -22,10 +22,15 @@ fun NavGraphBuilder.dashboardRoute(
         val usersData by viewModel.usesData.collectAsState()
         viewModel.getUsesData()
 
+        val logoutUser = {
+            viewModel.logoutUser()
+            navigateToLogin()
+        }
+
         DashboardScreen(
             usesData = usersData,
             navigateToLogbook = navigateToLogbook,
-            navigateToLogin = navigateToLogin,
+            logoutUser = logoutUser,
             navigateToFaq = navigateToFaq,
             navigateToTerms = navigateToTerms,
         )

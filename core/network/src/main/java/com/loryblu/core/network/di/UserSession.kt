@@ -7,6 +7,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Regarding the user session, used for information that is relevant only to the specific session.
+ */
 class UserSession(
     private val dataStore: DataStore<Preferences>
 ) {
