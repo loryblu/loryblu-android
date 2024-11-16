@@ -25,6 +25,9 @@ datastore_version = "1.0.0"
 google-services = "4.4.2"
 firebase-bom = "33.1.0"
 security-crypto = "1.1.0-alpha06"
+ui-tooling = "1.7.5"
+foundation-layout-android = "1.6.3"
+ui-test-android = "1.6.3"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -58,6 +61,9 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics"}
 security-crypto = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "security-crypto"}
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundation-layout-android" }
+androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "ui-test-android" }
 
 
 [plugins]

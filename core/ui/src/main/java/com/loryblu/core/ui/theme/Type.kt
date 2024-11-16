@@ -39,3 +39,7 @@ val inter = FontFamily(
     Font(R.font.inter_regular, weight = FontWeight.Normal),
     Font(R.font.inter_bold, weight = FontWeight.Bold),
 )
+
+val interLight = FontFamily(
+    Font(R.font.inter_light, weight = FontWeight.Light),
+)

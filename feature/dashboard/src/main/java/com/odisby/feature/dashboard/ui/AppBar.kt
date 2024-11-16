@@ -32,11 +32,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.loryblu.core.ui.components.extensions.loryShadow
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBDisabledGray
-import com.odisby.feature.dashboard.R
-import com.loryblu.core.ui.components.extensions.loryShadow
 import com.loryblu.core.ui.theme.inter
+import com.odisby.feature.dashboard.R
 
 @Composable
 fun AppBar(childFirstName: String, onMenuClick: () -> Unit) {
