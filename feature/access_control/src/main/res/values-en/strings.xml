@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="access_control_image_description">$s icon</string>
+    <string name="access_control_switch_description">$s switch</string>
 </resources>
