@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Access control screen-->
+    <string name="access_control_title" translatable="false">Controle de Acesso</string>
+    <string name="access_control_description" translatable="false">
+        Aqui você pode permitir ou bloquear o acesso a edições e configurações do app.
+    </string>
+    <!-- Access control card title -->
+    <string name="child_profile_title" translatable="false">Perfil da criança</string>
+    <string name="parent_profile_title" translatable="false">Perfil do responsável</string>
+    <string name="task_register_title" translatable="false">Cadastrar tarefa</string>
+    <string name="task_edit_title" translatable="false">Editar tarefa</string>
+    <string name="task_delete_title" translatable="false">Excluir tarefa</string>
+    <string name="card_order_title" translatable="false">Ordenação dos cards</string>
+    <string name="exit_app_title" translatable="false">Sair do app</string>
+    <!-- Access control card description -->
+    <string name="child_profile_description" translatable="false">
+        Bloqueia o acesso para editar perfil da criança.
+    </string>
+    <string name="parent_profile_description" translatable="false">
+        Bloqueia o acesso para editar perfil do responsável.
+    </string>
+    <string name="task_register_description" translatable="false">
+        Bloqueia a criação de uma nova tarefa da LoryRotina.
+    </string>
+    <string name="task_edit_description" translatable="false">
+        Bloqueia a edição da tarefa da LoryRotina.
+    </string>
+    <string name="task_delete_description" translatable="false">
+        Bloqueia a exclusão da tarefa da LoryRotina.
+    </string>
+    <string name="card_order_description" translatable="false">
+        Bloqueia a ação de arrastar cards do Diário de Bordo.
+    </string>
+    <string name="exit_app_description" translatable="false">
+        Solicita a senha para sair do app.
+    </string>
+    <!-- Access control card elements -->
     <string name="access_control_image_description" translatable="false">$s ícone</string>
     <string name="access_control_switch_description" translatable="false">$s switch</string>
 </resources>

@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Access control screen-->
+    <string name="access_control_title">Access Control</string>
+    <string name="access_control_description">
+        Here you can allow or block access to app edits and settings.
+    </string>
+    <!-- Access control card title -->
+    <string name="child_profile_title">Child Profile</string>
+    <string name="parent_profile_title">Parent Profile</string>
+    <string name="task_register_title">Register Task</string>
+    <string name="task_edit_title">Edit Task</string>
+    <string name="task_delete_title">Delete Task</string>
+    <string name="card_order_title">Card Sorting</string>
+    <string name="exit_app_title">Exit App</string>
+    <!-- Access control card description -->
+    <string name="child_profile_description">
+        Blocks access to edit the child profile.
+    </string>
+    <string name="parent_profile_description">
+        Blocks access to edit the parent profile.
+    </string>
+    <string name="task_register_description">
+        Blocks the creation of a new task in LoryRoutine.
+    </string>
+    <string name="task_edit_description">
+        Blocks the editing of a task in LoryRoutine.
+    </string>
+    <string name="task_delete_description">
+        Blocks the deletion of a task in LoryRoutine.
+    </string>
+    <string name="card_order_description">
+        Blocks the action of dragging cards in the Logbook.
+    </string>
+    <string name="exit_app_description">
+        Requires a password to exit the app.
+    </string>
+    <!-- Access control card elements -->
     <string name="access_control_image_description">$s icon</string>
     <string name="access_control_switch_description">$s switch</string>
 </resources>
