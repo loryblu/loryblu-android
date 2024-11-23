@@ -41,18 +41,20 @@ import com.loryblu.core.ui.theme.LBSoftBlue
 import com.loryblu.core.ui.theme.inter
 import com.loryblu.core.ui.theme.interLight
 import com.loryblu.feature.access_control.R
+import com.loryblu.feature.access_control.model.AccessItem
+import com.loryblu.feature.access_control.model.ChildProfile
 
 @Composable
-fun AccessControlItem(
-    mediumText: String,
-    smallText: String,
-    @DrawableRes imageId: Int,
+fun AccessItemCard(
+    modifier: Modifier = Modifier,
+    item: AccessItem,
     isChecked: Boolean,
     onSwitchChange: (Boolean) -> Unit,
 ) {
     val shape = RoundedCornerShape(10.dp)
+    val title = stringResource(id = item.titleId)
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(LBSoftBlue, shape = shape)
             .border(1.dp, LBLightGray, shape = shape)
@@ -64,21 +66,21 @@ fun AccessControlItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AccessImage(
-                imageId = imageId,
+                imageId = item.imageId,
                 contentDescription = stringResource(
-                    id = R.string.access_control_image_description, mediumText
+                    id = R.string.access_control_image_description, title
                 )
             )
             CustomSwitch(
                 checked = isChecked,
                 onCheckedChange = onSwitchChange,
                 description = stringResource(
-                    id = R.string.access_control_switch_description, mediumText
+                    id = R.string.access_control_switch_description, title
                 )
             )
         }
         Text(
-            text = smallText,
+            text = title,
             color = Color.Black,
             style = TextStyle(
                 fontFamily = inter,
@@ -89,7 +91,7 @@ fun AccessControlItem(
             modifier = Modifier.padding(top = 8.dp)
         )
         Text(
-            text = mediumText,
+            text = stringResource(id = item.descriptionId),
             color = Color.Black,
             style = TextStyle(
                 fontFamily = interLight,
@@ -177,10 +179,8 @@ fun CustomSwitch(
 @Preview(widthDp = 152, heightDp = 112)
 @Composable
 fun ActiveAccessControlItemPreview() {
-    AccessControlItem(
-        mediumText = "Perfil da criança",
-        smallText = "Bloqueia o acesso para editar perfil da criança.",
-        imageId = R.drawable.seedling,
+    AccessItemCard(
+        item = ChildProfile(),
         isChecked = true,
         onSwitchChange = {}
     )
@@ -189,10 +189,8 @@ fun ActiveAccessControlItemPreview() {
 @Preview(widthDp = 152, heightDp = 112)
 @Composable
 fun InactiveAccessControlItemPreview() {
-    AccessControlItem(
-        mediumText = "Perfil da criança",
-        smallText = "Bloqueia o acesso para editar perfil da criança.",
-        imageId = R.drawable.seedling,
+    AccessItemCard(
+        item = ChildProfile(),
         isChecked = false,
         onSwitchChange = {}
     )
