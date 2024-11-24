@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.loryblu.core.util.Screen
 import com.odisby.feature.dashboard.ui.DashboardScreen
 import com.odisby.feature.dashboard.ui.DashboardViewModel
+import com.odisby.feature.dashboard.ui.MenuNavigationActions
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -16,6 +17,7 @@ fun NavGraphBuilder.dashboardRoute(
     navigateToLogin: () -> Unit,
     navigateToFaq: () -> Unit,
     navigateToTerms: () -> Unit,
+    navigateToChildrenProfile: () -> Unit,
 ) {
     composable(route = Screen.Dashboard.route) {
         val viewModel: DashboardViewModel = koinViewModel()
@@ -31,8 +33,11 @@ fun NavGraphBuilder.dashboardRoute(
             usesData = usersData,
             navigateToLogbook = navigateToLogbook,
             logoutUser = logoutUser,
-            navigateToFaq = navigateToFaq,
-            navigateToTerms = navigateToTerms,
+            menuNavigationActions = MenuNavigationActions(
+                navigateToChildrenProfile = navigateToChildrenProfile,
+                navigateToFaq = navigateToFaq,
+                navigateToTerms = navigateToTerms,
+            ),
         )
     }
 }

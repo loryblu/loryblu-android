@@ -27,8 +27,7 @@ fun DashboardScreen(
     usesData: UsesData,
     navigateToLogbook: () -> Unit,
     logoutUser: () -> Unit,
-    navigateToFaq: () -> Unit,
-    navigateToTerms: () -> Unit,
+    menuNavigationActions: MenuNavigationActions,
 ) {
     var menuIsOpen by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
@@ -41,8 +40,7 @@ fun DashboardScreen(
             parentFullName = usesData.parentFullName,
             onCloseMenu = { menuIsOpen = false },
             onExitApp = { showExitDialog = true },
-            navigateToFaq = navigateToFaq,
-            navigateToTerms = navigateToTerms,
+            navigationActions = menuNavigationActions,
         )
         AppBar(
             childFirstName = usesData.childFirstName,

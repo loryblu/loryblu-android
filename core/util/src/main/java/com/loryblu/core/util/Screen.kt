@@ -36,4 +36,7 @@ sealed class Screen(val route: String) {
     }
 
     data object EditionConfirmedScreen: Screen(route = "edition_confirmed_screen")
+
+    // Profile
+    data object ChildrenProfileScreen: Screen(route = "children_profile_screen")
 }

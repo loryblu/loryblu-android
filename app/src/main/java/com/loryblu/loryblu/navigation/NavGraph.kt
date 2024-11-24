@@ -87,6 +87,9 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                         title = context.getString(R.string.terms_title),
                     )
                 )
+            },
+            navigateToChildrenProfile = {
+                navController.navigate(Screen.ChildrenProfileScreen.route)
             }
         )
         logbookNavigation(
