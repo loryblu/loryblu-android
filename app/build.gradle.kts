@@ -3,6 +3,8 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 
@@ -52,9 +54,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
-    }
     packaging {
         resources {
             excludes +=("/META-INF/{AL2.0,LGPL2.1}")
@@ -68,8 +67,8 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.koin.androidx.compose)
-    implementation(libs.navigation.compose)
     implementation(libs.material3)
 
     implementation(platform(libs.firebase.bom))

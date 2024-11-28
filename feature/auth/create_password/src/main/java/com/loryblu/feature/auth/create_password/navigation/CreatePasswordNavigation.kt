@@ -14,11 +14,11 @@ fun NavGraphBuilder.createPasswordRoute(
     navigateToLoginScreen: () -> Unit,
 ) {
 
-    composable(
-        route = Screen.CreatePassword.route,
+    composable<Screen.Authentication.CreatePassword>(
         deepLinks = listOf(
             navDeepLink {
-                uriPattern = "loryblu://password_recovery/?r_token%3D{token}%26expires_in%3D{expires}"
+                uriPattern =
+                    "loryblu://password_recovery/?r_token%3D{token}%26expires_in%3D{expires}"
             }
         ),
     ) { backStack ->

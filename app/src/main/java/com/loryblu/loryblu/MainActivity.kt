@@ -49,9 +49,9 @@ class MainActivity : ComponentActivity() {
                     checkNotificationPolicyAccess(notificationManager, this)
                     SetupNavGraph(
                         startDestination = if (userLogged) {
-                            Screen.Dashboard.route
+                            Screen.Dashboard
                         } else {
-                            Screen.Login.route
+                            Screen.Authentication.Login
                         },
                         navController = navController
                     )

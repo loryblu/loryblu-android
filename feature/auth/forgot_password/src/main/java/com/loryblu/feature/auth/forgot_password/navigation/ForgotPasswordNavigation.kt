@@ -11,9 +11,7 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraphBuilder.forgotPasswordRoute(
     navigateToCreatePassword: () -> Unit,
 ) {
-    composable(
-        route = Screen.ForgotPassword.route,
-    ) {
+    composable<Screen.Authentication.ForgotPassword> {
         val viewModel: ForgotPasswordViewModel = koinViewModel()
         val authenticated by viewModel.authenticated
         ForgotPasswordScreen(

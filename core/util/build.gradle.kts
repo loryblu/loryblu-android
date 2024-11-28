@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -35,8 +36,9 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.junit)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.security.crypto)
 
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
 }

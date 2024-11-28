@@ -27,7 +27,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun RegistrationConfirmedScreen(
     navigateToHomeScreen: () -> Unit,
-    shouldGoToNextScreen: Boolean,
 ) {
     Box(
         modifier = Modifier
@@ -55,7 +54,7 @@ fun RegistrationConfirmedScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
 
-        ){
+        ) {
             Text(
                 fontSize = 20.sp,
                 text = stringResource(id = R.string.registration_ok),
@@ -70,10 +69,8 @@ fun RegistrationConfirmedScreen(
         }
     }
 
-    LaunchedEffect(key1 = shouldGoToNextScreen) {
-        if (shouldGoToNextScreen) {
-            delay(3000)
-            navigateToHomeScreen()
-        }
+    LaunchedEffect(Unit) {
+        delay(3000)
+        navigateToHomeScreen()
     }
 }

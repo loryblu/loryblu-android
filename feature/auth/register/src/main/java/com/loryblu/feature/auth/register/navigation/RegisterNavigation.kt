@@ -7,17 +7,17 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.loryblu.core.util.Screen
-import com.loryblu.feature.auth.register.presentation.RegistrationConfirmedScreen
 import com.loryblu.feature.auth.register.RegisterViewModel
 import com.loryblu.feature.auth.register.presentation.ChildRegisterScreen
 import com.loryblu.feature.auth.register.presentation.GuardianRegisterScreen
+import com.loryblu.feature.auth.register.presentation.RegistrationConfirmedScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 
 fun NavGraphBuilder.registerGuardianRoute(
     navigateToChildRegister: () -> Unit,
 ) {
-    composable(route = Screen.RegisterGuardian.route) {
+    composable<Screen.Authentication.RegisterGuardian> {
         val viewModel: RegisterViewModel = koinViewModel(qualifier = named("registerScope"))
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreenGuardian
 
@@ -46,8 +46,8 @@ fun NavGraphBuilder.registerGuardianRoute(
 fun NavGraphBuilder.registerChildRoute(
     navigateToConfirmationScreen: () -> Unit,
 ) {
-    composable(route = Screen.RegisterChild.route) {
-        val viewModel: RegisterViewModel =  koinViewModel(qualifier = named("registerScope"))
+    composable<Screen.Authentication.RegisterChild> {
+        val viewModel: RegisterViewModel = koinViewModel(qualifier = named("registerScope"))
         val shouldGoToNextScreen by viewModel.shouldGoToNextScreenChildren
         val intentForPrivacyPolicy = Intent(Intent.ACTION_VIEW)
         val apiErrorMessage by viewModel.apiErrorMessage.collectAsState()
@@ -61,7 +61,7 @@ fun NavGraphBuilder.registerChildRoute(
             shouldGoToNextScreen = shouldGoToNextScreen,
             intentForPrivacy = intentForPrivacyPolicy,
             apiErrorMessage = apiErrorMessage,
-            birthdayStateValidation =  {
+            birthdayStateValidation = {
                 viewModel.birthdayState(it)
             },
             genderStateValidation = {
@@ -77,10 +77,9 @@ fun NavGraphBuilder.registerChildRoute(
 fun NavGraphBuilder.registrationConfirmedRoute(
     navigateToHome: () -> Unit,
 ) {
-    composable(route = Screen.RegistrationConfirmed.route) {
+    composable<Screen.Authentication.RegistrationConfirmed> {
         RegistrationConfirmedScreen(
             navigateToHomeScreen = navigateToHome,
-            shouldGoToNextScreen = true //sempre será true
         )
     }
 }
