@@ -34,12 +34,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.components.LBButton
+import com.loryblu.core.ui.components.buttons.LBButton
 import com.loryblu.core.ui.components.LBDatePicker
-import com.loryblu.core.ui.components.LBGenderButton
-import com.loryblu.core.ui.components.LBNameTextField
-import com.loryblu.core.ui.components.LBRadioButton
-import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.ui.components.buttons.LBGenderButton
+import com.loryblu.core.ui.components.text_fields.LBNameTextField
+import com.loryblu.core.ui.components.buttons.LBRadioButton
+import com.loryblu.core.ui.components.text.LBTitle
 import com.loryblu.core.ui.models.GenderInput
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray

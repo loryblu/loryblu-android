@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBEmailTextField
-import com.loryblu.core.ui.components.LBErrorLabel
-import com.loryblu.core.ui.components.LBSuccessLabel
-import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.ui.components.buttons.LBButton
+import com.loryblu.core.ui.components.text_fields.LBEmailTextField
+import com.loryblu.core.ui.components.text.LBErrorLabel
+import com.loryblu.core.ui.components.text.LBSuccessLabel
+import com.loryblu.core.ui.components.text.LBTitle
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray

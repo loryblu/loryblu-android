@@ -1,7 +1,10 @@
-package com.loryblu.core.ui.components
+package com.loryblu.core.ui.components.buttons
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,8 +21,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.loryblu.core.ui.R
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBSilverGray
@@ -28,9 +33,9 @@ import com.loryblu.core.ui.theme.LBSoftGray
 @Composable
 fun RowScope.LBGenderButton(
     onClick: () -> Unit,
-    iconRes: Int,
-    contentDescriptionRes: Int,
-    textRes: Int,
+    @DrawableRes iconRes: Int,
+    @StringRes contentDescriptionRes: Int,
+    @StringRes textRes: Int,
     genderSelected: Boolean,
     error: Boolean
 ) {
@@ -68,6 +73,21 @@ fun RowScope.LBGenderButton(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun LBGenderButtonPreview() {
+    Row {
+        LBGenderButton(
+            onClick = {},
+            iconRes = R.drawable.ic_boy,
+            contentDescriptionRes = R.string.boy_icon,
+            textRes = R.string.boy,
+            genderSelected = true,
+            error = false
         )
     }
 }

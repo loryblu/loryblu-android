@@ -25,8 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.loryblu.core.ui.components.LBOutlinedExcludeButton
-import com.loryblu.core.ui.components.LBTextButton
+import com.loryblu.core.ui.components.buttons.LBOutlinedExcludeButton
+import com.loryblu.core.ui.components.buttons.LBTextButton
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.data.logbook.local.ShiftItem
 import com.loryblu.data.logbook.local.TaskItem

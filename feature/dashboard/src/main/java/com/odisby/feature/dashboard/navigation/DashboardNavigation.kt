@@ -6,9 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.loryblu.core.util.Screen
-import com.odisby.feature.dashboard.ui.DashboardScreen
-import com.odisby.feature.dashboard.ui.DashboardViewModel
-import com.odisby.feature.dashboard.ui.MenuNavigationActions
+import com.odisby.feature.dashboard.ui.dashboard.DashboardScreen
+import com.odisby.feature.dashboard.ui.dashboard.DashboardViewModel
+import com.odisby.feature.dashboard.ui.components.MenuNavigationActions
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

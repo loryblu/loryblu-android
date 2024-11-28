@@ -27,11 +27,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBEmailTextField
-import com.loryblu.core.ui.components.LBNameTextField
-import com.loryblu.core.ui.components.LBPasswordTextField
-import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.ui.components.buttons.LBButton
+import com.loryblu.core.ui.components.text_fields.LBEmailTextField
+import com.loryblu.core.ui.components.text_fields.LBNameTextField
+import com.loryblu.core.ui.components.text_fields.LBPasswordTextField
+import com.loryblu.core.ui.components.text.LBTitle
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray

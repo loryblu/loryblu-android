@@ -1,4 +1,4 @@
-package com.odisby.feature.dashboard.ui
+package com.odisby.feature.dashboard.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
