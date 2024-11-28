@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.loryblu.core.network.model.ApiResponse
 import com.loryblu.core.ui.R
 import com.loryblu.core.util.extensions.isEmailValid
-import com.loryblu.core.util.validators.EmailInputValid
+import com.loryblu.core.util.validators.InputValid
 import com.loryblu.data.auth.api.PasswordRecoveryApi
 import com.loryblu.data.auth.model.PasswordRecoveryRequest
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +15,13 @@ import kotlinx.coroutines.launch
 
 data class ForgotPasswordUiState(
     val email: String = "",
-    val emailState: EmailInputValid = EmailInputValid.Empty,
+    val emailState: InputValid = InputValid.Empty,
     val emailMessage: String = ""
 )
 
 class ForgotPasswordViewModel(
     private val passwordRecovery: PasswordRecoveryApi,
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ForgotPasswordUiState())
     val uiState = _uiState
@@ -43,18 +43,20 @@ class ForgotPasswordViewModel(
         when {
             email.isEmpty() -> {
                 _uiState.update {
-                    it.copy(emailState = EmailInputValid.Error(R.string.empty_email))
+                    it.copy(emailState = InputValid.Error(R.string.empty_email))
                 }
             }
+
             email.isEmailValid().not() -> {
                 sendEmailSuccess.value = false
                 _uiState.update {
-                    it.copy(emailState = EmailInputValid.Error(R.string.invalid_field))
+                    it.copy(emailState = InputValid.Error(R.string.invalid_field))
                 }
             }
+
             else -> {
                 _uiState.update {
-                    it.copy(emailState = EmailInputValid.Valid)
+                    it.copy(emailState = InputValid.Valid)
                 }
             }
         }
@@ -67,13 +69,14 @@ class ForgotPasswordViewModel(
                 val passwordRecoveryRequest = PasswordRecoveryRequest(
                     email = uiState.value.email.lowercase(),
                 )
-                val response : ApiResponse = passwordRecovery.passwordRecovery(passwordRecoveryRequest)
-                if (response != ApiResponse.ErrorDefault){
+                val response: ApiResponse =
+                    passwordRecovery.passwordRecovery(passwordRecoveryRequest)
+                if (response != ApiResponse.ErrorDefault) {
                     _uiState.update {
                         it.copy(emailMessage = "E-mail enviado com sucesso")
                     }
                     sendEmailSuccess.value = true
-                } else{
+                } else {
                     _uiState.update {
                         it.copy(emailMessage = "Estamos com alguns problemas. Tente novamente mais tarde!")
                     }
@@ -82,10 +85,11 @@ class ForgotPasswordViewModel(
             }
         }
     }
+
     fun sendEmail() {
 
         emailState()
-        if(uiState.value.emailState is EmailInputValid.Valid) {
+        if (uiState.value.emailState is InputValid.Valid) {
             viewModelScope.launch {
                 passwordRecovery()
             }

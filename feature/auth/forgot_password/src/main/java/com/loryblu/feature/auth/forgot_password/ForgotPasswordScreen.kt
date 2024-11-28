@@ -26,16 +26,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.loryblu.core.ui.R
 import com.loryblu.core.ui.components.buttons.LBButton
-import com.loryblu.core.ui.components.text_fields.LBEmailTextField
 import com.loryblu.core.ui.components.text.LBErrorLabel
 import com.loryblu.core.ui.components.text.LBSuccessLabel
 import com.loryblu.core.ui.components.text.LBTitle
+import com.loryblu.core.ui.components.text_fields.LBTextField
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.core.ui.theme.LBSoftGray
-import com.loryblu.core.util.validators.EmailInputValid
+import com.loryblu.core.util.validators.InputValid
 
 @Composable
 fun ForgotPasswordScreen(
@@ -64,11 +64,13 @@ fun ForgotPasswordScreen(
 
         Spacer(modifier = Modifier.height(56.dp))
 
-        LBEmailTextField(
+        LBTextField(
             onValueChange = { email: String ->
                 viewModel.updateEmail(email)
                 viewModel.emailState()
             },
+            iconRes = R.drawable.ic_email,
+            iconContentDescriptionRes = R.string.email_icon,
             placeholderRes = stringResource(id = R.string.email),
             value = uiState.email,
             error = uiState.emailState,
@@ -77,7 +79,7 @@ fun ForgotPasswordScreen(
         Spacer(modifier = Modifier.height(44.dp))
 
         LBButton(
-            areAllFieldsValid = uiState.emailState is EmailInputValid.Valid,
+            areAllFieldsValid = uiState.emailState is InputValid.Valid,
             textRes = R.string.send,
             onClick = {
                 viewModel.sendEmail()
@@ -87,11 +89,11 @@ fun ForgotPasswordScreen(
                 containerColor = LBSkyBlue
             ),
             textColor = if (
-                uiState.emailState is EmailInputValid.Valid
+                uiState.emailState is InputValid.Valid
             ) LBSoftGray else LBSkyBlue
         )
 
-        if (uiState.emailState is EmailInputValid.Error) {
+        if (uiState.emailState is InputValid.Error) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
@@ -100,7 +102,7 @@ fun ForgotPasswordScreen(
                     .padding(start = 8.dp, top = 8.dp)
             ) {
 
-                val emailError = uiState.emailState as EmailInputValid.Error
+                val emailError = uiState.emailState as InputValid.Error
 
                 Text(
                     fontSize = 14.sp,
@@ -113,15 +115,15 @@ fun ForgotPasswordScreen(
         }
 
         when {
-            showSuccessLabel.value && uiState.emailState !is EmailInputValid.Error -> LBSuccessLabel(
+            showSuccessLabel.value && uiState.emailState !is InputValid.Error -> LBSuccessLabel(
                 labelRes = stringResource(R.string.email_sent_successfully)
             )
 
-            viewModel.sendEmailSuccess.value && uiState.emailState !is EmailInputValid.Error -> LBSuccessLabel(
+            viewModel.sendEmailSuccess.value && uiState.emailState !is InputValid.Error -> LBSuccessLabel(
                 labelRes = uiState.emailMessage
             )
 
-            !viewModel.sendEmailSuccess.value && uiState.emailState !is EmailInputValid.Error -> LBErrorLabel(
+            !viewModel.sendEmailSuccess.value && uiState.emailState !is InputValid.Error -> LBErrorLabel(
                 labelRes = uiState.emailMessage
             )
         }

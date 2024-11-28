@@ -19,11 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
 import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBSoftBlue
+import com.loryblu.core.util.validators.InputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 
 /**
@@ -82,7 +84,7 @@ fun LBPasswordTextField(
                 tint = LBSilverGray,
             )
         },
-        isError = error is PasswordInputValid.ErrorList || error is PasswordInputValid.Error,
+        isError = isError(error),
         modifier = Modifier
             .fillMaxWidth()
             .onFocusChanged { focusState ->
@@ -101,5 +103,23 @@ fun LBPasswordTextField(
         ),
         visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+    )
+}
+
+private fun isError(inputValid: InputValid): Boolean {
+    return inputValid is InputValid.Error || inputValid is PasswordInputValid.ErrorList
+}
+
+@Preview
+@Composable
+private fun LBPasswordTextFieldPreview() {
+    LBPasswordTextField(
+        onValueChange = {},
+        onButtonClick = {},
+        placeholderRes = "Password",
+        value = "",
+        error = PasswordInputValid.Valid,
+        hidden = true,
+        fieldFocus = {}
     )
 }

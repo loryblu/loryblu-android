@@ -34,12 +34,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.components.buttons.LBButton
 import com.loryblu.core.ui.components.LBDatePicker
+import com.loryblu.core.ui.components.buttons.LBButton
 import com.loryblu.core.ui.components.buttons.LBGenderButton
-import com.loryblu.core.ui.components.text_fields.LBNameTextField
 import com.loryblu.core.ui.components.buttons.LBRadioButton
 import com.loryblu.core.ui.components.text.LBTitle
+import com.loryblu.core.ui.components.text_fields.LBTextField
 import com.loryblu.core.ui.models.GenderInput
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
@@ -48,7 +48,7 @@ import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.extensions.toApiFormat
 import com.loryblu.core.util.validators.BirthdayInputValid
-import com.loryblu.core.util.validators.NameInputValid
+import com.loryblu.core.util.validators.InputValid
 import com.loryblu.feature.auth.register.model.Children
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +57,7 @@ fun ChildRegisterScreen(
     navigateToConfirmationScreen: () -> Unit,
     onSignUpButtonClicked: (Children) -> Unit,
     shouldGoToNextScreen: Boolean,
-    nameStateValidation: (name: String) -> NameInputValid,
+    nameStateValidation: (name: String) -> InputValid,
     birthdayStateValidation: (birthday: String) -> BirthdayInputValid,
     genderStateValidation: (gender: GenderInput) -> GenderInput,
     intentForPrivacy: Intent,
@@ -67,7 +67,7 @@ fun ChildRegisterScreen(
     var privacy by rememberSaveable { mutableStateOf(false) }
     var privacyState by rememberSaveable { mutableStateOf(true) }
     var name by rememberSaveable { mutableStateOf("") }
-    var nameState by rememberSaveable { mutableStateOf<NameInputValid>(NameInputValid.Empty) }
+    var nameState by rememberSaveable { mutableStateOf<InputValid>(InputValid.Empty) }
     var birthday by rememberSaveable { mutableStateOf("") }
     var birthdayState by rememberSaveable { mutableStateOf<BirthdayInputValid>(BirthdayInputValid.Empty) }
     var gender by rememberSaveable { mutableStateOf<GenderInput>(GenderInput.Empty) }
@@ -89,19 +89,21 @@ fun ChildRegisterScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        LBNameTextField(
+        LBTextField(
             value = name,
             onValueChange = { newName: String ->
                 name = newName
                 nameState = nameStateValidation(name)
             },
+            iconRes = R.drawable.ic_user,
+            iconContentDescriptionRes = R.string.name_icon,
             placeholderRes = stringResource(id = R.string.full_name),
             error = nameState,
             fieldFocus = { isNameFieldFocused = it }
         )
 
-        if (nameState is NameInputValid.Error && isNameFieldFocused) {
-            val nameError = nameState as NameInputValid.Error
+        if (nameState is InputValid.Error && isNameFieldFocused) {
+            val nameError = nameState as InputValid.Error
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -284,7 +286,7 @@ fun ChildRegisterScreen(
         Spacer(modifier = Modifier.height(44.dp))
 
         LBButton(
-            areAllFieldsValid = nameState is NameInputValid.Valid
+            areAllFieldsValid = nameState is InputValid.Valid
                     && birthdayState is BirthdayInputValid.Valid
                     && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
                     && privacy,
@@ -295,7 +297,7 @@ fun ChildRegisterScreen(
                 gender = genderStateValidation(gender)
                 privacyState = privacy
                 if (
-                    nameState == NameInputValid.Valid
+                    nameState == InputValid.Valid
                     && birthdayState == BirthdayInputValid.Valid
                     && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
                     && privacyState
@@ -315,7 +317,7 @@ fun ChildRegisterScreen(
                 containerColor = LBSkyBlue
             ),
             textColor = if (
-                nameState == NameInputValid.Valid
+                nameState == InputValid.Valid
                 && birthdayState == BirthdayInputValid.Valid
                 && (gender == GenderInput.MALE || gender == GenderInput.FEMALE)
                 && privacy

@@ -1,5 +1,7 @@
 package com.loryblu.core.ui.components.text_fields
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -19,14 +21,16 @@ import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
 import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBSoftBlue
-import com.loryblu.core.util.validators.EmailInputValid
+import com.loryblu.core.util.validators.InputValid
 
 @Composable
-fun LBEmailTextField(
-    onValueChange: (String) -> Unit,
-    placeholderRes: String,
+fun LBTextField(
     value: String,
-    error: EmailInputValid,
+    onValueChange: (String) -> Unit,
+    @DrawableRes iconRes: Int,
+    @StringRes iconContentDescriptionRes: Int? = null,
+    placeholderRes: String,
+    error: InputValid,
     fieldFocus: (Boolean) -> Unit = {},
 ) {
     OutlinedTextField(
@@ -34,15 +38,15 @@ fun LBEmailTextField(
         onValueChange = { onValueChange(it) },
         leadingIcon = {
             Icon(
-                painterResource(id = R.drawable.ic_email),
-                contentDescription = stringResource(R.string.email_icon),
+                painterResource(id = iconRes),
+                contentDescription = iconContentDescriptionRes?.let { stringResource(id = it) },
                 tint = LBSilverGray
             )
         },
         placeholder = {
             Text(
                 text = placeholderRes,
-                color = LBSilverGray,
+                color = if (error is InputValid.Error) LBSilverGray else LBSilverGray,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -52,6 +56,7 @@ fun LBEmailTextField(
             fontSize = 16.sp
         ),
         singleLine = true,
+        isError = error is InputValid.Error,
         modifier = Modifier
             .fillMaxWidth()
             .onFocusChanged { focusState ->
@@ -67,19 +72,20 @@ fun LBEmailTextField(
             disabledContainerColor = LBSoftBlue,
             focusedContainerColor = LBSoftBlue,
             unfocusedContainerColor = LBSoftBlue,
-        ),
-        isError = error is EmailInputValid.Error,
+        )
     )
 }
 
 @Preview
 @Composable
-private fun LBEmailTextFieldPreview() {
-    LBEmailTextField(
+private fun LBNameTextFieldPreview() {
+    LBTextField(
         onValueChange = {},
-        placeholderRes = "Email",
+        placeholderRes = "Nome",
         value = "",
-        error = EmailInputValid.Valid,
+        iconRes = R.drawable.ic_user,
+        iconContentDescriptionRes = null,
+        error = InputValid.Valid,
         fieldFocus = {}
     )
 }

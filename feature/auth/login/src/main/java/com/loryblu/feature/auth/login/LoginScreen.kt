@@ -36,14 +36,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.components.buttons.LBButton
-import com.loryblu.core.ui.components.text_fields.LBEmailTextField
-import com.loryblu.core.ui.components.text.LBErrorLabel
-import com.loryblu.core.ui.components.buttons.LBIconButton
 import com.loryblu.core.ui.components.LBLoading
-import com.loryblu.core.ui.components.text_fields.LBPasswordTextField
+import com.loryblu.core.ui.components.buttons.LBButton
+import com.loryblu.core.ui.components.buttons.LBIconButton
 import com.loryblu.core.ui.components.buttons.LBRadioButton
+import com.loryblu.core.ui.components.text.LBErrorLabel
 import com.loryblu.core.ui.components.text.LBTitle
+import com.loryblu.core.ui.components.text_fields.LBPasswordTextField
+import com.loryblu.core.ui.components.text_fields.LBTextField
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
@@ -51,7 +51,7 @@ import com.loryblu.core.ui.theme.LBShadowGray
 import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.core.ui.theme.LBSoftGray
-import com.loryblu.core.util.validators.EmailInputValid
+import com.loryblu.core.util.validators.InputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.model.LoginRequest
 import com.loryblu.data.auth.model.SignInResult
@@ -62,7 +62,7 @@ fun LoginScreen(
     navigateToHomeScreen: () -> Unit,
     navigateToForgotPassword: () -> Unit,
     navigateToRegisterNow: () -> Unit,
-    emailStateValidation: (email: String) -> EmailInputValid,
+    emailStateValidation: (email: String) -> InputValid,
     passwordStateValidation: (password: String) -> PasswordInputValid,
     signInResult: SignInResult,
 ) {
@@ -74,7 +74,7 @@ fun LoginScreen(
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
-    var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
+    var emailState by rememberSaveable { mutableStateOf<InputValid>(InputValid.Empty) }
     var showApiErrors by remember { mutableStateOf(false) }
     var apiErrorMessage by rememberSaveable { mutableStateOf("") }
     var rememberButtonChecked by rememberSaveable { mutableStateOf(false) }
@@ -93,11 +93,13 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        LBEmailTextField(
+        LBTextField(
             onValueChange = { newEmail ->
                 email = newEmail
                 emailState = emailStateValidation(email)
             },
+            iconRes = R.drawable.ic_email,
+            iconContentDescriptionRes = R.string.email_icon,
             placeholderRes = stringResource(id = R.string.email),
             value = email,
             error = emailState,
@@ -127,7 +129,7 @@ fun LoginScreen(
         }
 
         if (
-            emailState is EmailInputValid.Error && isEmailFieldFocused
+            emailState is InputValid.Error && isEmailFieldFocused
             || passwordState is PasswordInputValid.Error && isPasswordFieldFocused
         ) {
             Row(
@@ -139,8 +141,8 @@ fun LoginScreen(
             ) {
                 when {
 
-                    emailState is EmailInputValid.Error && isEmailFieldFocused -> {
-                        val emailError = emailState as EmailInputValid.Error
+                    emailState is InputValid.Error && isEmailFieldFocused -> {
+                        val emailError = emailState as InputValid.Error
 
                         Text(
                             fontSize = 14.sp,
@@ -197,7 +199,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(top = 44.dp))
 
         LBButton(
-            areAllFieldsValid = emailState is EmailInputValid.Valid
+            areAllFieldsValid = emailState is InputValid.Valid
                     && passwordState is PasswordInputValid.Valid,
             textRes = R.string.sign_in,
             onClick = {
@@ -214,7 +216,7 @@ fun LoginScreen(
                 containerColor = LBSkyBlue
             ),
             textColor = if (
-                emailState is EmailInputValid.Valid
+                emailState is InputValid.Valid
                 && passwordState is PasswordInputValid.Valid
             ) LBSoftGray else LBSkyBlue
         )
@@ -392,25 +394,6 @@ fun LoginScreen(
             }
 
             is SignInResult.ErrorWithField -> {
-                // If should show the exact error BTF
-//                apiErrorMessage = signInResult.message
-//                when (signInResult.field) {
-//                    SignInFields.Email -> {
-//                        showEmailApiError = true
-//                        showApiErrors = false
-//                        showPasswordApiError = false
-//                    }
-//                    SignInFields.Password -> {
-//                        showPasswordApiError = true
-//                        showApiErrors = false
-//                        showEmailApiError = false
-//                    }
-//                    else -> {
-//                        showApiErrors = true
-//                        showEmailApiError = false
-//                        showPasswordApiError = false
-//                    }
-//                }
                 showApiErrors = true
                 apiErrorMessage = signInResult.message
             }
