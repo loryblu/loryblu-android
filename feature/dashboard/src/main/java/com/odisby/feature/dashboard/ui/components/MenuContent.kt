@@ -1,4 +1,4 @@
-package com.odisby.feature.dashboard.ui
+package com.odisby.feature.dashboard.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -55,6 +55,13 @@ import com.odisby.feature.dashboard.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
+data class MenuNavigationActions(
+    val navigateToChildrenProfile: () -> Unit,
+    val navigateToFaq: () -> Unit,
+    val navigateToTerms: () -> Unit,
+)
+
 @ExperimentalMaterial3Api
 @Composable
 fun MenuContent(
@@ -63,8 +70,7 @@ fun MenuContent(
     parentFullName: String,
     onCloseMenu: () -> Unit,
     onExitApp: () -> Unit,
-    navigateToFaq: () -> Unit,
-    navigateToTerms: () -> Unit,
+    navigationActions: MenuNavigationActions,
 ) {
     val scope = rememberCoroutineScope()
     val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -86,6 +92,7 @@ fun MenuContent(
         ModalBottomSheet(
             sheetState = state,
             onDismissRequest = onCloseClick,
+            modifier = Modifier.padding(top = 16.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -96,6 +103,7 @@ fun MenuContent(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(bottom = 24.dp)
                         .verticalScroll(scrollState),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -108,7 +116,7 @@ fun MenuContent(
                             mediumTextMaxLines = 1,
                             mediumTextSize = 16.sp,
                             mediumTextOverflow = TextOverflow.Ellipsis,
-                            onClick = {},
+                            onClick = navigationActions.navigateToChildrenProfile,
                         )
                         MenuItem(
                             smallText = stringResource(id = R.string.parent_name),
@@ -131,12 +139,12 @@ fun MenuContent(
                         MenuItem(
                             mediumText = stringResource(id = R.string.faq),
                             imageId = R.drawable.question_mark,
-                            onClick = navigateToFaq,
+                            onClick = navigationActions.navigateToFaq,
                         )
                         MenuItem(
                             mediumText = stringResource(id = R.string.term_and_privacy),
                             imageId = R.drawable.clipboard,
-                            onClick = navigateToTerms,
+                            onClick = navigationActions.navigateToTerms,
                         )
                         MenuItem(
                             mediumText = stringResource(id = R.string.exit_app),

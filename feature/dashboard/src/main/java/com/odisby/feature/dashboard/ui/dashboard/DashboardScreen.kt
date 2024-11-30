@@ -1,4 +1,4 @@
-package com.odisby.feature.dashboard.ui
+package com.odisby.feature.dashboard.ui.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,10 @@ import androidx.compose.ui.unit.dp
 import com.loryblu.core.ui.components.LBCardDashboard
 import com.odisby.data.dashboard.local.getAllDashboardItems
 import com.odisby.feature.dashboard.model.UsesData
+import com.odisby.feature.dashboard.ui.components.AppBar
+import com.odisby.feature.dashboard.ui.components.ExitAppDialog
+import com.odisby.feature.dashboard.ui.components.MenuContent
+import com.odisby.feature.dashboard.ui.components.MenuNavigationActions
 
 @ExperimentalMaterial3Api
 @Composable
@@ -27,8 +31,7 @@ fun DashboardScreen(
     usesData: UsesData,
     navigateToLogbook: () -> Unit,
     logoutUser: () -> Unit,
-    navigateToFaq: () -> Unit,
-    navigateToTerms: () -> Unit,
+    menuNavigationActions: MenuNavigationActions,
 ) {
     var menuIsOpen by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
@@ -41,8 +44,7 @@ fun DashboardScreen(
             parentFullName = usesData.parentFullName,
             onCloseMenu = { menuIsOpen = false },
             onExitApp = { showExitDialog = true },
-            navigateToFaq = navigateToFaq,
-            navigateToTerms = navigateToTerms,
+            navigationActions = menuNavigationActions,
         )
         AppBar(
             childFirstName = usesData.childFirstName,

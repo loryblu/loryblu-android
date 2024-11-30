@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.loryblu.core.ui.components.LBButton
+import com.loryblu.core.ui.components.buttons.LBButton
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.core.ui.theme.LBSoftGray

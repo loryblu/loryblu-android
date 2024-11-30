@@ -14,7 +14,7 @@ fun NavGraphBuilder.loginRoute(
     navigateToForgotPassword: () -> Unit,
     navigateToRegisterNow: () -> Unit,
 ) {
-    composable(route = Screen.Login.route) {
+    composable<Screen.Authentication.Login> {
         val viewModel: LoginViewModel = koinViewModel()
         val signInResult by viewModel.signInResult.collectAsState()
 

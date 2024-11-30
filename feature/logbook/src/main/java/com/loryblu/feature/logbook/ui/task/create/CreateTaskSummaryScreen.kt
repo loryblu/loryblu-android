@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.loryblu.core.ui.components.LBButton
+import com.loryblu.core.ui.components.buttons.LBButton
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBSkyBlue

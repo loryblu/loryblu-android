@@ -1,4 +1,4 @@
-package com.loryblu.core.ui.components
+package com.loryblu.core.ui.components.text
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.loryblu.core.ui.theme.LBShadowGray
+import com.loryblu.core.ui.theme.LBErrorColor
 
 @Composable
-fun LBSuccessLabel(
+fun LBErrorLabel(
     labelRes: String,
 ) {
     Row(
@@ -28,7 +28,7 @@ fun LBSuccessLabel(
             text = labelRes,
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
-            color = LBShadowGray
+            color = LBErrorColor
         )
     }
 }

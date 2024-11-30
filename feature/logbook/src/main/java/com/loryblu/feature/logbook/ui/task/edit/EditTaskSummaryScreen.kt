@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.loryblu.core.ui.components.LBMediumButton
+import com.loryblu.core.ui.components.buttons.LBMediumButton
 import com.loryblu.core.ui.components.LBTopAppBar
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.data.logbook.local.CategoryItem

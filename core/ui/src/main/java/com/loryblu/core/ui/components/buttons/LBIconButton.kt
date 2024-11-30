@@ -1,4 +1,4 @@
-package com.loryblu.core.ui.components
+package com.loryblu.core.ui.components.buttons
 
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable

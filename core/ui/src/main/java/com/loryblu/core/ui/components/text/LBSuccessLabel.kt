@@ -1,4 +1,4 @@
-package com.loryblu.core.ui.components
+package com.loryblu.core.ui.components.text
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,12 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.loryblu.core.ui.theme.LBErrorColor
+import com.loryblu.core.ui.theme.LBShadowGray
 
 @Composable
-fun LBErrorLabel(
+fun LBSuccessLabel(
     labelRes: String,
 ) {
     Row(
@@ -28,7 +29,15 @@ fun LBErrorLabel(
             text = labelRes,
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
-            color = LBErrorColor
+            color = LBShadowGray
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LBSuccessLabelPreview() {
+    LBSuccessLabel(
+        labelRes = "Sucesso"
+    )
 }

@@ -1,4 +1,4 @@
-package com.odisby.feature.dashboard.ui
+package com.odisby.feature.dashboard.ui.dashboard
 
 import androidx.lifecycle.ViewModel
 import com.loryblu.core.network.di.UserSession

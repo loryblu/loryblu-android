@@ -1,4 +1,4 @@
-package com.loryblu.core.ui.components
+package com.loryblu.core.ui.components.buttons
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.loryblu.core.ui.R
 import com.loryblu.core.util.extensions.isEmailValid
-import com.loryblu.core.util.validators.EmailInputValid
+import com.loryblu.core.util.validators.InputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.data.auth.UserAuthentication
 import com.loryblu.data.auth.model.LoginRequest
@@ -20,18 +20,18 @@ class LoginViewModel(
     private val _signInResult = MutableStateFlow<SignInResult>(SignInResult.Empty)
     val signInResult = _signInResult.asStateFlow()
 
-    fun emailState(email: String): EmailInputValid {
+    fun emailState(email: String): InputValid {
         return when {
             email.isEmpty() -> {
-                EmailInputValid.Error(R.string.empty_email)
+                InputValid.Error(R.string.empty_email)
             }
 
             email.isEmailValid().not() -> {
-                EmailInputValid.Error(R.string.invalid_field)
+                InputValid.Error(R.string.invalid_field)
             }
 
             else -> {
-                EmailInputValid.Valid
+                InputValid.Valid
             }
         }
     }

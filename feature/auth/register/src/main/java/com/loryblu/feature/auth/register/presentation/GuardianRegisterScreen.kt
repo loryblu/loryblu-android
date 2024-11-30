@@ -27,18 +27,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
-import com.loryblu.core.ui.components.LBButton
-import com.loryblu.core.ui.components.LBEmailTextField
-import com.loryblu.core.ui.components.LBNameTextField
-import com.loryblu.core.ui.components.LBPasswordTextField
-import com.loryblu.core.ui.components.LBTitle
+import com.loryblu.core.ui.components.buttons.LBButton
+import com.loryblu.core.ui.components.text.LBTitle
+import com.loryblu.core.ui.components.text_fields.LBPasswordTextField
+import com.loryblu.core.ui.components.text_fields.LBTextField
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.core.ui.theme.LBSoftGray
-import com.loryblu.core.util.validators.EmailInputValid
-import com.loryblu.core.util.validators.NameInputValid
+import com.loryblu.core.util.validators.InputValid
 import com.loryblu.core.util.validators.PasswordInputValid
 import com.loryblu.feature.auth.register.model.Guardian
 
@@ -47,8 +45,8 @@ fun GuardianRegisterScreen(
     navigateToChildRegister: () -> Unit,
     onNextButtonClicked: (Guardian) -> Unit,
     shouldGoToNextScreen: Boolean,
-    nameStateValidation: (name: String) -> NameInputValid,
-    emailStateValidation: (email: String) -> EmailInputValid,
+    nameStateValidation: (name: String) -> InputValid,
+    emailStateValidation: (email: String) -> InputValid,
     passwordStateValidation: (password: String) -> PasswordInputValid,
     confirmPasswordStateValidation: (password: String, confirmPassword: String) -> PasswordInputValid,
 ) {
@@ -60,9 +58,9 @@ fun GuardianRegisterScreen(
     var isConfirmPasswordFieldFocused by rememberSaveable { mutableStateOf(false) }
 
     var name by rememberSaveable { mutableStateOf("") }
-    var nameState by rememberSaveable { mutableStateOf<NameInputValid>(NameInputValid.Empty) }
+    var nameState by rememberSaveable { mutableStateOf<InputValid>(InputValid.Empty) }
     var email by rememberSaveable { mutableStateOf("") }
-    var emailState by rememberSaveable { mutableStateOf<EmailInputValid>(EmailInputValid.Empty) }
+    var emailState by rememberSaveable { mutableStateOf<InputValid>(InputValid.Empty) }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordState by rememberSaveable { mutableStateOf<PasswordInputValid>(PasswordInputValid.Empty) }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
@@ -84,12 +82,14 @@ fun GuardianRegisterScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        LBNameTextField(
+        LBTextField(
             value = name,
             onValueChange = { newName ->
                 name = newName
                 nameState = nameStateValidation(name)
             },
+            iconRes = R.drawable.ic_user,
+            iconContentDescriptionRes = R.string.name_icon,
             placeholderRes = stringResource(id = R.string.full_name),
             error = nameState,
             fieldFocus = { isNameFieldFocused = it }
@@ -97,11 +97,13 @@ fun GuardianRegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LBEmailTextField(
+        LBTextField(
             onValueChange = { newEmail ->
                 email = newEmail
                 emailState = emailStateValidation(email)
             },
+            iconRes = R.drawable.ic_email,
+            iconContentDescriptionRes = R.string.email_icon,
             placeholderRes = stringResource(R.string.email),
             value = email,
             error = emailState,
@@ -207,9 +209,9 @@ fun GuardianRegisterScreen(
         )
 
         if (
-            emailState is EmailInputValid.Error && isEmailFieldFocused
+            emailState is InputValid.Error && isEmailFieldFocused
             || confirmPasswordState is PasswordInputValid.Error && isConfirmPasswordFieldFocused
-            || nameState is NameInputValid.Error && isNameFieldFocused
+            || nameState is InputValid.Error && isNameFieldFocused
         ) {
 
             Row(
@@ -221,8 +223,8 @@ fun GuardianRegisterScreen(
             ) {
                 when {
 
-                    emailState is EmailInputValid.Error && isEmailFieldFocused -> {
-                        val emailError = emailState as EmailInputValid.Error
+                    emailState is InputValid.Error && isEmailFieldFocused -> {
+                        val emailError = emailState as InputValid.Error
 
                         Text(
                             fontSize = 14.sp,
@@ -245,8 +247,8 @@ fun GuardianRegisterScreen(
                         )
                     }
 
-                    nameState is NameInputValid.Error && isNameFieldFocused -> {
-                        val nameError = nameState as NameInputValid.Error
+                    nameState is InputValid.Error && isNameFieldFocused -> {
+                        val nameError = nameState as InputValid.Error
 
                         Text(
                             fontSize = 14.sp,
@@ -263,8 +265,8 @@ fun GuardianRegisterScreen(
         Spacer(modifier = Modifier.height(44.dp))
 
         LBButton(
-            areAllFieldsValid = nameState is NameInputValid.Valid
-                    && emailState is EmailInputValid.Valid
+            areAllFieldsValid = nameState is InputValid.Valid
+                    && emailState is InputValid.Valid
                     && passwordState is PasswordInputValid.Valid
                     && confirmPasswordState is PasswordInputValid.Valid,
             textRes = R.string.next,
@@ -274,10 +276,10 @@ fun GuardianRegisterScreen(
                 confirmPasswordState = confirmPasswordStateValidation(password, confirmPassword)
                 emailState = emailStateValidation(email)
                 if (
-                    nameState == NameInputValid.Valid
+                    nameState == InputValid.Valid
                     && passwordState == PasswordInputValid.Valid
                     && confirmPasswordState == PasswordInputValid.Valid
-                    && emailState == EmailInputValid.Valid
+                    && emailState == InputValid.Valid
                 ) {
                     onNextButtonClicked(
                         Guardian(
@@ -293,8 +295,8 @@ fun GuardianRegisterScreen(
                 containerColor = LBSkyBlue
             ),
             textColor = if (
-                nameState is NameInputValid.Valid
-                && emailState is EmailInputValid.Valid
+                nameState is InputValid.Valid
+                && emailState is InputValid.Valid
                 && passwordState is PasswordInputValid.Valid
                 && confirmPasswordState is PasswordInputValid.Valid
             ) LBSoftGray else LBSkyBlue

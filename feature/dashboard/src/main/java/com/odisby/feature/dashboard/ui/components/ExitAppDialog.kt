@@ -1,4 +1,4 @@
-package com.odisby.feature.dashboard.ui
+package com.odisby.feature.dashboard.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.loryblu.core.ui.components.LBNegativeDialogButton
-import com.loryblu.core.ui.components.LBTransparentButton
+import com.loryblu.core.ui.components.buttons.LBNegativeDialogButton
+import com.loryblu.core.ui.components.buttons.LBTransparentButton
 import com.loryblu.core.ui.theme.LBDarkBlue
 import com.loryblu.core.ui.theme.LBSoftBlue
 import com.odisby.feature.dashboard.R
