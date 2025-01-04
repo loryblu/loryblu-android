@@ -35,4 +35,8 @@
     <!--    task Deleted Dialog -->
     <string name="task_deleted">Tarefa deletada:</string>
     <string name="successfully_deleted">Excluída com sucesso de</string>
+
+    <!--    Profile Texts   -->
+    <string name="appbar_title_children_profile">Perfil criança</string>
+
 </resources>

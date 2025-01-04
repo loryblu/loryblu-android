@@ -34,4 +34,8 @@
     <!--    task Deleted Dialog -->
     <string name="task_deleted">Task deleted:</string>
     <string name="successfully_deleted">Successfully deleted on</string>
+
+    <!--    Profile Texts   -->
+    <string name="appbar_title_children_profile">Children Profile</string>
+
 </resources>
