@@ -18,6 +18,7 @@ fun NavGraphBuilder.dashboardRoute(
     navigateToFaq: () -> Unit,
     navigateToTerms: () -> Unit,
     navigateToChildrenProfile: () -> Unit,
+    navigateToParentProfile: () -> Unit,
 ) {
     composable<Screen.Dashboard> {
         val viewModel: DashboardViewModel = koinViewModel()
@@ -37,6 +38,7 @@ fun NavGraphBuilder.dashboardRoute(
                 navigateToChildrenProfile = navigateToChildrenProfile,
                 navigateToFaq = navigateToFaq,
                 navigateToTerms = navigateToTerms,
+                navigateToParentProfile = navigateToParentProfile,
             ),
         )
     }

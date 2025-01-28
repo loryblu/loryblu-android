@@ -90,7 +90,10 @@ fun SetupNavGraph(startDestination: Any, navController: NavHostController) {
             },
             navigateToChildrenProfile = {
                 navController.navigate(Screen.Menu.ChildrenProfileScreen)
-            }
+            },
+            navigateToParentProfile = {
+                navController.navigate(Screen.Menu.ParentProfileScreen)
+            },
         )
         logbookNavigation(
             navController = navController,

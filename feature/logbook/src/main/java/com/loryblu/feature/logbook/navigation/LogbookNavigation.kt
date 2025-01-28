@@ -19,6 +19,7 @@ import com.loryblu.feature.logbook.model.EditResult
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
 import com.loryblu.feature.logbook.ui.profile.ChildrenProfileScreen
+import com.loryblu.feature.logbook.ui.profile.ParentProfileScreen
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
 import com.loryblu.feature.logbook.ui.task.create.CreateShiftScreen
 import com.loryblu.feature.logbook.ui.task.create.CreateTaskCategoryScreen
@@ -328,6 +329,10 @@ fun NavGraphBuilder.logbookNavigation(
 
         composable<Screen.Menu.ChildrenProfileScreen> {
             ChildrenProfileScreen()
+        }
+
+        composable<Screen.Menu.ParentProfileScreen> {
+            ParentProfileScreen()
         }
     }
 }

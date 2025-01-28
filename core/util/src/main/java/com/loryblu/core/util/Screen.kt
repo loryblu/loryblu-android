@@ -70,6 +70,9 @@ object Screen {
 
         @Serializable
         object ChildrenProfileScreen
+
+        @Serializable
+        object ParentProfileScreen
     }
 
 }

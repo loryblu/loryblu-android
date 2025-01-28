@@ -58,6 +58,7 @@ import kotlinx.coroutines.launch
 
 data class MenuNavigationActions(
     val navigateToChildrenProfile: () -> Unit,
+    val navigateToParentProfile: () -> Unit,
     val navigateToFaq: () -> Unit,
     val navigateToTerms: () -> Unit,
 )
@@ -125,7 +126,7 @@ fun MenuContent(
                             mediumTextMaxLines = 1,
                             mediumTextSize = 16.sp,
                             mediumTextOverflow = TextOverflow.Ellipsis,
-                            onClick = {},
+                            onClick = navigationActions.navigateToParentProfile,
                         )
                     }
                     MenuSection(R.string.configurations) {

@@ -1,7 +1,8 @@
 package com.loryblu.feature.logbook.ui.components
 
-import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -9,10 +10,12 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.loryblu.core.ui.R
@@ -23,47 +26,58 @@ import com.loryblu.core.ui.theme.LBShadowGray
 import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBSoftBlue
 import com.loryblu.core.ui.utils.LBPreview
-import com.loryblu.core.util.validators.InputValid
 
 @Composable
-fun LBTextFieldProfiles(
-    value: String,
-    onValueChange: (String) -> Unit,
-    @DrawableRes icon: Int,
-    placeholderRes: String,
-    error: InputValid,
-    fieldFocus: (Boolean) -> Unit = {},
+fun LBPasswordFieldProfiles(
     isEditable: Boolean = false,
-    showTrailingIcon: Boolean = true,
+    onPasswordChangeClicked: () -> Unit = {},
 ) {
     val textFieldContainerColor = if (isEditable) LBSoftBlue else LBLightGray.copy(alpha = 0.6f)
     val textFieldIconColor = if (isEditable) LBDarkBlue else LBMediumGray
 
     OutlinedTextField(
         enabled = isEditable,
-        value = value,
-        onValueChange = { onValueChange(it) },
+        value = "",
+        onValueChange = { },
         leadingIcon = {
             Icon(
-                painterResource(id = icon),
+                painterResource(id = com.loryblu.feature.home.R.drawable.ic_padlock_open),
                 contentDescription = null,
                 tint = textFieldIconColor
             )
         },
         placeholder = {
             Text(
-                text = placeholderRes,
-                color = LBShadowGray,
+                text = "⬤ ⬤ ⬤ ⬤ ⬤ ⬤ ⬤ ⬤",
+                color = LBSilverGray,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp
             )
         },
         trailingIcon = {
-            if (!isEditable && showTrailingIcon) {
+            if (!isEditable) {
                 Icon(
                     painterResource(id = R.drawable.ic_padlock_close),
                     contentDescription = null,
                     tint = LBDarkBlue,
+                )
+            } else {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = androidx.compose.ui.text.SpanStyle(
+                                color = LBDarkBlue,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                textDecoration = TextDecoration.Underline
+                            )
+                        ) {
+                            append("Alterar senha")
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .clickable { onPasswordChangeClicked }
                 )
             }
         },
@@ -73,12 +87,8 @@ fun LBTextFieldProfiles(
             fontSize = 14.sp
         ),
         singleLine = true,
-        isError = error is InputValid.Error,
         modifier = Modifier
-            .fillMaxWidth()
-            .onFocusChanged { focusState ->
-                fieldFocus(focusState.isFocused)
-            },
+            .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = LBSilverGray,
@@ -95,27 +105,18 @@ fun LBTextFieldProfiles(
 
 @LBPreview
 @Composable
-private fun LBNameTextFieldPreview() {
-    LBTextFieldProfiles(
-        onValueChange = {},
-        placeholderRes = "Nome",
-        value = "",
-        icon = R.drawable.ic_user,
-        error = InputValid.Valid,
-        fieldFocus = {}
+private fun LBPasswordFieldEditablePreview() {
+    LBPasswordFieldProfiles(
+        isEditable = true
     )
 }
 
 @LBPreview
 @Composable
-private fun LBNameTextFieldEditablePreview() {
-    LBTextFieldProfiles(
-        onValueChange = {},
-        placeholderRes = "Nome",
-        value = "",
-        icon = R.drawable.ic_user,
-        error = InputValid.Valid,
-        fieldFocus = {},
-        isEditable = true
+private fun LBPasswordFieldNotEditablePreview() {
+    LBPasswordFieldProfiles(
+        isEditable = false
     )
 }
+
+
