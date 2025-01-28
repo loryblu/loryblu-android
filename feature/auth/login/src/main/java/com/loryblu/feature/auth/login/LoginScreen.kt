@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
@@ -98,8 +99,13 @@ fun LoginScreen(
                 email = newEmail
                 emailState = emailStateValidation(email)
             },
-            iconRes = R.drawable.ic_email,
-            iconContentDescriptionRes = R.string.email_icon,
+            iconContent = {
+                Icon(
+                    painterResource(id = R.drawable.ic_email),
+                    contentDescription = stringResource(R.string.email_icon),
+                    tint = LBSilverGray
+                )
+            },
             placeholderRes = stringResource(id = R.string.email),
             value = email,
             error = emailState,

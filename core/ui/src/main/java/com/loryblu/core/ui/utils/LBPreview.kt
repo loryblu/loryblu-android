@@ -9,13 +9,6 @@ import androidx.compose.ui.tooling.preview.Preview
     AnnotationTarget.FUNCTION
 )
 @Preview(
-    name = "Phone - Dark",
-    device = "spec:width=411dp,height=891dp",
-    showSystemUi = true,
-    locale = "pt-rBR",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Preview(
     name = "Phone - Light",
     device = "spec:width=411dp,height=891dp",
     showSystemUi = true,

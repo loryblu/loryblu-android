@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -95,8 +97,13 @@ fun ChildRegisterScreen(
                 name = newName
                 nameState = nameStateValidation(name)
             },
-            iconRes = R.drawable.ic_user,
-            iconContentDescriptionRes = R.string.name_icon,
+            iconContent = {
+                Icon(
+                    painterResource(id = R.drawable.ic_user),
+                    contentDescription = stringResource(R.string.name_icon),
+                    tint = LBSilverGray
+                )
+            },
             placeholderRes = stringResource(id = R.string.full_name),
             error = nameState,
             fieldFocus = { isNameFieldFocused = it }

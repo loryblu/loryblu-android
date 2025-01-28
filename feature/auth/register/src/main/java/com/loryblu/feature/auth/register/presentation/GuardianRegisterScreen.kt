@@ -34,6 +34,7 @@ import com.loryblu.core.ui.components.text_fields.LBTextField
 import com.loryblu.core.ui.theme.LBErrorColor
 import com.loryblu.core.ui.theme.LBLightGray
 import com.loryblu.core.ui.theme.LBShadowGray
+import com.loryblu.core.ui.theme.LBSilverGray
 import com.loryblu.core.ui.theme.LBSkyBlue
 import com.loryblu.core.ui.theme.LBSoftGray
 import com.loryblu.core.util.validators.InputValid
@@ -88,8 +89,13 @@ fun GuardianRegisterScreen(
                 name = newName
                 nameState = nameStateValidation(name)
             },
-            iconRes = R.drawable.ic_user,
-            iconContentDescriptionRes = R.string.name_icon,
+            iconContent = {
+                Icon(
+                    painterResource(id = R.drawable.ic_user),
+                    contentDescription = stringResource(R.string.name_icon),
+                    tint = LBSilverGray
+                )
+            },
             placeholderRes = stringResource(id = R.string.full_name),
             error = nameState,
             fieldFocus = { isNameFieldFocused = it }
@@ -102,8 +108,13 @@ fun GuardianRegisterScreen(
                 email = newEmail
                 emailState = emailStateValidation(email)
             },
-            iconRes = R.drawable.ic_email,
-            iconContentDescriptionRes = R.string.email_icon,
+            iconContent = {
+                Icon(
+                    painterResource(id = R.drawable.ic_email),
+                    contentDescription = stringResource(R.string.email_icon),
+                    tint = LBSilverGray
+                )
+            },
             placeholderRes = stringResource(R.string.email),
             value = email,
             error = emailState,

@@ -38,5 +38,7 @@
 
     <!--    Profile Texts   -->
     <string name="appbar_title_children_profile">Perfil criança</string>
+    <string name="children_name">Nome da criança</string>
+    <string name="children_gender">Genêro</string>
 
 </resources>

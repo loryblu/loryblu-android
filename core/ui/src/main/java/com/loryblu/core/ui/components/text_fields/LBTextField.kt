@@ -1,7 +1,5 @@
 package com.loryblu.core.ui.components.text_fields
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -12,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,8 +24,7 @@ import com.loryblu.core.util.validators.InputValid
 fun LBTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    @DrawableRes iconRes: Int,
-    @StringRes iconContentDescriptionRes: Int? = null,
+    iconContent: @Composable (() -> Unit)? = null,
     placeholderRes: String,
     error: InputValid,
     fieldFocus: (Boolean) -> Unit = {},
@@ -36,13 +32,7 @@ fun LBTextField(
     OutlinedTextField(
         value = value,
         onValueChange = { onValueChange(it) },
-        leadingIcon = {
-            Icon(
-                painterResource(id = iconRes),
-                contentDescription = iconContentDescriptionRes?.let { stringResource(id = it) },
-                tint = LBSilverGray
-            )
-        },
+        leadingIcon = iconContent,
         placeholder = {
             Text(
                 text = placeholderRes,
@@ -83,8 +73,13 @@ private fun LBNameTextFieldPreview() {
         onValueChange = {},
         placeholderRes = "Nome",
         value = "",
-        iconRes = R.drawable.ic_user,
-        iconContentDescriptionRes = null,
+        iconContent = {
+            Icon(
+                painterResource(id = R.drawable.ic_user),
+                contentDescription = null,
+                tint = LBSilverGray
+            )
+        },
         error = InputValid.Valid,
         fieldFocus = {}
     )
