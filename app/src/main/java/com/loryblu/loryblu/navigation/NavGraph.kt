@@ -94,6 +94,9 @@ fun SetupNavGraph(startDestination: Any, navController: NavHostController) {
             navigateToParentProfile = {
                 navController.navigate(Screen.Menu.ParentProfileScreen)
             },
+            navigateToResetPassword = {
+                navController.navigate(Screen.Menu.ResetPasswordScreen)
+            },
         )
         logbookNavigation(
             navController = navController,

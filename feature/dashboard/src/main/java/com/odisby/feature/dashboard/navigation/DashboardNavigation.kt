@@ -17,6 +17,7 @@ fun NavGraphBuilder.dashboardRoute(
     navigateToLogin: () -> Unit,
     navigateToFaq: () -> Unit,
     navigateToTerms: () -> Unit,
+    navigateToResetPassword: () -> Unit,
     navigateToChildrenProfile: () -> Unit,
     navigateToParentProfile: () -> Unit,
 ) {
@@ -39,6 +40,7 @@ fun NavGraphBuilder.dashboardRoute(
                 navigateToFaq = navigateToFaq,
                 navigateToTerms = navigateToTerms,
                 navigateToParentProfile = navigateToParentProfile,
+                navigateToResetPassword = navigateToResetPassword,
             ),
         )
     }

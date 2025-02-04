@@ -18,6 +18,7 @@ import com.loryblu.data.logbook.local.TaskItem
 import com.loryblu.feature.logbook.model.EditResult
 import com.loryblu.feature.logbook.ui.home.LogbookHomeViewModel
 import com.loryblu.feature.logbook.ui.home.LogbookScreen
+import com.loryblu.feature.logbook.ui.profile.ChangePasswordScreen
 import com.loryblu.feature.logbook.ui.profile.ChildrenProfileScreen
 import com.loryblu.feature.logbook.ui.profile.ParentProfileScreen
 import com.loryblu.feature.logbook.ui.task.LogbookTaskViewModel
@@ -332,7 +333,19 @@ fun NavGraphBuilder.logbookNavigation(
         }
 
         composable<Screen.Menu.ParentProfileScreen> {
-            ParentProfileScreen()
+            ParentProfileScreen(
+                navigateToResetPassword = {
+                    navController.navigate(
+                        Screen.Menu.ResetPasswordScreen
+                    )
+                }
+            )
+        }
+
+        composable<Screen.Menu.ResetPasswordScreen> {
+            ChangePasswordScreen(
+
+            )
         }
     }
 }

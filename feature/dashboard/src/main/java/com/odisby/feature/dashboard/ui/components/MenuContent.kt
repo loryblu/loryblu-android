@@ -59,6 +59,7 @@ import kotlinx.coroutines.launch
 data class MenuNavigationActions(
     val navigateToChildrenProfile: () -> Unit,
     val navigateToParentProfile: () -> Unit,
+    val navigateToResetPassword: () -> Unit,
     val navigateToFaq: () -> Unit,
     val navigateToTerms: () -> Unit,
 )

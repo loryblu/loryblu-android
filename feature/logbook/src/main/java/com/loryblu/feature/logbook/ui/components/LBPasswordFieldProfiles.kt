@@ -77,7 +77,7 @@ fun LBPasswordFieldProfiles(
                     },
                     modifier = Modifier
                         .padding(horizontal = 12.dp)
-                        .clickable { onPasswordChangeClicked }
+                        .clickable { onPasswordChangeClicked() }
                 )
             }
         },

@@ -2,10 +2,8 @@ package com.loryblu.feature.logbook.ui.profile
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,8 +48,13 @@ import com.loryblu.feature.logbook.ui.components.LBTextFieldProfiles
 import com.loryblu.feature.logbook.ui.components.ProfilePictureComponent
 
 @Composable
-fun ParentProfileScreen() {
-    ParentProfileContent()
+fun ParentProfileScreen(
+    navigateToResetPassword: () -> Unit = {},
+) {
+    ParentProfileContent(
+        navigateToResetPassword = navigateToResetPassword,
+        isEditable = false,
+    )
 //    ParentProfileContent(isEditable = false)
 }
 
@@ -60,7 +63,8 @@ fun ParentProfileScreen() {
 private fun ParentProfileContent(
     onBackButtonClicked: () -> Unit = {},
     isEditable: Boolean = true,
-    onEditClicked: () -> Unit = {}
+    onEditClicked: () -> Unit = {},
+    navigateToResetPassword: () -> Unit = {}
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -85,7 +89,7 @@ private fun ParentProfileContent(
                     BlockedActionsMessage(onAccessControlClick = {})
                 }
                 Spacer(modifier = Modifier.height(32.dp))
-                UserInformation(isEditable)
+                UserInformation(isEditable, navigateToResetPassword)
                 if (isEditable) {
                     Spacer(modifier = Modifier.weight(1f))
                     SaveAndCancelButton()
@@ -143,6 +147,7 @@ private fun BlockedActionsMessage(onAccessControlClick: () -> Unit) {
 @Composable
 private fun UserInformation(
     isEditable: Boolean,
+    navigateToResetPassword: () -> Unit = {},
 ) {
 
     Column(
@@ -164,7 +169,7 @@ private fun UserInformation(
         }
 
         EmailInformation(isEditable)
-        LBPasswordFieldProfiles(isEditable)
+        LBPasswordFieldProfiles(isEditable, onPasswordChangeClicked = navigateToResetPassword)
 
     }
 }

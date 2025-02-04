@@ -38,8 +38,8 @@ import com.loryblu.feature.logbook.ui.components.ProfilePictureComponent
 
 @Composable
 fun ChildrenProfileScreen() {
-    ChildrenProfileContent()
-//    ChildrenProfileContent(isEditable = false)
+//    ChildrenProfileContent()
+    ChildrenProfileContent(isEditable = false)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

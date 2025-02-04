@@ -73,6 +73,9 @@ object Screen {
 
         @Serializable
         object ParentProfileScreen
+
+        @Serializable
+        object ResetPasswordScreen
     }
 
 }

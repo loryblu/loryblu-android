@@ -41,5 +41,7 @@
     <string name="children_gender">Gender of the child</string>
     <string name="appbar_title_parent_profile">Parent Profile</string>
     <string name="name_of_the_parent">Name of the parent</string>
+    <string name="change_password">Change password</string>
+    <string name="reset_your_password">Reset your password</string>
 
 </resources>

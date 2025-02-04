@@ -42,5 +42,7 @@
     <string name="children_gender">Genêro</string>
     <string name="appbar_title_parent_profile">Perfil responsável</string>
     <string name="name_of_the_parent">Nome da pessoa responsável</string>
+    <string name="change_password">Alterar senha</string>
+    <string name="reset_your_password">REDEFINIR SENHA</string>
 
 </resources>
